@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+  <world name="default">
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+	<%
+	total = 10
+	for i in (0..total)
+	%>
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+	<% 
+	end
+	 %>
+    <plugin name="AirspaceController" filename="libAirspaceController.so"/>
+  </world>
+</sdf>

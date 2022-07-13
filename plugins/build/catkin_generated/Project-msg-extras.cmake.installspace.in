@@ -1,0 +1,2 @@
+set(Project_MESSAGE_FILES "")
+set(Project_SERVICE_FILES "")
