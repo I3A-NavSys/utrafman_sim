@@ -1,0 +1,8 @@
+prefix=/opt/ros/noetic/share/siam_sim/install
+
+Name: god
+Description: Description of god
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

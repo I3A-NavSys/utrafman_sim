@@ -1,0 +1,9 @@
+/snap/clion/198/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/198/bin/ninja/linux/ninja -G Ninja -S /opt/ros/noetic/share/siam_sim/src -B /opt/ros/noetic/share/siam_sim/src/cmake-build-debug
+CMake Error at CMakeLists.txt:65 (message):
+  find_package(catkin) failed.  catkin was neither found in the workspace nor
+  in the CMAKE_PREFIX_PATH.  One reason may be that no ROS setup.sh was
+  sourced before.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/opt/ros/noetic/share/siam_sim/src/cmake-build-debug/CMakeFiles/CMakeOutput.log".

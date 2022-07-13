@@ -1,0 +1,58 @@
+Performing C SOURCE FILE Test CMAKE_HAVE_LIBC_PTHREAD failed with the following output:
+Change Dir: /opt/ros/noetic/share/siam_sim/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_45f58/fast && /usr/bin/make -f CMakeFiles/cmTC_45f58.dir/build.make CMakeFiles/cmTC_45f58.dir/build
+make[1]: se entra en el directorio '/opt/ros/noetic/share/siam_sim/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_45f58.dir/src.c.o
+/usr/bin/cc   -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_45f58.dir/src.c.o   -c /opt/ros/noetic/share/siam_sim/build/CMakeFiles/CMakeTmp/src.c
+Linking C executable cmTC_45f58
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_45f58.dir/link.txt --verbose=1
+/usr/bin/cc  -DCMAKE_HAVE_LIBC_PTHREAD    -rdynamic CMakeFiles/cmTC_45f58.dir/src.c.o  -o cmTC_45f58 
+/usr/bin/ld: CMakeFiles/cmTC_45f58.dir/src.c.o: en la función `main':
+src.c:(.text+0x46): referencia a `pthread_create' sin definir
+/usr/bin/ld: src.c:(.text+0x52): referencia a `pthread_detach' sin definir
+/usr/bin/ld: src.c:(.text+0x63): referencia a `pthread_join' sin definir
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_45f58.dir/build.make:87: cmTC_45f58] Error 1
+make[1]: se sale del directorio '/opt/ros/noetic/share/siam_sim/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_45f58/fast] Error 2
+
+
+Source file was:
+#include <pthread.h>
+
+void* test_func(void* data)
+{
+  return data;
+}
+
+int main(void)
+{
+  pthread_t thread;
+  pthread_create(&thread, NULL, test_func, NULL);
+  pthread_detach(thread);
+  pthread_join(thread, NULL);
+  pthread_atfork(NULL, NULL, NULL);
+  pthread_exit(NULL);
+
+  return 0;
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /opt/ros/noetic/share/siam_sim/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_0dbdd/fast && /usr/bin/make -f CMakeFiles/cmTC_0dbdd.dir/build.make CMakeFiles/cmTC_0dbdd.dir/build
+make[1]: se entra en el directorio '/opt/ros/noetic/share/siam_sim/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0dbdd.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_0dbdd.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_0dbdd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0dbdd.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_0dbdd.dir/CheckFunctionExists.c.o  -o cmTC_0dbdd  -lpthreads 
+/usr/bin/ld: no se puede encontrar -lpthreads
+collect2: error: ld returned 1 exit status
+make[1]: *** [CMakeFiles/cmTC_0dbdd.dir/build.make:87: cmTC_0dbdd] Error 1
+make[1]: se sale del directorio '/opt/ros/noetic/share/siam_sim/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_0dbdd/fast] Error 2
+
+
+
