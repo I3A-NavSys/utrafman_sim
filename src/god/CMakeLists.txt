@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  gazebo_ros
 )
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
@@ -21,8 +22,8 @@ link_directories(${GAZEBO_LIBRARY_DIRS})
 
 set (CMAKE_CXX_STANDARD 17)
 
-add_library(AirspaceController2 SHARED src/airspace-controller-2.cc)
-target_link_libraries(AirspaceController2 ${GAZEBO_LIBRARIES})
+add_library(SIAM_God SHARED src/god.cc)
+target_link_libraries(SIAM_God ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
