@@ -9,7 +9,7 @@
 #include "ros/callback_queue.h"
 #include "ros/subscribe_options.h"
 
-#define N_SPHERES 10
+#define N_SPHERES 0
 
 namespace gazebo
 {
@@ -30,15 +30,12 @@ namespace gazebo
             ros::Subscriber rosSub_insert;
             ros::Subscriber rosSub_remove;
 
+            //Cola de mensajes
             ros::CallbackQueue rosQueue;
 
             //Spinners
             ros::AsyncSpinner rosSpinners = ros::AsyncSpinner(1, &this->rosQueue);
 
-            //Cola de mensajes
-//            ros::CallbackQueue rosQueue;
-            //Thread que ejecuta el procesamiento
-//            std::thread rosQueueThread;
 
         public:
             void insertModel(const std_msgs::String::ConstPtr& msg)
@@ -65,10 +62,6 @@ namespace gazebo
 
             void Load(physics::WorldPtr _parent, sdf::ElementPtr /*_sdf*/)
             {
-                // Option 1: Insert model from file via function call.
-                // The filename must be in the GAZEBO_MODEL_PATH environment variable.
-                //_parent->InsertModelFile("model://box");
-
                 //Almacenamos el puntero al elemento padre
                 this->parent = _parent;
 
@@ -134,34 +127,10 @@ namespace gazebo
                 //Creamos la suscripcion al nodo
                 this->rosSub_insert = this->rosNode->subscribe(so_insert);
                 this->rosSub_remove = this->rosNode->subscribe(so_remove);
-//
-//
-//                this->rosSub = this->rosNode->subscribe("/god", 1000, boost::bind(&SIAM_God::insertModel, this, _1), ros::VoidConstPtr(), ros::TransportHints());
 
                 //Ejecutamos el spiner de manera asincrona y no bloqueante
                 this->rosSpinners.start();
-
-                //ros::waitForShutdown();
             }
-
-//            void OnRosMsg(const std_msgs::String::ConstPtr &msg){
-//                ROS_INFO("I heard: [%s]", msg->data.c_str());
-//
-//                sdf::SDF sdffile;
-//                sdf::ElementPtr modelPtr;
-//
-//                sdffile.SetFromString(msg->data.c_str());
-//                modelPtr = sdffile.Root()->GetElement("model");
-//                this->parent->InsertModelSDF(sdffile);
-//            }
-//
-//        private:
-//            void QueueThread(){
-//                static const double timeout = 1;
-//                while(this->rosNode->ok()){
-//                    this->rosQueue.callAvailable(ros::WallDuration(timeout));
-//                }
-//            }
     };
 
     // Register this plugin with the simulator
