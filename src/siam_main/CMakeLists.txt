@@ -7,11 +7,30 @@ project(siam_main)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+##find_package(catkin REQUIRED)
+find_package(gazebo REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(catkin REQUIRED COMPONENTS
+        roscpp
+        rospy
+        std_msgs
+        gazebo_ros)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
+include_directories(${GAZEBO_INCLUDE_DIRS})
+include_directories(${EIGEN3_INCLUDE_DIRS})
+include_directories(${catkin_INCLUDE_DIRS})
 
+
+link_directories(${GAZEBO_LIBRARY_DIRS})
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
+
+set (CMAKE_CXX_STANDARD 17)
+
+add_library(DroneControl SHARED src/dronecontrol.cc)
+target_link_libraries(DroneControl ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed

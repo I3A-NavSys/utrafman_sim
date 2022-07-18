@@ -35,14 +35,6 @@
 /opt/ros/noetic/share/siam_sim/build/gtest/googletest/CMakeFiles/test.dir
 /opt/ros/noetic/share/siam_sim/build/gtest/googletest/CMakeFiles/gtest_main.dir
 /opt/ros/noetic/share/siam_sim/build/gtest/googletest/CMakeFiles/gtest.dir
-/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/install/strip.dir
-/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/install/local.dir
-/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/install.dir
-/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/list_install_components.dir
-/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/rebuild_cache.dir
-/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/edit_cache.dir
-/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/test.dir
-/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/_catkin_empty_exported_target.dir
 /opt/ros/noetic/share/siam_sim/build/siam_god/CMakeFiles/install/strip.dir
 /opt/ros/noetic/share/siam_sim/build/siam_god/CMakeFiles/install/local.dir
 /opt/ros/noetic/share/siam_sim/build/siam_god/CMakeFiles/install.dir
@@ -118,3 +110,11 @@
 /opt/ros/noetic/share/siam_sim/build/siam_god/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir
 /opt/ros/noetic/share/siam_sim/build/siam_god/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir
 /opt/ros/noetic/share/siam_sim/build/siam_god/CMakeFiles/gazebo_msgs_generate_messages_eus.dir
+/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/install/local.dir
+/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/install.dir
+/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/list_install_components.dir
+/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/rebuild_cache.dir
+/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/edit_cache.dir
+/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/test.dir
+/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/install/strip.dir
+/opt/ros/noetic/share/siam_sim/build/siam_main/CMakeFiles/DroneControl.dir

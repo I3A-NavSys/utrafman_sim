@@ -131,8 +131,8 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/opt/ros/noetic/share/siam_sim/build/gtest/cmake_install.cmake")
-  include("/opt/ros/noetic/share/siam_sim/build/siam_main/cmake_install.cmake")
   include("/opt/ros/noetic/share/siam_sim/build/siam_god/cmake_install.cmake")
+  include("/opt/ros/noetic/share/siam_sim/build/siam_main/cmake_install.cmake")
 
 endif()
 

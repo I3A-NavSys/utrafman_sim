@@ -41,8 +41,7 @@
       <uri>model://drone</uri>
       <pose>-3 -3 0.55 0 0 1</pose>
       <static>false</static>
-      <!-- <plugin name="model_push" filename="/opt/ros/noetic/share/drone_ros/plugins/build_new/libmodel_push.so"> -->
-      <plugin name="model_push" filename="/home/dronechallenge/repos/drone-challenge/drone_ros/plugins/build_new/libmodel_push.so">
+      <plugin name="DroneControl" filename="libDroneControl.so">
         <id>1</id>
       </plugin>
     </include>

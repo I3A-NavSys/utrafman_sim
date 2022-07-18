@@ -285,19 +285,6 @@ gtest/fast:
 .PHONY : gtest/fast
 
 #=============================================================================
-# Target rules for targets named _catkin_empty_exported_target
-
-# Build rule for target.
-_catkin_empty_exported_target: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _catkin_empty_exported_target
-.PHONY : _catkin_empty_exported_target
-
-# fast build rule for target.
-_catkin_empty_exported_target/fast:
-	$(MAKE) -f siam_main/CMakeFiles/_catkin_empty_exported_target.dir/build.make siam_main/CMakeFiles/_catkin_empty_exported_target.dir/build
-.PHONY : _catkin_empty_exported_target/fast
-
-#=============================================================================
 # Target rules for targets named SIAM_God
 
 # Build rule for target.
@@ -1181,6 +1168,19 @@ gazebo_msgs_generate_messages_eus/fast:
 	$(MAKE) -f siam_god/CMakeFiles/gazebo_msgs_generate_messages_eus.dir/build.make siam_god/CMakeFiles/gazebo_msgs_generate_messages_eus.dir/build
 .PHONY : gazebo_msgs_generate_messages_eus/fast
 
+#=============================================================================
+# Target rules for targets named DroneControl
+
+# Build rule for target.
+DroneControl: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 DroneControl
+.PHONY : DroneControl
+
+# fast build rule for target.
+DroneControl/fast:
+	$(MAKE) -f siam_main/CMakeFiles/DroneControl.dir/build.make siam_main/CMakeFiles/DroneControl.dir/build
+.PHONY : DroneControl/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1203,7 +1203,6 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... _catkin_empty_exported_target"
 	@echo "... SIAM_God"
 	@echo "... trajectory_msgs_generate_messages_nodejs"
 	@echo "... trajectory_msgs_generate_messages_lisp"
@@ -1272,6 +1271,7 @@ help:
 	@echo "... geometry_msgs_generate_messages_nodejs"
 	@echo "... dynamic_reconfigure_generate_messages_eus"
 	@echo "... gazebo_msgs_generate_messages_eus"
+	@echo "... DroneControl"
 .PHONY : help
 
 
