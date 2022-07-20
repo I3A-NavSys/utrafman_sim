@@ -75,16 +75,16 @@
         </surface>
     </collision>
     
-	<sensor name='camera' type='camera'>
+	<sensor name='view_camera' type='camera'>
         <!-- <plugin name="onboard_camera" filename="/opt/ros/kinetic/share/drone_ros/plugins/build/libonboard_camera.so"> </plugin> -->
-		<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+		<plugin name="camera_controller_2" filename="libgazebo_ros_camera.so">
 			<alwaysOn>true</alwaysOn>
 			<updateRate>0.0</updateRate>
         	<cameraName>view_camera</cameraName>
         	<robotNamespace>quadcopter</robotNamespace>
 		</plugin>
         <pose>-0.3 0 0.2 0 0.3 0</pose>
-        <camera name='onboard camera'>
+        <camera name='view_camera'>
             <horizontal_fov>1.57</horizontal_fov>
             <image>
                 <width>320</width>
@@ -100,7 +100,7 @@
         <visualize>0</visualize>
     </sensor>
 
-    <sensor name='camera' type='camera'>
+    <sensor name='onboard_camera_sensor' type='camera'>
             <!-- <plugin name="onboard_camera" filename="/opt/ros/kinetic/share/drone_ros/plugins/build/libonboard_camera.so"> </plugin> -->
     		<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
     			<alwaysOn>true</alwaysOn>
@@ -109,7 +109,7 @@
             	<robotNamespace>quadcopter</robotNamespace>
     		</plugin>
             <pose>0.08 0 0 0 0</pose>
-            <camera name='onboard camera'>
+            <camera name='onboard_camera_'>
                 <horizontal_fov>1.57</horizontal_fov>
                 <image>
                     <width>320</width>

@@ -603,7 +603,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god/cmake-build-debug/catkin_generated/env_cached.sh"
 		},
 		{
 			"name" : "CATKIN_PACKAGE_PREFIX",
@@ -651,7 +651,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/test_results"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god/cmake-build-debug/test_results"
 		},
 		{
 			"name" : "CCD_INCLUDE_DIRS",
@@ -731,7 +731,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -1315,7 +1315,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god"
 		},
 		{
 			"name" : "CMAKE_INSTALL_BINDIR",
@@ -1811,7 +1811,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "siam_main"
+			"value" : "siam_god"
 		},
 		{
 			"name" : "CMAKE_PROJECT_VERSION",
@@ -2279,7 +2279,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "dart;dart;dart;dart"
+			"value" : "dart;dart;dart"
 		},
 		{
 			"name" : "DART_MIN_BOOST_VERSION",
@@ -2398,18 +2398,6 @@
 			"value" : "DOXYGEN_EXECUTABLE-NOTFOUND"
 		},
 		{
-			"name" : "DroneControl_LIB_DEPENDS",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Dependencies for the target"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "general;/opt/ros/noetic/lib/libgazebo_ros_api_plugin.so;general;/opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml.so;general;/opt/ros/noetic/lib/libroslib.so;general;/opt/ros/noetic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython3.8.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.71.0;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/noetic/lib/libtf.so;general;/opt/ros/noetic/lib/libtf2_ros.so;general;/opt/ros/noetic/lib/libactionlib.so;general;/opt/ros/noetic/lib/libmessage_filters.so;general;/opt/ros/noetic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0;general;/opt/ros/noetic/lib/libxmlrpcpp.so;general;/opt/ros/noetic/lib/libtf2.so;general;/opt/ros/noetic/lib/librosconsole.so;general;/opt/ros/noetic/lib/librosconsole_log4cxx.so;general;/opt/ros/noetic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0;general;/opt/ros/noetic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/noetic/lib/libroscpp_serialization.so;general;/opt/ros/noetic/lib/librostime.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0;general;/opt/ros/noetic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;general;BulletSoftBody;general;BulletDynamics;general;BulletCollision;general;LinearMath;general;SimTKcommon;general;SimTKmath;general;SimTKsimbody;general;dart;general;dart;general;dart;general;dart;general;/usr/lib/x86_64-linux-gnu/libgazebo.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_client.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_gui.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_sensors.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_rendering.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_physics.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_ode.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_transport.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_msgs.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_util.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_common.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_gimpact.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_opcode.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_opende_ou.so;general;Boost::thread;general;Boost::system;general;Boost::filesystem;general;Boost::program_options;general;Boost::regex;general;Boost::iostreams;general;Boost::date_time;general;/usr/lib/x86_64-linux-gnu/libprotobuf.so;general;-lpthread;general;sdformat9::sdformat9;optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so;general;Boost::thread;general;Boost::date_time;optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;general;ignition-common3::ignition-common3-graphics;"
-		},
-		{
 			"name" : "EMPY_EXECUTABLE",
 			"properties" : 
 			[
@@ -2503,7 +2491,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "[/usr/include][dart;dart;dart;dart][cfound components: dart ][v(6.6)]"
+			"value" : "[/usr/include][dart;dart;dart][cfound components: dart ][v(6.6)]"
 		},
 		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_DL",
@@ -2719,7 +2707,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/gmock"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god/cmake-build-debug/gmock"
 		},
 		{
 			"name" : "GMOCK_FROM_SOURCE_MAIN_LIBRARIES",
@@ -2791,7 +2779,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/gtest"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god/cmake-build-debug/gtest"
 		},
 		{
 			"name" : "GTEST_FROM_SOURCE_MAIN_LIBRARIES",
@@ -7582,6 +7570,18 @@
 			"value" : "ON"
 		},
 		{
+			"name" : "SIAM_God_LIB_DEPENDS",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Dependencies for the target"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "general;/opt/ros/noetic/lib/libgazebo_ros_api_plugin.so;general;/opt/ros/noetic/lib/libgazebo_ros_paths_plugin.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml.so;general;/opt/ros/noetic/lib/libroslib.so;general;/opt/ros/noetic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython3.8.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so.1.71.0;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/noetic/lib/libtf.so;general;/opt/ros/noetic/lib/libtf2_ros.so;general;/opt/ros/noetic/lib/libactionlib.so;general;/opt/ros/noetic/lib/libmessage_filters.so;general;/opt/ros/noetic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so.1.71.0;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so.1.71.0;general;/opt/ros/noetic/lib/libxmlrpcpp.so;general;/opt/ros/noetic/lib/libtf2.so;general;/opt/ros/noetic/lib/librosconsole.so;general;/opt/ros/noetic/lib/librosconsole_log4cxx.so;general;/opt/ros/noetic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so.1.71.0;general;/opt/ros/noetic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/noetic/lib/libroscpp_serialization.so;general;/opt/ros/noetic/lib/librostime.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so.1.71.0;general;/opt/ros/noetic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so.1.71.0;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so.1.71.0;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;general;BulletSoftBody;general;BulletDynamics;general;BulletCollision;general;LinearMath;general;SimTKcommon;general;SimTKmath;general;SimTKsimbody;general;dart;general;dart;general;dart;general;/usr/lib/x86_64-linux-gnu/libgazebo.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_client.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_gui.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_sensors.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_rendering.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_physics.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_ode.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_transport.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_msgs.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_util.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_common.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_gimpact.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_opcode.so;general;/usr/lib/x86_64-linux-gnu/libgazebo_opende_ou.so;general;Boost::thread;general;Boost::system;general;Boost::filesystem;general;Boost::program_options;general;Boost::regex;general;Boost::iostreams;general;Boost::date_time;general;/usr/lib/x86_64-linux-gnu/libprotobuf.so;general;-lpthread;general;sdformat9::sdformat9;optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so;general;Boost::thread;general;Boost::date_time;optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;general;ignition-common3::ignition-common3-graphics;"
+		},
+		{
 			"name" : "SITE",
 			"properties" : 
 			[
@@ -10495,7 +10495,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/gtest/googlemock"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god/cmake-build-debug/gtest/googlemock"
 		},
 		{
 			"name" : "gmock_IS_TOP_LEVEL",
@@ -10571,7 +10571,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/gtest"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god/cmake-build-debug/gtest"
 		},
 		{
 			"name" : "googletest-distribution_IS_TOP_LEVEL",
@@ -10607,7 +10607,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/gtest/googletest"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god/cmake-build-debug/gtest/googletest"
 		},
 		{
 			"name" : "gtest_IS_TOP_LEVEL",
@@ -11322,7 +11322,7 @@
 			"value" : "/opt/ros/noetic/share/sensor_msgs/cmake"
 		},
 		{
-			"name" : "siam_main_BINARY_DIR",
+			"name" : "siam_god_BINARY_DIR",
 			"properties" : 
 			[
 				{
@@ -11331,10 +11331,10 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god/cmake-build-debug"
 		},
 		{
-			"name" : "siam_main_IS_TOP_LEVEL",
+			"name" : "siam_god_IS_TOP_LEVEL",
 			"properties" : 
 			[
 				{
@@ -11346,7 +11346,7 @@
 			"value" : "ON"
 		},
 		{
-			"name" : "siam_main_SOURCE_DIR",
+			"name" : "siam_god_SOURCE_DIR",
 			"properties" : 
 			[
 				{
@@ -11355,7 +11355,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_main"
+			"value" : "/opt/ros/noetic/share/siam_sim/src/siam_god"
 		},
 		{
 			"name" : "std_msgs_DIR",

@@ -206,6 +206,16 @@ public:
    {
       //    _sdf->PrintValues("\n\n\n");
 
+       /*_sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin")->FindElement("robotNamespace")->GetValue()->SetFromString("quadcopter1");
+
+       _sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin")->Update();
+
+       std::cout << _sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin")->FindElement("robotNamespace")->ToString("") << std::endl;
+
+       _parent->UpdateParameters(_sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin"));*/
+
+
+
       // Store pointers to the model
       this->model = _parent;
       this->link = model->GetLink("dronelink");
@@ -229,7 +239,7 @@ public:
           id = "1";
       } else {
           id = _sdf->GetElement("id")->GetValue()->GetAsString();
-           std::cout << "ID del drone introducido" << std::endl;
+          std::cout << "ID del drone introducido" << std::endl;
       }
 
       this->rosnode_ = new ros::NodeHandle("quadcopter"+id);

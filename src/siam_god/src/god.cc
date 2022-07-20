@@ -23,12 +23,16 @@ namespace gazebo
 
             //Manejadores de ROS/////////////////////
             //Nodo de ROS
-//            std::unique_ptr<ros::NodeHandle> rosNode;
+            //std::unique_ptr<ros::NodeHandle> rosNode;
             ros::NodeHandle *rosNode;
 
             //Suscriptores
             ros::Subscriber rosSub_insert;
             ros::Subscriber rosSub_remove;
+
+            //Suscriptores para crear drones
+            ros::Subscriber rosSub_insert_drone;
+            ros::Subscriber rosSub_remove_drone;
 
             //Cola de mensajes
             ros::CallbackQueue rosQueue;
@@ -47,9 +51,11 @@ namespace gazebo
 
                 //Establecemos el SDF del modelo con el contenido del topic
                 sdf_object.SetFromString(msg->data.c_str());
+
                 //Obtenemos el modelo
                 model_ptr = sdf_object.Root()->GetElement("model");
-                model_ptr->GetAttribute("name")->SetFromString("drone-" + std::to_string(this->drones));
+                //model_ptr->GetAttribute("name")->SetFromString("drone-" + std::to_string(this->drones));
+
                 this->drones++;
                 this->parent->InsertModelSDF(sdf_object);
             }
@@ -57,8 +63,9 @@ namespace gazebo
             void removeModel(const std_msgs::String::ConstPtr& msg)
             {
                 ROS_INFO("Elimando drone-%s", msg->data.c_str());
-                this->parent->RemoveModel("drone-" + std::string(msg->data.c_str()));
+                this->parent->RemoveModel("drone_" + std::string(msg->data.c_str()));
             }
+
 
             void Load(physics::WorldPtr _parent, sdf::ElementPtr /*_sdf*/)
             {
