@@ -242,7 +242,7 @@ public:
           std::cout << "ID del drone introducido" << std::endl;
       }
 
-      this->rosnode_ = new ros::NodeHandle("quadcopter"+id);
+      this->rosnode_ = new ros::NodeHandle("drone/"+id);
 
       // Initiates the publication topic
       this->pub_ = this->rosnode_->advertise<gazebo_msgs::ModelState>("odometry", 10);

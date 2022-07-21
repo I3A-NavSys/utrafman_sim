@@ -95,7 +95,7 @@ namespace gazebo
                     box[i].SetFromString(sdfString);
                     model[i] = box[i].Root()->GetElement("model");
                     //Modificamos si atributo name por un valor unico
-                    model[i]->GetAttribute("name")->SetFromString("drone-" + std::to_string(i));
+                    model[i]->GetAttribute("name")->SetFromString("drone_" + std::to_string(i));
                     //Añadimos el modelo al escenario
                     _parent->InsertModelSDF(box[i]);
                     this->drones++;
@@ -113,10 +113,10 @@ namespace gazebo
                     ros::init(argc, argv, "airspaceGod");
                 }
                 //Creamos el nodo
-                this->rosNode = new ros::NodeHandle();
+                this->rosNode = new ros::NodeHandle("god");
 
                 ros::SubscribeOptions so_insert = ros::SubscribeOptions::create<std_msgs::String>(
-                        "god/insert",
+                        "insert",
                         1000,
                         boost::bind(&SIAM_God::insertModel, this, _1),
                         ros::VoidPtr(),
@@ -124,7 +124,7 @@ namespace gazebo
                 );
 
                 ros::SubscribeOptions so_remove = ros::SubscribeOptions::create<std_msgs::String>(
-                        "god/remove",
+                        "remove",
                         1000,
                         boost::bind(&SIAM_God::removeModel, this, _1),
                         ros::VoidPtr(),

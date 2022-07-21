@@ -34,6 +34,25 @@
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
+    
+
+    <!-- <!-- Drone -->
+    <include>
+      <name>abejorro</name>
+      <uri>model://drone</uri>
+      <pose>-3 -3 0.55 0 0 1</pose>
+      <static>false</static>
+      <plugin name="DroneControl" filename="libDroneControl.so">
+        <id>1</id>
+      </plugin>
+    </include>
+
+   <!-- Base de aterrizaje -->
+    <include>
+      <name>base_drone</name>
+      <uri>model://base_drone</uri>
+      <pose>-3 -3 0.26 0 0 0</pose>
+    </include>   -->
 
 
    <!-- Area de vuelo -->
