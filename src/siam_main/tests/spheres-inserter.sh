@@ -10,5 +10,6 @@ do
 		rostopic pub /god/insert std_msgs/String "$sdf" -1 &
 		echo $id
 		id=$(( $id + 1 ))
+		sleep 0.5
 	done
 done

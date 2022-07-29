@@ -5,7 +5,7 @@ pub_bus_command = model_name + "/drone simulator/command bus/pub_bus_command";
 sub_camera = model_name + "/drone simulator/camera bus/ROS communication/sub_camera";
 sub_odometry = model_name + "/drone simulator/imu bus/sub_odometry";
 
-num_drone = 9;
+num_drone = 4;
 
 
 % modelo = load_system(model_name);
