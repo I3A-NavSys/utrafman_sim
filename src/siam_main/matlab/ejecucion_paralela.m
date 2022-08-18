@@ -2,6 +2,8 @@
 ros_master_ip = "192.168.2.111";
 ros_master_port = 11311;
 
+scheduleSimulation(1,0);
+
 %Inicio de la conexion con el master
 try
     rosinit(ros_master_ip, ros_master_port);
@@ -39,7 +41,7 @@ for i = 0:1:(num_drone-1)
     ros_msg.Data = drone_def;
     %Envio del mensaje por el topico
     send(inserter_publisher, ros_msg);
-    pause(1);
+    pause(2);
 end
 
 %Nombre del modelo de simulink
@@ -66,3 +68,31 @@ end
 
 %Ejecucion de la simulacion de forma paralela
 out = parsim(model_config);
+
+function scheduleSimulation(simulation_scheduled, stop_simulation)
+    IP = "192.168.2.111";
+
+request = matlab.net.http.RequestMessage;
+uri_deploy = matlab.net.URI(sprintf('http://%s:3000/deploy/dronechallenge.launch', IP));
+uri_destroy = matlab.net.URI(sprintf('http://%s:3000/destroy', IP));
+
+while simulation_scheduled
+    response = send(request, uri_deploy);
+    if (response.StatusCode == 200)
+        disp(response.Body.Data);
+        simulation_scheduled = 0;
+        pause(3);
+    else
+        if ~stop_simulation
+            disp('Previous simuation is running. Stopping it ... ');
+            response = send(request, uri_destroy);
+            pause(2);
+        else
+            disp('Stopping simulation.');
+            simulation_scheduled = 0;
+            response = send(request, uri_destroy);
+            disp(response.Body.Data);
+        end
+    end
+end
+end
