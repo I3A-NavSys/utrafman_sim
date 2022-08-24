@@ -11,11 +11,7 @@ app.get('/deploy/:launchfile', (req, res) => {
     var launchfile = req.params.launchfile
 
     if (simulation){
-    	if (closing){
-    		res.status(405).send("Previous simulation is closing...")
-    	} else {
-        	res.status(405).send("Simulation already in progress")
-        }
+		res.status(405).send("Simulation already in progress")
     } else {
         simulation = spawn('roslaunch', ['siam_main', `${launchfile}`]);
         res.send(`Launching simulation with launchfile '${launchfile}' ...`)
@@ -31,7 +27,6 @@ app.get('/destroy', (req, res) => {
     	closing = true
     	simulation.on('close', (code, signal) => {
     		simulation = false
-    		closing = false
 			console.log("Simulation closed.")
     	})
     	simulation.kill('SIGINT');
