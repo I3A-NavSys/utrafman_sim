@@ -18,18 +18,20 @@ app.get('/deploy/:launchfile', (req, res) => {
     }
 })
 
-app.get('/destroy', (req, res) => {
+app.get('/destroy', async (req, res) => {
 	if (closing){
 		res.status(405).send("Previous simulation is closing")
 		return;
 	}
     if (simulation) {
-    	closing = true
-    	simulation.on('close', (code, signal) => {
-    		simulation = false
-			console.log("Simulation closed.")
-    	})
+    	// simulation.on('close', (code, signal) => {
+    	// 	simulation = false
+		// 	console.log("Simulation closed.")
+    	// })
     	simulation.kill('SIGINT');
+
+		await new Promise(resolve => setTimeout(resolve, 10*1000));
+		simulation = false;
 		res.send(`Simulation has been finished. <br> Code: ${code} <br> Signal: ${signal}`)
     } else {
         res.status(405).send("No simulations in progress")
