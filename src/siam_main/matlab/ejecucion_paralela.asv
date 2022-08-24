@@ -1,3 +1,8 @@
+%Para funcionar en un entorno distribuido, deben estar configuradas ambas
+%máquinas en los ficheros hosts (/etc/hosts). Enlaces de ayuda:
+% https://answers.ros.org/question/90536/ros-remote-master-can-see-topics-but-no-data/
+% http://wiki.ros.org/ROS/NetworkSetup
+
 %Configuracion del master de ROS y conexion
 ros_master_ip = "192.168.2.111";
 ros_master_port = 11311;
@@ -19,7 +24,7 @@ end
 %Configuracion de la simulacion%
 
 %Numero de drones en la simulacion
-num_drone = 10;
+num_drone = 40;
 drone_used_positions = zeros(9,9);
 
 %Modelo de los drones
@@ -41,7 +46,7 @@ for i = 0:1:(num_drone-1)
     ros_msg.Data = drone_def;
     %Envio del mensaje por el topico
     send(inserter_publisher, ros_msg);
-    pause(2);
+    pause(1);
 end
 
 %Nombre del modelo de simulink
@@ -56,7 +61,7 @@ sub_odometry = model_name + "/drone simulator/imu bus/sub_odometry";
 open_system(model_name);
 
 %Puesta en ejecucion de los controladores para los UAV
-for i = 0:1:(num_drone-1)
+for i = 1:1:(num_drone-1)
     %Se genera una configuracion nueva de parametros de entrada del modelo
     model_config(i+1) = Simulink.SimulationInput(model_name);
 

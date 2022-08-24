@@ -32,6 +32,7 @@ app.get('/destroy', (req, res) => {
     	simulation.on('close', (code, signal) => {
     		simulation = false
     		closing = false
+			console.log("Simulation closed.")
     		res.send(`Simulation has been finished. <br> Code: ${code} <br> Signal: ${signal}`)
     	})
     	simulation.kill('SIGINT');
