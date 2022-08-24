@@ -63,7 +63,7 @@ open_system(model_name);
 %Puesta en ejecucion de los controladores para los UAV
 for i = 1:1:(num_drone-1)
     %Se genera una configuracion nueva de parametros de entrada del modelo
-    model_config(i+1) = Simulink.SimulationInput(model_name);
+    model_config(i) = Simulink.SimulationInput(model_name);
 
     %Modificacion de los nombres de los topicos en el modelo
     model_config(i) = model_config(i).setBlockParameter(pub_bus_command, "Topic", "/drone/"+i+"/bus_command");
