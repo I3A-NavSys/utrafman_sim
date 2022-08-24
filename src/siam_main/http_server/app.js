@@ -30,9 +30,9 @@ app.get('/destroy', async (req, res) => {
     	// })
     	simulation.kill('SIGINT');
 
-		await new Promise(resolve => setTimeout(resolve, 10*1000));
-		simulation = false;
-		res.send(`Simulation has been finished. <br> Code: ${code} <br> Signal: ${signal}`)
+	await new Promise(resolve => setTimeout(resolve, 10*1000));
+	simulation = false;
+	res.send(`Simulation has been finished`)
     } else {
         res.status(405).send("No simulations in progress")
     }
