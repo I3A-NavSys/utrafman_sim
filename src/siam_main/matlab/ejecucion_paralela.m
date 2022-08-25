@@ -7,7 +7,7 @@
 ros_master_ip = "192.168.2.111";
 ros_master_port = 11311;
 
-scheduleSimulation(ros_master_ip, 1,0);
+scheduleSimulation(ros_master_ip, 1, 0);
 
 %Inicio de la conexion con el master
 try
@@ -24,7 +24,7 @@ end
 %Configuracion de la simulacion%
 
 %Numero de drones en la simulacion
-num_drone = 40;
+num_drone = 30;
 drone_used_positions = zeros(9,9);
 
 %Modelo de los drones
@@ -90,7 +90,7 @@ while simulation_scheduled
         if ~stop_simulation
             disp('Previous simuation is running. Stopping it ... ');
             response = send(request, uri_destroy);
-            pause(2);
+            pause(5);
         else
             disp('Stopping simulation.');
             simulation_scheduled = 0;
