@@ -1,15 +1,15 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.5">
-<model name="drone">
+  <model name="drone">
 
-<static>false</static>
-    
-<link name='dronelink'>
-    <!-- Rotores en distribucion cuadrada
+    <static>false</static>
+
+    <link name='dronelink'>
+      <!-- Rotores en distribucion cuadrada
          situados a 25 cms del centro de gravedad
     -->
-    
-    <visual name='fuselaje'>
+
+      <visual name='fuselaje_visual'>
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <box>
@@ -17,12 +17,12 @@
           </box>
         </geometry>
         <material>
-          <ambient>0.3 0.3 0.3 1</ambient> 
+          <ambient>0.3 0.3 0.3 1</ambient>
           <diffuse>0.3 0.3 0.3 1</diffuse>
         </material>
-    </visual>
-      
-    <collision name='fuselaje'>
+      </visual>
+
+      <collision name='fuselaje_collision'>
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <box>
@@ -39,11 +39,10 @@
             </ode>
           </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name='camara'>
+      <visual name='camara_onboard_visual'>
         <pose>0.065 0 0 0 0 0</pose>
         <geometry>
           <box>
@@ -51,12 +50,12 @@
           </box>
         </geometry>
         <material>
-          <ambient>0.2 0.2 0.2 1</ambient> 
+          <ambient>0.2 0.2 0.2 1</ambient>
           <diffuse>0.2 0.2 0.2 1</diffuse>
         </material>
-    </visual>
-      
-    <collision name='camara'>
+      </visual>
+
+      <collision name='camara_onbodard_collision'>
         <pose>0.065 0 0 0 0 0</pose>
         <geometry>
           <box>
@@ -73,60 +72,60 @@
             </ode>
           </friction>
         </surface>
-    </collision>
-    
-	<sensor name='view_camera' type='camera'>
+      </collision>
+
+      <sensor name='view_camera' type='camera'>
         <!-- <plugin name="onboard_camera" filename="/opt/ros/kinetic/share/drone_ros/plugins/build/libonboard_camera.so"> </plugin> -->
-		<plugin name="camera_controller_2" filename="libgazebo_ros_camera.so">
-			<alwaysOn>true</alwaysOn>
-			<updateRate>0.0</updateRate>
-        	<cameraName>view_camera</cameraName>
-        	<robotNamespace>quadcopter</robotNamespace>
-		</plugin>
+        <plugin name="camera_controller_2" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>view_camera</cameraName>
+          <robotNamespace>quadcopter</robotNamespace>
+        </plugin>
         <pose>-0.3 0 0.2 0 0.3 0</pose>
         <camera name='view_camera'>
-            <horizontal_fov>1.57</horizontal_fov>
-            <image>
-                <width>320</width>
-                <height>240</height>
-            </image>
-            <clip>
-                <near>0.01</near>
-                <far>20</far>
-            </clip>
-        </camera>        
+          <horizontal_fov>1.57</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>240</height>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>20</far>
+          </clip>
+        </camera>
         <always_on>1</always_on>
         <update_rate>10</update_rate>
         <visualize>0</visualize>
-    </sensor>
+      </sensor>
 
-    <sensor name='onboard_camera_sensor' type='camera'>
-            <!-- <plugin name="onboard_camera" filename="/opt/ros/kinetic/share/drone_ros/plugins/build/libonboard_camera.so"> </plugin> -->
-    		<plugin name="camera_controller" filename="libgazebo_ros_camera.so">
-    			<alwaysOn>true</alwaysOn>
-    			<updateRate>0.0</updateRate>
-            	<cameraName>onboard_camera</cameraName>
-            	<robotNamespace>quadcopter</robotNamespace>
-    		</plugin>
-            <pose>0.08 0 0 0 0</pose>
-            <camera name='onboard_camera_'>
-                <horizontal_fov>1.57</horizontal_fov>
-                <image>
-                    <width>320</width>
-                    <height>240</height>
-                </image>
-                <clip>
-                    <near>0.01</near>
-                    <far>20</far>
-                </clip>
-            </camera>
-            <always_on>1</always_on>
-            <update_rate>10</update_rate>
-            <visualize>0</visualize>
-        </sensor>
+      <sensor name='onboard_camera_sensor' type='camera'>
+        <!-- <plugin name="onboard_camera" filename="/opt/ros/kinetic/share/drone_ros/plugins/build/libonboard_camera.so"> </plugin> -->
+        <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>onboard_camera</cameraName>
+          <robotNamespace>quadcopter</robotNamespace>
+        </plugin>
+        <pose>0.08 0 0 0 0</pose>
+        <camera name='onboard_camera_'>
+          <horizontal_fov>1.57</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>240</height>
+          </image>
+          <clip>
+            <near>0.01</near>
+            <far>20</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <visualize>0</visualize>
+      </sensor>
 
 
-    <visual name='brazo_NE'>
+      <visual name='brazo_NE_visual'>
         <pose>0.0550 -0.0346 0 0 0 -1.0472</pose>
         <geometry>
           <box>
@@ -134,12 +133,12 @@
           </box>
         </geometry>
         <material>
-          <ambient>0.3 0.3 0.3 1</ambient> 
+          <ambient>0.3 0.3 0.3 1</ambient>
           <diffuse>0.3 0.3 0.3 1</diffuse>
         </material>
-    </visual>
-        
-    <collision name='brazo_NE'>
+      </visual>
+
+      <collision name='brazo_NE_collision'>
         <pose>0.0550 -0.0346 0 0 0 -1.0472</pose>
         <geometry>
           <box>
@@ -156,83 +155,80 @@
             </ode>
           </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name="motor_NE">
+      <visual name="motor_NE_visual">
         <pose>0.0750 -0.0750 -0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>.005</radius>
-                <length>.04</length>
-            </cylinder>
+          <cylinder>
+            <radius>.005</radius>
+            <length>.04</length>
+          </cylinder>
         </geometry>
         <material>
-            <ambient>0 0 0 1</ambient>  <!--color Red Green Blue Alpha [0-1] -->
-            <diffuse>0 0 0 1</diffuse>
+          <ambient>0 0 0 1</ambient> <!--color Red Green Blue Alpha [0-1] -->
+          <diffuse>0 0 0 1</diffuse>
         </material>
-    </visual>
-    
-    <collision name="motor_NE">
+      </visual>
+
+      <collision name="motor_NE_collision">
         <pose>0.0750 -0.0750 -0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>.005</radius>
-                <length>.04</length>
-            </cylinder>
+          <cylinder>
+            <radius>.005</radius>
+            <length>.04</length>
+          </cylinder>
         </geometry>
         <surface>
-            <friction>
-                <ode>
-                <mu>100.0</mu>
-                <mu2>50.0</mu2>
-                <slip1>0.0</slip1>
-                <slip2>0.0</slip2>
-                </ode>
-            </friction>
+          <friction>
+            <ode>
+              <mu>100.0</mu>
+              <mu2>50.0</mu2>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name="rotor_NE">
+      <visual name="rotor_NE_visual">
         <pose>0.0750 -0.0750 0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>0.05</radius>
-                <length>.005</length>
-            </cylinder>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>.005</length>
+          </cylinder>
         </geometry>
-	<material>
-            <ambient>1 1 0 0.5</ambient>  <!--color Red Green Blue Alpha [0-1] -->
-            <diffuse>1 1 0 0.5</diffuse>
+        <material>
+          <ambient>1 1 0 0.5</ambient> <!--color Red Green Blue Alpha [0-1] -->
+          <diffuse>1 1 0 0.5</diffuse>
         </material>
-    </visual>
-    
-    <collision name="rotor_NE">
+      </visual>
+
+      <collision name="rotor_NE_collision">
         <pose>0.0750 -0.0750 0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>0.05</radius>
-                <length>.005</length>
-            </cylinder>            
+          <cylinder>
+            <radius>0.05</radius>
+            <length>.005</length>
+          </cylinder>
         </geometry>
         <surface>
-            <friction>
-                <ode>
-                <mu>0.1</mu>
-                <mu2>0.2</mu2>
-                <slip1>1.0</slip1>
-                <slip2>1.0</slip2>
-                </ode>
-            </friction>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.2</mu2>
+              <slip1>1.0</slip1>
+              <slip2>1.0</slip2>
+            </ode>
+          </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name='brazo_NW'>
+      <visual name='brazo_NW_visual'>
         <pose>0.0550 0.0346 0 0 0 1.0472</pose>
         <geometry>
           <box>
@@ -240,12 +236,12 @@
           </box>
         </geometry>
         <material>
-          <ambient>0.3 0.3 0.3 1</ambient> 
+          <ambient>0.3 0.3 0.3 1</ambient>
           <diffuse>0.3 0.3 0.3 1</diffuse>
         </material>
-    </visual>
-        
-    <collision name='brazo_NW'>
+      </visual>
+
+      <collision name='brazo_NW_collision'>
         <pose>0.0550 0.0346 0 0 0 1.0472</pose>
         <geometry>
           <box>
@@ -262,83 +258,80 @@
             </ode>
           </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name="motor_NW">
+      <visual name="motor_NW_visual">
         <pose>0.0750 0.0750 -0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>.005</radius>
-                <length>.04</length>
-            </cylinder>
+          <cylinder>
+            <radius>.005</radius>
+            <length>.04</length>
+          </cylinder>
         </geometry>
         <material>
-            <ambient>0 0 0 1</ambient>  <!--color Red Green Blue Alpha [0-1] -->
-            <diffuse>0 0 0 1</diffuse>
+          <ambient>0 0 0 1</ambient> <!--color Red Green Blue Alpha [0-1] -->
+          <diffuse>0 0 0 1</diffuse>
         </material>
-    </visual>
-    
-    <collision name="motor_NW">
+      </visual>
+
+      <collision name="motor_NW_collision">
         <pose>0.0750 0.0750 -0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>.005</radius>
-                <length>.04</length>
-            </cylinder>
+          <cylinder>
+            <radius>.005</radius>
+            <length>.04</length>
+          </cylinder>
         </geometry>
         <surface>
-            <friction>
-                <ode>
-                <mu>100.0</mu>
-                <mu2>50.0</mu2>
-                <slip1>0.0</slip1>
-                <slip2>0.0</slip2>
-                </ode>
-            </friction>
+          <friction>
+            <ode>
+              <mu>100.0</mu>
+              <mu2>50.0</mu2>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name="rotor_NW">
+      <visual name="rotor_NW_visual">
         <pose>0.0750 0.0750 0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>0.05</radius>
-                <length>.005</length>
-            </cylinder>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>.005</length>
+          </cylinder>
         </geometry>
-	<material>
-            <ambient>1 1 0 0.5</ambient>  <!--color Red Green Blue Alpha [0-1] -->
-            <diffuse>1 1 0 0.5</diffuse>
+        <material>
+          <ambient>1 1 0 0.5</ambient> <!--color Red Green Blue Alpha [0-1] -->
+          <diffuse>1 1 0 0.5</diffuse>
         </material>
-    </visual>
+      </visual>
 
-    <collision name="rotor_NW">
+      <collision name="rotor_NW_collision">
         <pose>0.0750 0.0750 0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>0.05</radius>
-                <length>.005</length>
-            </cylinder>            
+          <cylinder>
+            <radius>0.05</radius>
+            <length>.005</length>
+          </cylinder>
         </geometry>
         <surface>
-            <friction>
-                <ode>
-                <mu>0.1</mu>
-                <mu2>0.2</mu2>
-                <slip1>1.0</slip1>
-                <slip2>1.0</slip2>
-                </ode>
-            </friction>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.2</mu2>
+              <slip1>1.0</slip1>
+              <slip2>1.0</slip2>
+            </ode>
+          </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name='brazo_SE'>
+      <visual name='brazo_SE_visual'>
         <pose>-0.0550 -0.0346 0 0 0 1.0472</pose>
         <geometry>
           <box>
@@ -346,12 +339,12 @@
           </box>
         </geometry>
         <material>
-          <ambient>0.3 0.3 0.3 1</ambient> 
+          <ambient>0.3 0.3 0.3 1</ambient>
           <diffuse>0.3 0.3 0.3 1</diffuse>
         </material>
-    </visual>
-        
-    <collision name='brazo_SE'>
+      </visual>
+
+      <collision name='brazo_SE_collision'>
         <pose>-0.0550 -0.0346 0 0 0 1.0472</pose>
         <geometry>
           <box>
@@ -368,83 +361,80 @@
             </ode>
           </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name="motor_SE">
+      <visual name="motor_SE_visual">
         <pose>-0.0750 -0.0750 -0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>.005</radius>
-                <length>.04</length>
-            </cylinder>
+          <cylinder>
+            <radius>.005</radius>
+            <length>.04</length>
+          </cylinder>
         </geometry>
         <material>
-            <ambient>0 0 0 1</ambient>  <!--color Red Green Blue Alpha [0-1] -->
-            <diffuse>0 0 0 1</diffuse>
+          <ambient>0 0 0 1</ambient> <!--color Red Green Blue Alpha [0-1] -->
+          <diffuse>0 0 0 1</diffuse>
         </material>
-    </visual>
-    
-    <collision name="motor_SE">
+      </visual>
+
+      <collision name="motor_SE_collision">
         <pose>-0.0750 -0.0750 -0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>.005</radius>
-                <length>.04</length>
-            </cylinder>
+          <cylinder>
+            <radius>.005</radius>
+            <length>.04</length>
+          </cylinder>
         </geometry>
         <surface>
-            <friction>
-                <ode>
-                <mu>100.0</mu>
-                <mu2>50.0</mu2>
-                <slip1>0.0</slip1>
-                <slip2>0.0</slip2>
-                </ode>
-            </friction>
+          <friction>
+            <ode>
+              <mu>100.0</mu>
+              <mu2>50.0</mu2>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name="rotor_SE">
+      <visual name="rotor_SE_visual">
         <pose>-0.0750 -0.0750 0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>0.05</radius>
-                <length>.005</length>
-            </cylinder>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>.005</length>
+          </cylinder>
         </geometry>
-	<material>
-            <ambient>1 0 1 0.5</ambient>  <!--color Red Green Blue Alpha [0-1] -->
-            <diffuse>1 0 1 0.5</diffuse>
+        <material>
+          <ambient>1 0 1 0.5</ambient> <!--color Red Green Blue Alpha [0-1] -->
+          <diffuse>1 0 1 0.5</diffuse>
         </material>
-    </visual>
-    
-    <collision name="rotor_SE">
+      </visual>
+
+      <collision name="rotor_SE_collision">
         <pose>-0.0750 -0.0750 0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>0.05</radius>
-                <length>.005</length>
-            </cylinder>            
+          <cylinder>
+            <radius>0.05</radius>
+            <length>.005</length>
+          </cylinder>
         </geometry>
         <surface>
-            <friction>
-                <ode>
-                <mu>0.1</mu>
-                <mu2>0.2</mu2>
-                <slip1>1.0</slip1>
-                <slip2>1.0</slip2>
-                </ode>
-            </friction>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.2</mu2>
+              <slip1>1.0</slip1>
+              <slip2>1.0</slip2>
+            </ode>
+          </friction>
         </surface>
-    </collision>    
+      </collision>
 
 
-
-    <visual name='brazo_SW'>
+      <visual name='brazo_SW_visual'>
         <pose>-0.0550 0.0346 0 0 0 -1.0472</pose>
         <geometry>
           <box>
@@ -452,12 +442,12 @@
           </box>
         </geometry>
         <material>
-          <ambient>0.3 0.3 0.3 1</ambient> 
+          <ambient>0.3 0.3 0.3 1</ambient>
           <diffuse>0.3 0.3 0.3 1</diffuse>
         </material>
-    </visual>
-        
-    <collision name='brazo_SW'>
+      </visual>
+
+      <collision name='brazo_SW_collision'>
         <pose>-0.0550 0.0346 0 0 0 -1.0472</pose>
         <geometry>
           <box>
@@ -474,96 +464,94 @@
             </ode>
           </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name="motor_SW">
+      <visual name="motor_SW_visual">
         <pose>-0.0750 0.0750 -0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>.005</radius>
-                <length>.04</length>
-            </cylinder>
+          <cylinder>
+            <radius>.005</radius>
+            <length>.04</length>
+          </cylinder>
         </geometry>
         <material>
-            <ambient>0 0 0 1</ambient>  <!--color Red Green Blue Alpha [0-1] -->
-            <diffuse>0 0 0 1</diffuse>
+          <ambient>0 0 0 1</ambient> <!--color Red Green Blue Alpha [0-1] -->
+          <diffuse>0 0 0 1</diffuse>
         </material>
-    </visual>
-    
-    <collision name="motor_SW">
+      </visual>
+
+      <collision name="motor_SW_collision">
         <pose>-0.0750 0.0750 -0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>.005</radius>
-                <length>.04</length>
-            </cylinder>
+          <cylinder>
+            <radius>.005</radius>
+            <length>.04</length>
+          </cylinder>
         </geometry>
         <surface>
-            <friction>
-                <ode>
-                <mu>100.0</mu>
-                <mu2>50.0</mu2>
-                <slip1>0.0</slip1>
-                <slip2>0.0</slip2>
-                </ode>
-            </friction>
+          <friction>
+            <ode>
+              <mu>100.0</mu>
+              <mu2>50.0</mu2>
+              <slip1>0.0</slip1>
+              <slip2>0.0</slip2>
+            </ode>
+          </friction>
         </surface>
-    </collision>
+      </collision>
 
 
-
-    <visual name="rotor_SW">
+      <visual name="rotor_SW_visual">
         <pose>-0.0750 0.0750 0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>0.05</radius>
-                <length>.005</length>
-            </cylinder>
+          <cylinder>
+            <radius>0.05</radius>
+            <length>.005</length>
+          </cylinder>
         </geometry>
-	<material>
-            <ambient>1 0 1 0.5</ambient>  <!--color Red Green Blue Alpha [0-1] -->
-            <diffuse>1 0 1 0.5</diffuse>
+        <material>
+          <ambient>1 0 1 0.5</ambient> <!--color Red Green Blue Alpha [0-1] -->
+          <diffuse>1 0 1 0.5</diffuse>
         </material>
-    </visual>
-    
-    <collision name="rotor_SW">
+      </visual>
+
+      <collision name="rotor_SW_collision">
         <pose>-0.0750 0.0750 0.01 0 0 0</pose>
         <geometry>
-            <cylinder>
-                <radius>0.05</radius>
-                <length>.005</length>
-            </cylinder>            
+          <cylinder>
+            <radius>0.05</radius>
+            <length>.005</length>
+          </cylinder>
         </geometry>
         <surface>
-            <friction>
-                <ode>
-                <mu>0.1</mu>
-                <mu2>0.2</mu2>
-                <slip1>1.0</slip1>
-                <slip2>1.0</slip2>
-                </ode>
-            </friction>
+          <friction>
+            <ode>
+              <mu>0.1</mu>
+              <mu2>0.2</mu2>
+              <slip1>1.0</slip1>
+              <slip2>1.0</slip2>
+            </ode>
+          </friction>
         </surface>
-    </collision>  
+      </collision>
 
 
-    
-    <inertial>
+      <inertial>
         <mass>0.300</mass>
-        
+
         <!-- <box><size>0.40 0.40 0.05</size></box>  -->
-        <inertia>                <!-- http://en.wikipedia.org/wiki/List_of_moments_of_inertia -->
+        <inertia>
+          <!-- http://en.wikipedia.org/wiki/List_of_moments_of_inertia -->
           <ixx>0.001022500</ixx> <!-- for a box: ixx = 1/12 * mass * (y*y + z*z) -->
-          <ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
-          <ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+          <ixy>0.0</ixy> <!-- for a box: ixy = 0 -->
+          <ixz>0.0</ixz> <!-- for a box: ixz = 0 -->
           <iyy>0.001022500</iyy> <!-- for a box: iyy = 1/12 * mass * (x*x + z*z) -->
-          <iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+          <iyz>0.0</iyz> <!-- for a box: iyz = 0 -->
           <izz>0.002000000</izz> <!-- for a box: izz = 1/12 * mass * (x*x + y*y) -->
         </inertia>
-    </inertial>
-   
-</link>
-</model>
+      </inertial>
+
+    </link>
+  </model>
 </sdf>
