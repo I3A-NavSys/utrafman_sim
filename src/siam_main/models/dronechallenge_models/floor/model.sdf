@@ -32,8 +32,12 @@
         </geometry>
         <material>
           <script>
-            <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Gold</name>
+            <!-- uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Gold</name> -->
+            
+            <uri>model://floor/scripts</uri>
+            <uri>model://floor/materials</uri>
+            <name>floorMat/Diffuse</name>
           </script>
         </material>
       </visual>

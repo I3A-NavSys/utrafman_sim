@@ -30,7 +30,7 @@ app.get('/destroy', async (req, res) => {
     	// })
     	simulation.kill('SIGINT');
 
-	await new Promise(resolve => setTimeout(resolve, 10*1000));
+	await new Promise(resolve => setTimeout(resolve, 15*1000));
 	simulation = false;
 	res.send(`Simulation has been finished`)
     } else {
