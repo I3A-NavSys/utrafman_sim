@@ -24,9 +24,9 @@ end
 %Configuracion de la simulacion%
 
 %Numero de drones en la simulacion
-num_drone = 30;
+num_drone = 1;
 drone_used_positions = zeros(9,9);
-entrada_usuario = 2; %Numero indicando drones controlados por usuarios existen
+entrada_usuario = 1; %Numero indicando drones controlados por usuarios existen
 
 %Modelo de los drones extraido de un fichero
 drone_model = fileread('../models/dronechallenge_models/drone/model_template_1.sdf');
