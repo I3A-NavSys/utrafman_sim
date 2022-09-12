@@ -8,12 +8,12 @@ classdef DroneOperationPlanning < handle
         Operators = DroneOperator.empty;
         OperationalPlans = OperationalPlan.empty;
 
-        %Ninguno de los IDs será 0
+        %Ultimos IDs asignados. Ninguno de los IDs será 0
         lastDroneOperatorId = 0;
         lastOperationalPlanId = 0;
         lastDroneVehicleId = 0;
 
-        %Para la simulacion
+        %Para conectar con ROS
         rosMasterIp = "192.168.1.129";
         rosMasterPort = 11311;
         rosPublisher;
@@ -24,7 +24,7 @@ classdef DroneOperationPlanning < handle
         userDroneModel;
         dronesUsedPositions = zeros(9,9);
         
-        %Simulink y bloques de Simulink
+        %Simulink y bloques de Simulink con los parametros de ROS
         sim_ModelName;
         sim_pub_bus_command;
         sim_sub_camera;
@@ -44,8 +44,10 @@ classdef DroneOperationPlanning < handle
             obj.sim_sub_odometry = obj.sim_ModelName + "/drone simulator/imu bus/sub_odometry";
             open_system(obj.sim_ModelName);
 
+            %Conexion con el master de ROS
             obj.ConnectWithROSMaster();
         end
+
 
         %Registro de un nuevo operador
         function obj = registerNewOperator(obj, newOperator)
@@ -54,11 +56,13 @@ classdef DroneOperationPlanning < handle
             obj.Operators(end+1) = newOperator;
         end
 
+
         %Registro de un nuevo vehiculo para un operador de vuelo
         function registerNewVehicle(obj, droneVehicle)
             obj.lastDroneVehicleId = obj.lastDroneVehicleId + 1;
             droneVehicle.DroneVehicleId = obj.lastDroneVehicleId;
         end
+
 
         %Registro de un nuevo plan de operacion para un operador
         function obj = registerNewOperationalPlan(obj, operationalPlan)
@@ -66,6 +70,7 @@ classdef DroneOperationPlanning < handle
             obj.OperationalPlans(end+1) = operationalPlan;
         end
         
+
         %Conexion con el master de ROS
         function ConnectWithROSMaster(obj)
             try
@@ -80,12 +85,14 @@ classdef DroneOperationPlanning < handle
             [obj.rosPublisher, obj.rosMessage] = rospublisher("/god/insert");
         end
 
+
         function LaunchOperationPlan(obj, droneOperator, operationalPlan)
             initPos = obj.GenerateRandomLocaton();
             operationalPlan.Status = 'Launching...';
             obj.AddDroneModelToGazebo(droneOperator, operationalPlan.DroneVehicle.DroneVehicleId, initPos);
             obj.RunSimulinkModel(operationalPlan, operationalPlan.DroneVehicle.DroneVehicleId);
         end
+
 
         %Anadir el SDF de un drone a Gazebo
         function AddDroneModelToGazebo(obj,droneOperator,id,initPos)
@@ -100,16 +107,21 @@ classdef DroneOperationPlanning < handle
             send(obj.rosPublisher, obj.rosMessage);
         end
 
+
         %Simulink model
         function RunSimulinkModel(obj, operationalPlan, id)
             simulModelConfig = Simulink.SimulationInput(obj.sim_ModelName);
             simulModelConfig = simulModelConfig.setBlockParameter(obj.sim_pub_bus_command, "Topic", "/drone/"+id+"/bus_command");
             simulModelConfig = simulModelConfig.setBlockParameter(obj.sim_sub_camera, "Topic", "/drone/"+id+"/onboard_camera/image_raw");
             simulModelConfig = simulModelConfig.setBlockParameter(obj.sim_sub_odometry, "Topic", "/drone/"+id+"/odometry");
+            %simulModelConfig = simulModelConfig.setPostSimFcn(@(operationalPlan) operationalPlan.UpdateStatusAfterExecution);
             operationalPlan.SimulinkInput = simulModelConfig;
-            batchsim(simulModelConfig, 'ShowProgress','on', 'SetupFcn', @obj.InitRandom);
+            operationalPlan.BatchsimOutput = batchsim(simulModelConfig, 'ShowProgress','on', 'SetupFcn', @obj.InitRandom);
         end
 
+
+        %Funcion para generar una posicion aleatoria en el mapa no ocupada
+        %por ningun otro drone
         function pos = GenerateRandomLocaton(obj)
             xy = randi([-4, 4], 1, 2);
             while obj.dronesUsedPositions(xy(1)+5,xy(2)+5) == 1
@@ -120,11 +132,15 @@ classdef DroneOperationPlanning < handle
             pos = [xy(1) xy(2) 1];
         end
 
+
+        %Funcion para que los worker establezcan su generador de numeros
+        %aleatorios
         function InitRandom(obj)
             %Para que cada vez que se genere un worker se levante
             %con un número aleatorio en el nombre
             rng('shuffle');
         end
+
     end
 end
 

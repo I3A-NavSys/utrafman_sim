@@ -22,6 +22,11 @@ classdef OperationalPlan < handle
     methods
         function obj = OperationalPlan()
         end
+
+
+        function UpdateStatusAfterExecution(obj)
+            obj.Status = 'Finished';
+        end
     end
 end
 
