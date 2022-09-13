@@ -114,9 +114,13 @@ classdef DroneOperationPlanning < handle
             simulModelConfig = simulModelConfig.setBlockParameter(obj.sim_pub_bus_command, "Topic", "/drone/"+id+"/bus_command");
             simulModelConfig = simulModelConfig.setBlockParameter(obj.sim_sub_camera, "Topic", "/drone/"+id+"/onboard_camera/image_raw");
             simulModelConfig = simulModelConfig.setBlockParameter(obj.sim_sub_odometry, "Topic", "/drone/"+id+"/odometry");
-            %simulModelConfig = simulModelConfig.setPostSimFcn(@(operationalPlan) operationalPlan.UpdateStatusAfterExecution);
             operationalPlan.SimulinkInput = simulModelConfig;
-            operationalPlan.BatchsimOutput = batchsim(simulModelConfig, 'ShowProgress','on', 'SetupFcn', @obj.InitRandom);
+            %operationalPlan.BatchsimOutput = batchsim(simulModelConfig, 'ShowProgress','on', 'SetupFcn', @obj.InitRandom);
+
+            operationalPlan.FinishTimer = timer;
+            operationalPlan.FinishTimer.Period = 1;
+            operationalPlan.FinishTimer.TimerFcn = @operationalPlan.CheckFinishStatus;
+            start(operationalPlan.FinishTimer)
         end
 
 

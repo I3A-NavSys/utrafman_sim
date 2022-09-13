@@ -18,7 +18,7 @@ classdef OperationalPlan < handle
         SimulinkInput
         BatchsimOutput
 
-        FinishTimer timer
+        FinishTimer Ti
     end
     
     methods
@@ -26,9 +26,7 @@ classdef OperationalPlan < handle
         end
 
 
-        function t = CheckFinishStatus(obj, ~, ~)
-            disp('Timer funcionando');
-            t = 1;
+        function CheckFinishStatus(obj)
         end
     end
 end

@@ -31,7 +31,7 @@ DroneOperationPlanningEntity.registerNewOperator(droneOperator2);
 flightPlans = OperationalPlan.empty;
 vehicles = DroneVehicle.empty;
 
-for i=1:1:2
+for i=1:1:1
     %Creamos y registramos un vehiculo para el operador 2
     vehicles(i) = droneOperator2.createNewDroneVehicle("DJI");
     flightPlans(i) = droneOperator2.createNewOperationalPlan(vehicles(i));
