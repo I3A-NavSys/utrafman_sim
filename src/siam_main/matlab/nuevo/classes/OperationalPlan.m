@@ -26,9 +26,18 @@ classdef OperationalPlan < handle
         end
 
 
-        function t = CheckFinishStatus(obj, ~, ~)
-            disp('Timer funcionando');
+        function t = CheckFinishStatus(obj, timer, time)
+            disp('Ejecutando timer...');
+            if obj.BatchsimOutput.State == "finished"
+                obj.Status = 'Finished';
+                disp("Un drone ya ha terminado");
+                stop(obj.FinishTimer);
+                %obj.DroneOperator.ref_DroneOperationPlanningEntity.RemoveModelFromGazebo(obj.DroneVehicle);
+            end
             t = 1;
+        end
+
+        function t = FinishCallback(obj)
         end
     end
 end

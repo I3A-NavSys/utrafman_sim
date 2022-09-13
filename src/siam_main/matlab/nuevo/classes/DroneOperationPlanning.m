@@ -16,8 +16,12 @@ classdef DroneOperationPlanning < handle
         %Para conectar con ROS
         rosMasterIp = "192.168.1.129";
         rosMasterPort = 11311;
-        rosPublisher;
-        rosMessage;
+
+        %Subs/Pubs y mensjajes de ROS
+        rosInserterPub;
+        rosInserterMsg;
+        rosRemoverPub;
+        rosRemoverMsg;
 
         %Modelos SDF de los drones
         droneModel;
@@ -82,7 +86,8 @@ classdef DroneOperationPlanning < handle
             end
 
             %Creacion del suscriptor para insertar los drones
-            [obj.rosPublisher, obj.rosMessage] = rospublisher("/god/insert");
+            [obj.rosInserterPub, obj.rosInserterMsg] = rospublisher("/god/insert");
+            [obj.rosRemoverPub, obj.rosRemoverMsg] = rospublisher("/god/remove");
         end
 
 
@@ -103,10 +108,18 @@ classdef DroneOperationPlanning < handle
                 droneSDF = sprintf(obj.droneModel, id, initPos(1), initPos(2), initPos(3), id, id, id);
             end
             %Generamos el mensaje y lo enviamos por el topico
-            obj.rosMessage.Data = droneSDF;
-            send(obj.rosPublisher, obj.rosMessage);
+            obj.rosInserterMsg.Data = droneSDF;
+            send(obj.rosInserterPub, obj.rosInserterMsg);
         end
 
+
+        %Eliminamos en modelo de Gazebo
+        function RemoveModelFromGazebo(obj,droneVehicle)
+            string = ""+droneVehicle.DroneVehicleId+"";
+            %Generamos el mensaje y lo enviamos por el topico
+            obj.rosRemoverMsg.Data = string;
+            send(obj.rosRemoverPub, obj.rosRemoverMsg);
+        end
 
         %Simulink model
         function RunSimulinkModel(obj, operationalPlan, id)
@@ -114,11 +127,15 @@ classdef DroneOperationPlanning < handle
             simulModelConfig = simulModelConfig.setBlockParameter(obj.sim_pub_bus_command, "Topic", "/drone/"+id+"/bus_command");
             simulModelConfig = simulModelConfig.setBlockParameter(obj.sim_sub_camera, "Topic", "/drone/"+id+"/onboard_camera/image_raw");
             simulModelConfig = simulModelConfig.setBlockParameter(obj.sim_sub_odometry, "Topic", "/drone/"+id+"/odometry");
+            %simulModelConfig = simulModelConfig.setPostSimFcn(@(x) test(x));
+            simulModelConfig = simulModelConfig.setVariable('operationalPlan', operationalPlan);   
             operationalPlan.SimulinkInput = simulModelConfig;
-            %operationalPlan.BatchsimOutput = batchsim(simulModelConfig, 'ShowProgress','on', 'SetupFcn', @obj.InitRandom);
+            operationalPlan.BatchsimOutput = batchsim(simulModelConfig, 'ShowProgress','on', 'SetupFcn', @obj.InitRandom);
 
+            %Establecimiento de un timer
             operationalPlan.FinishTimer = timer;
-            operationalPlan.FinishTimer.Period = 1;
+            operationalPlan.FinishTimer.Period = 10;
+            operationalPlan.FinishTimer.ExecutionMode = 'fixedDelay';
             operationalPlan.FinishTimer.TimerFcn = @operationalPlan.CheckFinishStatus;
             start(operationalPlan.FinishTimer)
         end
