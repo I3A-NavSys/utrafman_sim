@@ -3,7 +3,7 @@ clear;
 addpath("classes\");
 
 %Numero de drones en la simulacion
-max_num_drones = 20;
+max_num_drones = 40;
 entrada_usuario = 0;        %Numero indicando drones controlados por usuarios existen
 simulink_model = "drone_control_tut3_R22a";
 
@@ -31,10 +31,10 @@ DroneOperationPlanningEntity.registerNewOperator(droneOperator2);
 flightPlans = OperationalPlan.empty;
 vehicles = DroneVehicle.empty;
 
-for i=1:1:1
+for i=1:1:max_num_drones
     %Creamos y registramos un vehiculo para el operador 2
     vehicles(i) = droneOperator2.createNewDroneVehicle("DJI");
     flightPlans(i) = droneOperator2.createNewOperationalPlan(vehicles(i));
     droneOperator2.launch(flightPlans(i));
-    pause(5);
+    pause(10);
 end

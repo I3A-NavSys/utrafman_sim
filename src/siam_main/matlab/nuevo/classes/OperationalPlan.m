@@ -1,6 +1,4 @@
 classdef OperationalPlan < handle
-    %OPERATIONALPLAN Summary of this class goes here
-    %   Detailed explanation goes here
     
     properties
         AssignedId %Asignado por el DroneOperationPlanning

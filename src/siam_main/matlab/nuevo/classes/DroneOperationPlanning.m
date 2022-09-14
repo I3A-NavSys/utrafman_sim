@@ -130,6 +130,7 @@ classdef DroneOperationPlanning < handle
             %simulModelConfig = simulModelConfig.setPostSimFcn(@(x) test(x));
             simulModelConfig = simulModelConfig.setVariable('operationalPlan', operationalPlan);   
             operationalPlan.SimulinkInput = simulModelConfig;
+            warning('off','shared_robotics:robotutils:common:SavedObjectInvalid');
             operationalPlan.BatchsimOutput = batchsim(simulModelConfig, 'ShowProgress','on', 'SetupFcn', @obj.InitRandom);
 
             %Establecimiento de un timer
