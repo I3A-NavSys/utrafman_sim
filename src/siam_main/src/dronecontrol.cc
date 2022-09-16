@@ -558,7 +558,7 @@ public:
    // custom callback queue thread
    void QueueThread()
    {
-      static const double timeout = 0.01;
+      static const double timeout = 0.05;
 
       while (this->rosnode_->ok())
       {

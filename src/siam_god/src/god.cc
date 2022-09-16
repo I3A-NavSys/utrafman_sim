@@ -45,8 +45,7 @@ namespace gazebo
             //Handle para la insercion de modelos por cada uno de los mensajes en el topico
             void insertModel(const std_msgs::String::ConstPtr& msg)
             {
-                ROS_INFO("Añadiendo drone con SDF [%s]", msg->data.c_str());
-
+                //ROS_INFO("Añadiendo drone con SDF [%s]", msg->data.c_str())
                 sdf::SDF sdf_object;
                 sdf::ElementPtr model_ptr;
 
@@ -59,8 +58,11 @@ namespace gazebo
 
                 //Aumentamos el contador de drones
                 this->drones++;
+
                 //Insertamos el modelo en el mundo
                 this->parent->InsertModelSDF(sdf_object);
+
+                ROS_INFO("Nuevo drone anadido. Total: %i", this->drones);
             }
 
             void removeModel(const std_msgs::String::ConstPtr& msg)
