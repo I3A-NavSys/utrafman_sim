@@ -1,0 +1,15 @@
+material floorMat/Diffuse
+{
+	receive_shadows off
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture material.png
+				rotate 90
+			}
+		}
+	}
+}
