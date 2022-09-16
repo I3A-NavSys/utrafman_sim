@@ -65,9 +65,10 @@ namespace gazebo
 
             void removeModel(const std_msgs::String::ConstPtr& msg)
             {
-                ROS_INFO("Elimando drone-%s", msg->data.c_str());
+                ROS_INFO("Elimando drone_%s a traves del topico", msg->data.c_str());
                 //Eliminamos el modelo con el nombre indicado
-                this->parent->RemoveModel("drone_" + std::string(msg->data.c_str()));
+                //this->parent->RemoveModel("drone_" + std::string(msg->data.c_str()));
+                this->parent->ModelByName("drone_" + std::string(msg->data.c_str()))->Fini();
             }
 
 
