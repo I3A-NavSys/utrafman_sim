@@ -3,15 +3,32 @@
 % https://answers.ros.org/question/90536/ros-remote-master-can-see-topics-but-no-data/
 % http://wiki.ros.org/ROS/NetworkSetup
 
+%Limpiamos las variables del entorno
+clear;
+
+%Numero de drones en la simulacion
+num_drone = 50;
+drone_used_positions = zeros(9,9);
+entrada_usuario = 0; %Numero indicando drones controlados por usuarios existen
+
+%Inicio de la pool de workers
+try
+    parpool(num_drone);
+catch
+    delete(gcp("nocreate"));
+    parpool(num_drone);
+end
+
+%Configuracion de la simulacion%
 %Configuracion del master de ROS y conexion
-ros_master_ip = "192.168.2.111";
+ros_master_ip = "192.168.1.129";
 ros_master_port = 11311;
 
-scheduleSimulation(ros_master_ip, 1, 1);
+%scheduleSimulation(ros_master_ip, 1, 0);
 
 %Inicio de la conexion con el master
 try
-    rosinit(ros_master_ip, ros_master_port);
+    rosrosinit(ros_master_ip, ros_master_port);
 catch
     disp("ROS ya está iniciado. Reiniciando la conexión ...");
     rosshutdown;
@@ -20,13 +37,6 @@ end
 %Creacion del suscriptor para insertar los drones
 [inserter_publisher, ros_msg] = rospublisher("/god/insert");
 
-
-%Configuracion de la simulacion%
-
-%Numero de drones en la simulacion
-num_drone = 2;
-drone_used_positions = zeros(9,9);
-entrada_usuario = 1; %Numero indicando drones controlados por usuarios existen
 
 %Modelo de los drones extraido de un fichero
 drone_model = fileread('../models/dronechallenge_models/drone/model_template_1.sdf');
@@ -78,7 +88,11 @@ for i = entrada_usuario:1:(num_drone-1)
 end
 
 %Ejecucion de la simulacion de forma paralela
-out = parsim(model_config);
+out = parsim(model_config, 'ShowSimulationManager', 'on', 'RunInBackground','on');
+
+%Eliminamos la pool de workers
+%delete(gcp('nocreate'));
+disp("Asincrono!!")
 
 function scheduleSimulation(ros_master_ip, simulation_scheduled, stop_simulation)
 
