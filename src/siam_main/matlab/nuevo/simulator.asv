@@ -30,5 +30,4 @@ for i=1:1:max_num_drones
     pause(0.3);
 end
 
-%Puesta en marca de la ejecucion
-DroneOperationPlanningEntity.LaunchSimulation();
+DroneOperationPlanningEntity

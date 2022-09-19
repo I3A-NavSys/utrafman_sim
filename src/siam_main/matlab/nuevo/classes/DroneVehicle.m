@@ -3,6 +3,10 @@ classdef DroneVehicle < handle
     properties
         DroneVehicleId
         Model
+
+        DroneOperator
+
+        SimulationInput
     end
     
     methods

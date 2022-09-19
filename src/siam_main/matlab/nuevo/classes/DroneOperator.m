@@ -23,6 +23,8 @@ classdef DroneOperator < handle
             %Lo damos de alta en el garaje del operador
             obj.DroneGarage(end+1) = newDrone;
 
+            newDrone.DroneOperator = obj;
+
             %Lo matriculamos
             obj.ref_DroneOperationPlanningEntity.registerNewVehicle(newDrone);
         end
