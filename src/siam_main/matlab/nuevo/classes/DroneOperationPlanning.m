@@ -14,7 +14,7 @@ classdef DroneOperationPlanning < handle
         lastDroneVehicleId = 0;
 
         %Para conectar con ROS
-        rosMasterIp = "192.168.1.129";
+        rosMasterIp = "192.168.1.131";
         rosMasterPort = 11311;
 
         %Subs/Pubs y mensjajes de ROS
@@ -33,12 +33,15 @@ classdef DroneOperationPlanning < handle
         sim_pub_bus_command;
         sim_sub_camera;
         sim_sub_odometry;
+
+        %SimulinkInputArray
+        SimulinkInputArray = Simulink.SimulationInput.empty
     end
     
     methods
         function obj = DroneOperationPlanning(simulink_model)
             %Obtencion de los modelos de drones para Gazebo
-            obj.droneModel = fileread('../../models/dronechallenge_models/drone/model_template_1.sdf');
+            obj.droneModel = fileread('../../models/dronechallenge_models/drone/model_template_1_simple.sdf');
             obj.userDroneModel = fileread('../../models/dronechallenge_models/drone/model_template_2.sdf');
             
             %Nombre del modelo de Simulink y de los bloques
@@ -130,15 +133,16 @@ classdef DroneOperationPlanning < handle
             %simulModelConfig = simulModelConfig.setPostSimFcn(@(x) test(x));
             simulModelConfig = simulModelConfig.setVariable('operationalPlan', operationalPlan);   
             operationalPlan.SimulinkInput = simulModelConfig;
+            obj.SimulinkInputArray(id) = simulModelConfig;
             warning('off','shared_robotics:robotutils:common:SavedObjectInvalid');
-            operationalPlan.BatchsimOutput = batchsim(simulModelConfig, 'ShowProgress','on', 'SetupFcn', @obj.InitRandom);
+            %operationalPlan.BatchsimOutput = batchsim(simulModelConfig, 'ShowProgress','on', 'SetupFcn', @obj.InitRandom);
 
             %Establecimiento de un timer
-            operationalPlan.FinishTimer = timer;
-            operationalPlan.FinishTimer.Period = 10;
-            operationalPlan.FinishTimer.ExecutionMode = 'fixedDelay';
-            operationalPlan.FinishTimer.TimerFcn = @operationalPlan.CheckFinishStatus;
-            start(operationalPlan.FinishTimer)
+%             operationalPlan.FinishTimer = timer;
+%             operationalPlan.FinishTimer.Period = 10;
+%             operationalPlan.FinishTimer.ExecutionMode = 'fixedDelay';
+%             operationalPlan.FinishTimer.TimerFcn = @operationalPlan.CheckFinishStatus;
+%             start(operationalPlan.FinishTimer)
         end
 
 

@@ -3,7 +3,7 @@ clear;
 addpath("classes\");
 
 %Numero de drones en la simulacion
-max_num_drones = 40;
+max_num_drones = 50;
 entrada_usuario = 0;        %Numero indicando drones controlados por usuarios existen
 simulink_model = "drone_control_tut3_R22a";
 
@@ -36,5 +36,9 @@ for i=1:1:max_num_drones
     vehicles(i) = droneOperator2.createNewDroneVehicle("DJI");
     flightPlans(i) = droneOperator2.createNewOperationalPlan(vehicles(i));
     droneOperator2.launch(flightPlans(i));
-    pause(10);
+    pause(0.3);
 end
+
+pause(10);
+
+parsim(DroneOperationPlanningEntity.SimulinkInputArray, 'RunInBackground', 'on', 'ShowSimulationManager','on')

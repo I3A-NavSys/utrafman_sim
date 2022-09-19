@@ -25,7 +25,7 @@ classdef OperationalPlan < handle
 
 
         function t = CheckFinishStatus(obj, timer, time)
-            disp('Ejecutando timer...');
+            %disp('Ejecutando timer...');
             if obj.BatchsimOutput.State == "finished"
                 obj.Status = 'Finished';
                 disp("Un drone ya ha terminado");
