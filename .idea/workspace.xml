@@ -3,9 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakePresetLoader"><![CDATA[{
-  "useNewFormat": true
-}]]></component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
   <component name="CMakeReloadState">
     <option name="reloaded" value="true" />
   </component>
@@ -97,98 +97,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2786b3be-8b19-42b0-8bc6-ad10edc3e5bf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/siam_sim.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/siam_main/.idea/siam_main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/siam_main/models/gazebo_models_worlds_collection" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/atomic_configure/_setup_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/atomic_configure/_setup_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/catkin_generated/generate_cached_setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/catkin_generated/generate_cached_setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/catkin_generated/installspace/_setup_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/catkin_generated/installspace/_setup_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/catkin_generated/order_packages.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/catkin_generated/order_packages.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/catkin_generated/setup_cached.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build/catkin_generated/setup_cached.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/catkin_generated/stamps/Project/_setup_util.py.stamp" beforeDir="false" afterPath="$PROJECT_DIR$/build/catkin_generated/stamps/Project/_setup_util.py.stamp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/flags.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/link.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/src/god.cc.o" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_god/CMakeFiles/SIAM_God.dir/src/god.cc.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_god/catkin_generated/installspace/siam_godConfig.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_god/catkin_generated/installspace/siam_godConfig.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/flags.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/link.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/catkin_generated/installspace/siam_mainConfig.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/catkin_generated/installspace/siam_mainConfig.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/devel/_setup_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/devel/_setup_util.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/devel/lib/libDroneControl.so" beforeDir="false" afterPath="$PROJECT_DIR$/devel/lib/libDroneControl.so" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/devel/lib/libSIAM_God.so" beforeDir="false" afterPath="$PROJECT_DIR$/devel/lib/libSIAM_God.so" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/devel/share/siam_god/cmake/siam_godConfig.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/devel/share/siam_god/cmake/siam_godConfig.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/devel/share/siam_main/cmake/siam_mainConfig.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/devel/share/siam_main/cmake/siam_mainConfig.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/.cmake/api/v1/reply/cache-v2-825956398994e1a68c62.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-68ee6e0722b936410308.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-7272b7f068a17182f2f2.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/.cmake/api/v1/reply/index-2022-08-15T06-30-58-0426.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/.cmake/api/v1/reply/target-SIAM_God-Debug-546c037dec885124e1c1.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/.cmake/api/v1/reply/target-gmock-Debug-0d794d0ea81f9efdaf98.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/.cmake/api/v1/reply/target-gmock_main-Debug-1fdf25c721d0b185d02b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/.cmake/api/v1/reply/target-gtest-Debug-17ae65d35a7948bc7c9f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/.cmake/api/v1/reply/target-gtest_main-Debug-98ba486fad746c1aa1ca.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/3.22.3/CMakeCCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/3.22.3/CMakeCXXCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/3.22.3/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/3.22.3/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/3.22.3/CMakeSystem.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/3.22.3/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/3.22.3/CompilerIdC/a.out" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/3.22.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/3.22.3/CompilerIdCXX/a.out" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/CMakeError.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/CMakeError.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/rules.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CMakeFiles/rules.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CTestConfiguration.ini" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/CTestConfiguration.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_god/src/god.cc" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/src/god.cc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/cache-v2-bd7f7d66375b62fab2e9.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/cmakeFiles-v1-34e83d455d3c9d16be1d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-0887f63f0a45262a0cb5.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/index-2022-07-19T06-33-06-0370.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-DroneControl-Debug-9cbd85ff2018c9fe6f49.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-gmock-Debug-ea40604fae2baa218b03.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-gmock_main-Debug-6852d382e553fe06f300.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-gtest-Debug-17ae65d35a7948bc7c9f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-gtest_main-Debug-3a79d6faec42b4c6df37.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.22.3/CMakeCCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.22.3/CMakeCXXCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.22.3/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.22.3/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.22.3/CMakeSystem.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.22.3/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.22.3/CompilerIdC/a.out" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.22.3/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.22.3/CompilerIdCXX/a.out" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/CMakeError.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/CMakeError.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/rules.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/rules.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CTestConfiguration.ini" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CTestConfiguration.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/src/dronecontrol.cc" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/src/dronecontrol.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/siam_main/worlds/output_ruby.sdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/siam_main/worlds/test.world" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/siam_main/worlds/test_ruby.erb" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -211,28 +127,29 @@
     <option name="minorVersion" value="1.3" />
   </component>
   <component name="ProjectId" id="2BqYlCa9ns5RnpunekgHIFwlOlW" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "last_opened_file_path": "/opt/ros/noetic/share/siam_sim",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "terminal"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/opt/ros/noetic/share/siam_sim&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/god/src" />
@@ -241,11 +158,6 @@
   </component>
   <component name="RunManager" selected="CMake Application.actionlib_generate_messages_cpp">
     <configuration name="SIAM_God" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="siam_god" TARGET_NAME="SIAM_God" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -724,7 +636,8 @@
       <workItem from="1657727255363" duration="819000" />
       <workItem from="1657728080329" duration="2157000" />
       <workItem from="1657734973629" duration="2605000" />
-      <workItem from="1663324055147" duration="1865000" />
+      <workItem from="1663324055147" duration="2466000" />
+      <workItem from="1663669718815" duration="382000" />
     </task>
     <servers />
   </component>

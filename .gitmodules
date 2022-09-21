@@ -1,0 +1,3 @@
+[submodule "src/siam_main/models/gazebo_models_worlds_collection"]
+	path = src/siam_main/models/gazebo_models_worlds_collection
+	url = https://github.com/chaolmu/gazebo_models_worlds_collection.git
