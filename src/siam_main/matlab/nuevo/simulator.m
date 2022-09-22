@@ -3,7 +3,7 @@
 addpath("classes\");
 
 %Numero de drones en la simulacion
-max_num_drones = 50;
+max_num_drones = 2;
 entrada_usuario = 0;        %Numero indicando drones controlados por usuarios existen
 simulink_model = "drone_control_tut3_R22a";
 zona_spawn_nw = [-5 -5];
@@ -33,4 +33,4 @@ for i=1:1:max_num_drones
 end
 
 %Puesta en marca de la ejecucion
-DroneOperationPlanningEntity.LaunchSimulation();
+%DroneOperationPlanningEntity.LaunchSimulation();
