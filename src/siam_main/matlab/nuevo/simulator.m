@@ -1,14 +1,16 @@
 %Limpiamos las variables del entorno
-clear;
+%clear;
 addpath("classes\");
 
 %Numero de drones en la simulacion
 max_num_drones = 50;
 entrada_usuario = 0;        %Numero indicando drones controlados por usuarios existen
 simulink_model = "drone_control_tut3_R22a";
+zona_spawn_nw = [-5 -5];
+zona_spawn_se = [5 5];
 
 %Creamos la entidad de planificacion de planes
-DroneOperationPlanningEntity = DroneOperationPlanning(simulink_model, max_num_drones);
+DroneOperationPlanningEntity = DroneOperationPlanning(simulink_model, max_num_drones, zona_spawn_nw, zona_spawn_se);
 
 %Creamos dos operadores de vuelo
 droneOperator1 = DroneOperator("Amazon", DroneOperationPlanningEntity);
