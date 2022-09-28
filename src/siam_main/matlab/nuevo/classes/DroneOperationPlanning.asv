@@ -52,8 +52,8 @@ classdef DroneOperationPlanning < handle
             obj.spawn_nw = spawn_nw;
             obj.spawn_se = spawn_se;
             obj.maxIndex = max([obj.spawn_nw, obj.spawn_se]) + (0 - min([obj.spawn_nw, obj.spawn_se])) + 1;
-            obj.accumIndex = (0 - min([obj.spawn_nw, obj.spawn_se]) + 1);
-            obj.dronesUsedPositions = zeros(obj.maxIndex, obj.maxIndex);
+            obj.accumIndex = (0 - min([obj.spawn_nw, obj.spawn_se]));
+            obj.dronesUsedPositions = z
             
 
             %Obtencion de los modelos de drones para Gazebo
@@ -209,12 +209,12 @@ classdef DroneOperationPlanning < handle
 %             x = -70;
 %             y = -20;
 
-            while obj.dronesUsedPositions(x+obj.accumIndex,y+obj.accumIndex) == 1
+            while obj.dronesUsedPositions(x+6,y+6) == 1
                 x = randi([obj.spawn_nw(1), obj.spawn_se(1)], 1, 1);
                 y = randi([obj.spawn_nw(2), obj.spawn_se(2)], 1, 1);
             end
             
-            obj.dronesUsedPositions(x+obj.accumIndex,y+obj.accumIndex) = 1;   
+            obj.dronesUsedPositions(x+6,y+6) = 1;   
             pos = [x y 1];
         end
 
