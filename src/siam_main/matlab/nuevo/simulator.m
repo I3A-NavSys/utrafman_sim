@@ -3,7 +3,7 @@
 addpath("classes\");
 
 %Numero de drones en la simulacion
-max_num_drones = 2;
+max_num_drones = 4;
 entrada_usuario = 0;        %Numero indicando drones controlados por usuarios existen
 simulink_model = "drone_control_tut3_R22a";
 zona_spawn_nw = [-5 -5];
