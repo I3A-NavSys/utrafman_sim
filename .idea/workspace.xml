@@ -97,14 +97,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2786b3be-8b19-42b0-8bc6-ad10edc3e5bf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitmodules" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/siam_main/models/gazebo_models_worlds_collection" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_god/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/worlds/output_ruby.sdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/worlds/test.world" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/worlds/test_ruby.erb" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -638,6 +632,8 @@
       <workItem from="1657734973629" duration="2605000" />
       <workItem from="1663324055147" duration="2466000" />
       <workItem from="1663669718815" duration="382000" />
+      <workItem from="1663742492901" duration="1246000" />
+      <workItem from="1663748299242" duration="1106000" />
     </task>
     <servers />
   </component>
