@@ -4,10 +4,6 @@
 classdef DroneOperationPlanning < handle
     
     properties
-        %Registro de operadores y planes de operaciones
-        Operators = DroneOperator.empty;
-        OperationalPlans = OperationalPlan.empty;
-
         %Ultimos IDs asignados. Ninguno de los IDs será 0
         lastDroneOperatorId = 0;
         lastOperationalPlanId = 0;
