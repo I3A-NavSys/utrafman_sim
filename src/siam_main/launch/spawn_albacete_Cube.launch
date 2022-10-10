@@ -1,0 +1,5 @@
+<launch>
+  <param name="albacete_Cube_description" command="$(find xacro)/xacro --inorder '$(find siam_main)/urdf/albacete_Cube.urdf.xacro'" />
+
+  <node name="spawn_albacete_Cube" pkg="gazebo_ros" type="spawn_model" args="-param albacete_Cube_description -urdf -model albacete_Cube" respawn="false" />
+</launch>
