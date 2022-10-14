@@ -1181,6 +1181,162 @@ DroneControl/fast:
 	$(MAKE) -f siam_main/CMakeFiles/DroneControl.dir/build.make siam_main/CMakeFiles/DroneControl.dir/build
 .PHONY : DroneControl/fast
 
+#=============================================================================
+# Target rules for targets named siam_main_generate_messages
+
+# Build rule for target.
+siam_main_generate_messages: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_generate_messages
+.PHONY : siam_main_generate_messages
+
+# fast build rule for target.
+siam_main_generate_messages/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages.dir/build
+.PHONY : siam_main_generate_messages/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_genlisp
+
+# Build rule for target.
+siam_main_genlisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_genlisp
+.PHONY : siam_main_genlisp
+
+# fast build rule for target.
+siam_main_genlisp/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_genlisp.dir/build.make siam_main/CMakeFiles/siam_main_genlisp.dir/build
+.PHONY : siam_main_genlisp/fast
+
+#=============================================================================
+# Target rules for targets named _siam_main_generate_messages_check_deps_FlightPlan
+
+# Build rule for target.
+_siam_main_generate_messages_check_deps_FlightPlan: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _siam_main_generate_messages_check_deps_FlightPlan
+.PHONY : _siam_main_generate_messages_check_deps_FlightPlan
+
+# fast build rule for target.
+_siam_main_generate_messages_check_deps_FlightPlan/fast:
+	$(MAKE) -f siam_main/CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan.dir/build.make siam_main/CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan.dir/build
+.PHONY : _siam_main_generate_messages_check_deps_FlightPlan/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_generate_messages_nodejs
+
+# Build rule for target.
+siam_main_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_generate_messages_nodejs
+.PHONY : siam_main_generate_messages_nodejs
+
+# fast build rule for target.
+siam_main_generate_messages_nodejs/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_nodejs.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_nodejs.dir/build
+.PHONY : siam_main_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_generate_messages_cpp
+
+# Build rule for target.
+siam_main_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_generate_messages_cpp
+.PHONY : siam_main_generate_messages_cpp
+
+# fast build rule for target.
+siam_main_generate_messages_cpp/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_cpp.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_cpp.dir/build
+.PHONY : siam_main_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_gencpp
+
+# Build rule for target.
+siam_main_gencpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_gencpp
+.PHONY : siam_main_gencpp
+
+# fast build rule for target.
+siam_main_gencpp/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_gencpp.dir/build.make siam_main/CMakeFiles/siam_main_gencpp.dir/build
+.PHONY : siam_main_gencpp/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_generate_messages_eus
+
+# Build rule for target.
+siam_main_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_generate_messages_eus
+.PHONY : siam_main_generate_messages_eus
+
+# fast build rule for target.
+siam_main_generate_messages_eus/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_eus.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_eus.dir/build
+.PHONY : siam_main_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_geneus
+
+# Build rule for target.
+siam_main_geneus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_geneus
+.PHONY : siam_main_geneus
+
+# fast build rule for target.
+siam_main_geneus/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_geneus.dir/build.make siam_main/CMakeFiles/siam_main_geneus.dir/build
+.PHONY : siam_main_geneus/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_generate_messages_py
+
+# Build rule for target.
+siam_main_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_generate_messages_py
+.PHONY : siam_main_generate_messages_py
+
+# fast build rule for target.
+siam_main_generate_messages_py/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_py.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_py.dir/build
+.PHONY : siam_main_generate_messages_py/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_generate_messages_lisp
+
+# Build rule for target.
+siam_main_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_generate_messages_lisp
+.PHONY : siam_main_generate_messages_lisp
+
+# fast build rule for target.
+siam_main_generate_messages_lisp/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_lisp.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_lisp.dir/build
+.PHONY : siam_main_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_gennodejs
+
+# Build rule for target.
+siam_main_gennodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_gennodejs
+.PHONY : siam_main_gennodejs
+
+# fast build rule for target.
+siam_main_gennodejs/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_gennodejs.dir/build.make siam_main/CMakeFiles/siam_main_gennodejs.dir/build
+.PHONY : siam_main_gennodejs/fast
+
+#=============================================================================
+# Target rules for targets named siam_main_genpy
+
+# Build rule for target.
+siam_main_genpy: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 siam_main_genpy
+.PHONY : siam_main_genpy
+
+# fast build rule for target.
+siam_main_genpy/fast:
+	$(MAKE) -f siam_main/CMakeFiles/siam_main_genpy.dir/build.make siam_main/CMakeFiles/siam_main_genpy.dir/build
+.PHONY : siam_main_genpy/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1272,6 +1428,18 @@ help:
 	@echo "... dynamic_reconfigure_generate_messages_eus"
 	@echo "... gazebo_msgs_generate_messages_eus"
 	@echo "... DroneControl"
+	@echo "... siam_main_generate_messages"
+	@echo "... siam_main_genlisp"
+	@echo "... _siam_main_generate_messages_check_deps_FlightPlan"
+	@echo "... siam_main_generate_messages_nodejs"
+	@echo "... siam_main_generate_messages_cpp"
+	@echo "... siam_main_gencpp"
+	@echo "... siam_main_generate_messages_eus"
+	@echo "... siam_main_geneus"
+	@echo "... siam_main_generate_messages_py"
+	@echo "... siam_main_generate_messages_lisp"
+	@echo "... siam_main_gennodejs"
+	@echo "... siam_main_genpy"
 .PHONY : help
 
 

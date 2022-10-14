@@ -56,17 +56,17 @@ CMAKE_BINARY_DIR = /opt/ros/noetic/share/siam_sim/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
 
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
 
 # Special rule for the target install
 install: preinstall
@@ -80,15 +80,28 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
 
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
+# Special rule for the target test
+test/fast: test
 
-.PHONY : list_install_components/fast
+.PHONY : test/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
 
 # Special rule for the target rebuild_cache
 rebuild_cache:
@@ -112,28 +125,15 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
 
-# Special rule for the target test
-test/fast: test
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
 
-.PHONY : test/fast
-
-# Special rule for the target install/strip
-install/strip: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip
-
-# Special rule for the target install/strip
-install/strip/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
-	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
-.PHONY : install/strip/fast
+.PHONY : list_install_components/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -182,6 +182,186 @@ DroneControl/fast:
 	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/DroneControl.dir/build.make siam_main/CMakeFiles/DroneControl.dir/build
 .PHONY : DroneControl/fast
 
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_generate_messages.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_generate_messages.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_generate_messages.dir/rule
+
+# Convenience name for target.
+siam_main_generate_messages: siam_main/CMakeFiles/siam_main_generate_messages.dir/rule
+
+.PHONY : siam_main_generate_messages
+
+# fast build rule for target.
+siam_main_generate_messages/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages.dir/build
+.PHONY : siam_main_generate_messages/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_genlisp.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_genlisp.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_genlisp.dir/rule
+
+# Convenience name for target.
+siam_main_genlisp: siam_main/CMakeFiles/siam_main_genlisp.dir/rule
+
+.PHONY : siam_main_genlisp
+
+# fast build rule for target.
+siam_main_genlisp/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_genlisp.dir/build.make siam_main/CMakeFiles/siam_main_genlisp.dir/build
+.PHONY : siam_main_genlisp/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan.dir/rule
+.PHONY : siam_main/CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan.dir/rule
+
+# Convenience name for target.
+_siam_main_generate_messages_check_deps_FlightPlan: siam_main/CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan.dir/rule
+
+.PHONY : _siam_main_generate_messages_check_deps_FlightPlan
+
+# fast build rule for target.
+_siam_main_generate_messages_check_deps_FlightPlan/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan.dir/build.make siam_main/CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan.dir/build
+.PHONY : _siam_main_generate_messages_check_deps_FlightPlan/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_generate_messages_nodejs.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_generate_messages_nodejs.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+siam_main_generate_messages_nodejs: siam_main/CMakeFiles/siam_main_generate_messages_nodejs.dir/rule
+
+.PHONY : siam_main_generate_messages_nodejs
+
+# fast build rule for target.
+siam_main_generate_messages_nodejs/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_nodejs.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_nodejs.dir/build
+.PHONY : siam_main_generate_messages_nodejs/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_generate_messages_cpp.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_generate_messages_cpp.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+siam_main_generate_messages_cpp: siam_main/CMakeFiles/siam_main_generate_messages_cpp.dir/rule
+
+.PHONY : siam_main_generate_messages_cpp
+
+# fast build rule for target.
+siam_main_generate_messages_cpp/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_cpp.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_cpp.dir/build
+.PHONY : siam_main_generate_messages_cpp/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_gencpp.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_gencpp.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_gencpp.dir/rule
+
+# Convenience name for target.
+siam_main_gencpp: siam_main/CMakeFiles/siam_main_gencpp.dir/rule
+
+.PHONY : siam_main_gencpp
+
+# fast build rule for target.
+siam_main_gencpp/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_gencpp.dir/build.make siam_main/CMakeFiles/siam_main_gencpp.dir/build
+.PHONY : siam_main_gencpp/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_generate_messages_eus.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_generate_messages_eus.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+siam_main_generate_messages_eus: siam_main/CMakeFiles/siam_main_generate_messages_eus.dir/rule
+
+.PHONY : siam_main_generate_messages_eus
+
+# fast build rule for target.
+siam_main_generate_messages_eus/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_eus.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_eus.dir/build
+.PHONY : siam_main_generate_messages_eus/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_geneus.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_geneus.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_geneus.dir/rule
+
+# Convenience name for target.
+siam_main_geneus: siam_main/CMakeFiles/siam_main_geneus.dir/rule
+
+.PHONY : siam_main_geneus
+
+# fast build rule for target.
+siam_main_geneus/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_geneus.dir/build.make siam_main/CMakeFiles/siam_main_geneus.dir/build
+.PHONY : siam_main_geneus/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_generate_messages_py.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_generate_messages_py.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_generate_messages_py.dir/rule
+
+# Convenience name for target.
+siam_main_generate_messages_py: siam_main/CMakeFiles/siam_main_generate_messages_py.dir/rule
+
+.PHONY : siam_main_generate_messages_py
+
+# fast build rule for target.
+siam_main_generate_messages_py/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_py.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_py.dir/build
+.PHONY : siam_main_generate_messages_py/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_generate_messages_lisp.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_generate_messages_lisp.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+siam_main_generate_messages_lisp: siam_main/CMakeFiles/siam_main_generate_messages_lisp.dir/rule
+
+.PHONY : siam_main_generate_messages_lisp
+
+# fast build rule for target.
+siam_main_generate_messages_lisp/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_generate_messages_lisp.dir/build.make siam_main/CMakeFiles/siam_main_generate_messages_lisp.dir/build
+.PHONY : siam_main_generate_messages_lisp/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_gennodejs.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_gennodejs.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_gennodejs.dir/rule
+
+# Convenience name for target.
+siam_main_gennodejs: siam_main/CMakeFiles/siam_main_gennodejs.dir/rule
+
+.PHONY : siam_main_gennodejs
+
+# fast build rule for target.
+siam_main_gennodejs/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_gennodejs.dir/build.make siam_main/CMakeFiles/siam_main_gennodejs.dir/build
+.PHONY : siam_main_gennodejs/fast
+
+# Convenience name for target.
+siam_main/CMakeFiles/siam_main_genpy.dir/rule:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f CMakeFiles/Makefile2 siam_main/CMakeFiles/siam_main_genpy.dir/rule
+.PHONY : siam_main/CMakeFiles/siam_main_genpy.dir/rule
+
+# Convenience name for target.
+siam_main_genpy: siam_main/CMakeFiles/siam_main_genpy.dir/rule
+
+.PHONY : siam_main_genpy
+
+# fast build rule for target.
+siam_main_genpy/fast:
+	cd /opt/ros/noetic/share/siam_sim/build && $(MAKE) -f siam_main/CMakeFiles/siam_main_genpy.dir/build.make siam_main/CMakeFiles/siam_main_genpy.dir/build
+.PHONY : siam_main_genpy/fast
+
 src/dronecontrol.o: src/dronecontrol.cc.o
 
 .PHONY : src/dronecontrol.o
@@ -215,14 +395,26 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... install/local"
+	@echo "... install/strip"
 	@echo "... install"
-	@echo "... list_install_components"
+	@echo "... test"
+	@echo "... DroneControl"
+	@echo "... siam_main_generate_messages"
+	@echo "... siam_main_genlisp"
+	@echo "... _siam_main_generate_messages_check_deps_FlightPlan"
+	@echo "... siam_main_generate_messages_nodejs"
+	@echo "... siam_main_generate_messages_cpp"
+	@echo "... siam_main_gencpp"
+	@echo "... siam_main_generate_messages_eus"
+	@echo "... install/local"
+	@echo "... siam_main_geneus"
+	@echo "... siam_main_generate_messages_py"
+	@echo "... siam_main_generate_messages_lisp"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... test"
-	@echo "... install/strip"
-	@echo "... DroneControl"
+	@echo "... siam_main_gennodejs"
+	@echo "... list_install_components"
+	@echo "... siam_main_genpy"
 	@echo "... src/dronecontrol.o"
 	@echo "... src/dronecontrol.i"
 	@echo "... src/dronecontrol.s"

@@ -30,6 +30,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/opt/ros/noetic/share/siam_sim/devel/include"
   "/usr/include/gazebo-11"
   "/usr/include/bullet"
   "/usr/include/sdformat-9.8"

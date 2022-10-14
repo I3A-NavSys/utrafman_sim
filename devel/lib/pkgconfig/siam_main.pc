@@ -3,6 +3,6 @@ prefix=/opt/ros/noetic/share/siam_sim/devel
 Name: siam_main
 Description: Description of siam_main
 Version: 0.0.0
-Cflags: 
+Cflags: -I/opt/ros/noetic/share/siam_sim/devel/include
 Libs: -L${prefix}/lib 
-Requires: 
+Requires: message_runtime
