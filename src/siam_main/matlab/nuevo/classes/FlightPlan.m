@@ -8,7 +8,7 @@ classdef FlightPlan < handle
         operator
         drone
 
-        base
+        orig
         dest
         dtto
 
@@ -19,7 +19,7 @@ classdef FlightPlan < handle
     methods
         function obj = FlightPlan(base, dest, dtto)
             %Properties
-            obj.base = base;
+            obj.orig = base;
             obj.dest = dest;
             obj.dtto = dtto;
         end

@@ -1,0 +1,46 @@
+function [data, info] = flightPlan
+%FlightPlan gives an empty data for siam_main/FlightPlan
+% Copyright 2019-2020 The MathWorks, Inc.
+%#codegen
+data = struct();
+data.MessageType = 'siam_main/FlightPlan';
+[data.FlightPlanId, info.FlightPlanId] = ros.internal.ros.messages.ros.default_type('uint16',1);
+[data.Status, info.Status] = ros.internal.ros.messages.ros.char('string',0);
+[data.Priority, info.Priority] = ros.internal.ros.messages.ros.default_type('int8',1);
+[data.OperatorId, info.OperatorId] = ros.internal.ros.messages.ros.default_type('uint16',1);
+[data.DroneId, info.DroneId] = ros.internal.ros.messages.ros.default_type('uint16',1);
+[data.Orig, info.Orig] = ros.internal.ros.messages.geometry_msgs.point;
+info.Orig.MLdataType = 'struct';
+[data.Dest, info.Dest] = ros.internal.ros.messages.geometry_msgs.point;
+info.Dest.MLdataType = 'struct';
+[data.Dtto, info.Dtto] = ros.internal.ros.messages.ros.default_type('uint64',1);
+[data.Route, info.Route] = ros.internal.ros.messages.geometry_msgs.point;
+info.Route.MLdataType = 'struct';
+info.Route.MaxLen = NaN;
+info.Route.MinLen = 0;
+data.Route = data.Route([],1);
+info.MessageType = 'siam_main/FlightPlan';
+info.constant = 0;
+info.default = 0;
+info.maxstrlen = NaN;
+info.MaxLen = 1;
+info.MinLen = 1;
+info.MatPath = cell(1,18);
+info.MatPath{1} = 'flightPlanId';
+info.MatPath{2} = 'status';
+info.MatPath{3} = 'priority';
+info.MatPath{4} = 'operatorId';
+info.MatPath{5} = 'droneId';
+info.MatPath{6} = 'orig';
+info.MatPath{7} = 'orig.x';
+info.MatPath{8} = 'orig.y';
+info.MatPath{9} = 'orig.z';
+info.MatPath{10} = 'dest';
+info.MatPath{11} = 'dest.x';
+info.MatPath{12} = 'dest.y';
+info.MatPath{13} = 'dest.z';
+info.MatPath{14} = 'dtto';
+info.MatPath{15} = 'route';
+info.MatPath{16} = 'route.x';
+info.MatPath{17} = 'route.y';
+info.MatPath{18} = 'route.z';

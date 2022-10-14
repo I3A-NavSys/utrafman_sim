@@ -1,0 +1,8 @@
+prefix=C:/Users/usuario/Documents/i3a_repos/siam_sim/src/matlab_msg_gen_ros1/win64/devel
+
+Name: siam_main
+Description: Description of siam_main
+Version: 0.0.0
+Cflags: -IC:/Users/usuario/Documents/i3a_repos/siam_sim/src/matlab_msg_gen_ros1/win64/devel/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime message_runtime geometry_msgs roscpp
