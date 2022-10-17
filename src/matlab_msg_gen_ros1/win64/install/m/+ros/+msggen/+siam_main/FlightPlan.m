@@ -8,7 +8,7 @@ classdef FlightPlan < ros.Message
         MessageType = 'siam_main/FlightPlan' % The ROS message type
     end
     properties (Constant, Hidden)
-        MD5Checksum = 'b08712a8c4a5f89924ecc5cf6f45700a' % The MD5 Checksum of the message definition
+        MD5Checksum = '30f199e7cf367208ba384eb9bfe052f5' % The MD5 Checksum of the message definition
         PropertyList = { 'Orig' 'Dest' 'Route' 'FlightPlanId' 'Status' 'Priority' 'OperatorId' 'DroneId' 'Dtto' } % List of non-constant message properties
         ROSPropertyList = { 'orig' 'dest' 'route' 'flightPlanId' 'status' 'priority' 'operatorId' 'droneId' 'dtto' } % List of non-constant ROS message properties
         PropertyMessageTypes = { 'ros.msggen.geometry_msgs.Point' ...
@@ -66,11 +66,10 @@ classdef FlightPlan < ros.Message
             obj.FlightPlanId = uint16(val);
         end
         function set.Status(obj, val)
-            val = convertStringsToChars(val);
-            validClasses = {'char', 'string'};
-            validAttributes = {};
+            validClasses = {'numeric'};
+            validAttributes = {'nonempty', 'scalar'};
             validateattributes(val, validClasses, validAttributes, 'FlightPlan', 'Status');
-            obj.Status = char(val);
+            obj.Status = uint8(val);
         end
         function set.Priority(obj, val)
             validClasses = {'numeric'};
@@ -94,7 +93,7 @@ classdef FlightPlan < ros.Message
             validClasses = {'numeric'};
             validAttributes = {'nonempty', 'scalar'};
             validateattributes(val, validClasses, validAttributes, 'FlightPlan', 'Dtto');
-            obj.Dtto = uint64(val);
+            obj.Dtto = uint32(val);
         end
     end
     methods (Static, Access = {?matlab.unittest.TestCase, ?ros.Message})

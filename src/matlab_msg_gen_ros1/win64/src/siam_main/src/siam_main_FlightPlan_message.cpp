@@ -48,12 +48,12 @@ class SIAM_MAIN_EXPORT siam_main_msg_FlightPlan_common : public MATLABROSMsgInte
     }
     try {
         //status
-        const matlab::data::CharArray status_arr = arr["Status"];
-        msg->status = status_arr.toAscii();
+        const matlab::data::TypedArray<uint8_t> status_arr = arr["Status"];
+        msg->status = status_arr[0];
     } catch (matlab::data::InvalidFieldNameException&) {
         throw std::invalid_argument("Field 'Status' is missing.");
     } catch (matlab::Exception&) {
-        throw std::invalid_argument("Field 'Status' is wrong type; expected a string.");
+        throw std::invalid_argument("Field 'Status' is wrong type; expected a uint8.");
     }
     try {
         //priority
@@ -104,12 +104,12 @@ class SIAM_MAIN_EXPORT siam_main_msg_FlightPlan_common : public MATLABROSMsgInte
     }
     try {
         //dtto
-        const matlab::data::TypedArray<uint64_t> dtto_arr = arr["Dtto"];
+        const matlab::data::TypedArray<uint32_t> dtto_arr = arr["Dtto"];
         msg->dtto = dtto_arr[0];
     } catch (matlab::data::InvalidFieldNameException&) {
         throw std::invalid_argument("Field 'Dtto' is missing.");
     } catch (matlab::Exception&) {
-        throw std::invalid_argument("Field 'Dtto' is wrong type; expected a uint64.");
+        throw std::invalid_argument("Field 'Dtto' is wrong type; expected a uint32.");
     }
     try {
         //route
@@ -137,7 +137,7 @@ class SIAM_MAIN_EXPORT siam_main_msg_FlightPlan_common : public MATLABROSMsgInte
     outArray[ctr]["FlightPlanId"] = factory.createScalar(currentElement_flightPlanId);
     // status
     auto currentElement_status = (msg + ctr)->status;
-    outArray[ctr]["Status"] = factory.createCharArray(currentElement_status);
+    outArray[ctr]["Status"] = factory.createScalar(currentElement_status);
     // priority
     auto currentElement_priority = (msg + ctr)->priority;
     outArray[ctr]["Priority"] = factory.createScalar(currentElement_priority);

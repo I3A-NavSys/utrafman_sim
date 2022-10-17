@@ -28,7 +28,7 @@ struct FlightPlan_
 
   FlightPlan_()
     : flightPlanId(0)
-    , status()
+    , status(0)
     , priority(0)
     , operatorId(0)
     , droneId(0)
@@ -39,7 +39,7 @@ struct FlightPlan_
     }
   FlightPlan_(const ContainerAllocator& _alloc)
     : flightPlanId(0)
-    , status(_alloc)
+    , status(0)
     , priority(0)
     , operatorId(0)
     , droneId(0)
@@ -55,7 +55,7 @@ struct FlightPlan_
    typedef uint16_t _flightPlanId_type;
   _flightPlanId_type flightPlanId;
 
-   typedef std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other >  _status_type;
+   typedef uint8_t _status_type;
   _status_type status;
 
    typedef int8_t _priority_type;
@@ -73,7 +73,7 @@ struct FlightPlan_
    typedef  ::geometry_msgs::Point_<ContainerAllocator>  _dest_type;
   _dest_type dest;
 
-   typedef uint64_t _dtto_type;
+   typedef uint32_t _dtto_type;
   _dtto_type dtto;
 
    typedef std::vector< ::geometry_msgs::Point_<ContainerAllocator> , typename ContainerAllocator::template rebind< ::geometry_msgs::Point_<ContainerAllocator> >::other >  _route_type;
@@ -173,12 +173,12 @@ struct MD5Sum< ::siam_main::FlightPlan_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "b08712a8c4a5f89924ecc5cf6f45700a";
+    return "30f199e7cf367208ba384eb9bfe052f5";
   }
 
   static const char* value(const ::siam_main::FlightPlan_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xb08712a8c4a5f899ULL;
-  static const uint64_t static_value2 = 0x24ecc5cf6f45700aULL;
+  static const uint64_t static_value1 = 0x30f199e7cf367208ULL;
+  static const uint64_t static_value2 = 0xba384eb9bfe052f5ULL;
 };
 
 template<class ContainerAllocator>
@@ -198,7 +198,7 @@ struct Definition< ::siam_main::FlightPlan_<ContainerAllocator> >
   static const char* value()
   {
     return "uint16 flightPlanId\n"
-"string status\n"
+"uint8 status\n"
 "int8 priority\n"
 "\n"
 "uint16 operatorId\n"
@@ -206,7 +206,7 @@ struct Definition< ::siam_main::FlightPlan_<ContainerAllocator> >
 "\n"
 "geometry_msgs/Point orig\n"
 "geometry_msgs/Point dest\n"
-"uint64 dtto\n"
+"uint32 dtto\n"
 "\n"
 "geometry_msgs/Point[] route\n"
 "\n"
@@ -264,7 +264,7 @@ struct Printer< ::siam_main::FlightPlan_<ContainerAllocator> >
     s << indent << "flightPlanId: ";
     Printer<uint16_t>::stream(s, indent + "  ", v.flightPlanId);
     s << indent << "status: ";
-    Printer<std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other > >::stream(s, indent + "  ", v.status);
+    Printer<uint8_t>::stream(s, indent + "  ", v.status);
     s << indent << "priority: ";
     Printer<int8_t>::stream(s, indent + "  ", v.priority);
     s << indent << "operatorId: ";
@@ -278,7 +278,7 @@ struct Printer< ::siam_main::FlightPlan_<ContainerAllocator> >
     s << std::endl;
     Printer< ::geometry_msgs::Point_<ContainerAllocator> >::stream(s, indent + "  ", v.dest);
     s << indent << "dtto: ";
-    Printer<uint64_t>::stream(s, indent + "  ", v.dtto);
+    Printer<uint32_t>::stream(s, indent + "  ", v.dtto);
     s << indent << "route[]" << std::endl;
     for (size_t i = 0; i < v.route.size(); ++i)
     {
