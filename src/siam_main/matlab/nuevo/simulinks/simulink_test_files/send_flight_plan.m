@@ -21,20 +21,20 @@ point.X = 1;
 point.Y = 2;
 point.Z = 3;
 
-msg.Orig = point;
+msg.Orig = copy(point);
 
 point.X = 11;
 point.Y = 22;
 point.Z = 33;
 
-msg.Dest = point;
+msg.Dest = copy(point);
 
 for i = 1:1:10
     point.X = i;
     point.Y = i;
-    point.Y = i;
+    point.Z = i;
 
-    msg.Route(i) = point;
+    msg.Route(i) = copy(point);
 end
 
 send(pub,msg);
