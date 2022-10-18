@@ -16,7 +16,7 @@ msg.Status = 0;
 msg.Priority = 7;
 msg.OperatorId = 10;
 msg.DroneId = 1000;
-msg.Dtto = 5430;
+msg.Dtto = 200;
 
 if r==1
     route =     [[0 4 1]
