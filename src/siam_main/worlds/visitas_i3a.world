@@ -60,7 +60,13 @@
       <name>frame_blue</name>
       <uri>model://frame_blue</uri>
       <pose>7 0 0.5 0 0 0</pose>
-    </include>    
+    </include>
+    
+    <include>
+      <name>base_drone</name>
+      <uri>model://base_drone</uri>
+      <pose>8.4821 0 0 0 0 0</pose>
+    </include>  
         
     <!-- Own physics settings to speed up simulation --x>
     <physics type='ode'>
