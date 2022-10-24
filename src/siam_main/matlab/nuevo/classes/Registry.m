@@ -50,6 +50,7 @@ classdef Registry < handle
 
             %Init drone location updates
             drone.subToTelemety();
+            drone.pubsubToFlightPlan();
         end
 
         function obj = regNewFlightPlan(obj, fp)
@@ -61,6 +62,7 @@ classdef Registry < handle
             %Signup in the registry
             obj.flightPlans(id) = fp;
         end
+        
     end
 end
 

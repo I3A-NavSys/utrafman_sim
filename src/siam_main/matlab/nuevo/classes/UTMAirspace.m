@@ -14,9 +14,10 @@ classdef UTMAirspace < handle
         S_FlightPlansMonitor;
         
         %ROS info
-        rosMasterIp = "1.0.0.131";
+        rosMasterIp = "192.168.1.131";
         rosMasterPort = 11311;
 
+        %Gazebo Clock
         GClock_sub;
         GClock_Upt_timer;
         Gclock;
@@ -49,6 +50,40 @@ classdef UTMAirspace < handle
             if status
                 obj.Gclock = msg.Clock_.Sec;
             end
+        end
+
+        function obj = LaunchSimulinksModels(obj)
+            %numDrones = size(obj.S_Registry.drones,2);
+            SimulationsInputs = Simulink.SimulationInput.empty;
+
+            %Name of Simulink models and blocks to edit
+            sim_ModelName = 'autonomous_drone';
+            sim_pub_bus_command = sim_ModelName + "/drone simulator/command bus/pub_bus_command";
+            sim_sub_camera = sim_ModelName + "/drone simulator/camera bus/ROS communication/sub_camera";
+            sim_sub_odometry = sim_ModelName + "/drone simulator/imu bus/sub_odometry";
+            sim_sub_fp_request = sim_ModelName + "/sub_flightPlans_request";
+
+            open_system(sim_ModelName);
+
+            for drone = obj.S_Registry.drones
+                %Create a Simulation Input object
+                drone.SimulationInput = Simulink.SimulationInput(sim_ModelName);
+                
+                %Cambiamos los parametros de los bloques de Simulink
+                drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_pub_bus_command, "Topic", "/drone/"+drone.droneId+"/bus_command");
+                drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_sub_camera, "Topic", "/drone/"+drone.droneId+"/onboard_camera/image_raw");
+                drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_sub_odometry, "Topic", "/drone/"+drone.droneId+"/odometry");
+                drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_sub_fp_request, "Topic", "/drone/"+drone.droneId+"/flightPlans/request");
+                
+                %Asignamos sus datos
+                drone.SimulationInput = drone.SimulationInput.setVariable('drone', drone);
+                
+                %Almacenamos los datos en el vehiculo y en el planificador
+                %droneVehicle.SimulationInput = simulModelConfig;
+                SimulationsInputs(drone.droneId) = drone.SimulationInput;
+            end
+            warning('off','shared_robotics:robotutils:common:SavedObjectInvalid');
+            parsim(SimulationsInputs, 'RunInBackground','on','ShowSimulationManager','on', 'SetupFcn', @(~)rng('shuffle'));
         end
     end
 end
