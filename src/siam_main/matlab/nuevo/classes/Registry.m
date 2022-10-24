@@ -50,6 +50,7 @@ classdef Registry < handle
 
             %Init drone location updates
             drone.subToTelemety();
+            %Init drone flightPlanUpdates
             drone.pubsubToFlightPlan();
         end
 

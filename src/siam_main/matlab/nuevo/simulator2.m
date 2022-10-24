@@ -1,6 +1,9 @@
+%PRE-SIMULATION TASKs
 timer; stop(timerfind);    %Stop all timers
 addpath("classes\"); %Added classes path
 addpath("simulinks\"); %Added classes path
+%-----------------------------------------
+
 
 %Creacion de la entidad central del vuelo
 UTM = UTMAirspace();

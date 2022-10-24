@@ -57,7 +57,8 @@ classdef Drone < handle
 
         %Subcription to the drone flight plan response 
         function obj = pubsubToFlightPlan(obj)
-            obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/flightPlans/response', obj.droneId), "siam_main/FlightPlan");
+            rospublisher(sprintf('/drone/%d/flightPlans/response', obj.droneId), "siam_main/FlightPlan");
+            obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/flightPlans/request', obj.droneId), "siam_main/FlightPlan");
             obj.ros_flightPlans_sub = rossubscriber(sprintf('/drone/%d/flightPlans/response', obj.droneId));
             obj.timer_Upd_Status = timer("Period", 3, "TimerFcn", @obj.updateStatus,"ExecutionMode","fixedRate");
             start(obj.timer_Upd_Status);

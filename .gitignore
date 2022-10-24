@@ -14,6 +14,10 @@ _sfprj/
 slprj
 +bus_conv_fcns/
 
+# MATLAB ROS generated message
+matlab_msg_gen_ros1
+2matlab_msg_gen_ros1
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 

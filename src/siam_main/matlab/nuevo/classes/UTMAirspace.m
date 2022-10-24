@@ -14,7 +14,7 @@ classdef UTMAirspace < handle
         S_FlightPlansMonitor;
         
         %ROS info
-        rosMasterIp = "192.168.1.131";
+        rosMasterIp
         rosMasterPort = 11311;
 
         %Gazebo Clock
@@ -25,6 +25,8 @@ classdef UTMAirspace < handle
     
     methods
         function obj = UTMAirspace()
+            run(fullfile("ROSconfig.m")); %Load ROS configuration variables
+            obj.rosMasterIp = ROS_IP;
             obj.ConnectWithROSMaster();
             obj.S_Registry = Registry();
         end
