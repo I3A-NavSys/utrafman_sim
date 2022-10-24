@@ -8,7 +8,6 @@ classdef FlightPlansPlanner < handle
     end
     
     methods
-        %Constructor de la clase
         function obj = FlightPlansPlanner()
         end
     end

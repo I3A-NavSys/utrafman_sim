@@ -17,9 +17,10 @@ classdef FlightPlan < handle
     end
     
     methods
-        function obj = FlightPlan(base, dest, dtto)
-            %Properties
-            obj.orig = base;
+        function obj = FlightPlan(operator, drone, orig, dest, dtto)
+            obj.operator = operator;
+            obj.drone = drone;
+            obj.orig = orig;
             obj.dest = dest;
             obj.dtto = dtto;
         end
