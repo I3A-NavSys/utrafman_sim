@@ -15,9 +15,11 @@ end
 
 for e = 1:fp_per_drone %Planes de vuelos por drone
     for i=1:drones %Drones
-        topico = "/drone/"+i+"/flightPlans/request";
+        topico = "/test/"+i+"/flightPlans/request";
+        topico2 = "/test/"+i+"/flightPlans/";
         
         pub(i) = rospublisher(topico, "siam_main/FlightPlan");
+        pub3 = rospublisher(topico2, "siam_main/FlightPlan");
         msg(i) = rosmessage('siam_main/FlightPlan');
         point = rosmessage("geometry_msgs/Point");
         

@@ -8,10 +8,10 @@ classdef Registry < handle
         drones = Drone.empty;
         droneLastId = 0;
 
-        flightPlans = FlightPlan.empty; %Ordered queue using DTTO
-        %Next_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
-        %Waiting_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
-        %Finished_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
+        All_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
+        Next_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
+        Waiting_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
+        Finished_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
         flightPlanLastId = 0; %ID for FP
 
         %To sign up drones
@@ -65,23 +65,23 @@ classdef Registry < handle
             fp.flightPlanId = id;
 
             %Signup in the registry
-            obj.InsertFlightPlanQueue(fp)
+            obj.InsertFlightPlan(fp,obj.All_flightPlans(:))
         end
         
         %Add flightPlan to a queue following dtto
-        function InsertFlightPlanQueue(obj, fp)
+        function InsertFlightPlan(obj, fp, queue)
             dtto = fp.dtto;
-            qlen = size(obj.flightPlans,2);
+            qlen = size(obj.All_flightPlans,2);
             i = 1;
-            while  i <= qlen && dtto >= obj.flightPlans(i).dtto
+            while  i <= qlen && dtto >= queue(i).Dtto
                 i = i+1;
             end
-            if i == 1
-                obj.flightPlans = [fp obj.flightPlans];
-            elseif i == qlen+1
-                obj.flightPlans(end+1) = fp;
+            if i == qlen-1
+                obj.All_flightPlans(end) = fp;
+            elseif i == 1
+                obj.All_flightPlans = [fp queue(:)];
             else
-                obj.flightPlans = [obj.flightPlans(1:i-1) fp obj.flightPlans(i:end)];
+                queue = [queue(1:i) fp queue(i+1:end)]
             end
         end
         

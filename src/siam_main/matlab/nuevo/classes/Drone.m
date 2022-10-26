@@ -60,7 +60,7 @@ classdef Drone < handle
             rospublisher(sprintf('/drone/%d/flightPlans/response', obj.droneId), "siam_main/FlightPlan");
             obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/flightPlans/request', obj.droneId), "siam_main/FlightPlan");
             obj.ros_flightPlans_sub = rossubscriber(sprintf('/drone/%d/flightPlans/response', obj.droneId));
-            obj.timer_Upd_Status = timer("Period", 3, "TimerFcn", @obj.updateStatus,"ExecutionMode","fixedRate");
+            obj.timer_Upd_Status = timer("Period", 5, "TimerFcn", @obj.updateStatus,"ExecutionMode","fixedRate");
             start(obj.timer_Upd_Status);
         end
 
@@ -74,15 +74,23 @@ classdef Drone < handle
 
         %Callback to update status of the drone
         function obj = updateStatus(obj, timer, time)
+            if isempty(obj.flightPlan)
+                return;
+            end
+            fp = obj.flightPlan;
             [obj.ros_flightPlans_msg, status] = receive(obj.ros_flightPlans_sub, 0.2);
             if status
                 switch obj.ros_flightPlans_msg.Status
                     case 0
                         obj.status = 0;
+                        fp.status = 0;
                     case 1
                         obj.status = 1;
+                        fp.status = 1;
                     case 2
                         obj.status = 2;
+                        fp.status = 2;
+                        obj.flightPlan = [];
                     otherwise
                         obj.status = -1;
                 end

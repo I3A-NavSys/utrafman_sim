@@ -58,6 +58,5 @@ for e = 1:fp_per_drone %Planes de vuelos por drone
         end
         send(pub(i),msg(i));
     end
-    pause(60)
 end
 

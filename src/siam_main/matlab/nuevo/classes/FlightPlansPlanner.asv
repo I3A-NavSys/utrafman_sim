@@ -17,29 +17,27 @@ classdef FlightPlansPlanner < handle
         end
 
         function obj = fpsScheduler(obj, timer, time)
-            if isempty(obj.UTM.Gclock)
+            if isempty(obj.UTM.GClock)
                 return;
             end
-            time = obj.UTM.Gclock;
+            time = obj.UTM.GClock;
             fps = obj.UTM.S_Registry.flightPlans;
-            if isempty(fps)
-                return;
-            end
+            if 
             i = 1;
-            while i <= size(fps,2) && fps(i).dtto < time
+            while fps(i).dtto < time
+                i = i+1;
                 fp = fps(i);
                 if fp.status == 2
-                    i = i+1;
                     continue;
                 end
                 drone = obj.UTM.S_Registry.drones(fp.drone.droneId);
-                if isempty(drone.flightPlan)
-                    %Asignamos el plan de vuelo
-                    drone.flightPlan = fp;
+                if ~isempty(drone.flightPlan)
+                    continue;
                 end
+                %Asignamos el plan de vuelo
+                drone.flightPlan = fp;
                 %Lo enviamos por el topico
                 send(drone.ros_flightPlans_pub,fp.parseToROSMessage())
-                i = i+1;
             end
 
         end

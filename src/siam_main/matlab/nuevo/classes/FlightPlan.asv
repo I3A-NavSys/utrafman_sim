@@ -62,18 +62,7 @@ classdef FlightPlan < handle
     end
 
     methods(Static)
-        function route = GenerateRandomRoute(nway)
-            bounds = [  [-1 -5]
-                        [9 5]];
-            route = zeros(nway,3);
-            for j = 1:nway
-                x = bounds(2,1) * rand(1) + bounds(1,1);
-                y = bounds(2,2) * rand(1) + bounds(1,2);
-                z = 4 * rand(1) + 1;
-        
-                route(j,:) = [x y z];
-            end
-        end
+        function ro
     end
 end
 

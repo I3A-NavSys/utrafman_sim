@@ -1,36 +1,37 @@
-%Limpiamos las variables del entorno
-%clear;
-addpath("classes\");
+%PRE-SIMULATION TASKs
+timer; stop(timerfind);    %Stop all timers
+addpath("classes\"); %Added classes path
+addpath("simulinks\"); %Added classes path
+try
+    pool = parpool;
+catch
+end
+cancelAll(pool.FevalQueue);
+%-----------------------------------------
 
-%Numero de drones en la simulacion
-max_num_drones = 4;
-entrada_usuario = 0;        %Numero indicando drones controlados por usuarios existen
-simulink_model = "drone_control_tut3_R22a";
-zona_spawn_nw = [-5 -5];
-zona_spawn_se = [5 5];
+%Creacion de la entidad central del vuelo
+UTM = UTMAirspace();
 
-%Creamos la entidad de planificacion de planes
-DroneOperationPlanningEntity = DroneOperationPlanning(simulink_model, max_num_drones, zona_spawn_nw, zona_spawn_se);
+%Anadimos un operador y lo registramos
+operator = Operator('Jesus');
+UTM.S_Registry.regNewOperator(operator);
 
-%Creamos dos operadores de vuelo
-droneOperator1 = DroneOperator("Amazon", DroneOperationPlanningEntity);
-droneOperator2 = DroneOperator("El Corte Inglés", DroneOperationPlanningEntity);
-
-%Registramos los nuevos operadores
-DroneOperationPlanningEntity.registerNewOperator(droneOperator1);
-DroneOperationPlanningEntity.registerNewOperator(droneOperator2);
-
-%Creamos dos vehiculos y planes de vuelo asociados a cada vehiculo
-flightPlans = OperationalPlan.empty;
-vehicles = DroneVehicle.empty;
-
-for i=1:1:max_num_drones
-    %Creamos y registramos un vehiculo para el operador 2
-    vehicles(i) = droneOperator2.createNewDroneVehicle("DJI");
-    %flightPlans(i) = droneOperator2.createNewOperationalPlan(vehicles(i));
-    %droneOperator2.launch(flightPlans(i));
-    pause(0.3);
+%Registramos los drones, los anade a Gazebo
+numDrones = 5;
+drone = Drone.empty(0,5);
+for i=1:numDrones
+    drone(i) = Drone('DJI Phantom', [i i 1]);
+    operator.regNewDrone(drone(i));
+    UTM.S_Registry.regNewDrone(drone(i));
 end
 
-%Puesta en marca de la ejecucion
-%DroneOperationPlanningEntity.LaunchSimulation();
+UTM.LaunchSimulinksModels();
+
+delay = 0;
+fp = FlightPlan.empty(0,numDrones*10);
+for i=1:numDrones*10
+    route = FlightPlan.GenerateRandomRoute(randi([3 6],1));
+    fp(i) = FlightPlan(operator, drone(mod(i,numDrones)+1), drone(mod(i,numDrones)+1).initLoc, route(end), route, delay+60);
+    UTM.S_Registry.regNewFlightPlan(fp(i));
+    delay = delay + 30/numDrones;
+end

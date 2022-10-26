@@ -8,7 +8,7 @@ classdef UTMAirspace < handle
         S_Registry;
 
         %Servicio de planificacion de planes de vuelo
-        S_FlightPlansPlanner = FlightPlansPlanner();
+        S_FlightPlansPlanner;
 
         %Servicio de monitorizacion de vuelos
         S_FlightPlansMonitor;
@@ -29,6 +29,7 @@ classdef UTMAirspace < handle
             obj.rosMasterIp = ROS_IP;
             obj.ConnectWithROSMaster();
             obj.S_Registry = Registry();
+            obj.S_FlightPlansPlanner = FlightPlansPlanner(obj);
         end
 
         function ConnectWithROSMaster(obj)
@@ -64,6 +65,7 @@ classdef UTMAirspace < handle
             sim_sub_camera = sim_ModelName + "/drone simulator/camera bus/ROS communication/sub_camera";
             sim_sub_odometry = sim_ModelName + "/drone simulator/imu bus/sub_odometry";
             sim_sub_fp_request = sim_ModelName + "/sub_flightPlans_request";
+            sim_pub_fp_response = sim_ModelName + "/pub_flightPlans_response";
 
             open_system(sim_ModelName);
 
@@ -76,6 +78,7 @@ classdef UTMAirspace < handle
                 drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_sub_camera, "Topic", "/drone/"+drone.droneId+"/onboard_camera/image_raw");
                 drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_sub_odometry, "Topic", "/drone/"+drone.droneId+"/odometry");
                 drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_sub_fp_request, "Topic", "/drone/"+drone.droneId+"/flightPlans/request");
+                drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_pub_fp_response, "Topic", "/drone/"+drone.droneId+"/flightPlans/response");
                 
                 %Asignamos sus datos
                 drone.SimulationInput = drone.SimulationInput.setVariable('drone', drone);
@@ -85,7 +88,13 @@ classdef UTMAirspace < handle
                 SimulationsInputs(drone.droneId) = drone.SimulationInput;
             end
             warning('off','shared_robotics:robotutils:common:SavedObjectInvalid');
-            parsim(SimulationsInputs, 'RunInBackground','on','ShowSimulationManager','on', 'SetupFcn', @(~)rng('shuffle'));
+            parsim(SimulationsInputs, 'RunInBackground','on','ShowSimulationManager','on', 'SetupFcn', @obj.InitRandom);
+        end
+
+         function InitRandom(obj)
+            %Para que cada vez que se genere un worker se levante
+            %con un número aleatorio en el nombre
+            rng('shuffle');
         end
     end
 end
