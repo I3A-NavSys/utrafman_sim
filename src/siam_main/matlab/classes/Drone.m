@@ -43,7 +43,7 @@ classdef Drone < handle
         function obj = selectModel(obj)
             switch obj.model
                 otherwise
-                    obj.droneModel = fileread('../../models/dronechallenge_models/drone/model_template_1_simple.sdf');
+                    obj.droneModel = fileread('../models/dronechallenge_models/drone/model_template_1_simple.sdf');
             end
         end
 

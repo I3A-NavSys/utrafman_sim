@@ -1,5 +1,5 @@
 %PRE-SIMULATION TASKs
-timer; stop(timerfind);    %Stop all timers
+timer; stop(timerfind); delete(timerfind)  %Stop all timers
 addpath("classes\"); %Added classes path
 addpath("simulinks\"); %Added classes path
 try
@@ -17,7 +17,7 @@ operator = Operator('Jesus');
 UTM.S_Registry.regNewOperator(operator);
 
 %Registramos los drones, los anade a Gazebo
-numDrones = 5;
+numDrones = 30;
 drone = Drone.empty(0,5);
 for i=1:numDrones
     drone(i) = Drone('DJI Phantom', [i i 1]);

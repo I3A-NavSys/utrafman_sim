@@ -79,7 +79,8 @@ classdef UTMAirspace < handle
                 drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_sub_odometry, "Topic", "/drone/"+drone.droneId+"/odometry");
                 drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_sub_fp_request, "Topic", "/drone/"+drone.droneId+"/flightPlans/request");
                 drone.SimulationInput = drone.SimulationInput.setBlockParameter(sim_pub_fp_response, "Topic", "/drone/"+drone.droneId+"/flightPlans/response");
-                
+                %drone.SimulationInput.PreSimFcn = @(obj,i)obj.InitRandom(i);
+
                 %Asignamos sus datos
                 drone.SimulationInput = drone.SimulationInput.setVariable('drone', drone);
                 
@@ -88,13 +89,16 @@ classdef UTMAirspace < handle
                 SimulationsInputs(drone.droneId) = drone.SimulationInput;
             end
             warning('off','shared_robotics:robotutils:common:SavedObjectInvalid');
-            parsim(SimulationsInputs, 'RunInBackground','on','ShowSimulationManager','on', 'SetupFcn', @obj.InitRandom);
+            parsim(SimulationsInputs, 'RunInBackground','on','ShowSimulationManager','on', 'SetupFcn', @(~) rng(drone.droneId));
         end
+    end
 
-         function InitRandom(obj)
+    methods(Static)
+         function InitRandom()
             %Para que cada vez que se genere un worker se levante
             %con un número aleatorio en el nombre
-            rng('shuffle');
+            %rng('shuffle');
+            rng(drone.droneId);
         end
     end
 end
