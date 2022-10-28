@@ -1,6 +1,8 @@
 classdef Drone < handle
 
     properties
+        UTM
+
         droneId
         model
         operator
@@ -10,6 +12,7 @@ classdef Drone < handle
 
         initLoc
         loc
+        locs
 
         droneModel
         sdf
@@ -28,9 +31,11 @@ classdef Drone < handle
     end
     
     methods
-        function obj = Drone(model, initLoc)
+        function obj = Drone(utm, model, initLoc)
+            obj.UTM = utm;
             obj.model = model;
             obj.initLoc = initLoc;
+            obj.locs = [0 0 0 0];
         end
 
         %Generate SDF model to be used in Gazebo
@@ -60,7 +65,7 @@ classdef Drone < handle
             rospublisher(sprintf('/drone/%d/flightPlans/response', obj.droneId), "siam_main/FlightPlan");
             obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/flightPlans/request', obj.droneId), "siam_main/FlightPlan");
             obj.ros_flightPlans_sub = rossubscriber(sprintf('/drone/%d/flightPlans/response', obj.droneId));
-            obj.timer_Upd_Status = timer("Period", 5, "TimerFcn", @obj.updateStatus,"ExecutionMode","fixedRate");
+            obj.timer_Upd_Status = timer("Period", 2, "TimerFcn", @obj.updateStatus,"ExecutionMode","fixedRate");
             start(obj.timer_Upd_Status);
         end
 
@@ -69,6 +74,7 @@ classdef Drone < handle
             [obj.ros_Telemetry_msg, status] = receive(obj.ros_Telemetry_sub, 0.2);
             if status
                 obj.loc = [obj.ros_Telemetry_msg.Pose.Position.X obj.ros_Telemetry_msg.Pose.Position.Y obj.ros_Telemetry_msg.Pose.Position.Z];
+                obj.locs(end+1,:) = [obj.UTM.Gclock obj.ros_Telemetry_msg.Pose.Position.X obj.ros_Telemetry_msg.Pose.Position.Y obj.ros_Telemetry_msg.Pose.Position.Z];
             end
         end
 

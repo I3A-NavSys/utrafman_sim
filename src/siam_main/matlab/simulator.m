@@ -17,10 +17,10 @@ operator = Operator('Jesus');
 UTM.S_Registry.regNewOperator(operator);
 
 %Registramos los drones, los anade a Gazebo
-numDrones = 30;
+numDrones = 3;
 drone = Drone.empty(0,5);
 for i=1:numDrones
-    drone(i) = Drone('DJI Phantom', [i i 1]);
+    drone(i) = Drone(UTM,'DJI Phantom', [i i 1]);
     operator.regNewDrone(drone(i));
     UTM.S_Registry.regNewDrone(drone(i));
 end
