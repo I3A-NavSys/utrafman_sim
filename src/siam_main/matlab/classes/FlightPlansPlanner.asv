@@ -1,0 +1,46 @@
+%Entidad que planifica los vuelos en el espacio aéreo, correspondiente con
+%el bloque "Drone Operation Planning"
+
+classdef FlightPlansPlanner < handle
+    
+    properties
+        UTM
+        timer_flightPlansExecuter
+        lastExecuted_flightPlanId = 1;
+    end
+    
+    methods
+        function obj = FlightPlansPlanner(UTM)
+           obj.UTM = UTM;
+           obj.timer_flightPlansExecuter = timer("TimerFcn", @obj.fpsScheduler,"ExecutionMode","fixedRate");
+           start(obj.timer_flightPlansExecuter);
+        end
+
+        function obj = fpsScheduler(obj, timer, time)
+            if isempty(obj.UTM.GClock)
+                return;
+            end
+            time = obj.UTM.GClock;
+            fps = obj.UTM.S_Registry.flightPlans;
+            if 
+            i = 1;
+            while fps(i).dtto < time
+                i = i+1;
+                fp = fps(i);
+                if fp.status == 2
+                    continue;
+                end
+                drone = obj.UTM.S_Registry.drones(fp.drone.droneId);
+                if ~isempty(drone.flightPlan)
+                    continue;
+                end
+                %Asignamos el plan de vuelo
+                drone.flightPlan = fp;
+                %Lo enviamos por el topico
+                send(drone.ros_flightPlans_pub,fp.parseToROSMessage())
+            end
+
+        end
+    end
+end
+
