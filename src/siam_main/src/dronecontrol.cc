@@ -8,12 +8,16 @@
 #include <gazebo/common/common.hh>
 
 #include <gazebo_msgs/ModelState.h>
+
 #include <geometry_msgs/Pose.h>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
 #include <stdio.h>
+
+//Custom messaes
+#include "siam_main/FlightPlan.h"
 
 namespace gazebo
 {
@@ -32,7 +36,6 @@ class DroneControl : public ModelPlugin
    // Margen de velocidad de los motores
 private:
    const double w_max = 1.5708e+03; // rad/s = 15000rpm
-private:
    const double w_min = 0; // rad/s =     0rpm
 
    /* Fuerza de empuje aerodinamico
@@ -69,8 +72,6 @@ private:
        por tanto queda que...  */
 private:
    const double kFDx = 0.6350;
-
-private:
    const double kFDy = 0.6350;
 
    /* Eje vertical:
@@ -105,8 +106,6 @@ private:
        por tanto queda que...  */
 private:
    const double kMDx = 0.0621;
-
-private:
    const double kMDy = 0.0621;
 
    /* Eje vertical:
@@ -125,79 +124,56 @@ private:
 private:
    const double kMDz = 0.0039;
 
-   // Pointers to the model
+//-------------------------------------
+
+   // Pointers to the model and the link
 private:
    physics::ModelPtr model;
-
-private:
    physics::LinkPtr link;
 
    // Pointer to the update event connection
-private:
    event::ConnectionPtr updateConnection;
 
-   // ROS management
-private:
-   ros::NodeHandle *rosnode_;
+   // To be eliminated ///////////////////////
+   // ros::NodeHandle *rosnode_; //ROS node used
+   // ros::Publisher pub_; // Odometry publisher
+   //ros::Subscriber sub_; //Control subscriber
+   //std::string topic_subscripted_ = "bus_command";
+   //ros::CallbackQueue queue_;
+   //boost::thread callback_queue_thread_;
+    // //////////////////////////////////////////
 
-   // Odometry publisher
-private:
-   ros::Publisher pub_;
-
-private:
    common::Time last_odom_publish_time;
-
-private:
    double odom_publish_rate = 10; // updates per second
 
-   // Control subscriber
-private:
-   ros::Subscriber sub_;
+   //ROS connection
+   ros::NodeHandle *ros_node;
+   ros::Subscriber ros_sub_uplans;
+   ros::Publisher ros_pub_telemetry;
+   ros::CallbackQueue ros_queue;
+   ros::AsyncSpinner ros_spinner = ros::AsyncSpinner(1,&this->ros_queue);
 
-private:
-   std::string topic_subscripted_ = "bus_command";
+   //Topic strcutures
+   std::string uplans_topic = "uplan";
+   std::string telemetry_topic = "telemetry";
 
-private:
-   ros::CallbackQueue queue_;
-
-private:
-   boost::thread callback_queue_thread_;
-
-private:
+   // Command controls
    double cmd_on = 0;
-
-private:
    double cmd_velX = 0.0;
-
-private:
    double cmd_velY = 0.0;
-
-private:
    double cmd_velZ = 0.0;
-
-private:
    double cmd_rotZ = 0.0;
 
    // Control matrices
-private:
    Eigen::Matrix<double, 8, 1> x; // model state
-private:
    Eigen::Matrix<double, 4, 1> y; // model output
-private:
    Eigen::Matrix<double, 4, 8> Kx; // state control matrix
-private:
    Eigen::Matrix<double, 4, 4> Ky; // error control matrix
-private:
    Eigen::Matrix<double, 4, 1> Hs; // hovering speed
-private:
    Eigen::Matrix<double, 4, 1> Wr; // rotors speeds
-private:
    Eigen::Matrix<double, 4, 1> r; // model reference
-private:
    Eigen::Matrix<double, 4, 1> e; // model error
-private:
    Eigen::Matrix<double, 4, 1> E; // model acumulated error
-private:
    common::Time prev_iteration_time; // Time to integrate the acumulated error
 
    ////////////////////////////////////////////////////////
@@ -205,16 +181,10 @@ public:
    void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
    {
       //    _sdf->PrintValues("\n\n\n");
-
        /*_sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin")->FindElement("robotNamespace")->GetValue()->SetFromString("quadcopter1");
-
        _sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin")->Update();
-
        std::cout << _sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin")->FindElement("robotNamespace")->ToString("") << std::endl;
-
        _parent->UpdateParameters(_sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin"));*/
-
-
 
       // Store pointers to the model
       this->model = _parent;
@@ -231,7 +201,7 @@ public:
          return;
       }
 
-      // Configure a ROS node
+      // Getting Drone ID
        std::string id;
 
        if(!_sdf->HasElement("id")){
@@ -239,26 +209,39 @@ public:
           id = "1";
       } else {
           id = _sdf->GetElement("id")->GetValue()->GetAsString();
-          std::cout << "ID del drone introducido" << std::endl;
+          //std::cout << "ID del drone introducido" << std::endl;
       }
 
-      this->rosnode_ = new ros::NodeHandle("drone/"+id);
+       //Creating a ROS Node
+      this->ros_node = new ros::NodeHandle("drone/"+id);
 
       // Initiates the publication topic
-      this->pub_ = this->rosnode_->advertise<gazebo_msgs::ModelState>("odometry", 10);
+      this->ros_pub_telemetry = this->ros_node->advertise<gazebo_msgs::ModelState>(this->telemetry_topic, 10);
       last_odom_publish_time = model->GetWorld()->SimTime();
 
-      // Initiates the subcripted topic
+      // Initiates the subcripted topics
+        //To be eliminated
+        /*  ros::SubscribeOptions so = ros::SubscribeOptions::create<geometry_msgs::Pose>(
+              topic_subscripted_,
+              1000,
+              boost::bind(&DroneControl::busCommandCallBack, this, _1),
+              ros::VoidPtr(),
+              &this->queue_);
+          this->ros_s= this->ros_node->subscribe(so); */
 
-      ros::SubscribeOptions so = ros::SubscribeOptions::create<geometry_msgs::Pose>(
-          topic_subscripted_,
+        /*
+          this->callback_queue_thread_ =
+              boost::thread(boost::bind(&DroneControl::QueueThread, this));*/
+
+      ros::SubscribeOptions so2 = ros::SubscribeOptions::create<siam_main::FlightPlan>(
+          this->uplans_topic,
           1000,
-          boost::bind(&DroneControl::busCommandCallBack, this, _1),
-          ros::VoidPtr(), &this->queue_);
-      this->sub_ = this->rosnode_->subscribe(so);
-      this->callback_queue_thread_ =
-          boost::thread(boost::bind(&DroneControl::QueueThread, this));
+          boost::bind(&DroneControl::Uplans_topic_callback, this, _1),
+          ros::VoidPtr(),
+          &this->ros_queue);
+      this->ros_sub_uplans = this->ros_node->subscribe(so2);
 
+      this->ros_spinner.start();
       /*
       // Initiates control matrices
       Kx << -178.5366, -178.5366, -21.9430, -21.9430,  55.6290, -64.9335,  64.9335,  285.3230,
@@ -300,13 +283,13 @@ public:
 
    ////////////////////////////////////////////////////////
 public:
+    //To be eliminated
    void busCommandCallBack(const geometry_msgs::Pose::ConstPtr &msg)
    {
-
       /* Ejemplos de scripts para monitorizar los topic
            $ rostopic pub -v -1 /quadcopter/bus_command geometry_msgs/Pose '{position: {x: 1}, orientation: {x: 1, y: 2, z: 3, w: 4} }'
            $ rostopic pub -v -1 /quadcopter/odometry gazebo_msgs/ModelState '{ pose: { position: {x: 11, y: 2, z: 3}, orientation: { x: 1, y: 2, z: 3, w: 4} }, twist: { linear: { x: '21', y: '2', z: '3' }, angular: { x: 1, y:  22, z:  3} } }'
-        */
+      */
 
       // Capturamos el comando del topic
       cmd_on = msg->position.x;
@@ -547,7 +530,7 @@ public:
          msg.twist.angular.y = angular_vel.Y(); // bWy
          msg.twist.angular.z = angular_vel.Z(); // bWz
 
-         pub_.publish(msg);
+          ros_pub_telemetry.publish(msg);
 
          last_odom_publish_time = current_time;
       }
@@ -556,16 +539,21 @@ public:
    // Custom Callback Queue
    ////////////////////////////////////////////////////////////////////////////////
    // custom callback queue thread
-   void QueueThread()
+   /*void QueueThread()
    {
       static const double timeout = 0.05;
 
-      while (this->rosnode_->ok())
+      while (this->ros_node->ok())
       {
          this->queue_.callAvailable(ros::WallDuration(timeout));
       }
+   }*/
+
+   void Uplans_topic_callback(const siam_main::FlightPlan::ConstPtr &msg){
+       ROS_INFO("Received flight plan");
    }
 };
+
 
 // Register this plugin with the simulator
 GZ_REGISTER_MODEL_PLUGIN(DroneControl)

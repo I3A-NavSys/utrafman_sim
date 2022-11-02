@@ -21,18 +21,13 @@ namespace gazebo
             //Puntero al mundo
             physics::WorldPtr parent;
 
-            //Manejadores de ROS/////////////////////
+            //ROS
             //Nodo de ROS
-            //std::unique_ptr<ros::NodeHandle> rosNode;
             ros::NodeHandle *rosNode;
 
             //Suscriptores
             ros::Subscriber rosSub_insert;
             ros::Subscriber rosSub_remove;
-
-            //Suscriptores para crear drones
-            //ros::Subscriber rosSub_insert_drone;
-            //ros::Subscriber rosSub_remove_drone;
 
             //Cola de mensajes
             ros::CallbackQueue rosQueue;
@@ -45,16 +40,15 @@ namespace gazebo
             //Handle para la insercion de modelos por cada uno de los mensajes en el topico
             void insertModel(const std_msgs::String::ConstPtr& msg)
             {
-                //ROS_INFO("Añadiendo drone con SDF [%s]", msg->data.c_str())
+                //Modelo SDF y puntero al modelo
                 sdf::SDF sdf_object;
                 sdf::ElementPtr model_ptr;
 
                 //Establecemos el SDF del modelo con el contenido del mensaje del topico
                 sdf_object.SetFromString(msg->data.c_str());
 
-                //Obtenemos el modelo insertado y cambiamos el nombre (no se hace de momento)
+                //Obtenemos el modelo insertado y cambiamos el nombre
                 model_ptr = sdf_object.Root()->GetElement("model");
-                //model_ptr->GetAttribute("name")->SetFromString("drone-" + std::to_string(this->drones));
 
                 //Aumentamos el contador de drones
                 this->drones++;
@@ -67,9 +61,9 @@ namespace gazebo
 
             void removeModel(const std_msgs::String::ConstPtr& msg)
             {
-                ROS_INFO("Elimando drone_%s a traves del topico", msg->data.c_str());
+                ROS_INFO("Elimando drone_%s", msg->data.c_str());
                 //Eliminamos el modelo con el nombre indicado
-                //this->parent->RemoveModel("drone_" + std::string(msg->data.c_str()));
+                //this->parent->RemoveModel("drone_" + std::string(msg->data.c_str())); //Esta implementacion no funciona (hay que liberar los recursos antes)
                 this->parent->ModelByName("drone_" + std::string(msg->data.c_str()))->Fini();
             }
 
@@ -79,9 +73,9 @@ namespace gazebo
                 //Almacenamos el puntero al elemento padre del mundo
                 this->parent = _parent;
 
-                //Para cargar un elemento de forma dinamica cuando se inicia la simulacion
+                    //Para cargar un elemento de forma dinamica cuando se inicia la simulacion
                     //Reservamos espacio para los modelos
-                    sdf::SDF box[N_SPHERES];
+                    /*sdf::SDF box[N_SPHERES];
                     sdf::ElementPtr model[N_SPHERES];
 
                     //Leemos el fichero con la plantilla del SDF del modelo
@@ -113,7 +107,7 @@ namespace gazebo
 
                     //Informamos de que se ha terminado de cargar los modelos
                     ROS_INFO("Finalizado");
-                //-----------------------------------------------------------
+                //-----------------------------------------------------------*/
 
                 //Comprobamos si ROS ha sido inicializado, y lo iniciamos si no es asi
                 if (ros::isInitialized()){

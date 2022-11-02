@@ -3,6 +3,6 @@ prefix=/usr/local
 Name: siam_main
 Description: Description of siam_main
 Version: 0.0.0
-Cflags: 
+Cflags: -I${prefix}/include
 Libs: -L${prefix}/lib 
-Requires: 
+Requires: message_runtime
