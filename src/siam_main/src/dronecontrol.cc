@@ -1,4 +1,5 @@
 #include <boost/bind.hpp>
+
 #include "ros/ros.h"
 #include "ros/subscribe_options.h"
 #include "ros/callback_queue.h"
@@ -16,7 +17,9 @@
 
 #include <stdio.h>
 
-//Custom messaes
+#include <cmath>
+
+//Custom messages
 #include "siam_main/FlightPlan.h"
 
 namespace gazebo
@@ -143,6 +146,7 @@ private:
    //boost::thread callback_queue_thread_;
     // //////////////////////////////////////////
 
+    //Needed to control telemetry publish
    common::Time last_odom_publish_time;
    double odom_publish_rate = 10; // updates per second
 
@@ -157,7 +161,16 @@ private:
    std::string uplans_topic = "uplan";
    std::string telemetry_topic = "telemetry";
 
-   // Command controls
+   //Drone and U-plan
+   std::string id;
+   bool uplan_inprogress = false;
+   siam_main::FlightPlan::ConstPtr uplan_local;
+   std::vector<geometry_msgs::Point> route_local;
+
+   //To control navigation
+   int actual_route_point;
+
+   // Control commands
    double cmd_on = 0;
    double cmd_velX = 0.0;
    double cmd_velY = 0.0;
@@ -202,18 +215,18 @@ public:
       }
 
       // Getting Drone ID
-       std::string id;
+       //std::string id;
 
        if(!_sdf->HasElement("id")){
-          std::cout << "Missing parameter <id> in PluginCall, default to 1" << std::endl;
-          id = "1";
+          std::cout << "Missing parameter <id> in PluginCall, default to 0" << std::endl;
+          this->id = "0";
       } else {
-          id = _sdf->GetElement("id")->GetValue()->GetAsString();
+          this->id = _sdf->GetElement("id")->GetValue()->GetAsString();
           //std::cout << "ID del drone introducido" << std::endl;
       }
 
        //Creating a ROS Node
-      this->ros_node = new ros::NodeHandle("drone/"+id);
+      this->ros_node = new ros::NodeHandle("drone/"+this->id);
 
       // Initiates the publication topic
       this->ros_pub_telemetry = this->ros_node->advertise<gazebo_msgs::ModelState>(this->telemetry_topic, 10);
@@ -281,8 +294,6 @@ public:
       //    std::cout  << E  << " \n\n";
    }
 
-   ////////////////////////////////////////////////////////
-public:
     //To be eliminated
    void busCommandCallBack(const geometry_msgs::Pose::ConstPtr &msg)
    {
@@ -322,12 +333,9 @@ public:
  //            cmd_on, cmd_velX, cmd_velY, cmd_velZ, cmd_rotZ);
    }
 
-   ////////////////////////////////////////////////////////
    // Called by the world update start event
-public:
    void OnUpdate(const common::UpdateInfo & /*_info*/)
    {
-
       // Tiempo desde la ultima iteracion
       common::Time current_time = model->GetWorld()->SimTime();
       if (current_time < prev_iteration_time)
@@ -350,6 +358,66 @@ public:
       //printf("drone vel xyz = %.2f,%.2f,%.2f \n", linear_vel.X(), linear_vel.Y(), linear_vel.Z());
       ignition::math::Vector3<double> angular_vel = model->RelativeAngularVel();
       //printf("drone angular vel xyz = %.2f,%.2f,%.2f \n", angular_vel.X(), angular_vel.Y(), angular_vel.Z());
+
+
+      //High level control
+      if (uplan_inprogress && (current_time > uplan_local->dtto)){
+          //Rotors on
+          cmd_on = 1.0;
+
+          //Get target waypoint and positions
+          geometry_msgs::Point target_waypoint = route_local[actual_route_point];
+          ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x, target_waypoint.y, target_waypoint.z);
+          ignition::math::Vector2<double> target_way_vector2d = ignition::math::Vector2d(target_waypoint.x, target_waypoint.y);
+
+          //Get distance to target waypoint
+          double d3d = target_way_vector3d.Distance(pose.Pos());
+          double d2d = target_way_vector2d.Distance(ignition::math::Vector2d(pose.Pos().X(),pose.Pos().Y()));
+
+          //Print out distance
+          //std::cout << "Distance 3D: " << d3d << "\nDistance 2D: " << d2d <<"\n";
+
+          //Angle between drone heading and target
+          double bearing = atan2(target_way_vector3d.Y()-pose.Pos().Y(),target_way_vector3d.X()-pose.Pos().X()) - pose_rot.Z();
+
+          //Target distance descomposed in body axes
+          double dx = d2d * cos(bearing);
+          double dy = d2d * sin(bearing);
+          double dz = target_way_vector3d.Z() - pose.Pos().Z();
+
+          //Normalize the vector
+          ignition::math::Vector3<double> vel_vector = ignition::math::Vector3d(dx,dy,dz);
+          double norm = vel_vector.Distance(0.0,0.0,0.0);
+          if (norm > 1.0){
+              dx = dx / norm;
+              dy = dy / norm;
+              dz = dz / norm;
+          }
+          //std::cout << "(" << (actual_route_point+1) << "," << route_local.size() << ") Velocity norm: " << norm << "(x: " << dx << "y: " << dy << "z: " << dz << ")\n";
+
+          cmd_velX = dx;
+          cmd_velY = dy;
+          cmd_velZ = dz;
+
+          //Change to the next waypoint
+          if (d3d < 0.1){
+              if (actual_route_point < (route_local.size()-1)) {
+                  actual_route_point++;
+                  std::cout << "Drone has reached waypoint " << (actual_route_point-1) << " and change to the waypoiny "
+                            << actual_route_point << std::endl;
+              } else {
+                  cmd_on = 0.0;
+                  cmd_velX = 0.0;
+                  cmd_velY = 0.0;
+                  cmd_velZ = 0.0;
+                  uplan_inprogress = false;
+                  actual_route_point = 0;
+                  std::cout << "Drone " << 0 << " has finished it U-plan" << std::endl;
+                  //exit(0);
+              }
+              //std::cout << 1;
+          }
+      }
 
       if (cmd_on)
       {
@@ -550,7 +618,27 @@ public:
    }*/
 
    void Uplans_topic_callback(const siam_main::FlightPlan::ConstPtr &msg){
-       ROS_INFO("Received flight plan");
+
+       //If the drone is following a U-plan, not interrupt it (at this moment).
+       if (this->uplan_inprogress){
+           ROS_INFO("New U-plan received for drone %s, but the drone is following its local U-plan", this->id.c_str());
+           return;
+       } else {
+       //Assign the U-plan and log a message
+           ROS_INFO("Received U-plan for drone %s", this->id.c_str());
+           this->uplan_local = msg;
+           this->actual_route_point = 0;
+           this->uplan_inprogress = true;
+
+           //Get route info
+           this->route_local = msg->route;
+           for(int i = 0; i < route_local.size(); i++){
+               std::cout << "Route point " << i << ":" << std::endl;
+               std::cout << route_local[i];
+           }
+           //ROS_INFO_STREAM(this->uplan_local->flightPlanId);
+           //ROS_INFO_STREAM(msg->flightPlanId)
+       }
    }
 };
 
