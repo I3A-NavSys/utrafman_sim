@@ -111,55 +111,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2786b3be-8b19-42b0-8bc6-ad10edc3e5bf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/siam_main/msg/Telemetry.msg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/siam_main/msg/Waypoint.msg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/CMakeRuleHashes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/CMakeFiles/CMakeRuleHashes.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/build/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/build/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/build/CMakeFiles/progress.marks" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/build/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/CXX.includecache" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/CXX.includecache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/depend.internal" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/depend.internal" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/progress.marks" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/progress.marks" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/siam_main/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/devel/lib/libDroneControl.so" beforeDir="false" afterPath="$PROJECT_DIR$/devel/lib/libDroneControl.so" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/cache-v2-cab19a99574487d0d73d.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/codemodel-v2-4706c7ac7decba49d723.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/directory-.-Debug-fffb53ff90ad041c6255.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/index-2022-11-02T09-50-46-0439.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-DroneControl-Debug-e54dd929f821ddadb88a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-_siam_main_generate_messages_check_deps_FlightPlan-Debug-c2cec69a750701dca856.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_gencpp-Debug-5eb603e2c4e173de00ba.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_generate_messages-Debug-1356d7c7822e874a2522.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_generate_messages_cpp-Debug-a8bc8d90645905b4170f.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_generate_messages_eus-Debug-f36d5434b4c49f51ddd4.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_generate_messages_lisp-Debug-455972129107a3d0081a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_generate_messages_nodejs-Debug-1d20b65e3656f781bcdd.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_generate_messages_py-Debug-82775b6cadf272b8e07b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_geneus-Debug-569af2ce537b12460417.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_genlisp-Debug-7d3c40e0a686d726611a.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_gennodejs-Debug-be6d6f24320540b54a7b.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/.cmake/api/v1/reply/target-siam_main_genpy-Debug-96685088b8d84cdef7b0.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/build.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/catkin_generated/installspace/siam_main-msg-extras.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/catkin_generated/installspace/siam_main-msg-extras.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/catkin_generated/siam_main-msg-extras.cmake.develspace.in" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/catkin_generated/siam_main-msg-extras.cmake.develspace.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/catkin_generated/siam_main-msg-extras.cmake.installspace.in" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/catkin_generated/siam_main-msg-extras.cmake.installspace.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/cmake/siam_main-genmsg-context.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/cmake/siam_main-genmsg-context.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/cmake/siam_main-genmsg.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/cmake/siam_main-genmsg.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/cmake_install.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/devel/share/siam_main/cmake/siam_main-msg-extras.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/devel/share/siam_main/cmake/siam_main-msg-extras.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/msg/FlightPlan.msg" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/msg/Uplan.msg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/siam_main/msg/Telemetry.msg" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/msg/Telemetry.msg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/src/dronecontrol.cc" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/src/dronecontrol.cc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -790,7 +748,7 @@
       <workItem from="1667382022273" duration="624000" />
       <workItem from="1667382938799" duration="4492000" />
       <workItem from="1667458059076" duration="16982000" />
-      <workItem from="1667545882217" duration="9337000" />
+      <workItem from="1667545882217" duration="10765000" />
     </task>
     <servers />
   </component>

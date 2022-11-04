@@ -628,6 +628,8 @@ public:
          //Waypoint in progress and flight plan in progress
          msg.wip = actual_route_point;
          msg.fpip = uplan_inprogress;
+         ros::Time actual_time = ros::Time(current_time.Double());
+         msg.time = actual_time;
 
          //Publish the message
          ros_pub_telemetry.publish(msg);
