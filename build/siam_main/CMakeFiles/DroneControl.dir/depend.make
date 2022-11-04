@@ -67,7 +67,9 @@ siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /opt/ros/noetic/inc
 siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /opt/ros/noetic/include/rosconsole/macros_generated.h
 siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
 siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h
-siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /opt/ros/noetic/share/siam_sim/devel/include/siam_main/FlightPlan.h
+siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /opt/ros/noetic/share/siam_sim/devel/include/siam_main/Telemetry.h
+siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /opt/ros/noetic/share/siam_sim/devel/include/siam_main/Uplan.h
+siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /opt/ros/noetic/share/siam_sim/devel/include/siam_main/Waypoint.h
 siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /opt/ros/noetic/share/siam_sim/src/siam_main/src/dronecontrol.cc
 siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /usr/include/eigen3/Eigen/Cholesky
 siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o: /usr/include/eigen3/Eigen/Core

@@ -20,7 +20,9 @@
 #include <cmath>
 
 //Custom messages
-#include "siam_main/FlightPlan.h"
+#include "siam_main/Telemetry.h"
+#include "siam_main/Waypoint.h"
+#include "siam_main/Uplan.h"
 
 namespace gazebo
 {
@@ -146,7 +148,7 @@ private:
    //boost::thread callback_queue_thread_;
     // //////////////////////////////////////////
 
-    //Needed to control telemetry publish
+   //Needed to control telemetry publish
    common::Time last_odom_publish_time;
    double odom_publish_rate = 10; // updates per second
 
@@ -163,9 +165,11 @@ private:
 
    //Drone and U-plan
    std::string id;
+   double v_h_max = 5.555;
+   double v_v_max = 3.0;
    bool uplan_inprogress = false;
-   siam_main::FlightPlan::ConstPtr uplan_local;
-   std::vector<geometry_msgs::Point> route_local;
+   siam_main::Uplan::ConstPtr uplan_local;
+   std::vector<siam_main::Waypoint> route_local;
 
    //To control navigation
    int actual_route_point;
@@ -229,7 +233,7 @@ public:
       this->ros_node = new ros::NodeHandle("drone/"+this->id);
 
       // Initiates the publication topic
-      this->ros_pub_telemetry = this->ros_node->advertise<gazebo_msgs::ModelState>(this->telemetry_topic, 10);
+      this->ros_pub_telemetry = this->ros_node->advertise<siam_main::Telemetry>(this->telemetry_topic, 100);
       last_odom_publish_time = model->GetWorld()->SimTime();
 
       // Initiates the subcripted topics
@@ -246,7 +250,7 @@ public:
           this->callback_queue_thread_ =
               boost::thread(boost::bind(&DroneControl::QueueThread, this));*/
 
-      ros::SubscribeOptions so2 = ros::SubscribeOptions::create<siam_main::FlightPlan>(
+      ros::SubscribeOptions so2 = ros::SubscribeOptions::create<siam_main::Uplan>(
           this->uplans_topic,
           1000,
           boost::bind(&DroneControl::Uplans_topic_callback, this, _1),
@@ -366,13 +370,16 @@ public:
           cmd_on = 1.0;
 
           //Get target waypoint and positions
-          geometry_msgs::Point target_waypoint = route_local[actual_route_point];
+          siam_main::Waypoint target_waypoint = route_local[actual_route_point];
           ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x, target_waypoint.y, target_waypoint.z);
           ignition::math::Vector2<double> target_way_vector2d = ignition::math::Vector2d(target_waypoint.x, target_waypoint.y);
 
           //Get distance to target waypoint
           double d3d = target_way_vector3d.Distance(pose.Pos());
           double d2d = target_way_vector2d.Distance(ignition::math::Vector2d(pose.Pos().X(),pose.Pos().Y()));
+
+          //Get time remaining to the waypoint
+          double ttrw = target_waypoint.t.sec - current_time.Double();
 
           //Print out distance
           //std::cout << "Distance 3D: " << d3d << "\nDistance 2D: " << d2d <<"\n";
@@ -385,40 +392,59 @@ public:
           double dy = d2d * sin(bearing);
           double dz = target_way_vector3d.Z() - pose.Pos().Z();
 
-          //Normalize the vector
-          ignition::math::Vector3<double> vel_vector = ignition::math::Vector3d(dx,dy,dz);
-          double norm = vel_vector.Distance(0.0,0.0,0.0);
-          if (norm > 1.0){
-              dx = dx / norm;
-              dy = dy / norm;
-              dz = dz / norm;
-          }
-          //std::cout << "(" << (actual_route_point+1) << "," << route_local.size() << ") Velocity norm: " << norm << "(x: " << dx << "y: " << dy << "z: " << dz << ")\n";
+          std::cout << "Distance WP: d2D: " << d2d << "  d3D: " << d3d << ")\n";
 
-          cmd_velX = dx;
-          cmd_velY = dy;
-          cmd_velZ = dz;
+          //If the time is negative, return to 0.1
+          if(ttrw <= 0){
+              ttrw = 0.1;
+          }
+
+          //Velocities depending on ttrw
+          double vx = (dx/ttrw)/v_h_max;
+          double vy = (dy/ttrw)/v_h_max;
+          double vz = (dz/ttrw)/v_v_max;
+
+          //Normalize the vector
+          ignition::math::Vector2<double> vel_h_vector = ignition::math::Vector2d(vx,vy);
+          double norm_vel_h = vel_h_vector.Distance(ignition::math::Vector2d(0,0));
+
+          //Normalize horizontal velocity
+          if (norm_vel_h > 1.0){
+              vx = vx / norm_vel_h;
+              vy = vy / norm_vel_h;
+          }
+          //Normalize vertical velocity
+          if (vz > 1.0){
+              vz = 1.0;
+          }
+          std::cout << "(" << (actual_route_point+1) << "," << route_local.size() << ") Velocity norm: " << norm_vel_h << "(x: " << vx << "  y: " << vy << "  z: " << vz << ")\n";
+
+          cmd_velX = vx;
+          cmd_velY = vy;
+          cmd_velZ = vz;
 
           //Change to the next waypoint
-          if (d3d < 0.1){
-              if (actual_route_point < (route_local.size()-1)) {
-                  actual_route_point++;
-                  std::cout << "Drone has reached waypoint " << (actual_route_point-1) << " and change to the waypoiny "
-                            << actual_route_point << std::endl;
-              } else {
-                  cmd_on = 0.0;
-                  cmd_velX = 0.0;
-                  cmd_velY = 0.0;
-                  cmd_velZ = 0.0;
-                  uplan_inprogress = false;
-                  actual_route_point = 0;
-                  std::cout << "Drone " << 0 << " has finished it U-plan" << std::endl;
-                  //exit(0);
+          if (d3d < target_waypoint.r){
+              if (current_time >= target_waypoint.t.sec) {
+                  if (actual_route_point < (route_local.size() - 1)) {
+                      actual_route_point++;
+                      std::cout << "Drone has reached waypoint " << (actual_route_point - 1)
+                                << " and change to the waypoiny "
+                                << actual_route_point << std::endl;
+                  } else {
+                      cmd_on = 0.0;
+                      cmd_velX = 0.0;
+                      cmd_velY = 0.0;
+                      cmd_velZ = 0.0;
+                      uplan_inprogress = false;
+                      actual_route_point = 0;
+                      std::cout << "Drone " << 0 << " has finished it U-plan" << std::endl;
+                  }
               }
-              //std::cout << 1;
           }
       }
 
+      //Low level control
       if (cmd_on)
       {
 
@@ -578,28 +604,35 @@ public:
           //Publish odometry to topic
          //      printf("Publishing odometry--------------\n");
 
-         gazebo_msgs::ModelState msg;
-         msg.model_name = "quadcopter";
-
+         siam_main::Telemetry msg;
+         //msg.model_name = "quadcopter";
+         //Position in the space
          msg.pose.position.x = pose.Pos().X(); // eX
          msg.pose.position.y = pose.Pos().Y(); // eY
          msg.pose.position.z = pose.Pos().Z(); // eZ
-
+         //Rotation in the space
          msg.pose.orientation.w = 0;
          msg.pose.orientation.x = pose_rot.X(); // ePhi
          msg.pose.orientation.y = pose_rot.Y(); // eTheta
          msg.pose.orientation.z = pose_rot.Z(); // ePsi
 
-         msg.twist.linear.x = linear_vel.X(); // bXdot
-         msg.twist.linear.y = linear_vel.Y(); // bYdot
-         msg.twist.linear.z = linear_vel.Z(); // bZdot
+         //Lineal aceleration
+         msg.velocity.linear.x = linear_vel.X(); // bXdot
+         msg.velocity.linear.y = linear_vel.Y(); // bYdot
+         msg.velocity.linear.z = linear_vel.Z(); // bZdot
+         //Angular velocity
+         msg.velocity.angular.x = angular_vel.X(); // bWx
+         msg.velocity.angular.y = angular_vel.Y(); // bWy
+         msg.velocity.angular.z = angular_vel.Z(); // bWz
 
-         msg.twist.angular.x = angular_vel.X(); // bWx
-         msg.twist.angular.y = angular_vel.Y(); // bWy
-         msg.twist.angular.z = angular_vel.Z(); // bWz
+         //Waypoint in progress and flight plan in progress
+         msg.wip = actual_route_point;
+         msg.fpip = uplan_inprogress;
 
-          ros_pub_telemetry.publish(msg);
+         //Publish the message
+         ros_pub_telemetry.publish(msg);
 
+         //Remmeber the last pub time
          last_odom_publish_time = current_time;
       }
    }
@@ -617,7 +650,7 @@ public:
       }
    }*/
 
-   void Uplans_topic_callback(const siam_main::FlightPlan::ConstPtr &msg){
+   void Uplans_topic_callback(const siam_main::Uplan::ConstPtr &msg){
 
        //If the drone is following a U-plan, not interrupt it (at this moment).
        if (this->uplan_inprogress){

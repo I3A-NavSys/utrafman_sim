@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
-messages_str = "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg"
+messages_str = "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg;/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg;/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg"
 services_str = ""
 pkg_name = "siam_main"
 dependencies_str = "std_msgs;geometry_msgs"

@@ -517,15 +517,27 @@ build siam_main_generate_messages: phony siam_main_generate_messages_cpp siam_ma
 
 
 #############################################
-# Utility command for _siam_main_generate_messages_check_deps_FlightPlan
+# Utility command for _siam_main_generate_messages_check_deps_Telemetry
 
-build _siam_main_generate_messages_check_deps_FlightPlan: phony CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan
+build _siam_main_generate_messages_check_deps_Telemetry: phony CMakeFiles/_siam_main_generate_messages_check_deps_Telemetry
+
+
+#############################################
+# Utility command for _siam_main_generate_messages_check_deps_Waypoint
+
+build _siam_main_generate_messages_check_deps_Waypoint: phony CMakeFiles/_siam_main_generate_messages_check_deps_Waypoint
+
+
+#############################################
+# Utility command for _siam_main_generate_messages_check_deps_Uplan
+
+build _siam_main_generate_messages_check_deps_Uplan: phony CMakeFiles/_siam_main_generate_messages_check_deps_Uplan
 
 
 #############################################
 # Utility command for siam_main_generate_messages_cpp
 
-build siam_main_generate_messages_cpp: phony CMakeFiles/siam_main_generate_messages_cpp devel/include/siam_main/FlightPlan.h _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_cpp std_msgs_generate_messages_cpp
+build siam_main_generate_messages_cpp: phony CMakeFiles/siam_main_generate_messages_cpp devel/include/siam_main/Telemetry.h devel/include/siam_main/Uplan.h devel/include/siam_main/Waypoint.h _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_cpp std_msgs_generate_messages_cpp
 
 
 #############################################
@@ -537,7 +549,7 @@ build siam_main_gencpp: phony siam_main_generate_messages_cpp
 #############################################
 # Utility command for siam_main_generate_messages_eus
 
-build siam_main_generate_messages_eus: phony CMakeFiles/siam_main_generate_messages_eus devel/share/roseus/ros/siam_main/manifest.l devel/share/roseus/ros/siam_main/msg/FlightPlan.l _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
+build siam_main_generate_messages_eus: phony CMakeFiles/siam_main_generate_messages_eus devel/share/roseus/ros/siam_main/manifest.l devel/share/roseus/ros/siam_main/msg/Telemetry.l devel/share/roseus/ros/siam_main/msg/Uplan.l devel/share/roseus/ros/siam_main/msg/Waypoint.l _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
 
 
 #############################################
@@ -549,7 +561,7 @@ build siam_main_geneus: phony siam_main_generate_messages_eus
 #############################################
 # Utility command for siam_main_generate_messages_lisp
 
-build siam_main_generate_messages_lisp: phony CMakeFiles/siam_main_generate_messages_lisp devel/share/common-lisp/ros/siam_main/msg/FlightPlan.lisp _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_lisp std_msgs_generate_messages_lisp
+build siam_main_generate_messages_lisp: phony CMakeFiles/siam_main_generate_messages_lisp devel/share/common-lisp/ros/siam_main/msg/Telemetry.lisp devel/share/common-lisp/ros/siam_main/msg/Uplan.lisp devel/share/common-lisp/ros/siam_main/msg/Waypoint.lisp _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_lisp std_msgs_generate_messages_lisp
 
 
 #############################################
@@ -561,7 +573,7 @@ build siam_main_genlisp: phony siam_main_generate_messages_lisp
 #############################################
 # Utility command for siam_main_generate_messages_nodejs
 
-build siam_main_generate_messages_nodejs: phony CMakeFiles/siam_main_generate_messages_nodejs devel/share/gennodejs/ros/siam_main/msg/FlightPlan.js _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_nodejs std_msgs_generate_messages_nodejs
+build siam_main_generate_messages_nodejs: phony CMakeFiles/siam_main_generate_messages_nodejs devel/share/gennodejs/ros/siam_main/msg/Telemetry.js devel/share/gennodejs/ros/siam_main/msg/Uplan.js devel/share/gennodejs/ros/siam_main/msg/Waypoint.js _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_nodejs std_msgs_generate_messages_nodejs
 
 
 #############################################
@@ -573,7 +585,7 @@ build siam_main_gennodejs: phony siam_main_generate_messages_nodejs
 #############################################
 # Utility command for siam_main_generate_messages_py
 
-build siam_main_generate_messages_py: phony CMakeFiles/siam_main_generate_messages_py devel/lib/python3/dist-packages/siam_main/msg/_FlightPlan.py devel/lib/python3/dist-packages/siam_main/msg/__init__.py _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_py std_msgs_generate_messages_py
+build siam_main_generate_messages_py: phony CMakeFiles/siam_main_generate_messages_py devel/lib/python3/dist-packages/siam_main/msg/_Telemetry.py devel/lib/python3/dist-packages/siam_main/msg/_Uplan.py devel/lib/python3/dist-packages/siam_main/msg/_Waypoint.py devel/lib/python3/dist-packages/siam_main/msg/__init__.py _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_py std_msgs_generate_messages_py
 
 
 #############################################
@@ -668,100 +680,204 @@ build CMakeFiles/clean_test_results | ${cmake_ninja_workdir}CMakeFiles/clean_tes
 
 
 #############################################
-# Custom command for CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan
+# Custom command for CMakeFiles/_siam_main_generate_messages_check_deps_Telemetry
 
-build CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan | ${cmake_ninja_workdir}CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan: CUSTOM_COMMAND
-  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py siam_main /opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg geometry_msgs/Point
+build CMakeFiles/_siam_main_generate_messages_check_deps_Telemetry | ${cmake_ninja_workdir}CMakeFiles/_siam_main_generate_messages_check_deps_Telemetry: CUSTOM_COMMAND
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py siam_main /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg geometry_msgs/Quaternion:geometry_msgs/Pose:geometry_msgs/Vector3:geometry_msgs/Twist:geometry_msgs/Point
+
+
+#############################################
+# Custom command for CMakeFiles/_siam_main_generate_messages_check_deps_Waypoint
+
+build CMakeFiles/_siam_main_generate_messages_check_deps_Waypoint | ${cmake_ninja_workdir}CMakeFiles/_siam_main_generate_messages_check_deps_Waypoint: CUSTOM_COMMAND
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py siam_main /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg
+
+
+#############################################
+# Custom command for CMakeFiles/_siam_main_generate_messages_check_deps_Uplan
+
+build CMakeFiles/_siam_main_generate_messages_check_deps_Uplan | ${cmake_ninja_workdir}CMakeFiles/_siam_main_generate_messages_check_deps_Uplan: CUSTOM_COMMAND
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genmsg/cmake/../../../lib/genmsg/genmsg_check_deps.py siam_main /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg siam_main/Waypoint
 
 
 #############################################
 # Phony custom command for CMakeFiles/siam_main_generate_messages_cpp
 
-build CMakeFiles/siam_main_generate_messages_cpp | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_cpp: phony devel/include/siam_main/FlightPlan.h || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_cpp std_msgs_generate_messages_cpp
+build CMakeFiles/siam_main_generate_messages_cpp | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_cpp: phony devel/include/siam_main/Telemetry.h devel/include/siam_main/Waypoint.h devel/include/siam_main/Uplan.h || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_cpp std_msgs_generate_messages_cpp
 
 
 #############################################
-# Custom command for devel/include/siam_main/FlightPlan.h
+# Custom command for devel/include/siam_main/Telemetry.h
 
-build devel/include/siam_main/FlightPlan.h | ${cmake_ninja_workdir}devel/include/siam_main/FlightPlan.h: CUSTOM_COMMAND /opt/ros/noetic/lib/gencpp/gen_cpp.py ../msg/FlightPlan.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg /opt/ros/noetic/share/gencpp/msg.h.template || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_cpp std_msgs_generate_messages_cpp
-  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/include/siam_main -e /opt/ros/noetic/share/gencpp/cmake/..
-  DESC = Generating C++ code from siam_main/FlightPlan.msg
+build devel/include/siam_main/Telemetry.h | ${cmake_ninja_workdir}devel/include/siam_main/Telemetry.h: CUSTOM_COMMAND /opt/ros/noetic/lib/gencpp/gen_cpp.py ../msg/Telemetry.msg /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg /opt/ros/noetic/share/geometry_msgs/msg/Twist.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg /opt/ros/noetic/share/gencpp/msg.h.template || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_cpp std_msgs_generate_messages_cpp
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/include/siam_main -e /opt/ros/noetic/share/gencpp/cmake/..
+  DESC = Generating C++ code from siam_main/Telemetry.msg
+  restat = 1
+
+
+#############################################
+# Custom command for devel/include/siam_main/Uplan.h
+
+build devel/include/siam_main/Uplan.h | ${cmake_ninja_workdir}devel/include/siam_main/Uplan.h: CUSTOM_COMMAND /opt/ros/noetic/lib/gencpp/gen_cpp.py ../msg/Uplan.msg ../msg/Waypoint.msg /opt/ros/noetic/share/gencpp/msg.h.template || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_cpp std_msgs_generate_messages_cpp
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/include/siam_main -e /opt/ros/noetic/share/gencpp/cmake/..
+  DESC = Generating C++ code from siam_main/Uplan.msg
+  restat = 1
+
+
+#############################################
+# Custom command for devel/include/siam_main/Waypoint.h
+
+build devel/include/siam_main/Waypoint.h | ${cmake_ninja_workdir}devel/include/siam_main/Waypoint.h: CUSTOM_COMMAND /opt/ros/noetic/lib/gencpp/gen_cpp.py ../msg/Waypoint.msg /opt/ros/noetic/share/gencpp/msg.h.template || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_cpp std_msgs_generate_messages_cpp
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/include/siam_main -e /opt/ros/noetic/share/gencpp/cmake/..
+  DESC = Generating C++ code from siam_main/Waypoint.msg
   restat = 1
 
 
 #############################################
 # Phony custom command for CMakeFiles/siam_main_generate_messages_eus
 
-build CMakeFiles/siam_main_generate_messages_eus | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_eus: phony devel/share/roseus/ros/siam_main/msg/FlightPlan.l devel/share/roseus/ros/siam_main/manifest.l || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
+build CMakeFiles/siam_main_generate_messages_eus | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_eus: phony devel/share/roseus/ros/siam_main/msg/Telemetry.l devel/share/roseus/ros/siam_main/msg/Waypoint.l devel/share/roseus/ros/siam_main/msg/Uplan.l devel/share/roseus/ros/siam_main/manifest.l || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
 
 
 #############################################
 # Custom command for devel/share/roseus/ros/siam_main/manifest.l
 
-build devel/share/roseus/ros/siam_main/manifest.l | ${cmake_ninja_workdir}devel/share/roseus/ros/siam_main/manifest.l: CUSTOM_COMMAND /opt/ros/noetic/lib/geneus/gen_eus.py || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
+build devel/share/roseus/ros/siam_main/manifest.l | ${cmake_ninja_workdir}devel/share/roseus/ros/siam_main/manifest.l: CUSTOM_COMMAND /opt/ros/noetic/lib/geneus/gen_eus.py || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
   COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py -m -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/roseus/ros/siam_main siam_main std_msgs geometry_msgs
   DESC = Generating EusLisp manifest code for siam_main
   restat = 1
 
 
 #############################################
-# Custom command for devel/share/roseus/ros/siam_main/msg/FlightPlan.l
+# Custom command for devel/share/roseus/ros/siam_main/msg/Telemetry.l
 
-build devel/share/roseus/ros/siam_main/msg/FlightPlan.l | ${cmake_ninja_workdir}devel/share/roseus/ros/siam_main/msg/FlightPlan.l: CUSTOM_COMMAND /opt/ros/noetic/lib/geneus/gen_eus.py ../msg/FlightPlan.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
-  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/roseus/ros/siam_main/msg
-  DESC = Generating EusLisp code from siam_main/FlightPlan.msg
+build devel/share/roseus/ros/siam_main/msg/Telemetry.l | ${cmake_ninja_workdir}devel/share/roseus/ros/siam_main/msg/Telemetry.l: CUSTOM_COMMAND /opt/ros/noetic/lib/geneus/gen_eus.py ../msg/Telemetry.msg /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg /opt/ros/noetic/share/geometry_msgs/msg/Twist.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/roseus/ros/siam_main/msg
+  DESC = Generating EusLisp code from siam_main/Telemetry.msg
+  restat = 1
+
+
+#############################################
+# Custom command for devel/share/roseus/ros/siam_main/msg/Uplan.l
+
+build devel/share/roseus/ros/siam_main/msg/Uplan.l | ${cmake_ninja_workdir}devel/share/roseus/ros/siam_main/msg/Uplan.l: CUSTOM_COMMAND /opt/ros/noetic/lib/geneus/gen_eus.py ../msg/Uplan.msg ../msg/Waypoint.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/roseus/ros/siam_main/msg
+  DESC = Generating EusLisp code from siam_main/Uplan.msg
+  restat = 1
+
+
+#############################################
+# Custom command for devel/share/roseus/ros/siam_main/msg/Waypoint.l
+
+build devel/share/roseus/ros/siam_main/msg/Waypoint.l | ${cmake_ninja_workdir}devel/share/roseus/ros/siam_main/msg/Waypoint.l: CUSTOM_COMMAND /opt/ros/noetic/lib/geneus/gen_eus.py ../msg/Waypoint.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_eus std_msgs_generate_messages_eus
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/roseus/ros/siam_main/msg
+  DESC = Generating EusLisp code from siam_main/Waypoint.msg
   restat = 1
 
 
 #############################################
 # Phony custom command for CMakeFiles/siam_main_generate_messages_lisp
 
-build CMakeFiles/siam_main_generate_messages_lisp | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_lisp: phony devel/share/common-lisp/ros/siam_main/msg/FlightPlan.lisp || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_lisp std_msgs_generate_messages_lisp
+build CMakeFiles/siam_main_generate_messages_lisp | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_lisp: phony devel/share/common-lisp/ros/siam_main/msg/Telemetry.lisp devel/share/common-lisp/ros/siam_main/msg/Waypoint.lisp devel/share/common-lisp/ros/siam_main/msg/Uplan.lisp || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_lisp std_msgs_generate_messages_lisp
 
 
 #############################################
-# Custom command for devel/share/common-lisp/ros/siam_main/msg/FlightPlan.lisp
+# Custom command for devel/share/common-lisp/ros/siam_main/msg/Telemetry.lisp
 
-build devel/share/common-lisp/ros/siam_main/msg/FlightPlan.lisp | ${cmake_ninja_workdir}devel/share/common-lisp/ros/siam_main/msg/FlightPlan.lisp: CUSTOM_COMMAND /opt/ros/noetic/lib/genlisp/gen_lisp.py ../msg/FlightPlan.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_lisp std_msgs_generate_messages_lisp
-  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/common-lisp/ros/siam_main/msg
-  DESC = Generating Lisp code from siam_main/FlightPlan.msg
+build devel/share/common-lisp/ros/siam_main/msg/Telemetry.lisp | ${cmake_ninja_workdir}devel/share/common-lisp/ros/siam_main/msg/Telemetry.lisp: CUSTOM_COMMAND /opt/ros/noetic/lib/genlisp/gen_lisp.py ../msg/Telemetry.msg /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg /opt/ros/noetic/share/geometry_msgs/msg/Twist.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_lisp std_msgs_generate_messages_lisp
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/common-lisp/ros/siam_main/msg
+  DESC = Generating Lisp code from siam_main/Telemetry.msg
+  restat = 1
+
+
+#############################################
+# Custom command for devel/share/common-lisp/ros/siam_main/msg/Uplan.lisp
+
+build devel/share/common-lisp/ros/siam_main/msg/Uplan.lisp | ${cmake_ninja_workdir}devel/share/common-lisp/ros/siam_main/msg/Uplan.lisp: CUSTOM_COMMAND /opt/ros/noetic/lib/genlisp/gen_lisp.py ../msg/Uplan.msg ../msg/Waypoint.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_lisp std_msgs_generate_messages_lisp
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/common-lisp/ros/siam_main/msg
+  DESC = Generating Lisp code from siam_main/Uplan.msg
+  restat = 1
+
+
+#############################################
+# Custom command for devel/share/common-lisp/ros/siam_main/msg/Waypoint.lisp
+
+build devel/share/common-lisp/ros/siam_main/msg/Waypoint.lisp | ${cmake_ninja_workdir}devel/share/common-lisp/ros/siam_main/msg/Waypoint.lisp: CUSTOM_COMMAND /opt/ros/noetic/lib/genlisp/gen_lisp.py ../msg/Waypoint.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_lisp std_msgs_generate_messages_lisp
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/common-lisp/ros/siam_main/msg
+  DESC = Generating Lisp code from siam_main/Waypoint.msg
   restat = 1
 
 
 #############################################
 # Phony custom command for CMakeFiles/siam_main_generate_messages_nodejs
 
-build CMakeFiles/siam_main_generate_messages_nodejs | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_nodejs: phony devel/share/gennodejs/ros/siam_main/msg/FlightPlan.js || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_nodejs std_msgs_generate_messages_nodejs
+build CMakeFiles/siam_main_generate_messages_nodejs | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_nodejs: phony devel/share/gennodejs/ros/siam_main/msg/Telemetry.js devel/share/gennodejs/ros/siam_main/msg/Waypoint.js devel/share/gennodejs/ros/siam_main/msg/Uplan.js || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_nodejs std_msgs_generate_messages_nodejs
 
 
 #############################################
-# Custom command for devel/share/gennodejs/ros/siam_main/msg/FlightPlan.js
+# Custom command for devel/share/gennodejs/ros/siam_main/msg/Telemetry.js
 
-build devel/share/gennodejs/ros/siam_main/msg/FlightPlan.js | ${cmake_ninja_workdir}devel/share/gennodejs/ros/siam_main/msg/FlightPlan.js: CUSTOM_COMMAND /opt/ros/noetic/lib/gennodejs/gen_nodejs.py ../msg/FlightPlan.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_nodejs std_msgs_generate_messages_nodejs
-  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/gennodejs/ros/siam_main/msg
-  DESC = Generating Javascript code from siam_main/FlightPlan.msg
+build devel/share/gennodejs/ros/siam_main/msg/Telemetry.js | ${cmake_ninja_workdir}devel/share/gennodejs/ros/siam_main/msg/Telemetry.js: CUSTOM_COMMAND /opt/ros/noetic/lib/gennodejs/gen_nodejs.py ../msg/Telemetry.msg /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg /opt/ros/noetic/share/geometry_msgs/msg/Twist.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_nodejs std_msgs_generate_messages_nodejs
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/gennodejs/ros/siam_main/msg
+  DESC = Generating Javascript code from siam_main/Telemetry.msg
+  restat = 1
+
+
+#############################################
+# Custom command for devel/share/gennodejs/ros/siam_main/msg/Uplan.js
+
+build devel/share/gennodejs/ros/siam_main/msg/Uplan.js | ${cmake_ninja_workdir}devel/share/gennodejs/ros/siam_main/msg/Uplan.js: CUSTOM_COMMAND /opt/ros/noetic/lib/gennodejs/gen_nodejs.py ../msg/Uplan.msg ../msg/Waypoint.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_nodejs std_msgs_generate_messages_nodejs
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/gennodejs/ros/siam_main/msg
+  DESC = Generating Javascript code from siam_main/Uplan.msg
+  restat = 1
+
+
+#############################################
+# Custom command for devel/share/gennodejs/ros/siam_main/msg/Waypoint.js
+
+build devel/share/gennodejs/ros/siam_main/msg/Waypoint.js | ${cmake_ninja_workdir}devel/share/gennodejs/ros/siam_main/msg/Waypoint.js: CUSTOM_COMMAND /opt/ros/noetic/lib/gennodejs/gen_nodejs.py ../msg/Waypoint.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_nodejs std_msgs_generate_messages_nodejs
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/share/gennodejs/ros/siam_main/msg
+  DESC = Generating Javascript code from siam_main/Waypoint.msg
   restat = 1
 
 
 #############################################
 # Phony custom command for CMakeFiles/siam_main_generate_messages_py
 
-build CMakeFiles/siam_main_generate_messages_py | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_py: phony devel/lib/python3/dist-packages/siam_main/msg/_FlightPlan.py devel/lib/python3/dist-packages/siam_main/msg/__init__.py || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_py std_msgs_generate_messages_py
+build CMakeFiles/siam_main_generate_messages_py | ${cmake_ninja_workdir}CMakeFiles/siam_main_generate_messages_py: phony devel/lib/python3/dist-packages/siam_main/msg/_Telemetry.py devel/lib/python3/dist-packages/siam_main/msg/_Waypoint.py devel/lib/python3/dist-packages/siam_main/msg/_Uplan.py devel/lib/python3/dist-packages/siam_main/msg/__init__.py || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_py std_msgs_generate_messages_py
 
 
 #############################################
-# Custom command for devel/lib/python3/dist-packages/siam_main/msg/_FlightPlan.py
+# Custom command for devel/lib/python3/dist-packages/siam_main/msg/_Telemetry.py
 
-build devel/lib/python3/dist-packages/siam_main/msg/_FlightPlan.py | ${cmake_ninja_workdir}devel/lib/python3/dist-packages/siam_main/msg/_FlightPlan.py: CUSTOM_COMMAND /opt/ros/noetic/lib/genpy/genmsg_py.py ../msg/FlightPlan.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_py std_msgs_generate_messages_py
-  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/lib/python3/dist-packages/siam_main/msg
-  DESC = Generating Python from MSG siam_main/FlightPlan
+build devel/lib/python3/dist-packages/siam_main/msg/_Telemetry.py | ${cmake_ninja_workdir}devel/lib/python3/dist-packages/siam_main/msg/_Telemetry.py: CUSTOM_COMMAND /opt/ros/noetic/lib/genpy/genmsg_py.py ../msg/Telemetry.msg /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg /opt/ros/noetic/share/geometry_msgs/msg/Twist.msg /opt/ros/noetic/share/geometry_msgs/msg/Point.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_py std_msgs_generate_messages_py
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/lib/python3/dist-packages/siam_main/msg
+  DESC = Generating Python from MSG siam_main/Telemetry
+  restat = 1
+
+
+#############################################
+# Custom command for devel/lib/python3/dist-packages/siam_main/msg/_Uplan.py
+
+build devel/lib/python3/dist-packages/siam_main/msg/_Uplan.py | ${cmake_ninja_workdir}devel/lib/python3/dist-packages/siam_main/msg/_Uplan.py: CUSTOM_COMMAND /opt/ros/noetic/lib/genpy/genmsg_py.py ../msg/Uplan.msg ../msg/Waypoint.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_py std_msgs_generate_messages_py
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/lib/python3/dist-packages/siam_main/msg
+  DESC = Generating Python from MSG siam_main/Uplan
+  restat = 1
+
+
+#############################################
+# Custom command for devel/lib/python3/dist-packages/siam_main/msg/_Waypoint.py
+
+build devel/lib/python3/dist-packages/siam_main/msg/_Waypoint.py | ${cmake_ninja_workdir}devel/lib/python3/dist-packages/siam_main/msg/_Waypoint.py: CUSTOM_COMMAND /opt/ros/noetic/lib/genpy/genmsg_py.py ../msg/Waypoint.msg || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_py std_msgs_generate_messages_py
+  COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg -Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -p siam_main -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/lib/python3/dist-packages/siam_main/msg
+  DESC = Generating Python from MSG siam_main/Waypoint
   restat = 1
 
 
 #############################################
 # Custom command for devel/lib/python3/dist-packages/siam_main/msg/__init__.py
 
-build devel/lib/python3/dist-packages/siam_main/msg/__init__.py | ${cmake_ninja_workdir}devel/lib/python3/dist-packages/siam_main/msg/__init__.py: CUSTOM_COMMAND /opt/ros/noetic/lib/genpy/genmsg_py.py devel/lib/python3/dist-packages/siam_main/msg/_FlightPlan.py || _siam_main_generate_messages_check_deps_FlightPlan geometry_msgs_generate_messages_py std_msgs_generate_messages_py
+build devel/lib/python3/dist-packages/siam_main/msg/__init__.py | ${cmake_ninja_workdir}devel/lib/python3/dist-packages/siam_main/msg/__init__.py: CUSTOM_COMMAND /opt/ros/noetic/lib/genpy/genmsg_py.py devel/lib/python3/dist-packages/siam_main/msg/_Telemetry.py devel/lib/python3/dist-packages/siam_main/msg/_Waypoint.py devel/lib/python3/dist-packages/siam_main/msg/_Uplan.py || _siam_main_generate_messages_check_deps_Telemetry _siam_main_generate_messages_check_deps_Uplan _siam_main_generate_messages_check_deps_Waypoint geometry_msgs_generate_messages_py std_msgs_generate_messages_py
   COMMAND = cd /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug && /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/devel/lib/python3/dist-packages/siam_main/msg --initpy
   DESC = Generating Python msg __init__.py for siam_main
   restat = 1

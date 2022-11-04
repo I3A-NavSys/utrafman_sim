@@ -68,7 +68,9 @@ siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o
  /opt/ros/noetic/include/rosconsole/macros_generated.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h
- /opt/ros/noetic/share/siam_sim/devel/include/siam_main/FlightPlan.h
+ /opt/ros/noetic/share/siam_sim/devel/include/siam_main/Telemetry.h
+ /opt/ros/noetic/share/siam_sim/devel/include/siam_main/Uplan.h
+ /opt/ros/noetic/share/siam_sim/devel/include/siam_main/Waypoint.h
  /opt/ros/noetic/share/siam_sim/src/siam_main/src/dronecontrol.cc
  /usr/include/eigen3/Eigen/Cholesky
  /usr/include/eigen3/Eigen/Core

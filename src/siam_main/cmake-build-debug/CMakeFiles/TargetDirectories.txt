@@ -72,7 +72,9 @@
 /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/trajectory_msgs_generate_messages_py.dir
 /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/DroneControl.dir
 /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/siam_main_generate_messages.dir
-/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/_siam_main_generate_messages_check_deps_FlightPlan.dir
+/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/_siam_main_generate_messages_check_deps_Telemetry.dir
+/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/_siam_main_generate_messages_check_deps_Waypoint.dir
+/opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/_siam_main_generate_messages_check_deps_Uplan.dir
 /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/siam_main_generate_messages_cpp.dir
 /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/siam_main_gencpp.dir
 /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug/CMakeFiles/siam_main_generate_messages_eus.dir

@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "siam_main: 1 messages, 0 services")
+message(STATUS "siam_main: 3 messages, 0 services")
 
 set(MSG_I_FLAGS "-Isiam_main:/opt/ros/noetic/share/siam_sim/src/siam_main/msg;-Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg;-Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg")
 
@@ -17,9 +17,19 @@ add_custom_target(siam_main_generate_messages ALL)
 
 
 
-get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg" NAME_WE)
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg" NAME_WE)
 add_custom_target(_siam_main_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "siam_main" "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg" "geometry_msgs/Point"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "siam_main" "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg" "geometry_msgs/Quaternion:geometry_msgs/Pose:geometry_msgs/Vector3:geometry_msgs/Twist:geometry_msgs/Point"
+)
+
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg" NAME_WE)
+add_custom_target(_siam_main_generate_messages_check_deps_${_filename}
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "siam_main" "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg" ""
+)
+
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg" NAME_WE)
+add_custom_target(_siam_main_generate_messages_check_deps_${_filename}
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "siam_main" "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg" "siam_main/Waypoint"
 )
 
 #
@@ -29,9 +39,21 @@ add_custom_target(_siam_main_generate_messages_check_deps_${_filename}
 ### Section generating for lang: gencpp
 ### Generating Messages
 _generate_msg_cpp(siam_main
-  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/siam_main
+)
+_generate_msg_cpp(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/siam_main
+)
+_generate_msg_cpp(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/siam_main
 )
 
@@ -49,7 +71,11 @@ add_custom_target(siam_main_generate_messages_cpp
 add_dependencies(siam_main_generate_messages siam_main_generate_messages_cpp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg" NAME_WE)
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_cpp _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_cpp _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg" NAME_WE)
 add_dependencies(siam_main_generate_messages_cpp _siam_main_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -62,9 +88,21 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS siam_main_generate_messages_cpp)
 ### Section generating for lang: geneus
 ### Generating Messages
 _generate_msg_eus(siam_main
-  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/siam_main
+)
+_generate_msg_eus(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/siam_main
+)
+_generate_msg_eus(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/siam_main
 )
 
@@ -82,7 +120,11 @@ add_custom_target(siam_main_generate_messages_eus
 add_dependencies(siam_main_generate_messages siam_main_generate_messages_eus)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg" NAME_WE)
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_eus _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_eus _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg" NAME_WE)
 add_dependencies(siam_main_generate_messages_eus _siam_main_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -95,9 +137,21 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS siam_main_generate_messages_eus)
 ### Section generating for lang: genlisp
 ### Generating Messages
 _generate_msg_lisp(siam_main
-  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/siam_main
+)
+_generate_msg_lisp(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/siam_main
+)
+_generate_msg_lisp(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/siam_main
 )
 
@@ -115,7 +169,11 @@ add_custom_target(siam_main_generate_messages_lisp
 add_dependencies(siam_main_generate_messages siam_main_generate_messages_lisp)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg" NAME_WE)
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_lisp _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_lisp _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg" NAME_WE)
 add_dependencies(siam_main_generate_messages_lisp _siam_main_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -128,9 +186,21 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS siam_main_generate_messages_lisp)
 ### Section generating for lang: gennodejs
 ### Generating Messages
 _generate_msg_nodejs(siam_main
-  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/siam_main
+)
+_generate_msg_nodejs(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/siam_main
+)
+_generate_msg_nodejs(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/siam_main
 )
 
@@ -148,7 +218,11 @@ add_custom_target(siam_main_generate_messages_nodejs
 add_dependencies(siam_main_generate_messages siam_main_generate_messages_nodejs)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg" NAME_WE)
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_nodejs _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_nodejs _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg" NAME_WE)
 add_dependencies(siam_main_generate_messages_nodejs _siam_main_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
@@ -161,9 +235,21 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS siam_main_generate_messages_nodejs)
 ### Section generating for lang: genpy
 ### Generating Messages
 _generate_msg_py(siam_main
-  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Vector3.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg"
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/siam_main
+)
+_generate_msg_py(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/siam_main
+)
+_generate_msg_py(siam_main
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/siam_main
 )
 
@@ -181,7 +267,11 @@ add_custom_target(siam_main_generate_messages_py
 add_dependencies(siam_main_generate_messages siam_main_generate_messages_py)
 
 # add dependencies to all check dependencies targets
-get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg" NAME_WE)
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_py _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg" NAME_WE)
+add_dependencies(siam_main_generate_messages_py _siam_main_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg" NAME_WE)
 add_dependencies(siam_main_generate_messages_py _siam_main_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility

@@ -105,7 +105,7 @@ CMake Deprecation Warning at /usr/src/googletest/googletest/CMakeLists.txt:56 (c
 -- catkin 0.8.10
 -- BUILD_SHARED_LIBS is on
 -- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
--- siam_main: 1 messages, 0 services
+-- siam_main: 3 messages, 0 services
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug

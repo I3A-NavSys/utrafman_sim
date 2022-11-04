@@ -66,7 +66,9 @@ target_link_libraries(DroneControl ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  FlightPlan.msg
+  Telemetry.msg
+  Waypoint.msg
+  Uplan.msg
 )
 
 ## Generate services in the 'srv' folder

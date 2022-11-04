@@ -38,7 +38,11 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/siam_main/msg" TYPE FILE FILES "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/FlightPlan.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/siam_main/msg" TYPE FILE FILES
+    "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Telemetry.msg"
+    "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Waypoint.msg"
+    "/opt/ros/noetic/share/siam_sim/src/siam_main/msg/Uplan.msg"
+    )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
