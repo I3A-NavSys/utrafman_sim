@@ -12,7 +12,7 @@ classdef Drone < handle
 
         initLoc
         loc
-        locs
+        locs = ros.msggen.siam_main.Telemetry.empty(0);
 
         droneModel
         sdf
@@ -35,7 +35,7 @@ classdef Drone < handle
             obj.UTM = utm;
             obj.model = model;
             obj.initLoc = initLoc;
-            obj.locs = [0 0 0 0];
+            %obj.locs = [0 0 0 0];
         end
 
         %Generate SDF model to be used in Gazebo
@@ -55,26 +55,27 @@ classdef Drone < handle
         %Subcription to the drone odometry topic
         function obj = subToTelemety(obj)
             pause(1);
-            obj.ros_Telemetry_sub = rossubscriber(sprintf('/drone/%d/odometry', obj.droneId));
-            obj.timer_Upd_Telemetry = timer("Period", 5, "TimerFcn", @obj.updateLoc,"ExecutionMode","fixedRate");
+            obj.ros_Telemetry_sub = rossubscriber(sprintf('/drone/%d/telemetry', obj.droneId));
+            obj.timer_Upd_Telemetry = timer("Period", 1, "TimerFcn", @obj.updateLoc,"ExecutionMode","fixedRate");
             start(obj.timer_Upd_Telemetry);
         end
 
         %Subcription to the drone flight plan response 
         function obj = pubsubToFlightPlan(obj)
-            rospublisher(sprintf('/drone/%d/flightPlans/response', obj.droneId), "siam_main/FlightPlan");
-            obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/flightPlans/request', obj.droneId), "siam_main/FlightPlan");
-            obj.ros_flightPlans_sub = rossubscriber(sprintf('/drone/%d/flightPlans/response', obj.droneId));
-            obj.timer_Upd_Status = timer("Period", 2, "TimerFcn", @obj.updateStatus,"ExecutionMode","fixedRate");
-            start(obj.timer_Upd_Status);
+            %rospublisher(sprintf('/drone/%d/uplan', obj.droneId), "siam_main/Uplan");
+            obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/uplan', obj.droneId), "siam_main/Uplan");
+            %obj.ros_flightPlans_sub = rossubscriber(sprintf('/drone/%d/flightPlans/response', obj.droneId));
+            %obj.timer_Upd_Status = timer("Period", 2, "TimerFcn", @obj.updateStatus,"ExecutionMode","fixedRate");
+            %start(obj.timer_Upd_Status);
         end
 
         %Callback to update location of the drone
         function obj = updateLoc(obj, timer, time)
             [obj.ros_Telemetry_msg, status] = receive(obj.ros_Telemetry_sub, 0.2);
             if status
-                obj.loc = [obj.ros_Telemetry_msg.Pose.Position.X obj.ros_Telemetry_msg.Pose.Position.Y obj.ros_Telemetry_msg.Pose.Position.Z];
-                obj.locs(end+1,:) = [obj.UTM.Gclock obj.ros_Telemetry_msg.Pose.Position.X obj.ros_Telemetry_msg.Pose.Position.Y obj.ros_Telemetry_msg.Pose.Position.Z];
+                %obj.loc = [obj.ros_Telemetry_msg.Pose.Position.X obj.ros_Telemetry_msg.Pose.Position.Y obj.ros_Telemetry_msg.Pose.Position.Z];
+                %obj.locs(end+1,:) = [obj.UTM.Gclock obj.ros_Telemetry_msg.Pose.Position.X obj.ros_Telemetry_msg.Pose.Position.Y obj.ros_Telemetry_msg.Pose.Position.Z];
+                obj.locs(end+1) = obj.ros_Telemetry_msg;
             end
         end
 

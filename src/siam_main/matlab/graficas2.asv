@@ -85,15 +85,13 @@ ref_z_timetable = timetable(ref_dates', uz');
 
 % dX dY dZ of the reference
 dut = [ut(1):1:ut(end)];
-ref_dates_interpolated = datetime(dut,'ConvertFrom','epochtime','Epoch',0); %Generate time
-ref_dates_temporal = timetable(ref_dates_interpolated');
-ref_x_timetable = synchronize(ref_dates_temporal,ref_x_timetable,'union','linear');
-ref_y_timetable = synchronize(ref_dates_temporal,ref_y_timetable,'union','linear');
-ref_z_timetable = synchronize(ref_dates_temporal,ref_z_timetable,'union','linear');
+ref_dates_interpolated = datetime(dut,'ConvertFrom','epochtime','Epoch',0);
+temporal = timetable(ref_dates_interpolated');
+temporal = synchronize(temporal,ref_x_timetable,'union','linear');
 
-ref_dx_timetable = timetable(ref_dates_interpolated(1:end-1)', diff(ref_x_timetable.Var1));
-ref_dy_timetable = timetable(ref_dates_interpolated(1:end-1)', diff(ref_y_timetable.Var1));
-ref_dz_timetable = timetable(ref_dates_interpolated(1:end-1)', diff(ref_z_timetable.Var1));
+ref_dx_timetable = timetable(ref_dates(1:end-1)', dux');
+ref_dy_timetable = timetable(ref_dates(1:end-1)', duy');
+ref_dz_timetable = timetable(ref_dates(1:end-1)', duz');
 
 %Syncrionization between tables and interpolation
 x_timetable = synchronize(sim_x_timetable,ref_x_timetable, 'union', 'linear');
@@ -148,5 +146,5 @@ plot(ref_x_timetable,"Var1");
 hold on;
 yyaxis right;
 grid on;
-plot(ref_dx_timetable,"Var1");
+plot(temporal.Time(1:end-1),diff(temporal.Var1'));
 hold off;
