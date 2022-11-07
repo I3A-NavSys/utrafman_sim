@@ -1,20 +1,15 @@
+%Added classes to the path
+addpath("classes\");
+%Load data from simulations
+load simulations\sim1.mat
+
 figure(1);
-
-%Test data
-% t = 1:0.1:10;
-% x = sin(t);
-% y = cos(t);
-% z = tan(t);
-% xref = y;
-% yref = x;
-% zref = -z;
-%waypoints = 2 .* rand([4,3]) - 1;
-
 %Using simulated data
 drone = UTM.S_Registry.drones(1);
 uplan = UTM.S_Registry.flightPlans(1);
 waypoints = [[uplan.route(1,:).X]', [uplan.route(1,:).Y]', [uplan.route(1,:).Z]'];
 
+%Allocating variables
 t = zeros(1,size(drone.locs,2));
 x = zeros(1,size(drone.locs,2));
 y = zeros(1,size(drone.locs,2));
@@ -23,6 +18,7 @@ dx = zeros(1,size(drone.locs,2));
 dy = zeros(1,size(drone.locs,2));
 dz = zeros(1,size(drone.locs,2));
 
+%Fill variables with simulated data
 for i=1:1:size(drone.locs,2)
     tel = drone.locs(i);
     t(i) = tel.Time.Sec;
@@ -38,7 +34,9 @@ end
 ut = zeros(1,size(uplan.route,2)+2);
 
 %Reference data
-%Sim data recoding must be start before Uplan execution and end after Uplan finish
+%Sim data recoding must be start before Uplan execution and end after Uplan
+%finish. Reference data must start and end at the same time as simulated data to
+%interpolate it correctly.
 ut(1) = t(1);
 for i=1:size(uplan.route,2)
     ut(i+1) = uplan.route(1,i).T.Sec;
@@ -49,16 +47,16 @@ ux = [x(i) uplan.route(1,:).X uplan.route(1,end).X];
 uy = [drone.initLoc(2) uplan.route(1,:).Y uplan.route(1,end).Y];
 uz = [0 uplan.route(1,:).Z 0];
 
-dux(1) = 0; duy(1) = 0; duz(1) = 0;
-for i=2:size(uplan.route,2)
-    timeBetween = uplan.route(1,i).T.Sec - uplan.route(1,i-1).T.Sec;
-    dux(i) = (ux(i)-ux(i-1))/timeBetween;
-    duy(i) = (uy(i)-uy(i-1))/timeBetween;
-    duz(i) = (uz(i)-uz(i-1))/timeBetween;
-end
-dux(i+1) = 0; duy(i+1) = 0; duz(i+1) = 0;
+% dux(1) = 0; duy(1) = 0; duz(1) = 0;
+% for i=2:size(uplan.route,2)
+%     timeBetween = uplan.route(1,i).T.Sec - uplan.route(1,i-1).T.Sec;
+%     dux(i) = (ux(i)-ux(i-1))/timeBetween;
+%     duy(i) = (uy(i)-uy(i-1))/timeBetween;
+%     duz(i) = (uz(i)-uz(i-1))/timeBetween;
+% end
+% dux(i+1) = 0; duy(i+1) = 0; duz(i+1) = 0;
 
-%Generating datetimes
+%Generating datetimes of simulated and reference data
 sim_dates = datetime(t,'ConvertFrom','epochtime','Epoch',0);
 ref_dates = datetime(ut,'ConvertFrom','epochtime','Epoch',0);
 
@@ -84,18 +82,20 @@ ref_y_timetable = timetable(ref_dates', uy');
 ref_z_timetable = timetable(ref_dates', uz');
 
 % dX dY dZ of the reference
+%Interpolation of time
 dut = [ut(1):1:ut(end)];
 ref_dates_interpolated = datetime(dut,'ConvertFrom','epochtime','Epoch',0); %Generate time
 ref_dates_temporal = timetable(ref_dates_interpolated');
+%Interpolation of XYZ positions
 ref_x_timetable = synchronize(ref_dates_temporal,ref_x_timetable,'union','linear');
 ref_y_timetable = synchronize(ref_dates_temporal,ref_y_timetable,'union','linear');
 ref_z_timetable = synchronize(ref_dates_temporal,ref_z_timetable,'union','linear');
-
+%Generating XYZ velocities
 ref_dx_timetable = timetable(ref_dates_interpolated(1:end-1)', diff(ref_x_timetable.Var1));
 ref_dy_timetable = timetable(ref_dates_interpolated(1:end-1)', diff(ref_y_timetable.Var1));
 ref_dz_timetable = timetable(ref_dates_interpolated(1:end-1)', diff(ref_z_timetable.Var1));
 
-%Syncrionization between tables and interpolation
+%Syncrionization between tables (sim and ref) and interpolation
 x_timetable = synchronize(sim_x_timetable,ref_x_timetable, 'union', 'linear');
 y_timetable = synchronize(sim_y_timetable,ref_y_timetable, 'union', 'linear');
 z_timetable = synchronize(sim_z_timetable,ref_z_timetable, 'union', 'linear');
@@ -116,6 +116,7 @@ grid on;
 hold on;
 plot3(ux(1:end-1),uy(1:end-1),uz(1:end-1));
 plot3(waypoints(:,1),waypoints(:,2),waypoints(:,3),'or');
+legend(["Simulated", "Reference", "Waypoints"],'Location','northwest');
 title("Route 3D view")
 xlabel("pos X");
 ylabel("pos Y");
@@ -123,30 +124,30 @@ zlabel("pos Z");
 hold off;
 
 %X,Y, Z pos
-var_names = ["Simulated", "Reference"];
-tab = table([x'], [y'], [z'],'VariableNames',{'X','Y','Z'});
 subplot(2,2,2);
-stackedplot([x_timetable, y_timetable, z_timetable]);
+possp = stackedplot([x_timetable, y_timetable, z_timetable]);
 title("Positions through time");
 xlabel('Simulated time');
 grid on;
+[possp.AxesProperties.LegendLabels] = deal({'Sim','Ref'},{'Sim','Ref'},{'Sim','Ref'});
+[possp.AxesProperties.LegendLocation] = deal('southeast','southeast','southeast');
 
 %X,Y, Z accel
-var_names = ["Simulated", "Reference"];
-tab = table([dx'], [dy'], [dz'],'VariableNames',{'X','Y','Z'});
 subplot(2,2,4);
-stackedplot([dx_timetable, dy_timetable, dz_timetable]);
+possp = stackedplot([dx_timetable, dy_timetable, dz_timetable]);
 title("Velocities through time");
 xlabel('Simulated time');
 grid on;
+[possp.AxesProperties.LegendLabels] = deal({'Sim','Ref'},{'Sim','Ref'},{'Sim','Ref'});
+[possp.AxesProperties.LegendLocation] = deal('southeast','southeast','southeast');
 
 drawnow;
-
-figure(2);
-yyaxis left;
-plot(ref_x_timetable,"Var1");
-hold on;
-yyaxis right;
-grid on;
-plot(ref_dx_timetable,"Var1");
-hold off;
+% To check if velocities is correct
+% figure(2);
+% yyaxis left;
+% plot(ref_x_timetable,"Var1");
+% hold on;
+% yyaxis right;
+% grid on;
+% plot(ref_dx_timetable,"Var1");
+% hold off;
