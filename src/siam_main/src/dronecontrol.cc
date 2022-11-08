@@ -9,13 +9,14 @@
 #include <gazebo/common/common.hh>
 
 #include <gazebo_msgs/ModelState.h>
-
 #include <geometry_msgs/Pose.h>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
 #include <stdio.h>
+#include <iostream>
+#include <fstream>
 
 #include <cmath>
 
@@ -150,7 +151,7 @@ private:
 
    //Needed to control telemetry publish
    common::Time last_odom_publish_time;
-   double odom_publish_rate = 10; // updates per second
+   double odom_publish_rate = 2; // updates per second
 
    //ROS connection
    ros::NodeHandle *ros_node;
@@ -193,6 +194,8 @@ private:
    Eigen::Matrix<double, 4, 1> E; // model acumulated error
    common::Time prev_iteration_time; // Time to integrate the acumulated error
 
+   //Control file output
+   std::ofstream control_out_file;
    ////////////////////////////////////////////////////////
 public:
    void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
@@ -296,6 +299,7 @@ public:
 
       E << 0, 0, 0, 0;
       //    std::cout  << E  << " \n\n";
+
    }
 
     //To be eliminated
@@ -363,6 +367,9 @@ public:
       ignition::math::Vector3<double> angular_vel = model->RelativeAngularVel();
       //printf("drone angular vel xyz = %.2f,%.2f,%.2f \n", angular_vel.X(), angular_vel.Y(), angular_vel.Z());
 
+      double ttrw;
+      siam_main::Waypoint target_waypoint;
+      double vx, vy, vz, dx, dy, dz;
 
       //High level control
       if (uplan_inprogress && (current_time > uplan_local->dtto)){
@@ -370,7 +377,7 @@ public:
           cmd_on = 1.0;
 
           //Get target waypoint and positions
-          siam_main::Waypoint target_waypoint = route_local[actual_route_point];
+          target_waypoint = route_local[actual_route_point];
           ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x, target_waypoint.y, target_waypoint.z);
           ignition::math::Vector2<double> target_way_vector2d = ignition::math::Vector2d(target_waypoint.x, target_waypoint.y);
 
@@ -379,7 +386,7 @@ public:
           double d2d = target_way_vector2d.Distance(ignition::math::Vector2d(pose.Pos().X(),pose.Pos().Y()));
 
           //Get time remaining to the waypoint
-          double ttrw = target_waypoint.t.sec - current_time.Double();
+          ttrw = target_waypoint.t.sec - current_time.Double();
 
           //Print out distance
           //std::cout << "Distance 3D: " << d3d << "\nDistance 2D: " << d2d <<"\n";
@@ -388,11 +395,11 @@ public:
           double bearing = atan2(target_way_vector3d.Y()-pose.Pos().Y(),target_way_vector3d.X()-pose.Pos().X()) - pose_rot.Z();
 
           //Target distance descomposed in body axes
-          double dx = d2d * cos(bearing);
-          double dy = d2d * sin(bearing);
-          double dz = target_way_vector3d.Z() - pose.Pos().Z();
+          dx = d2d * cos(bearing);
+          dy = d2d * sin(bearing);
+          dz = target_way_vector3d.Z() - pose.Pos().Z();
 
-          std::cout << "Distance WP: d2D: " << d2d << "  d3D: " << d3d << ")\n";
+          //std::cout << "Distance WP: d2D: " << d2d << "  d3D: " << d3d << ")\n";
 
           //If the time is negative, return to 0.1
           if(ttrw <= 0){
@@ -400,9 +407,9 @@ public:
           }
 
           //Velocities depending on ttrw
-          double vx = (dx/ttrw)/v_h_max;
-          double vy = (dy/ttrw)/v_h_max;
-          double vz = (dz/ttrw)/v_v_max;
+           vx = (dx/ttrw);
+           vy = (dy/ttrw);
+           vz = (dz/ttrw);
 
           //Normalize the vector
           ignition::math::Vector2<double> vel_h_vector = ignition::math::Vector2d(vx,vy);
@@ -417,7 +424,7 @@ public:
           if (vz > 1.0){
               vz = 1.0;
           }
-          std::cout << "(" << (actual_route_point+1) << "," << route_local.size() << ") Velocity norm: " << norm_vel_h << "(x: " << vx << "  y: " << vy << "  z: " << vz << ")\n";
+          //std::cout << "(" << (actual_route_point+1) << "," << route_local.size() << ") Velocity norm: " << norm_vel_h << "(x: " << vx << "  y: " << vy << "  z: " << vz << ")\n";
 
           cmd_velX = vx;
           cmd_velY = vy;
@@ -428,17 +435,18 @@ public:
               if (current_time >= target_waypoint.t.sec) {
                   if (actual_route_point < (route_local.size() - 1)) {
                       actual_route_point++;
-                      std::cout << "Drone has reached waypoint " << (actual_route_point - 1)
+                      std::cout << "Drone " << id << " has reached waypoint " << (actual_route_point - 1)
                                 << " and change to the waypoiny "
                                 << actual_route_point << std::endl;
                   } else {
-                      cmd_on = 0.0;
+                      cmd_on = 1;
                       cmd_velX = 0.0;
                       cmd_velY = 0.0;
-                      cmd_velZ = 0.0;
+                      cmd_velZ = -1.0;
                       uplan_inprogress = false;
                       actual_route_point = 0;
-                      std::cout << "Drone " << 0 << " has finished it U-plan" << std::endl;
+                      std::cout << "Drone " << id << " has finished it U-plan" << std::endl;
+                      control_out_file.close();
                   }
               }
           }
@@ -636,6 +644,18 @@ public:
 
          //Remmeber the last pub time
          last_odom_publish_time = current_time;
+
+         //Write file
+         if (control_out_file.is_open()){
+             control_out_file << "Sim time: " << current_time.Double() << " TTRW: " << ttrw << std::endl;
+             control_out_file << "Waypoint \t X: " <<  target_waypoint.x << " Y: " << target_waypoint.y << " Z: " << target_waypoint.z << std::endl;
+             control_out_file << "Distance to W \t X: " <<  dx << " Y: " << dy << " Z: " << dz << std::endl;
+             control_out_file << "Drone pos: \t X: " << pose.Pos().X() << " Y: " << pose.Pos().Y() << " Z: " << pose.Pos().Z() << std::endl;
+             control_out_file << "Current vel \t X: " << linear_vel.X() << " Y: " << linear_vel.Y() << " Z: " << linear_vel.Z() << std::endl;
+             control_out_file << "CMD HL vel \t X: " << vx << " Y: " << vy << " Z: " << vz << std::endl;
+             control_out_file << "CMD LL vel \t X: " << cmd_velX << " Y: " << cmd_velY << " Z: " << cmd_velZ << std::endl;
+             control_out_file << "-----------------------------------" << std::endl;
+         }
       }
    }
 
@@ -673,6 +693,10 @@ public:
            }
            //ROS_INFO_STREAM(this->uplan_local->flightPlanId);
            //ROS_INFO_STREAM(msg->flightPlanId)
+
+           //To write the file
+           //Open the file
+           control_out_file.open("/tmp/siamsim/control/drone-"+id+"_fp-" + std::to_string(uplan_local->flightPlanId) + ".txt");
        }
    }
 };
