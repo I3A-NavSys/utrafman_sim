@@ -1,7 +1,7 @@
 %Added classes to the path
 addpath("classes\");
 %Load data from simulations
-load simulations\sim1.mat
+%load simulations\sim1.mat
 
 figure(1);
 %Using simulated data
@@ -78,8 +78,11 @@ sim_dz_timetable = retime(sim_dz_timetable,unique(sim_dz_timetable.Time),'mean')
 
 % X Y Z of the reference
 ref_x_timetable = timetable(ref_dates', ux');
+ref_x_timetable = retime(ref_x_timetable,unique(ref_x_timetable.Time),'mean');
 ref_y_timetable = timetable(ref_dates', uy');
+ref_y_timetable = retime(ref_y_timetable,unique(ref_y_timetable.Time),'mean');
 ref_z_timetable = timetable(ref_dates', uz');
+ref_z_timetable = retime(ref_z_timetable,unique(ref_z_timetable.Time),'mean');
 
 % dX dY dZ of the reference
 %Interpolation of time
