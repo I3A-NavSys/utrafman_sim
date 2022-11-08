@@ -12,7 +12,7 @@ classdef FlightPlan < handle
         dest
         dtto
 
-        route
+        route = ros.msggen.siam_main.Waypoint.empty;
 
     end
     
@@ -22,14 +22,25 @@ classdef FlightPlan < handle
             obj.drone = drone;
             obj.orig = orig;
             obj.dest = dest;
-            obj.route = route;
             obj.dtto = dtto;
+            
+            for x = 1:1:length(route)
+                point = ros.msggen.siam_main.Waypoint;
+                point.X = route(x,1);
+                point.Y = route(x,2);
+                point.Z = route(x,3);
+                point.T.Sec = obj.dtto+(15*x);
+                point.R = 0.5;
+                obj.route(x) = copy(point);
+            end
+
         end
 
         function msg = parseToROSMessage(obj)
-
-            msg = rosmessage('siam_main/FlightPlan');
-            point = rosmessage("geometry_msgs/Point");
+            %Generating 
+            msg = rosmessage('siam_main/Uplan');
+            point = rosmessage("siam_main/Waypoint");
+            time = rosmessage("std_msgs/Time");
 
             msg.FlightPlanId = obj.flightPlanId;
             msg.Status = obj.status;
@@ -38,25 +49,29 @@ classdef FlightPlan < handle
             msg.DroneId = obj.drone.droneId;
             msg.Dtto = obj.dtto;
 
-            point.X = obj.route(1,1);
-            point.Y = obj.route(1,2);
-            point.Z = obj.route(1,3);
+            msg.Route = obj.route;
+
+%             point.X = obj.route(1,1);
+%             point.Y = obj.route(1,2);
+%             point.Z = obj.route(1,3);
+%             
+            %msg.Orig = copy(point);
             
-            msg.Orig = copy(point);
+%             point.X = obj.route(end,1);
+%             point.Y = obj.route(end,2);  
+%             point.Z = obj.route(end,3);
             
-            point.X = obj.route(end,1);
-            point.Y = obj.route(end,2);  
-            point.Z = obj.route(end,3);
+            %msg.Dest = copy(point);
             
-            msg.Dest = copy(point);
-            
-            for x = 1:1:length(obj.route)
-                point.X = obj.route(x,1);
-                point.Y = obj.route(x,2);
-                point.Z = obj.route(x,3);
-            
-                msg.Route(x) = copy(point);
-            end
+%             for x = 1:1:length(obj.route)
+%                 point.X = obj.route(x,1);
+%                 point.Y = obj.route(x,2);
+%                 point.Z = obj.route(x,3);
+%                 point.T.Sec = obj.dtto+(15*x);
+%                 point.R = 0.5;
+%             
+%                 msg.Route(x) = copy(point);
+%             end
 
         end 
     end

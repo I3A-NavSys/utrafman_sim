@@ -2,11 +2,11 @@
 timer; stop(timerfind); delete(timerfind)  %Stop all timers
 addpath("classes\"); %Added classes path
 addpath("simulinks\"); %Added classes path
-try
-    pool = parpool;
-catch
-end
-cancelAll(pool.FevalQueue);
+% try
+%     pool = parpool;
+% catch
+% end
+% cancelAll(pool.FevalQueue);
 %-----------------------------------------
 
 %Creacion de la entidad central del vuelo
@@ -17,21 +17,21 @@ operator = Operator('Jesus');
 UTM.S_Registry.regNewOperator(operator);
 
 %Registramos los drones, los anade a Gazebo
-numDrones = 3;
-drone = Drone.empty(0,5);
+numDrones = 1;
+drone = Drone.empty(0,numDrones);
 for i=1:numDrones
     drone(i) = Drone(UTM,'DJI Phantom', [i i 1]);
     operator.regNewDrone(drone(i));
     UTM.S_Registry.regNewDrone(drone(i));
 end
 
-UTM.LaunchSimulinksModels();
+%UTM.LaunchSimulinksModels();
 
 delay = 0;
-fp = FlightPlan.empty(0,numDrones*10);
+fp = FlightPlan.empty(0,numDrones*1);
 for i=1:numDrones*10
     route = FlightPlan.GenerateRandomRoute(randi([3 6],1));
-    fp(i) = FlightPlan(operator, drone(mod(i,numDrones)+1), drone(mod(i,numDrones)+1).initLoc, route(end), route, delay+60);
+    fp(i) = FlightPlan(operator, drone(mod(i,numDrones)+1), drone(mod(i,numDrones)+1).initLoc, route(end), route, delay+10);
     UTM.S_Registry.regNewFlightPlan(fp(i));
     delay = delay + 30/numDrones;
 end

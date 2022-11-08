@@ -8,7 +8,7 @@ classdef Registry < handle
         drones = Drone.empty;
         droneLastId = 0;
 
-        flightPlans = FlightPlan.empty; %Ordered queue using DTTO
+        flightPlans = ros.msggen.siam_main.Uplan.empty; %Ordered queue using DTTO
         %Next_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
         %Waiting_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
         %Finished_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
