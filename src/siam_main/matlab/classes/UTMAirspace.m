@@ -27,7 +27,9 @@ classdef UTMAirspace < handle
         function obj = UTMAirspace()
             run(fullfile("ROSconfig.m")); %Load ROS configuration variables
             obj.rosMasterIp = ROS_IP;
+            %Connect with ROS master
             obj.ConnectWithROSMaster();
+            %Create instances of objects
             obj.S_Registry = Registry();
             obj.S_FlightPlansPlanner = FlightPlansPlanner(obj);
         end
@@ -44,17 +46,19 @@ classdef UTMAirspace < handle
             %Suscribe to the clock
             obj.GClock_sub = rossubscriber("/clock");
             %Added timer to update GClock every 1sec
-            obj.GClock_Upt_timer = timer("TimerFcn", @obj.updateGClock,"ExecutionMode","fixedRate");
+            obj.GClock_Upt_timer = timer("TimerFcn", @obj.updateGclock,"ExecutionMode","fixedRate");
             start(obj.GClock_Upt_timer);
         end
         
-        function obj = updateGClock(obj, timer, time)
+        %Update of Gcloc
+        function obj = updateGclock(obj, timer, time)
             [msg, status] = receive(obj.GClock_sub, 0.1);
             if status
                 obj.Gclock = msg.Clock_.Sec;
             end
         end
 
+        %Not in use
         function obj = LaunchSimulinksModels(obj)
             %numDrones = size(obj.S_Registry.drones,2);
             SimulationsInputs = Simulink.SimulationInput.empty;
@@ -94,6 +98,7 @@ classdef UTMAirspace < handle
     end
 
     methods(Static)
+        %Not in use
          function InitRandom()
             %Para que cada vez que se genere un worker se levante
             %con un número aleatorio en el nombre

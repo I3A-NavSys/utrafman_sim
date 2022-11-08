@@ -9,12 +9,9 @@ classdef Registry < handle
         droneLastId = 0;
 
         flightPlans = ros.msggen.siam_main.Uplan.empty; %Ordered queue using DTTO
-        %Next_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
-        %Waiting_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
-        %Finished_flightPlans = FlightPlan.empty; %Ordered queue using DTTO
         flightPlanLastId = 0; %ID for FP
 
-        %To sign up drones
+        %To register drones
         ros_droneInsert_pub
         ros_droneInsert_msg
     end
@@ -51,9 +48,9 @@ classdef Registry < handle
             obj.ros_droneInsert_msg.Data = drone.sdf;
             send(obj.ros_droneInsert_pub, obj.ros_droneInsert_msg);
 
-            %Init drone location updates
+            %Init drone telemetry updates
             drone.subToTelemety();
-            %Init drone flightPlanUpdates
+            %Init drone Uplan publisher
             drone.pubsubToFlightPlan();
         end
 

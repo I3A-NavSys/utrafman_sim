@@ -1,12 +1,17 @@
 %Added classes to the path
 addpath("classes\");
+
 %Load data from simulations
 %load simulations\sim1.mat
 
+%Drone and FP selection selection
+drone = 2;
+fp = drone;
+
 figure(1);
 %Using simulated data
-drone = UTM.S_Registry.drones(1);
-uplan = UTM.S_Registry.flightPlans(1);
+drone = UTM.S_Registry.drones(drone);
+uplan = UTM.S_Registry.flightPlans(fp);
 waypoints = [[uplan.route(1,:).X]', [uplan.route(1,:).Y]', [uplan.route(1,:).Z]'];
 
 %Allocating variables
@@ -37,15 +42,18 @@ ut = zeros(1,size(uplan.route,2)+2);
 %Sim data recoding must be start before Uplan execution and end after Uplan
 %finish. Reference data must start and end at the same time as simulated data to
 %interpolate it correctly.
-ut(1) = t(1);
-for i=1:size(uplan.route,2)
-    ut(i+1) = uplan.route(1,i).T.Sec;
-end     
-ut(i+2) = t(end);
 
-ux = [x(i) uplan.route(1,:).X uplan.route(1,end).X];
-uy = [drone.initLoc(2) uplan.route(1,:).Y uplan.route(1,end).Y];
-uz = [0 uplan.route(1,:).Z 0];
+ut(1) = t(1); %Init telemetry
+ut(2) = uplan.dtto; %Init Uplan
+for i=1:size(uplan.route,2)
+    ut(i+2) = uplan.route(1,i).T.Sec;
+end     
+ut(i+3) = ut(i+2)+3; %Finish uplan
+ut(i+4) = t(end); %Finish telemetry
+
+ux = [drone.initLoc(1) drone.initLoc(1) uplan.route(1,:).X uplan.route(1,end).X uplan.route(1,end).X];
+uy = [drone.initLoc(2) drone.initLoc(2) uplan.route(1,:).Y uplan.route(1,end).Y uplan.route(1,end).Y];
+uz = [0 0 uplan.route(1,:).Z 0 0];
 
 % dux(1) = 0; duy(1) = 0; duz(1) = 0;
 % for i=2:size(uplan.route,2)
@@ -124,6 +132,9 @@ title("Route 3D view")
 xlabel("pos X");
 ylabel("pos Y");
 zlabel("pos Z");
+xlim([-5 5]);
+ylim([-5 5]);
+view(45,30);
 hold off;
 
 %X,Y, Z pos

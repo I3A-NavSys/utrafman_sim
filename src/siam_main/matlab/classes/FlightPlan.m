@@ -5,23 +5,21 @@ classdef FlightPlan < handle
         status = 0;
         priority = 0;
 
-        operator
-        drone
+        operator;
+        drone;
 
-        orig
-        dest
-        dtto
+        %orig
+        %dest
+        dtto;
 
         route = ros.msggen.siam_main.Waypoint.empty;
-
+        sent = 0;
     end
     
     methods
-        function obj = FlightPlan(operator, drone, orig, dest, route, dtto)
+        function obj = FlightPlan(operator, drone, route, dtto)
             obj.operator = operator;
             obj.drone = drone;
-            obj.orig = orig;
-            obj.dest = dest;
             obj.dtto = dtto;
             
             for x = 1:1:length(route)
@@ -37,7 +35,7 @@ classdef FlightPlan < handle
         end
 
         function msg = parseToROSMessage(obj)
-            %Generating 
+            %Generating ros messages
             msg = rosmessage('siam_main/Uplan');
             point = rosmessage("siam_main/Waypoint");
             time = rosmessage("std_msgs/Time");
@@ -51,39 +49,20 @@ classdef FlightPlan < handle
 
             msg.Route = obj.route;
 
-%             point.X = obj.route(1,1);
-%             point.Y = obj.route(1,2);
-%             point.Z = obj.route(1,3);
-%             
-            %msg.Orig = copy(point);
-            
-%             point.X = obj.route(end,1);
-%             point.Y = obj.route(end,2);  
-%             point.Z = obj.route(end,3);
-            
-            %msg.Dest = copy(point);
-            
-%             for x = 1:1:length(obj.route)
-%                 point.X = obj.route(x,1);
-%                 point.Y = obj.route(x,2);
-%                 point.Z = obj.route(x,3);
-%                 point.T.Sec = obj.dtto+(15*x);
-%                 point.R = 0.5;
-%             
-%                 msg.Route(x) = copy(point);
-%             end
-
         end 
     end
 
     methods(Static)
         function route = GenerateRandomRoute(nway)
-            bounds = [  [-1 -5]
-                        [9 5]];
+            %Airspace bounds
+            bounds =   [[-5 5]
+                        [5 -5]];
+
+            %Waypoints
             route = zeros(nway,3);
             for j = 1:nway
-                x = bounds(2,1) * rand(1) + bounds(1,1);
-                y = bounds(2,2) * rand(1) + bounds(1,2);
+                x = (bounds(2,1)-bounds(1,1)) * rand(1) + bounds(1,1);
+                y = (bounds(2,2)-bounds(1,2)) * rand(1) + bounds(1,2);
                 z = 4 * rand(1) + 1;
         
                 route(j,:) = [x y z];

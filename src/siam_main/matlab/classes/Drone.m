@@ -18,16 +18,16 @@ classdef Drone < handle
         sdf
 
         %ROS
-        timer_Upd_Telemetry
+        %timer_Upd_Telemetry
         ros_Telemetry_sub
-        ros_Telemetry_msg
+        %ros_Telemetry_msg
 
-        timer_Upd_Status
+        %timer_Upd_Status
         ros_flightPlans_pub
-        ros_flightPlans_sub
-        ros_flightPlans_msg
+        %ros_flightPlans_sub
+        %ros_flightPlans_msg
 
-        SimulationInput
+        %SimulationInput
     end
     
     methods
@@ -35,7 +35,6 @@ classdef Drone < handle
             obj.UTM = utm;
             obj.model = model;
             obj.initLoc = initLoc;
-            %obj.locs = [0 0 0 0];
         end
 
         %Generate SDF model to be used in Gazebo
@@ -55,30 +54,25 @@ classdef Drone < handle
         %Subcription to the drone odometry topic
         function obj = subToTelemety(obj)
             pause(1);
-            obj.ros_Telemetry_sub = rossubscriber(sprintf('/drone/%d/telemetry', obj.droneId));
-            obj.timer_Upd_Telemetry = timer("Period", 1, "TimerFcn", @obj.updateLoc,"ExecutionMode","fixedRate");
-            start(obj.timer_Upd_Telemetry);
+            %Subscription with callback
+            obj.ros_Telemetry_sub = rossubscriber(sprintf('/drone/%d/telemetry', obj.droneId),@obj.updateLoc);
         end
 
-        %Subcription to the drone flight plan response 
+        %Publish to the drone flight plan 
         function obj = pubsubToFlightPlan(obj)
-            %rospublisher(sprintf('/drone/%d/uplan', obj.droneId), "siam_main/Uplan");
+            %Publisher to send Uplans
             obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/uplan', obj.droneId), "siam_main/Uplan");
-            %obj.ros_flightPlans_sub = rossubscriber(sprintf('/drone/%d/flightPlans/response', obj.droneId));
-            %obj.timer_Upd_Status = timer("Period", 2, "TimerFcn", @obj.updateStatus,"ExecutionMode","fixedRate");
-            %start(obj.timer_Upd_Status);
         end
 
         %Callback to update location of the drone
-        function obj = updateLoc(obj, timer, time)
-            [obj.ros_Telemetry_msg, status] = receive(obj.ros_Telemetry_sub, 0.2);
-            if status
-                %obj.loc = [obj.ros_Telemetry_msg.Pose.Position.X obj.ros_Telemetry_msg.Pose.Position.Y obj.ros_Telemetry_msg.Pose.Position.Z];
-                %obj.locs(end+1,:) = [obj.UTM.Gclock obj.ros_Telemetry_msg.Pose.Position.X obj.ros_Telemetry_msg.Pose.Position.Y obj.ros_Telemetry_msg.Pose.Position.Z];
-                obj.locs(end+1) = obj.ros_Telemetry_msg;
-            end
+        function updateLoc(obj, sub, msg)
+            %Location update
+            obj.loc = [msg.Pose.Position.X msg.Pose.Position.Y msg.Pose.Position.Z];
+            %Telemetry message saving
+            obj.locs(end+1) = msg;
         end
 
+        %Not in use
         %Callback to update status of the drone
         function obj = updateStatus(obj, timer, time)
             if isempty(obj.flightPlan)
