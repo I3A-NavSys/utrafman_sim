@@ -12,10 +12,24 @@ operator = Operator('Jesus');
 UTM.S_Registry.regNewOperator(operator);
 
 %Creamos drones, lo registramos y los anadimos a Gazebo
-numDrones = 5;
+numDrones = 30;
 drone = Drone.empty(0,numDrones);
+p = 1;
 for i=1:numDrones
-    drone(i) = Drone(UTM,'DJI Phantom', [i/2 i/2 1]); %Drone instance
+    q = mod(i,4);
+    switch q
+        case 0
+            p = p+1;
+            pos = [p/3 p/3 0.3];
+        case 1
+            pos = [-p/3 p/3 0.3];
+        case 2
+            pos = [-p/3 -p/3 0.3];
+        case 3
+            pos = [p/3 -p/3 0.3];
+    end
+
+    drone(i) = Drone(UTM,'DJI Phantom', pos); %Drone instance
     operator.regNewDrone(drone(i)); %Drone registration with the operator
     UTM.S_Registry.regNewDrone(drone(i)); %Drone registration in Uspace
 end
@@ -30,7 +44,7 @@ for i=1:numDrones*1
     fp(i) = FlightPlan(operator, ... %Operator
                        drone(i), ... %Drone asignation
                        route, ... %Route
-                       20+((i-1)*tbp)); %DTTO
+                       40+((i-1)*tbp)); %DTTO
     %Uplan registration
     UTM.S_Registry.regNewFlightPlan(fp(i));
 

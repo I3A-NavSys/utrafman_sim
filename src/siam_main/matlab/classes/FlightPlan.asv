@@ -7,7 +7,7 @@ classdef FlightPlan < handle
 
         operator;
         drone;
-        %Is dtto really needed?
+
         dtto;
 
         route = ros.msggen.siam_main.Waypoint.empty;
@@ -51,7 +51,7 @@ classdef FlightPlan < handle
 
         function p = AbstractionLayer(fp, t)
             %If t before init Uplan, not valid pos
-            if t < fp.route(1).T.Sec
+            if t < fp.dtto
                 p = [0 0 0];
                 return;
             end
@@ -62,8 +62,8 @@ classdef FlightPlan < handle
                 return;
             end
 
-            % Travel waypoint (assuming first waypoint is where drone is)
-            for i = 2:size(fp.route,2)
+            % Travel waypoint 
+            for i = 1:size(fp.route,2)
                 waypoint = fp.route(i);
                 
                 %until the next waypoint to t
@@ -72,35 +72,23 @@ classdef FlightPlan < handle
                 end
 
                 %Now waypoint is the next waypoint
-                timeDifBetWays = waypoint.T.Sec - fp.route(i-1).T.Sec;  %Time dif between last waypoint and enroute waypoint
-                timeDifBetWayT = t - fp.route(i-1).T.Sec;               %Time dif between last waypoint and t
-                %Compute dif between waypoints
-                vectorDif = [waypoint.X waypoint.Y waypoint.Z] - [fp.route(i-1).X fp.route(i-1).Y fp.route(i-1).Z];
-                %Now vectorDIf is the RELATIVE vector between last waypoint and
-                %position in t, so must be convewrted to ABSOLUTE.
-                p = (vectorDif.*(timeDifBetWayT/timeDifBetWays)) + [fp.route(i-1).X fp.route(i-1).Y fp.route(i-1).Z];
-                return;
+                if i > 1
+                    timeDif = waypoint.T.Sec - fp.route(i-1);
+                else
+                    timeDif = waypoint.T.Sec - fp.dtto;
+                end
+
+                
             end
 
-        end
-
-        %Temporal
-        function CheckAbstractionLayer(fp)
-            figure(10);
-
-            for i= 1:1:200
-                pos(i,:) = jesus.AbstractionLayer(i);
-            end
-
-            plot3(pos(:,1),pos(:,2),pos(:,3));
         end
     end
 
     methods(Static)
         function route = GenerateRandomRoute(nway)
             %Airspace bounds
-            bounds =   [[-4 4]
-                        [4 -4]];
+            bounds =   [[-5 5]
+                        [5 -5]];
 
             %Waypoints
             route = zeros(nway,3);
