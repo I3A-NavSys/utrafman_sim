@@ -7,7 +7,7 @@
       <collision name='collisionsuelo'>
         <geometry>
           <box>
-            <size>10 10 0.05</size>
+            <size>10 10 0.1</size>
           </box>
         </geometry>
         
@@ -27,7 +27,7 @@
       <visual name='visualsuelo'>
         <geometry>
           <box>
-            <size>10 10 0.05</size>
+            <size>10 10 0.1</size>
           </box>
         </geometry>
         <material>
