@@ -5,7 +5,7 @@ addpath("classes\");
 %load simulations\sim1.mat
 
 %Drone and FP selection selection
-drone = 2;
+drone = 21;
 fp = drone;
 
 figure(1);
