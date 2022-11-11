@@ -29,8 +29,44 @@ namespace gazebo
 {
 class DroneControl : public ModelPlugin
 {
-   // quadcopter parameters
+private:
+    // Pointers to the model and the link
+    physics::ModelPtr model;
+    physics::LinkPtr link;
 
+    // Pointer to the update event connection
+    event::ConnectionPtr updateConnection;
+
+    //Needed to control telemetry publish
+    common::Time last_odom_publish_time;
+    double odom_publish_rate = 2; // updates per second
+
+    //ROS connection
+    ros::NodeHandle *ros_node;
+    ros::Subscriber ros_sub_uplans;
+    ros::Publisher ros_pub_telemetry;
+    ros::CallbackQueue ros_queue;
+    ros::AsyncSpinner ros_spinner = ros::AsyncSpinner(1,&this->ros_queue);
+
+    //Topic strcutures
+    std::string uplans_topic = "uplan";
+    std::string telemetry_topic = "telemetry";
+
+    //Drone and U-plan
+    std::string id;
+    double v_h_max = 5.555;
+    double v_v_max = 3.0;
+    bool uplan_inprogress = false;
+    siam_main::Uplan::ConstPtr uplan_local;
+    std::vector<siam_main::Waypoint> route_local;
+
+    //To control navigation
+    int actual_route_point;
+
+    //Control file output
+    std::ofstream control_out_file;
+
+    // quadcopter parameters
    // Posicion de los rotores
    // distancia: 25cms, inclinacion: 45º
    ignition::math::Vector3<double> pos_CM = ignition::math::Vector3<double>(0, 0, 0); // centro de masas
@@ -132,49 +168,6 @@ private:
 
 //-------------------------------------
 
-   // Pointers to the model and the link
-private:
-   physics::ModelPtr model;
-   physics::LinkPtr link;
-
-   // Pointer to the update event connection
-   event::ConnectionPtr updateConnection;
-
-   // To be eliminated ///////////////////////
-   // ros::NodeHandle *rosnode_; //ROS node used
-   // ros::Publisher pub_; // Odometry publisher
-   //ros::Subscriber sub_; //Control subscriber
-   //std::string topic_subscripted_ = "bus_command";
-   //ros::CallbackQueue queue_;
-   //boost::thread callback_queue_thread_;
-    // //////////////////////////////////////////
-
-   //Needed to control telemetry publish
-   common::Time last_odom_publish_time;
-   double odom_publish_rate = 2; // updates per second
-
-   //ROS connection
-   ros::NodeHandle *ros_node;
-   ros::Subscriber ros_sub_uplans;
-   ros::Publisher ros_pub_telemetry;
-   ros::CallbackQueue ros_queue;
-   ros::AsyncSpinner ros_spinner = ros::AsyncSpinner(1,&this->ros_queue);
-
-   //Topic strcutures
-   std::string uplans_topic = "uplan";
-   std::string telemetry_topic = "telemetry";
-
-   //Drone and U-plan
-   std::string id;
-   double v_h_max = 5.555;
-   double v_v_max = 3.0;
-   bool uplan_inprogress = false;
-   siam_main::Uplan::ConstPtr uplan_local;
-   std::vector<siam_main::Waypoint> route_local;
-
-   //To control navigation
-   int actual_route_point;
-
    // Control commands
    double cmd_on = 0;
    double cmd_velX = 0.0;
@@ -194,18 +187,10 @@ private:
    Eigen::Matrix<double, 4, 1> E; // model acumulated error
    common::Time prev_iteration_time; // Time to integrate the acumulated error
 
-   //Control file output
-   std::ofstream control_out_file;
    ////////////////////////////////////////////////////////
 public:
    void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
    {
-      //    _sdf->PrintValues("\n\n\n");
-       /*_sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin")->FindElement("robotNamespace")->GetValue()->SetFromString("quadcopter1");
-       _sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin")->Update();
-       std::cout << _sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin")->FindElement("robotNamespace")->ToString("") << std::endl;
-       _parent->UpdateParameters(_sdf->GetParent()->FindElement("link")->FindElement("sensor")->FindElement("plugin"));*/
-
       // Store pointers to the model
       this->model = _parent;
       this->link = model->GetLink("dronelink");
@@ -222,8 +207,6 @@ public:
       }
 
       // Getting Drone ID
-       //std::string id;
-
        if(!_sdf->HasElement("id")){
           std::cout << "Missing parameter <id> in PluginCall, default to 0" << std::endl;
           this->id = "0";
@@ -239,29 +222,19 @@ public:
       this->ros_pub_telemetry = this->ros_node->advertise<siam_main::Telemetry>(this->telemetry_topic, 100);
       last_odom_publish_time = model->GetWorld()->SimTime();
 
-      // Initiates the subcripted topics
-        //To be eliminated
-        /*  ros::SubscribeOptions so = ros::SubscribeOptions::create<geometry_msgs::Pose>(
-              topic_subscripted_,
-              1000,
-              boost::bind(&DroneControl::busCommandCallBack, this, _1),
-              ros::VoidPtr(),
-              &this->queue_);
-          this->ros_s= this->ros_node->subscribe(so); */
-
-        /*
-          this->callback_queue_thread_ =
-              boost::thread(boost::bind(&DroneControl::QueueThread, this));*/
-
-      ros::SubscribeOptions so2 = ros::SubscribeOptions::create<siam_main::Uplan>(
+      //Subscription options
+      ros::SubscribeOptions so = ros::SubscribeOptions::create<siam_main::Uplan>(
           this->uplans_topic,
           1000,
           boost::bind(&DroneControl::Uplans_topic_callback, this, _1),
           ros::VoidPtr(),
           &this->ros_queue);
-      this->ros_sub_uplans = this->ros_node->subscribe(so2);
 
+      // Subscription
+      this->ros_sub_uplans = this->ros_node->subscribe(so);
+      //Asyncronous spinning start
       this->ros_spinner.start();
+
       /*
       // Initiates control matrices
       Kx << -178.5366, -178.5366, -21.9430, -21.9430,  55.6290, -64.9335,  64.9335,  285.3230,
@@ -344,18 +317,20 @@ public:
    // Called by the world update start event
    void OnUpdate(const common::UpdateInfo & /*_info*/)
    {
-      // Tiempo desde la ultima iteracion
+      // Check if the simulation was reset
       common::Time current_time = model->GetWorld()->SimTime();
       if (current_time < prev_iteration_time)
          prev_iteration_time = current_time; // The simulation was reset
 
-   //   printf("current  iteration time: %.3f \n", current_time.Double());
-   //   printf("previous iteration time: %.3f \n", prev_iteration_time.Double());
+        //printf("current  iteration time: %.3f \n", current_time.Double());
+        //printf("previous iteration time: %.3f \n", prev_iteration_time.Double());
 
+      //Seconds since the last iteration
       double seconds_since_last_iteration = (current_time - prev_iteration_time).Double();
       //printf("iteration time (seconds): %.6f \n", seconds_since_last_iteration);
       prev_iteration_time = current_time;
 
+      //Getting position, rotations and velocities
       // Getting model status
       ignition::math::Pose3<double> pose = model->WorldPose();
       //printf("drone xyz = %.2f,%.2f,%.2f \n", pose.pos.X(), pose.pos.Y(), pose.pos.Z());
@@ -367,29 +342,29 @@ public:
       ignition::math::Vector3<double> angular_vel = model->RelativeAngularVel();
       //printf("drone angular vel xyz = %.2f,%.2f,%.2f \n", angular_vel.X(), angular_vel.Y(), angular_vel.Z());
 
-      double ttrw;
-      siam_main::Waypoint target_waypoint;
-      double vx, vy, vz, dx, dy, dz;
+      //Variables used by the high level control
+      double ttrw; // Time to reach the waypoint
+      siam_main::Waypoint target_waypoint; //Next waypoint to reach
+      double vx, vy, vz, vrotz, dx, dy, dz; //Distances and velocities in each axis
 
-      //High level control
+      //High level control execution -----------------------------------
+      // If have a Uplan and the desired time to take off has been passed
       if (uplan_inprogress && (current_time > uplan_local->dtto)){
+
           //Rotors on
           cmd_on = 1.0;
 
-          //Get target waypoint and positions
+          //Get target waypoint and positions vector
           target_waypoint = route_local[actual_route_point];
           ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x, target_waypoint.y, target_waypoint.z);
           ignition::math::Vector2<double> target_way_vector2d = ignition::math::Vector2d(target_waypoint.x, target_waypoint.y);
 
-          //Get distance to target waypoint
+          //Get distance from drone position to target waypoint
           double d3d = target_way_vector3d.Distance(pose.Pos());
           double d2d = target_way_vector2d.Distance(ignition::math::Vector2d(pose.Pos().X(),pose.Pos().Y()));
 
-          //Get time remaining to the waypoint
+          //Get time remaining to the waypoint (to fullfill the Uplan)
           ttrw = target_waypoint.t.sec - current_time.Double();
-
-          //Print out distance
-          //std::cout << "Distance 3D: " << d3d << "\nDistance 2D: " << d2d <<"\n";
 
           //Angle between drone heading and target
           double bearing = atan2(target_way_vector3d.Y()-pose.Pos().Y(),target_way_vector3d.X()-pose.Pos().X()) - pose_rot.Z();
@@ -398,8 +373,6 @@ public:
           dx = d2d * cos(bearing);
           dy = d2d * sin(bearing);
           dz = target_way_vector3d.Z() - pose.Pos().Z();
-
-          //std::cout << "Distance WP: d2D: " << d2d << "  d3D: " << d3d << ")\n";
 
           //If the time is negative, return to 0.1
           if(ttrw <= 0){
@@ -411,7 +384,13 @@ public:
            vy = (dy/ttrw);
            vz = (dz/ttrw);
 
-          //Normalize the vector
+           if (bearing > 3.1418){
+               bearing = -bearing;
+           }
+
+           vrotz = (bearing/2);
+
+          //Getting the norm of the velocities
           ignition::math::Vector2<double> vel_h_vector = ignition::math::Vector2d(vx,vy);
           double norm_vel_h = vel_h_vector.Distance(ignition::math::Vector2d(0,0));
 
@@ -420,32 +399,44 @@ public:
               vx = vx / norm_vel_h;
               vy = vy / norm_vel_h;
           }
+
           //Normalize vertical velocity
           if (vz > 1.0){
               vz = 1.0;
           }
-          //std::cout << "(" << (actual_route_point+1) << "," << route_local.size() << ") Velocity norm: " << norm_vel_h << "(x: " << vx << "  y: " << vy << "  z: " << vz << ")\n";
 
+          //Normialize Z rotational velocity
+          if(vrotz > 1.0){
+              vrotz = 1.0;
+          }
+
+          //Giving velocities to the low leven control
           cmd_velX = vx;
           cmd_velY = vy;
           cmd_velZ = vz;
+          cmd_rotZ = vrotz;
 
-          //Change to the next waypoint
+          //Detect if drone reached and change to the next waypoint
           if (d3d < target_waypoint.r){
+              //Waypoint is changed only when waypoint time has passed
               if (current_time >= target_waypoint.t.sec) {
+                  //Check if exist more waypoint
                   if (actual_route_point < (route_local.size() - 1)) {
                       actual_route_point++;
                       std::cout << "Drone " << id << " has reached waypoint " << (actual_route_point - 1)
                                 << " and change to the waypoiny "
                                 << actual_route_point << std::endl;
                   } else {
-                      cmd_on = 1;
+                      //Stop
+                      cmd_on = 0;
                       cmd_velX = 0.0;
                       cmd_velY = 0.0;
                       cmd_velZ = -1.0;
                       uplan_inprogress = false;
                       actual_route_point = 0;
                       std::cout << "Drone " << id << " has finished it U-plan" << std::endl;
+
+                      //Save Uplan high control logbook
                       control_out_file.close();
                   }
               }
