@@ -5,7 +5,7 @@ addpath("classes\");
 %load simulations\sim4.mat
 
 %Drone and FP selection selection
-drone = 2;
+drone = 1;
 fp = drone;
 
 figure(1);
@@ -152,8 +152,7 @@ hold on;
 grid on;
 plot(sim_drotz_timetable, "Var1");
 ylim([-pi,pi]);
-xlabel("Time");
-ylabel("Rot Z");
+xlabel("Time")
 legend(["Position", "Velocity"]);
 hold off;
 

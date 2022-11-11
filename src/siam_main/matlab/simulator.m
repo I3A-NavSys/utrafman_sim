@@ -12,7 +12,7 @@ operator = Operator('Jesus');
 UTM.S_Registry.regNewOperator(operator);
 
 %Creamos drones, lo registramos y los anadimos a Gazebo
-numDrones = 30;
+numDrones = 10;
 drone = Drone.empty(0,numDrones);
 p = 1;
 for i=1:numDrones
@@ -33,7 +33,14 @@ for i=1:numDrones
     operator.regNewDrone(drone(i)); %Drone registration with the operator
     UTM.S_Registry.regNewDrone(drone(i)); %Drone registration in Uspace
 end
-
+pause(3);
+for i=1:numDrones  
+    %Init drone telemetry updates
+    drone(i).subToTelemety();
+    %Init drone Uplan publisher
+    drone(i).pubsubToFlightPlan();
+end
+pause(1);
 delay = 0;
 tbp = 0;
 fp = FlightPlan.empty(0,numDrones*1);

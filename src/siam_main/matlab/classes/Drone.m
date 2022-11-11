@@ -52,16 +52,16 @@ classdef Drone < handle
         end
 
         %Subcription to the drone odometry topic
-        function obj = subToTelemety(obj)
-            pause(1);
+        function obj = subToTelemety(obj, timer, time)
+            %pause(3);
             %Subscription with callback
-            obj.ros_Telemetry_sub = rossubscriber(sprintf('/drone/%d/telemetry', obj.droneId),@obj.updateLoc);
+            obj.ros_Telemetry_sub = rossubscriber(sprintf('/drone/%d/telemetry', obj.droneId),"siam_main/Telemetry",@obj.updateLoc);
         end
 
         %Publish to the drone flight plan 
-        function obj = pubsubToFlightPlan(obj)
+        function obj = pubsubToFlightPlan(obj, timer, time)
             %Publisher to send Uplans
-            obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/uplan', obj.droneId), "siam_main/Uplan");
+            obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/uplan', obj.droneId),"siam_main/Uplan");
         end
 
         %Callback to update location of the drone

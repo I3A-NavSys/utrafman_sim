@@ -47,11 +47,10 @@ classdef Registry < handle
             %Add drone to Gazebo
             obj.ros_droneInsert_msg.Data = drone.sdf;
             send(obj.ros_droneInsert_pub, obj.ros_droneInsert_msg);
-
-            %Init drone telemetry updates
-            drone.subToTelemety();
-            %Init drone Uplan publisher
-            drone.pubsubToFlightPlan();
+            pause(0.2);
+            %Greate a timer to subscribe
+            %t = timer('Period',2,'TasksToExecute',1,'TimerFcn', {@drone.subToTelemety, @drone.pubsubToFlightPlan});
+            %start(t);
         end
 
         function obj = regNewFlightPlan(obj, fp)
