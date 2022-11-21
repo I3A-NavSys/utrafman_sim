@@ -20,14 +20,22 @@ classdef FlightPlan < handle
             obj.drone = drone;
             obj.dtto = dtto;
             
-            for x = 1:1:length(route)
+            init = ros.msggen.siam_main.Waypoint;
+            init.X = drone.initLoc(1);
+            init.Y = drone.initLoc(2);
+            init.Z = drone.initLoc(3);
+            init.T.Sec = dtto;
+            init.R = 0.5;
+            obj.route(1) = init;
+            
+            for x = 1:size(route,1)
                 point = ros.msggen.siam_main.Waypoint;
                 point.X = route(x,1);
                 point.Y = route(x,2);
                 point.Z = route(x,3);
-                point.T.Sec = obj.dtto+(15*x);
+                point.T.Sec = route(x,4);
                 point.R = 0.5;
-                obj.route(x) = copy(point);
+                obj.route(x+1) = copy(point);
             end
 
         end

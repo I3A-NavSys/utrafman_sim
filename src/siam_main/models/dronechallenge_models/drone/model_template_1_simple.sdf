@@ -54,7 +54,7 @@
                 </material>
             </visual>
 
-            <sensor name='view_camera' type='camera'> <!-- <plugin name='onboard_camera' filename='/opt/ros/kinetic/share/drone_ros/plugins/build/libonboard_camera.so'> </plugin> -->
+            <!-- <sensor name='view_camera' type='camera'>
                 <plugin name='camera_controller_2' filename='libgazebo_ros_camera.so'>
                     <alwaysOn>true</alwaysOn>
                     <updateRate>0.0</updateRate>
@@ -77,7 +77,7 @@
                 <update_rate>10</update_rate>
                 <visualize>0</visualize>
             </sensor>
-            <sensor name='onboard_camera_sensor' type='camera'> <!-- <plugin name='onboard_camera' filename='/opt/ros/kinetic/share/drone_ros/plugins/build/libonboard_camera.so'> </plugin> -->
+            <sensor name='onboard_camera_sensor' type='camera'>
                 <plugin name='camera_controller' filename='libgazebo_ros_camera.so'>
                     <alwaysOn>true</alwaysOn>
                     <updateRate>0.0</updateRate>
@@ -99,7 +99,7 @@
                 <always_on>1</always_on>
                 <update_rate>10</update_rate>
                 <visualize>0</visualize>
-            </sensor>
+            </sensor> -->
             <visual name='brazo_NE'>
                 <pose>0.0550 -0.0346 0 0 0 -1.0472</pose>
                 <geometry>

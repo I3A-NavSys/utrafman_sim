@@ -31,7 +31,7 @@ classdef FlightPlansPlanner < handle
             end
 
             i = 1;
-            while i <= size(fps,2) && fps(i).dtto < time
+            while i <= size(fps,2) && (fps(i).dtto-5) < time
                 fp = fps(i);
                 %If Uplan has finished, continue
                 if fp.status == 2

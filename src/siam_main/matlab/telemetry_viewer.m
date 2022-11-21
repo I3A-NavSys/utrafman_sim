@@ -2,10 +2,10 @@
 addpath("classes\");
 
 %Load data from simulations
-%load simulations\sim4.mat
+load simulations\sim4.mat
 
 %Drone and FP selection selection
-drone = 2;
+drone = 1;
 fp = drone;
 
 figure(1);
