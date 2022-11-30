@@ -10,6 +10,7 @@
 
 #include <gazebo_msgs/ModelState.h>
 #include <geometry_msgs/Pose.h>
+#include <std_msgs/Bool.h>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
@@ -44,13 +45,15 @@ namespace gazebo
         //ROS connection
         ros::NodeHandle *ros_node;
         ros::Subscriber ros_sub_uplans;
+        ros::Subscriber ros_sub_kill;
         ros::Publisher ros_pub_telemetry;
         ros::CallbackQueue ros_queue;
         ros::AsyncSpinner ros_spinner = ros::AsyncSpinner(1,&this->ros_queue);
 
-        //Topic strcutures
+        //Topic structures
         std::string uplans_topic = "uplan";
         std::string telemetry_topic = "telemetry";
+        std::string kill_topic = "kill";
 
         //Drone and U-plan
         std::string id;
@@ -190,6 +193,15 @@ namespace gazebo
 
 
     public:
+        ~DroneControl(){
+            //Disconnection from the Update events
+            event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
+            //Stop the spinner
+            this->ros_spinner.stop();
+            //Remove the model from the world
+            this->model->Fini();
+        }
+
         void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
         {
             // Store pointers to the model
@@ -217,6 +229,8 @@ namespace gazebo
 
             //Creating a ROS Node for the drone
             this->ros_node = new ros::NodeHandle("drone/"+this->id);
+            //Assigning the queue
+            this->ros_node->setCallbackQueue(&this->ros_queue);
 
             // Initiates the publication topic
             this->ros_pub_telemetry = this->ros_node->advertise<siam_main::Telemetry>(this->telemetry_topic, 100);
@@ -234,6 +248,17 @@ namespace gazebo
 
             // Subscription
             this->ros_sub_uplans = this->ros_node->subscribe(so);
+
+            //Subscription options for kill topic
+            ros::SubscribeOptions so2 = ros::SubscribeOptions::create<std_msgs::Bool>(
+                    this->kill_topic,
+                    10,
+                    boost::bind(&DroneControl::kill_topic_callback, this, _1),
+                    ros::VoidPtr(),
+                    &this->ros_queue);
+
+            // Subscription
+            this->ros_sub_kill = this->ros_node->subscribe(so2);
 
             //Asynchronous spinning start
             this->ros_spinner.start();
@@ -279,20 +304,36 @@ namespace gazebo
         }
 
         // Called by the world update start event
-        void OnUpdate(const common::UpdateInfo & /*_info*/)
+        void OnUpdate(const common::UpdateInfo &evento /*_info*/)
         {
+            /*if(!this->ros_node->ok()){
+                delete this;
+            }*/
+
             // Check if the simulation was reset
             common::Time current_time = model->GetWorld()->SimTime();
             if (current_time < prev_iteration_time)
                 prev_iteration_time = current_time; // The simulation was reset
+
+            if (current_time > 30){
+                event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
+                this->ros_sub_uplans.shutdown();
+                this->ros_sub_kill.shutdown();
+                this->ros_pub_telemetry.shutdown();
+                this->ros_queue.disable();
+                this->ros_node->shutdown();
+                this->ros_spinner.stop();
+                this->model->Fini();
+            }
 
             //printf("current  iteration time: %.3f \n", current_time.Double());
             //printf("previous iteration time: %.3f \n", prev_iteration_time.Double());
 
             //Seconds since the last iteration
             double seconds_since_last_iteration = (current_time - prev_iteration_time).Double();
-            //printf("iteration time (seconds): %.6f \n", seconds_since_last_iteration);
             prev_iteration_time = current_time;
+            //printf("iteration time (seconds): %.6f \n", seconds_since_last_iteration);
+
 
             //Getting position, rotations and velocities
             // Getting model status
@@ -313,7 +354,9 @@ namespace gazebo
 
             //High level control execution -----------------------------------
             // If have a Uplan and the desired time to take off has been passed
-            if (uplan_inprogress && (current_time > uplan_local->dtto)){
+            if (uplan_inprogress && (current_time.Double() >= uplan_local->dtto)){
+                ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(current_time.Double());
+                //std::cout << "(" << this->id  << ") Uplan Abstraction Layer in " << current_time.Double() << "s is " << uplan_pos << std::endl;
 
                 //Rotors on
                 cmd_on = 1.0;
@@ -338,6 +381,9 @@ namespace gazebo
                 dy = d2d * sin(bearing);
                 dz = target_way_vector3d.Z() - pose.Pos().Z();
 
+                //UAL
+                ignition::math::Vector3d posDiff = uplan_pos - pose.Pos();
+
                 //If the time is negative, return to 0.1
                 if(ttrw <= 0){
                     ttrw = 0.1;
@@ -348,31 +394,37 @@ namespace gazebo
                 vy = (dy/ttrw);
                 vz = (dz/ttrw);
 
-                if (bearing > 3.1418){
+                //Velocities using UAL
+                vx = posDiff.X();
+                vy = posDiff.Y();
+                vz = posDiff.Z();
+
+                /*if (bearing > 3.1418){
                     bearing = -bearing;
                 }
 
-                vrotz = (bearing/2);
+                vrotz = (bearing/2);*/
+                vrotz = 0;
 
                 //Getting the norm of the velocities
                 ignition::math::Vector2<double> vel_h_vector = ignition::math::Vector2d(vx,vy);
                 double norm_vel_h = vel_h_vector.Distance(ignition::math::Vector2d(0,0));
 
                 //Normalize horizontal velocity
-                if (norm_vel_h > 1.0){
+                /*if (norm_vel_h > 1.0){
                     vx = vx / norm_vel_h;
                     vy = vy / norm_vel_h;
-                }
+                }*/
 
                 //Normalize vertical velocity
-                if (vz > 1.0){
+                /*if (vz > 1.0){
                     vz = 1.0;
-                }
+                }*/
 
-                //Normialize Z rotational velocity
-                if(vrotz > 1.0){
+                //Normalize Z rotational velocity
+                /*if(vrotz > 1.0){
                     vrotz = 1.0;
-                }
+                }*/
 
                 //Giving velocities to the low leven control
                 cmd_velX = vx;
@@ -456,7 +508,7 @@ namespace gazebo
                 // Error acumulado
                 E = E + (e * seconds_since_last_iteration);
 
-                if (E(0, 0) > 1)
+                /*if (E(0, 0) > 1)
                     E(0, 0) = 1;
                 if (E(0, 0) < -1)
                     E(0, 0) = -1;
@@ -472,26 +524,26 @@ namespace gazebo
                     E(3, 0) = 1;
                 if (E(3, 0) < -1)
                     E(3, 0) = -1;
-                //        std::cout  << "E:  " << E.transpose()  << " \n\n";
+                //        std::cout  << "E:  " << E.transpose()  << " \n\n"; */
 
                 // Velocidad de los rotores
                 Wr = Hs - Kx * x - Ky * E;
-                if (Wr(0, 0) > 1650)
-                    Wr(0, 0) = 1650;
+                /*if (Wr(0, 0) > w_max)
+                    Wr(0, 0) = w_max;
                 if (Wr(0, 0) < 0)
                     Wr(0, 0) = 0;
-                if (Wr(1, 0) > 1650)
-                    Wr(1, 0) = 1650;
+                if (Wr(1, 0) > w_max)
+                    Wr(1, 0) = w_max;
                 if (Wr(1, 0) < 0)
                     Wr(1, 0) = 0;
-                if (Wr(2, 0) > 1650)
-                    Wr(2, 0) = 1650;
+                if (Wr(2, 0) > w_max)
+                    Wr(2, 0) = w_max;
                 if (Wr(2, 0) < 0)
                     Wr(2, 0) = 0;
-                if (Wr(3, 0) > 1650)
-                    Wr(3, 0) = 1650;
+                if (Wr(3, 0) > w_max)
+                    Wr(3, 0) = w_max;
                 if (Wr(3, 0) < 0)
-                    Wr(3, 0) = 0;
+                    Wr(3, 0) = 0;*/
             }
             else
             {
@@ -640,6 +692,60 @@ namespace gazebo
                 //Open the file
                 control_out_file.open("/tmp/siamsim/control/drone-"+id+"_fp-" + std::to_string(uplan_local->flightPlanId) + ".txt");
             }
+        }
+
+        ignition::math::Vector3<double> UplanAbstractionLayer(double t){
+            siam_main::UplanConstPtr uplan = this->uplan_local;
+            std::vector<siam_main::Waypoint> route = uplan->route;
+            int route_s = route.size();
+            //std::cout << "--------------------------" << std::endl;
+
+            //In case Uplan starts after t
+            if (t < route[0].t.sec){
+                //std::cout << "Not fp startted" << std::endl;
+                return ignition::math::Vector3d(route[0].x, route[0].y, route[0].z);
+            }
+
+            //In case Uplan already finish, return last waypoint
+            if (t > route[route_s-1].t.sec){
+                //std::cout << "FP finished" << std::endl;
+                return ignition::math::Vector3d(route[route_s-1].x, route[route_s-1].y, route[route_s-1].z);
+            }
+
+            siam_main::Waypoint wp;
+            double timeDiffBetWPs, timeDiffBetWPt;
+            ignition::math::Vector3d vectorDiff, position;
+            for(int i = 1; i < route_s; i++){
+                //Next waypoint
+                wp = route[i];
+                //If waypoint time is less than t, change to the next waypoint
+                if (t > wp.t.sec){
+                    continue;
+                }
+                //Time differences between waypoints and t and the previous waypoint
+                timeDiffBetWPs = wp.t.sec - route[i-1].t.sec;
+                timeDiffBetWPt = t - route[i-1].t.sec;
+                //std::cout << "On way to NW -> timeDiffBetWPs: " << timeDiffBetWPs << " timeDiffBetWPt: " << timeDiffBetWPt << std::endl;
+                //Position differences between waypoints
+                vectorDiff = ignition::math::Vector3d(wp.x - route[i-1].x, wp.y - route[i-1].y, wp.z - route[i-1].z);
+                //Position in time t
+                position = vectorDiff * (timeDiffBetWPt/timeDiffBetWPs) + ignition::math::Vector3d(route[i-1].x, route[i-1].y, route[i-1].z);
+                //std::cout << "Position to reach: " << position << std::endl;
+                break;
+            }
+            return position;
+        }
+
+        void kill_topic_callback(const std_msgs::BoolConstPtr &value){
+            //Shutdown the topics
+            this->ros_sub_uplans.shutdown();
+            this->ros_pub_telemetry.shutdown();
+            this->ros_sub_kill.shutdown();
+            //Disable the queue
+            this->ros_queue.clear();
+            this->ros_queue.disable();
+            //Shutdown the nodes
+            this->ros_node->shutdown();
         }
     };
 

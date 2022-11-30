@@ -792,6 +792,22 @@ ros/forwards.h
 
 /opt/ros/noetic/include/rosconsole/macros_generated.h
 
+/opt/ros/noetic/include/std_msgs/Bool.h
+string
+-
+vector
+-
+memory
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+
 /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
 ros/macros.h
 -
@@ -880,6 +896,8 @@ gazebo/common/common.hh
 gazebo_msgs/ModelState.h
 -
 geometry_msgs/Pose.h
+-
+std_msgs/Bool.h
 -
 Eigen/Core
 -

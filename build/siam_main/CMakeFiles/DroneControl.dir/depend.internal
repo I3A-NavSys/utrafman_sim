@@ -66,6 +66,7 @@ siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o
  /opt/ros/noetic/include/ros/wall_timer.h
  /opt/ros/noetic/include/ros/wall_timer_options.h
  /opt/ros/noetic/include/rosconsole/macros_generated.h
+ /opt/ros/noetic/include/std_msgs/Bool.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcDecl.h
  /opt/ros/noetic/include/xmlrpcpp/XmlRpcValue.h
  /opt/ros/noetic/share/siam_sim/devel/include/siam_main/Telemetry.h
