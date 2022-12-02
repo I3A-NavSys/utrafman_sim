@@ -1,185 +1,21 @@
-/snap/clion/198/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/198/bin/ninja/linux/ninja -G Ninja -S /opt/ros/noetic/share/siam_sim/src -B /opt/ros/noetic/share/siam_sim/src/cmake-build-debug
--- Using CATKIN_DEVEL_PREFIX: /opt/ros/noetic/share/siam_sim/src/cmake-build-debug/devel
--- Using CMAKE_PREFIX_PATH: /opt/ros/noetic/share/siam_sim/devel;/opt/ros/noetic
--- This workspace overlays: /opt/ros/noetic/share/siam_sim/devel;/opt/ros/noetic
--- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
--- Using PYTHON_EXECUTABLE: /usr/bin/python3
--- Using Debian Python package layout
--- Using empy: /usr/lib/python3/dist-packages/em.py
--- Using CATKIN_ENABLE_TESTING: ON
--- Call enable_testing()
--- Using CATKIN_TEST_RESULTS_DIR: /opt/ros/noetic/share/siam_sim/src/cmake-build-debug/test_results
--- Forcing gtest/gmock from source, though one was otherwise available.
--- Found gtest sources under '/usr/src/googletest': gtests will be built
--- Found gmock sources under '/usr/src/googletest': gmock will be built
-CMake Deprecation Warning at /usr/src/googletest/CMakeLists.txt:4 (cmake_minimum_required):
-  Compatibility with CMake < 2.8.12 will be removed from a future version of
-  CMake.
-
-  Update the VERSION argument <min> value or use a ...<max> suffix to tell
-  CMake that the project does not need compatibility with older versions.
+/home/galadriel-ubuntu/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/galadriel-ubuntu/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/ninja/linux/ninja -G Ninja -S /opt/ros/noetic/share/siam_sim/src -B /opt/ros/noetic/share/siam_sim/src/cmake-build-debug
+-- The C compiler identification is GNU 9.4.0
+-- The CXX compiler identification is GNU 9.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+CMake Error at CMakeLists.txt:65 (message):
+  find_package(catkin) failed.  catkin was neither found in the workspace nor
+  in the CMAKE_PREFIX_PATH.  One reason may be that no ROS setup.sh was
+  sourced before.
 
 
-CMake Deprecation Warning at /usr/src/googletest/googlemock/CMakeLists.txt:45 (cmake_minimum_required):
-  Compatibility with CMake < 2.8.12 will be removed from a future version of
-  CMake.
-
-  Update the VERSION argument <min> value or use a ...<max> suffix to tell
-  CMake that the project does not need compatibility with older versions.
-
-
-CMake Deprecation Warning at /usr/src/googletest/googletest/CMakeLists.txt:56 (cmake_minimum_required):
-  Compatibility with CMake < 2.8.12 will be removed from a future version of
-  CMake.
-
-  Update the VERSION argument <min> value or use a ...<max> suffix to tell
-  CMake that the project does not need compatibility with older versions.
-
-
--- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") 
--- Using Python nosetests: /usr/bin/nosetests3
--- catkin 0.8.10
--- BUILD_SHARED_LIBS is on
--- BUILD_SHARED_LIBS is on
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--- ~~  traversing 2 packages in topological order:
--- ~~  - siam_main
--- ~~  - siam_god
--- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--- +++ processing catkin package: 'siam_main'
--- ==> add_subdirectory(siam_main)
-CMake Warning (dev) at /snap/clion/198/bin/cmake/linux/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
-  The package name passed to `find_package_handle_standard_args` (PkgConfig)
-  does not match the name of the calling package (gazebo).  This can lead to
-  problems in calling code that expects `find_package` result variables
-  (e.g., `_FOUND`) to follow a certain pattern.
-Call Stack (most recent call first):
-  /snap/clion/198/bin/cmake/linux/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
-  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
-  siam_main/CMakeLists.txt:11 (find_package)
-This warning is for project developers.  Use -Wno-dev to suppress it.
-
--- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
--- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found version "3.6.1") 
--- Looking for ignition-math6 -- found version 6.10.0
--- Searching for dependencies of ignition-math6
--- Looking for OGRE...
--- Found Ogre Ghadamon (1.9.0)
--- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
--- Looking for OGRE_Paging...
--- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
--- Looking for OGRE_Terrain...
--- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
--- Looking for OGRE_Property...
--- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
--- Looking for OGRE_RTShaderSystem...
--- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
--- Looking for OGRE_Volume...
--- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
--- Looking for OGRE_Overlay...
--- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
--- Looking for ignition-math6 -- found version 6.10.0
--- Looking for ignition-transport8 -- found version 8.2.1
--- Searching for dependencies of ignition-transport8
--- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found suitable version "3.6.1", minimum required is "3") 
--- Config-file not installed for ZeroMQ -- checking for pkg-config
--- Checking for module 'libzmq >= 4'
---   Found libzmq , version 4.3.2
--- Checking for module 'uuid'
---   Found uuid, version 2.34.0
--- Looking for ignition-msgs5 -- found version 5.9.0
--- Searching for dependencies of ignition-msgs5
--- Looking for ignition-math6 -- found version 6.10.0
--- Checking for module 'tinyxml2'
---   Found tinyxml2, version 6.2.0
--- Looking for ignition-msgs5 -- found version 5.9.0
--- Looking for ignition-common3 -- found version 3.14.0
--- Searching for dependencies of ignition-common3
--- Looking for dlfcn.h - found
--- Looking for libdl - found
--- Searching for <ignition-common3> component [graphics]
--- Looking for ignition-common3-graphics -- found version 3.14.0
--- Searching for dependencies of ignition-common3-graphics
--- Looking for ignition-math6 -- found version 6.10.0
--- Looking for ignition-fuel_tools4 -- found version 4.4.0
--- Searching for dependencies of ignition-fuel_tools4
--- Checking for module 'jsoncpp'
---   Found jsoncpp, version 1.7.4
--- Checking for module 'yaml-0.1'
---   Found yaml-0.1, version 0.2.2
--- Checking for module 'libzip'
---   Found libzip, version 1.5.1
--- Looking for ignition-common3 -- found version 3.14.0
--- Looking for ignition-math6 -- found version 6.10.0
--- Looking for ignition-msgs5 -- found version 5.9.0
--- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
--- +++ processing catkin package: 'siam_god'
--- ==> add_subdirectory(siam_god)
-CMake Warning (dev) at /snap/clion/198/bin/cmake/linux/share/cmake-3.22/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
-  The package name passed to `find_package_handle_standard_args` (PkgConfig)
-  does not match the name of the calling package (gazebo).  This can lead to
-  problems in calling code that expects `find_package` result variables
-  (e.g., `_FOUND`) to follow a certain pattern.
-Call Stack (most recent call first):
-  /snap/clion/198/bin/cmake/linux/share/cmake-3.22/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
-  /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
-  siam_god/CMakeLists.txt:10 (find_package)
-This warning is for project developers.  Use -Wno-dev to suppress it.
-
--- Found DART: /usr/include (Required is at least version "6.6") found components: dart 
--- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found version "3.6.1") 
--- Looking for ignition-math6 -- found version 6.10.0
--- Searching for dependencies of ignition-math6
--- Looking for OGRE...
--- Found Ogre Ghadamon (1.9.0)
--- Found OGRE: optimized;/usr/lib/x86_64-linux-gnu/libOgreMain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreMain.so
--- Looking for OGRE_Paging...
--- Found OGRE_Paging: optimized;/usr/lib/x86_64-linux-gnu/libOgrePaging.so;debug;/usr/lib/x86_64-linux-gnu/libOgrePaging.so
--- Looking for OGRE_Terrain...
--- Found OGRE_Terrain: optimized;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so;debug;/usr/lib/x86_64-linux-gnu/libOgreTerrain.so
--- Looking for OGRE_Property...
--- Found OGRE_Property: optimized;/usr/lib/x86_64-linux-gnu/libOgreProperty.so;debug;/usr/lib/x86_64-linux-gnu/libOgreProperty.so
--- Looking for OGRE_RTShaderSystem...
--- Found OGRE_RTShaderSystem: optimized;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so;debug;/usr/lib/x86_64-linux-gnu/libOgreRTShaderSystem.so
--- Looking for OGRE_Volume...
--- Found OGRE_Volume: optimized;/usr/lib/x86_64-linux-gnu/libOgreVolume.so;debug;/usr/lib/x86_64-linux-gnu/libOgreVolume.so
--- Looking for OGRE_Overlay...
--- Found OGRE_Overlay: optimized;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so;debug;/usr/lib/x86_64-linux-gnu/libOgreOverlay.so
--- Looking for ignition-math6 -- found version 6.10.0
--- Looking for ignition-transport8 -- found version 8.2.1
--- Searching for dependencies of ignition-transport8
--- Found Protobuf: /usr/lib/x86_64-linux-gnu/libprotobuf.so;-lpthread (found suitable version "3.6.1", minimum required is "3") 
--- Config-file not installed for ZeroMQ -- checking for pkg-config
--- Checking for module 'libzmq >= 4'
---   Found libzmq , version 4.3.2
--- Checking for module 'uuid'
---   Found uuid, version 2.34.0
--- Looking for ignition-msgs5 -- found version 5.9.0
--- Searching for dependencies of ignition-msgs5
--- Looking for ignition-math6 -- found version 6.10.0
--- Checking for module 'tinyxml2'
---   Found tinyxml2, version 6.2.0
--- Looking for ignition-msgs5 -- found version 5.9.0
--- Looking for ignition-common3 -- found version 3.14.0
--- Searching for dependencies of ignition-common3
--- Looking for dlfcn.h - found
--- Looking for libdl - found
--- Searching for <ignition-common3> component [graphics]
--- Looking for ignition-common3-graphics -- found version 3.14.0
--- Searching for dependencies of ignition-common3-graphics
--- Looking for ignition-math6 -- found version 6.10.0
--- Looking for ignition-fuel_tools4 -- found version 4.4.0
--- Searching for dependencies of ignition-fuel_tools4
--- Checking for module 'jsoncpp'
---   Found jsoncpp, version 1.7.4
--- Checking for module 'yaml-0.1'
---   Found yaml-0.1, version 0.2.2
--- Checking for module 'libzip'
---   Found libzip, version 1.5.1
--- Looking for ignition-common3 -- found version 3.14.0
--- Looking for ignition-math6 -- found version 6.10.0
--- Looking for ignition-msgs5 -- found version 5.9.0
--- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
--- Configuring done
--- Generating done
--- Build files have been written to: /opt/ros/noetic/share/siam_sim/src/cmake-build-debug
+-- Configuring incomplete, errors occurred!
+See also "/opt/ros/noetic/share/siam_sim/src/cmake-build-debug/CMakeFiles/CMakeOutput.log".

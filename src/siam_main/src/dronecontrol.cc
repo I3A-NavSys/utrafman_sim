@@ -42,7 +42,7 @@ namespace gazebo
         common::Time last_odom_publish_time;
         double odom_publish_rate = 2; // updates per second
 
-        //ROS connection
+        //ROS structures
         ros::NodeHandle *ros_node;
         ros::Subscriber ros_sub_uplans;
         ros::Subscriber ros_sub_kill;
@@ -55,10 +55,8 @@ namespace gazebo
         std::string telemetry_topic = "telemetry";
         std::string kill_topic = "kill";
 
-        //Drone and U-plan
+        //Drone and U-plan execution
         std::string id;
-        double v_h_max = 5.555;
-        double v_v_max = 3.0;
         bool uplan_inprogress = false;
         siam_main::Uplan::ConstPtr uplan_local;
         std::vector<siam_main::Waypoint> route_local;
@@ -69,18 +67,20 @@ namespace gazebo
         //Control file output
         std::ofstream control_out_file;
 
+
         //-------------------------------------------------------------------------------------------------
-        // quadcopter parameters
+        // Parametros del drone
+
         // Posicion de los rotores
-        // distancia: 25cms, inclinacion: 45º
-        ignition::math::Vector3<double> pos_CM = ignition::math::Vector3<double>(0, 0, 0); // centro de masas
-        ignition::math::Vector3<double> pos_NE = ignition::math::Vector3<double>(0.1768, -0.1768, 0);
+        // Distancia: 25cms desde el centro de masas, inclinacion: 45º desde los ejes
+    private:
+        ignition::math::Vector3<double> pos_CM = ignition::math::Vector3<double>(0, 0, 0);              // centro de masas
+        ignition::math::Vector3<double> pos_NE = ignition::math::Vector3<double>(0.1768, -0.1768, 0);   // cosd(45º) * 0.25m
         ignition::math::Vector3<double> pos_NW = ignition::math::Vector3<double>(0.1768, 0.1768, 0);
         ignition::math::Vector3<double> pos_SE = ignition::math::Vector3<double>(-0.1768, -0.1768, 0);
         ignition::math::Vector3<double> pos_SW = ignition::math::Vector3<double>(-0.1768, 0.1768, 0);
 
-        // Margen de velocidad de los motores
-    private:
+        // Margen de velocidad angular de los motores
         const double w_max = 1.5708e+03; // rad/s = 15000rpm
         const double w_min = 0; // rad/s =     0rpm
 
@@ -90,7 +90,6 @@ namespace gazebo
             Asumimos que
                FT_max = 1kg = 9.8N
             por tanto, queda que... */
-    private:
         const double kFT = 3.9718e-06;
 
         /* Momento de arrastre de los rotores
@@ -99,7 +98,6 @@ namespace gazebo
             Asumimos que
                ...
             por tanto, queda que... */
-    private:
         const double kMDR = 1.3581e-07;
 
         /* Fuerza de arrastre aerodinamico.
@@ -116,7 +114,6 @@ namespace gazebo
                FTh_max = 4*FT_max * sin(roll_max)
                FTh_max = FDh_max = 19.6
             por tanto queda que...  */
-    private:
         const double kFDx = 0.6350;
         const double kFDy = 0.6350;
 
@@ -132,7 +129,6 @@ namespace gazebo
                Fg = 1.840gr * 9.8m/s
                FD_max = 21.1681N
             por tanto queda que...  */
-    private:
         const double kFDz = 2.3520;
 
         /* Momento de arrastre aerodinamico.
@@ -150,7 +146,6 @@ namespace gazebo
             operando
                kMDxy =  2 * FT_max * sin(deg2rad(45))^2 / Vrp_max^2
             por tanto queda que...  */
-    private:
         const double kMDx = 0.0621;
         const double kMDy = 0.0621;
 
@@ -167,7 +162,6 @@ namespace gazebo
                MDz  = MDR             (el rozamiento con el aire compensa el efecto de los rotores)
                kMDz = kMDR* (2 * w_hov2²) / Vyaw_max²
             por tanto queda que...  */
-    private:
         const double kMDz = 0.0039;
 
 //------------------------------------------------------------------------------------------------------
@@ -194,10 +188,7 @@ namespace gazebo
 
     public:
         ~DroneControl(){
-            //Disconnection from the Update events
-            event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
-            //Stop the spinner
-            this->ros_spinner.stop();
+
             //Remove the model from the world
             this->model->Fini();
         }
@@ -263,21 +254,6 @@ namespace gazebo
             //Asynchronous spinning start
             this->ros_spinner.start();
 
-            /*
-            // Initiates control matrices
-            Kx << -178.5366, -178.5366, -21.9430, -21.9430,  55.6290, -64.9335,  64.9335,  285.3230,
-                   178.5366, -178.5366,  21.9430, -21.9430, -55.6290, -64.9335, -64.9335,  285.3230,
-                  -178.5366,  178.5366, -21.9430,  21.9430, -55.6290,  64.9335,  64.9335,  285.3230,
-                   178.5366,  178.5366,  21.9430,  21.9430,  55.6290,  64.9335, -64.9335,  285.3230;
-      //    std::cout  << Kx << " \n\n";
-
-            Ky << -85.4924,  85.4924,  921.8127,  179.7244,
-                  -85.4924, -85.4924,  921.8127, -179.7244,
-                   85.4924,  85.4924,  921.8127, -179.7244,
-                   85.4924, -85.4924,  921.8127,  179.7244;
-      //    std::cout  << Ky << " \n\n";
-      */
-
             Kx << -334.1327, -334.1327, -29.9223, -29.9223, 72.7456, -167.9315, 167.9315, 373.1147,
                     334.1327, -334.1327, 29.9223, -29.9223, -72.7456, -167.9315, -167.9315, 373.1147,
                     -334.1327, 334.1327, -29.9223, 29.9223, -72.7456, 167.9315, 167.9315, 373.1147,
@@ -306,25 +282,10 @@ namespace gazebo
         // Called by the world update start event
         void OnUpdate(const common::UpdateInfo &evento /*_info*/)
         {
-            /*if(!this->ros_node->ok()){
-                delete this;
-            }*/
-
             // Check if the simulation was reset
             common::Time current_time = model->GetWorld()->SimTime();
             if (current_time < prev_iteration_time)
                 prev_iteration_time = current_time; // The simulation was reset
-
-            if (current_time > 30){
-                event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
-                this->ros_sub_uplans.shutdown();
-                this->ros_sub_kill.shutdown();
-                this->ros_pub_telemetry.shutdown();
-                this->ros_queue.disable();
-                this->ros_node->shutdown();
-                this->ros_spinner.stop();
-                this->model->Fini();
-            }
 
             //printf("current  iteration time: %.3f \n", current_time.Double());
             //printf("previous iteration time: %.3f \n", prev_iteration_time.Double());
@@ -460,9 +421,7 @@ namespace gazebo
             }
 
             //Low level control
-            if (cmd_on)
-            {
-
+            if (cmd_on){
                 // Asignamos el estado del modelo
                 x(0, 0) = pose_rot.X();    // ePhi
                 x(1, 0) = pose_rot.Y();    // eTheta
@@ -479,22 +438,20 @@ namespace gazebo
                 y(2, 0) = linear_vel.Z();  // bZdot
                 y(3, 0) = angular_vel.Z(); // bWz
 
-                // Transformamos comando de horizonte a body
+                //Velocidad comandada en ejes del mundo
                 Eigen::Matrix<double, 3, 1> h_cmd;
                 h_cmd(0, 0) = cmd_velX; // eXdot
                 h_cmd(1, 0) = cmd_velY; // eYdot
                 h_cmd(2, 0) = cmd_velZ; // eZdot
-                //        h_cmd = h_cmd * 2.0;        // cmd_calibration
-                //        std::cout  << "\nh_cmd\n" << h_cmd << "\n\n";
 
+                //Matriz de transformación de ejes de mundo al cuerpo del drone
                 Eigen::Matrix<double, 3, 3> horizon2body;
                 horizon2body = Eigen::AngleAxisd(-x(0, 0), Eigen::Vector3d::UnitX())    // roll
                                * Eigen::AngleAxisd(-x(1, 0), Eigen::Vector3d::UnitY()); // pitch
-                //        std::cout  << "\nhorizon2body\n" << horizon2body << "\n\n";
 
+                // Transformamos comando de horizonte a body
                 Eigen::Matrix<double, 3, 1> b_cmd;
                 b_cmd = horizon2body * h_cmd;
-                //        std::cout  << "\nb_cmd\n" << b_cmd << "\n\n\n\n";
 
                 // Asignamos la referencia a seguir
                 r(0, 0) = b_cmd(0, 0); // bXdot
@@ -502,12 +459,13 @@ namespace gazebo
                 r(2, 0) = b_cmd(2, 0); // bZdot
                 r(3, 0) = cmd_rotZ;    // hZdot
 
-                // Error entre la salida y la referencia
+                // Error entre la salida y la referencia (entre la velocidad comandada y la del drone)
                 e = y - r;
 
                 // Error acumulado
                 E = E + (e * seconds_since_last_iteration);
 
+                // Truncamiento del error acumulado
                 /*if (E(0, 0) > 1)
                     E(0, 0) = 1;
                 if (E(0, 0) < -1)
@@ -524,57 +482,44 @@ namespace gazebo
                     E(3, 0) = 1;
                 if (E(3, 0) < -1)
                     E(3, 0) = -1;
-                //        std::cout  << "E:  " << E.transpose()  << " \n\n"; */
+                //std::cout  << "E:  " << E.transpose()  << " \n\n"; */
 
                 // Velocidad de los rotores
                 Wr = Hs - Kx * x - Ky * E;
-                /*if (Wr(0, 0) > w_max)
-                    Wr(0, 0) = w_max;
-                if (Wr(0, 0) < 0)
-                    Wr(0, 0) = 0;
-                if (Wr(1, 0) > w_max)
-                    Wr(1, 0) = w_max;
-                if (Wr(1, 0) < 0)
-                    Wr(1, 0) = 0;
-                if (Wr(2, 0) > w_max)
-                    Wr(2, 0) = w_max;
-                if (Wr(2, 0) < 0)
-                    Wr(2, 0) = 0;
-                if (Wr(3, 0) > w_max)
-                    Wr(3, 0) = w_max;
-                if (Wr(3, 0) < 0)
-                    Wr(3, 0) = 0;*/
-            }
-            else
-            {
+
+                //Saturamos la velocidad de los motores en caso de superar la maxima o la minima
+                if (Wr(0, 0) > w_max) Wr(0, 0) = w_max;
+                if (Wr(0, 0) < w_min) Wr(0, 0) = w_min;
+
+                if (Wr(1, 0) > w_max) Wr(1, 0) = w_max;
+                if (Wr(1, 0) < w_min) Wr(1, 0) = w_min;
+
+                if (Wr(2, 0) > w_max) Wr(2, 0) = w_max;
+                if (Wr(2, 0) < w_min) Wr(2, 0) = w_min;
+
+                if (Wr(3, 0) > w_max) Wr(3, 0) = w_max;
+                if (Wr(3, 0) < w_min) Wr(3, 0) = w_min;
+            } else {
+                // Eliminamos el error acumulado y la rotacion de los motores
                 E << 0, 0, 0, 0;
                 Wr << 0, 0, 0, 0;
             }
 
-            //==========================================================
-            /*
-
-            // Asignamos la rotación de los motores
-            double w_rotor_NE;
-            double w_rotor_NW;
-            double w_rotor_SE;
-            double w_rotor_SW;
-      */
 
             // Asignamos la rotación de los motores
             double w_rotor_NE = Wr(0, 0);
             double w_rotor_NW = Wr(1, 0);
             double w_rotor_SE = Wr(2, 0);
             double w_rotor_SW = Wr(3, 0);
-            /*
-            // con esto simulamos rotacion de sustentacion
+
+            /* // con esto simulamos rotacion de sustentacion
             w_rotor_NE = sqrt(0.300*9.8/4 / kFT);  // = 430.18 con 4 rotores
             w_rotor_NW = w_rotor_NE;
             w_rotor_SE = w_rotor_NE;
             w_rotor_SW = w_rotor_NE;
-      */
+            */
 
-            // aplicamos fuerzas/momentos por empuje de rotores
+            // Aplicamos fuerzas/momentos por empuje de rotores
             ignition::math::Vector3<double> FT_NE = ignition::math::Vector3<double>(0, 0, kFT * pow(w_rotor_NE, 2));
             link->AddLinkForce(FT_NE, pos_NE);
             ignition::math::Vector3<double> FT_NW = ignition::math::Vector3<double>(0, 0, kFT * pow(w_rotor_NW, 2));
@@ -584,7 +529,7 @@ namespace gazebo
             ignition::math::Vector3<double> FT_SW = ignition::math::Vector3<double>(0, 0, kFT * pow(w_rotor_SW, 2));
             link->AddLinkForce(FT_SW, pos_SW);
 
-            // aplicamos momentos por arrastre de rotores
+            // Aplicamos momentos por arrastre de rotores
             ignition::math::Vector3<double> MDR_NE = ignition::math::Vector3<double>(0, 0, kMDR * pow(w_rotor_NE, 2));
             ignition::math::Vector3<double> MDR_NW = ignition::math::Vector3<double>(0, 0, kMDR * pow(w_rotor_NW, 2));
             ignition::math::Vector3<double> MDR_SE = ignition::math::Vector3<double>(0, 0, kMDR * pow(w_rotor_SE, 2));
@@ -592,7 +537,7 @@ namespace gazebo
             //    printf("MDR  = %.15f\n",MDR_NE.Z() - MDR_NW.Z() - MDR_SE.Z() + MDR_SW.Z());
             link->AddRelativeTorque(MDR_NE - MDR_NW - MDR_SE + MDR_SW);
 
-            // aplicamos fuerza de rozamiento con el aire
+            // Aplicamos fuerza de rozamiento con el aire
             ignition::math::Vector3<double> FD = ignition::math::Vector3<double>(
                     -kFDx * linear_vel.X() * fabs(linear_vel.X()),
                     -kFDy * linear_vel.Y() * fabs(linear_vel.Y()),
@@ -608,51 +553,48 @@ namespace gazebo
                     -kMDz * angular_vel.Z() * fabs(angular_vel.Z()));
             link->AddRelativeTorque(MD);
 
-            // Is it time to publish odometry to topic?
+            // Comprobamos si es momento de publicar la telemetria
             if (current_time < last_odom_publish_time)
                 last_odom_publish_time = current_time; // The simulation was reset
             //    printf("current time:  %.3f \n", current_time.Double());
             //    printf("last time:     %.3f \n", last_odom_publish_time.Double());
+
             double seconds_since_last_update = (current_time - last_odom_publish_time).Double();
             if (seconds_since_last_update > (1.0 / odom_publish_rate))
             {
-                //Publish odometry to topic
-                //      printf("Publishing odometry--------------\n");
-
                 siam_main::Telemetry msg;
-                //msg.model_name = "quadcopter";
-                //Position in the space
+                //Position in the space (ejes del mundo)
                 msg.pose.position.x = pose.Pos().X(); // eX
                 msg.pose.position.y = pose.Pos().Y(); // eY
                 msg.pose.position.z = pose.Pos().Z(); // eZ
-                //Rotation in the space
+                //Rotation in the space (ejes del mundo)
                 msg.pose.orientation.w = 0;
                 msg.pose.orientation.x = pose_rot.X(); // ePhi
                 msg.pose.orientation.y = pose_rot.Y(); // eTheta
                 msg.pose.orientation.z = pose_rot.Z(); // ePsi
-
-                //Lineal aceleration
+                //Lineal velocity (ejes del drone)
                 msg.velocity.linear.x = linear_vel.X(); // bXdot
                 msg.velocity.linear.y = linear_vel.Y(); // bYdot
                 msg.velocity.linear.z = linear_vel.Z(); // bZdot
-                //Angular velocity
+                //Angular velocity (ejes del drone)
                 msg.velocity.angular.x = angular_vel.X(); // bWx
                 msg.velocity.angular.y = angular_vel.Y(); // bWy
                 msg.velocity.angular.z = angular_vel.Z(); // bWz
 
-                //Waypoint in progress and flight plan in progress
+                //Waypoint al que se dirige , Uplan en progreso
                 msg.wip = actual_route_point;
                 msg.fpip = uplan_inprogress;
+                //Tiempo de telemetria
                 ros::Time actual_time = ros::Time(current_time.Double());
                 msg.time = actual_time;
 
-                //Publish the message
+                //Publicamos el mensaje en el topico
                 ros_pub_telemetry.publish(msg);
 
-                //Remmeber the last pub time
+                //Almacenamos la ultima vez que la telemetria fue enviada
                 last_odom_publish_time = current_time;
 
-                //Write file
+                //Escribimos las estadisticas en el fichero de salida
                 if (control_out_file.is_open()){
                     control_out_file << "Sim time: " << current_time.Double() << " TTRW: " << ttrw << std::endl;
                     control_out_file << "Waypoint \t X: " <<  target_waypoint.x << " Y: " << target_waypoint.y << " Z: " << target_waypoint.z << std::endl;
@@ -690,19 +632,21 @@ namespace gazebo
 
                 //To write the file
                 //Open the file
-                control_out_file.open("/tmp/siamsim/control/drone-"+id+"_fp-" + std::to_string(uplan_local->flightPlanId) + ".txt");
+                control_out_file.open("/home/galadriel-ubuntu/siam_sim/control/drone-"+id+"_fp-" + std::to_string(uplan_local->flightPlanId) + ".txt");
             }
         }
 
         ignition::math::Vector3<double> UplanAbstractionLayer(double t){
+            //Function variables
             siam_main::UplanConstPtr uplan = this->uplan_local;
             std::vector<siam_main::Waypoint> route = uplan->route;
             int route_s = route.size();
-            //std::cout << "--------------------------" << std::endl;
+            siam_main::Waypoint wp;
+            double timeDiffBetWPs, timeDiffBetWPt;
+            ignition::math::Vector3d vectorDiff, position;
 
             //In case Uplan starts after t
             if (t < route[0].t.sec){
-                //std::cout << "Not fp startted" << std::endl;
                 return ignition::math::Vector3d(route[0].x, route[0].y, route[0].z);
             }
 
@@ -712,9 +656,7 @@ namespace gazebo
                 return ignition::math::Vector3d(route[route_s-1].x, route[route_s-1].y, route[route_s-1].z);
             }
 
-            siam_main::Waypoint wp;
-            double timeDiffBetWPs, timeDiffBetWPt;
-            ignition::math::Vector3d vectorDiff, position;
+
             for(int i = 1; i < route_s; i++){
                 //Next waypoint
                 wp = route[i];
@@ -737,6 +679,9 @@ namespace gazebo
         }
 
         void kill_topic_callback(const std_msgs::BoolConstPtr &value){
+            //Deletion could be done with ros service /gazebo/remove-model
+            //Disconnection from the Update events
+            event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
             //Shutdown the topics
             this->ros_sub_uplans.shutdown();
             this->ros_pub_telemetry.shutdown();
@@ -746,6 +691,8 @@ namespace gazebo
             this->ros_queue.disable();
             //Shutdown the nodes
             this->ros_node->shutdown();
+            //Stop the spinner
+            //this->ros_spinner.stop();
         }
     };
 
