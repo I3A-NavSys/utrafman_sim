@@ -12,7 +12,7 @@ classdef FlightPlansPlanner < handle
     methods
         function obj = FlightPlansPlanner(UTM)
            obj.UTM = UTM;
-           obj.timer_flightPlansExecuter = timer("TimerFcn", @obj.fpsScheduler,"ExecutionMode","fixedRate");
+           obj.timer_flightPlansExecuter = timer("TimerFcn", @obj.fpsScheduler,"ExecutionMode","fixedRate","Period",3);
            start(obj.timer_flightPlansExecuter);
         end
 
@@ -52,6 +52,7 @@ classdef FlightPlansPlanner < handle
 
                 %Lo enviamos por el topico
                 send(drone.ros_flightPlans_pub,fp.parseToROSMessage())
+                pause(.2);
                 fp.sent = 1; %Mark as sent
                 i = i+1;
             end

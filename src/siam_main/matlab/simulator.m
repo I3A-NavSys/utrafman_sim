@@ -12,7 +12,7 @@ operator = Operator('Jesus');
 UTM.S_Registry.regNewOperator(operator);
 
 %Creamos drones, lo registramos y los anadimos a Gazebo
-numDrones = 1;
+numDrones = 30;
 drone = Drone.empty(0,numDrones);
 p = 1;
 for i=1:numDrones
@@ -42,20 +42,21 @@ for i=1:numDrones
 end
 pause(1);
 delay = 0;
-tbp = 0;
+tbp = 1;
 fp = FlightPlan.empty(0,numDrones*1);
 for i=1:numDrones*1
     rng(i);
     %Random route generation
     route = FlightPlan.GenerateRandomRoute(randi([3 6],1));
-    route = [[0.3 0.3 10 35]]
+    %route = [[0.3 0.3 10 35]]
              %[30.3 0.3 5 40];
              %[30.3 0.3 0.1 50]];
+
     %Uplan generation
     fp(i) = FlightPlan(operator, ... %Operator
                        drone(i), ... %Drone asignation
                        route, ... %Route
-                       20+((i-1)*tbp)); %DTTO
+                       30+((i-1)*tbp)); %DTTO
     %Uplan registration
     UTM.S_Registry.regNewFlightPlan(fp(i));
 
