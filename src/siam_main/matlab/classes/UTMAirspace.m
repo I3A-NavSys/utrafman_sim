@@ -58,6 +58,13 @@ classdef UTMAirspace < handle
             end
         end
 
+        function obj = removeAllModelsFromSimulation(obj)
+            for i=1:size(obj.S_Registry.drones,2);
+                drone = obj.S_Registry.drones(i);
+                drone.removeDrone();
+            end
+        end
+
         %Not in use
         function obj = LaunchSimulinksModels(obj)
             %numDrones = size(obj.S_Registry.drones,2);
