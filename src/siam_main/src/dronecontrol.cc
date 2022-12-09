@@ -233,7 +233,7 @@ namespace gazebo
             ros::SubscribeOptions so = ros::SubscribeOptions::create<siam_main::Uplan>(
                     this->uplans_topic,
                     1000,
-                    boost::bind(&DroneControl::Uplans_topic_callback, this, _1),
+                    boost::bind(&DroneControl::UplansTopicCallback, this, _1),
                     ros::VoidPtr(),
                     &this->ros_queue);
 
@@ -244,7 +244,7 @@ namespace gazebo
             ros::SubscribeOptions so2 = ros::SubscribeOptions::create<std_msgs::Bool>(
                     this->kill_topic,
                     10,
-                    boost::bind(&DroneControl::kill_topic_callback, this, _1),
+                    boost::bind(&DroneControl::KillTopicCallback, this, _1),
                     ros::VoidPtr(),
                     &this->ros_queue);
 
@@ -595,7 +595,7 @@ namespace gazebo
                 last_odom_publish_time = current_time;
 
                 //Escribimos las estadisticas en el fichero de salida
-                if (control_out_file.is_open()){
+                /* if (control_out_file.is_open()){
                     control_out_file << "Sim time: " << current_time.Double() << " TTRW: " << ttrw << std::endl;
                     control_out_file << "Waypoint \t X: " <<  target_waypoint.x << " Y: " << target_waypoint.y << " Z: " << target_waypoint.z << std::endl;
                     control_out_file << "Distance to W \t X: " <<  dx << " Y: " << dy << " Z: " << dz << std::endl;
@@ -604,12 +604,23 @@ namespace gazebo
                     control_out_file << "CMD HL vel \t X: " << vx << " Y: " << vy << " Z: " << vz << std::endl;
                     control_out_file << "CMD LL vel \t X: " << cmd_velX << " Y: " << cmd_velY << " Z: " << cmd_velZ << std::endl;
                     control_out_file << "-----------------------------------" << std::endl;
+                } */
+
+                if (control_out_file.is_open()){
+                    PrintToFile(1,"DroneControl","Sim time: " + std::to_string(current_time.Double()) + " TTRW: " + std::to_string(ttrw));
+                    /*control_out_file << "Waypoint \t X: " <<  target_waypoint.x << " Y: " << target_waypoint.y << " Z: " << target_waypoint.z << std::endl;
+                    control_out_file << "Distance to W \t X: " <<  dx << " Y: " << dy << " Z: " << dz << std::endl;
+                    control_out_file << "Drone pos: \t X: " << pose.Pos().X() << " Y: " << pose.Pos().Y() << " Z: " << pose.Pos().Z() << std::endl;
+                    control_out_file << "Current vel \t X: " << linear_vel.X() << " Y: " << linear_vel.Y() << " Z: " << linear_vel.Z() << std::endl;
+                    control_out_file << "CMD HL vel \t X: " << vx << " Y: " << vy << " Z: " << vz << std::endl;
+                    control_out_file << "CMD LL vel \t X: " << cmd_velX << " Y: " << cmd_velY << " Z: " << cmd_velZ << std::endl;
+                    control_out_file << "-----------------------------------" << std::endl;*/
                 }
             }
         }
 
         //To process each Uplan received using the topic
-        void Uplans_topic_callback(const siam_main::Uplan::ConstPtr &msg){
+        void UplansTopicCallback(const siam_main::Uplan::ConstPtr &msg){
             //If the drone is following a U-plan, not interrupt it (at this moment).
             if (this->uplan_inprogress){
                 ROS_INFO("New U-plan received for drone %s, but the drone is following its local U-plan", this->id.c_str());
@@ -632,18 +643,19 @@ namespace gazebo
 
                 //To write the file
                 //Open the file
-                control_out_file.open("/home/galadriel-ubuntu/siam_sim/control/drone-"+id+"_fp-" + std::to_string(uplan_local->flightPlanId) + ".txt");
+                control_out_file.open("/tmp/drone-"+id+"_fp-" + std::to_string(uplan_local->flightPlanId) + ".txt");
             }
         }
 
+        //To abstract drone control from the defition of a Uplan
         ignition::math::Vector3<double> UplanAbstractionLayer(double t){
             //Function variables
-            siam_main::UplanConstPtr uplan = this->uplan_local;
-            std::vector<siam_main::Waypoint> route = uplan->route;
-            int route_s = route.size();
-            siam_main::Waypoint wp;
-            double timeDiffBetWPs, timeDiffBetWPt;
-            ignition::math::Vector3d vectorDiff, position;
+            siam_main::UplanConstPtr uplan = this->uplan_local;     //Uplan
+            std::vector<siam_main::Waypoint> route = uplan->route;  //Uplan route
+            int route_s = route.size();                             //Number of waypoints in the route
+            siam_main::Waypoint wp;                                 //Waypoint
+            double timeDiffBetWPs, timeDiffBetWPt;                  //Time difference between waypoints and between waypooint and actual time
+            ignition::math::Vector3d vectorDiff, position;          //Position and vector diff
 
             //In case Uplan starts after t
             if (t < route[0].t.sec){
@@ -656,7 +668,6 @@ namespace gazebo
                 return ignition::math::Vector3d(route[route_s-1].x, route[route_s-1].y, route[route_s-1].z);
             }
 
-
             for(int i = 1; i < route_s; i++){
                 //Next waypoint
                 wp = route[i];
@@ -668,17 +679,21 @@ namespace gazebo
                 timeDiffBetWPs = wp.t.sec - route[i-1].t.sec;
                 timeDiffBetWPt = t - route[i-1].t.sec;
                 //std::cout << "On way to NW -> timeDiffBetWPs: " << timeDiffBetWPs << " timeDiffBetWPt: " << timeDiffBetWPt << std::endl;
-                //Position differences between waypoints
+
+                //Position differences between waypoints (vector between those WPs)
                 vectorDiff = ignition::math::Vector3d(wp.x - route[i-1].x, wp.y - route[i-1].y, wp.z - route[i-1].z);
-                //Position in time t
+
+                //Position where the drone must be in time t
                 position = vectorDiff * (timeDiffBetWPt/timeDiffBetWPs) + ignition::math::Vector3d(route[i-1].x, route[i-1].y, route[i-1].z);
                 //std::cout << "Position to reach: " << position << std::endl;
+
                 break;
             }
-            return position;
+
+            return position; //Target position at time t
         }
 
-        void kill_topic_callback(const std_msgs::BoolConstPtr &value){
+        void KillTopicCallback(const std_msgs::BoolConstPtr &value){
             //Deletion could be done with ros service /gazebo/remove-model
             //Disconnection from the Update events
             event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
@@ -693,6 +708,18 @@ namespace gazebo
             this->ros_node->shutdown();
             //Stop the spinner
             //this->ros_spinner.stop();
+            
+        }
+
+        void PrintToFile(int mode, std::string module, std::string message){
+            //TODO: Actually mode selection is not used
+            if (control_out_file.is_open()){
+                control_out_file << "[" << module << "] " << message << std::endl;
+            }
+        }
+
+        void PrintToScreen(){
+
         }
     };
 
