@@ -1,5 +1,0 @@
-<launch>
-  <param name="albacete_Terrain_description" command="$(find xacro)/xacro --inorder '$(find siam_main)/urdf/albacete_Terrain.urdf.xacro'" />
-
-  <node name="spawn_albacete_Terrain" pkg="gazebo_ros" type="spawn_model" args="-param albacete_Terrain_description -urdf -model albacete_Terrain" respawn="false" />
-</launch>

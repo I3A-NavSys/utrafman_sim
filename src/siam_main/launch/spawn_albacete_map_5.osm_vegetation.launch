@@ -1,5 +1,0 @@
-<launch>
-  <param name="albacete_map_5.osm_vegetation_description" command="$(find xacro)/xacro --inorder '$(find siam_main)/urdf/albacete_map_5.osm_vegetation.urdf.xacro'" />
-
-  <node name="spawn_albacete_map_5.osm_vegetation" pkg="gazebo_ros" type="spawn_model" args="-param albacete_map_5.osm_vegetation_description -urdf -model albacete_map_5.osm_vegetation" respawn="false" />
-</launch>
