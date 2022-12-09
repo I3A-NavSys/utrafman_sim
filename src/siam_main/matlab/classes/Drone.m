@@ -97,6 +97,23 @@ classdef Drone < handle
                 end
             end
         end
+
+        %To remove models from the simulation
+        function obj = removeDrone(obj)
+            %if obj.status ~= -1
+                % First: send a topic message to the Gazebo model
+                pub = rospublisher("/drone/"+ obj.droneId + "/kill", "std_msgs/Bool");
+                msg = rosmessage(pub);
+                send(pub,msg);
+                %Second: call Gazebo remove model service
+                client = rossvcclient("/gazebo/delete_model");
+                msg = rosmessage(client);
+                msg.ModelName = "drone_" + obj.droneId;
+                call(client,msg,"Timeout",3);
+                % Mark drone as removed
+                obj.status = -1;
+            %end
+        end
     end
 
 end
