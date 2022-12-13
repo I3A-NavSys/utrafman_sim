@@ -64,7 +64,7 @@ namespace gazebo
         //To control navigation
         int actual_route_point;
 
-        //Control file output
+        //Log file
         std::ofstream control_out_file;
 
 
@@ -187,12 +187,6 @@ namespace gazebo
 
 
     public:
-        ~DroneControl(){
-
-            //Remove the model from the world
-            this->model->Fini();
-        }
-
         void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf)
         {
             // Store pointers to the model
@@ -316,11 +310,11 @@ namespace gazebo
             //High level control execution -----------------------------------
             // If have a Uplan and the desired time to take off has been passed
             if (uplan_inprogress && (current_time.Double() >= uplan_local->dtto)){
-                ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(current_time.Double());
-                //std::cout << "(" << this->id  << ") Uplan Abstraction Layer in " << current_time.Double() << "s is " << uplan_pos << std::endl;
-
                 //Rotors on
                 cmd_on = 1.0;
+
+                //Compute target velocity
+                ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(current_time.Double());
 
                 //Get target waypoint and positions vector
                 target_waypoint = route_local[actual_route_point];
@@ -343,12 +337,12 @@ namespace gazebo
                 dz = target_way_vector3d.Z() - pose.Pos().Z();
 
                 //UAL
-                ignition::math::Vector3d posDiff = uplan_pos - pose.Pos();
+                //ignition::math::Vector3d posDiff = uplan_pos - pose.Pos();
 
                 //If the time is negative, return to 0.1
-                if(ttrw <= 0){
+                /*if(ttrw <= 0){
                     ttrw = 0.1;
-                }
+                }*/
 
                 //Velocities depending on ttrw
                 vx = (dx/ttrw);
@@ -356,9 +350,9 @@ namespace gazebo
                 vz = (dz/ttrw);
 
                 //Velocities using UAL
-                vx = posDiff.X();
+                /*vx = posDiff.X();
                 vy = posDiff.Y();
-                vz = posDiff.Z();
+                vz = posDiff.Z();*/
 
                 /*if (bearing > 3.1418){
                     bearing = -bearing;
@@ -387,16 +381,18 @@ namespace gazebo
                     vrotz = 1.0;
                 }*/
 
+                ignition::math::Vector4<double> vel = ComputeVelocity(2,current_time.Double(),pose,pose_rot);
+
                 //Giving velocities to the low leven control
-                cmd_velX = vx;
-                cmd_velY = vy;
-                cmd_velZ = vz;
-                cmd_rotZ = vrotz;
+                cmd_velX = vel.X();
+                cmd_velY = vel.Y();
+                cmd_velZ = vel.Z();
+                cmd_rotZ = vel.W();
 
                 //Detect if drone reached and change to the next waypoint
-                if (d3d < target_waypoint.r){
+                //if (d3d < target_waypoint.r){
                     //Waypoint is changed only when waypoint time has passed
-                    if (current_time >= target_waypoint.t.sec) {
+                    if (current_time.Double() >= target_waypoint.t.sec) {
                         //Check if exist more waypoint
                         if (actual_route_point < (route_local.size() - 1)) {
                             actual_route_point++;
@@ -417,7 +413,7 @@ namespace gazebo
                             control_out_file.close();
                         }
                     }
-                }
+                //}
             }
 
             //Low level control
@@ -594,62 +590,44 @@ namespace gazebo
                 //Almacenamos la ultima vez que la telemetria fue enviada
                 last_odom_publish_time = current_time;
 
-                //Escribimos las estadisticas en el fichero de salida
-                /* if (control_out_file.is_open()){
-                    control_out_file << "Sim time: " << current_time.Double() << " TTRW: " << ttrw << std::endl;
-                    control_out_file << "Waypoint \t X: " <<  target_waypoint.x << " Y: " << target_waypoint.y << " Z: " << target_waypoint.z << std::endl;
-                    control_out_file << "Distance to W \t X: " <<  dx << " Y: " << dy << " Z: " << dz << std::endl;
-                    control_out_file << "Drone pos: \t X: " << pose.Pos().X() << " Y: " << pose.Pos().Y() << " Z: " << pose.Pos().Z() << std::endl;
-                    control_out_file << "Current vel \t X: " << linear_vel.X() << " Y: " << linear_vel.Y() << " Z: " << linear_vel.Z() << std::endl;
-                    control_out_file << "CMD HL vel \t X: " << vx << " Y: " << vy << " Z: " << vz << std::endl;
-                    control_out_file << "CMD LL vel \t X: " << cmd_velX << " Y: " << cmd_velY << " Z: " << cmd_velZ << std::endl;
-                    control_out_file << "-----------------------------------" << std::endl;
-                } */
-
-                if (control_out_file.is_open()){
-                    PrintToFile(1,"DroneControl","Sim time: " + std::to_string(current_time.Double()) + " TTRW: " + std::to_string(ttrw));
-                    /*control_out_file << "Waypoint \t X: " <<  target_waypoint.x << " Y: " << target_waypoint.y << " Z: " << target_waypoint.z << std::endl;
-                    control_out_file << "Distance to W \t X: " <<  dx << " Y: " << dy << " Z: " << dz << std::endl;
-                    control_out_file << "Drone pos: \t X: " << pose.Pos().X() << " Y: " << pose.Pos().Y() << " Z: " << pose.Pos().Z() << std::endl;
-                    control_out_file << "Current vel \t X: " << linear_vel.X() << " Y: " << linear_vel.Y() << " Z: " << linear_vel.Z() << std::endl;
-                    control_out_file << "CMD HL vel \t X: " << vx << " Y: " << vy << " Z: " << vz << std::endl;
-                    control_out_file << "CMD LL vel \t X: " << cmd_velX << " Y: " << cmd_velY << " Z: " << cmd_velZ << std::endl;
-                    control_out_file << "-----------------------------------" << std::endl;*/
-                }
+                //Log
+                PrintToFile(1, "DroneControl", "TTRW: " + std::to_string(ttrw));
+                PrintToFile(1, "DroneControl", "Drone pos: X: " + std::to_string(pose.Pos().X()) + " Y: " + std::to_string(pose.Pos().Y()) + " Z: " + std::to_string(pose.Pos().Z()));
+                PrintToFile(1,"DroneControl", "Waypoint X: " + std::to_string(target_waypoint.x) + " Y: " + std::to_string(target_waypoint.y) + " Z: " + std::to_string(target_waypoint.z));
+                PrintToFile(1, "DroneControl", "Distance to W  X: " + std::to_string(dx) + " Y: " + std::to_string(dy) + " Z: " + std::to_string(dz));
+                PrintToFile(1, "DroneControl", "Current vel X: " + std::to_string(linear_vel.X()) + " Y: " + std::to_string(linear_vel.Y()) + " Z: " + std::to_string(linear_vel.Z()));
+                PrintToFile(1, "DroneControl", "CMD HL vel X: " + std::to_string(vx) + " Y: " + std::to_string(vy) + " Z: " + std::to_string(vz));
+                PrintDelimToFile();
             }
         }
 
         //To process each Uplan received using the topic
         void UplansTopicCallback(const siam_main::Uplan::ConstPtr &msg){
-            //If the drone is following a U-plan, not interrupt it (at this moment).
+            //If the drone is following a U-plan, not interrupt it (at this moment). If not, assign the Uplan
             if (this->uplan_inprogress){
-                ROS_INFO("New U-plan received for drone %s, but the drone is following its local U-plan", this->id.c_str());
+                this->PrintToFile(1, "UPlanTopic", "New U-plan received for drone " + this->id + " but the drone is following its local U-plan");
                 return;
             } else {
-                //Assign the U-plan and log a message
-                ROS_INFO("Received U-plan for drone %s", this->id.c_str());
+                this->PrintToFile(1, "UPlanTopic","Received U-plan for drone " + this->id);
                 this->uplan_local = msg;
                 this->actual_route_point = 0;
+                this->route_local = msg->route;
                 this->uplan_inprogress = true;
 
                 //Get route info
-                this->route_local = msg->route;
-                for(int i = 0; i < route_local.size(); i++){
+                /*for(int i = 0; i < route_local.size(); i++){
                     std::cout << "Route point " << i << ":" << std::endl;
                     std::cout << route_local[i];
-                }
-                //ROS_INFO_STREAM(this->uplan_local->flightPlanId);
-                //ROS_INFO_STREAM(msg->flightPlanId)
+                }*/
 
-                //To write the file
-                //Open the file
+                //Open the file used to save logs
                 control_out_file.open("/tmp/drone-"+id+"_fp-" + std::to_string(uplan_local->flightPlanId) + ".txt");
             }
         }
 
-        //To abstract drone control from the defition of a Uplan
+        //To abstract drone control from the definition of an Uplan
         ignition::math::Vector3<double> UplanAbstractionLayer(double t){
-            //Function variables
+            //Function variables used in the function
             siam_main::UplanConstPtr uplan = this->uplan_local;     //Uplan
             std::vector<siam_main::Waypoint> route = uplan->route;  //Uplan route
             int route_s = route.size();                             //Number of waypoints in the route
@@ -689,12 +667,87 @@ namespace gazebo
 
                 break;
             }
-
+            //Return target position
             return position; //Target position at time t
         }
 
+        ignition::math::Vector4<double> ComputeVelocity(int mode, double t, ignition::math::Pose3<double> pose, ignition::math::Vector3<double> pose_rot){
+            //Variables used by the high level control
+            double ttrw; // Time to reach the waypoint
+            siam_main::Waypoint target_waypoint; //Next waypoint to reach
+            double vx, vy, vz, vrotz, dx, dy, dz; //Distances and velocities in each axis
+
+            double seconds_since_last_update = t - last_odom_publish_time.Double();
+
+            if (mode == 1) {
+                //Get target position in time t
+                ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
+
+                //Get target waypoint and positions vector
+                target_waypoint = route_local[actual_route_point];
+                ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x,target_waypoint.y,target_waypoint.z);
+                ignition::math::Vector2<double> target_way_vector2d = ignition::math::Vector2d(target_waypoint.x,target_waypoint.y);
+
+                //Get distance from drone position to target waypoint
+                double d3d = target_way_vector3d.Distance(pose.Pos());
+                double d2d = target_way_vector2d.Distance(ignition::math::Vector2d(pose.Pos().X(), pose.Pos().Y()));
+
+                //Get time remaining to the waypoint (to fullfill the Uplan)
+                ttrw = target_waypoint.t.sec - t;
+
+                //Angle between drone heading and target
+                double bearing =
+                        atan2(target_way_vector3d.Y() - pose.Pos().Y(), target_way_vector3d.X() - pose.Pos().X()) -
+                        pose_rot.Z();
+
+                //Target distance descomposed in body axes
+                dx = d2d * cos(bearing);
+                dy = d2d * sin(bearing);
+                dz = target_way_vector3d.Z() - pose.Pos().Z();
+
+                //Compute difference between actual position and target position
+                ignition::math::Vector3d posDiff = uplan_pos - pose.Pos();
+
+                //If the time is negative, return to 0.1
+                if (ttrw <= 0) {
+                    ttrw = 0.1;
+                }
+
+                //Velocities using UAL
+                vx = posDiff.X();
+                vy = posDiff.Y();
+                vz = posDiff.Z();
+                vrotz = 0;
+
+                return ignition::math::Vector4<double>(vx, vy, vz, vrotz);
+            } else if (mode == 2){
+
+                //Get time remaining to the waypoint (to fullfill the Uplan)
+                ttrw = target_waypoint.t.sec - t;
+
+                //Get target position in time t
+                ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
+
+                //Get target position in time t+2
+                ignition::math::Vector3d uplan_pos_future = this->UplanAbstractionLayer(t+2);
+
+                if (seconds_since_last_update > (1.0 / odom_publish_rate)){
+                    PrintToFile(1, "ComputeVelocity", "Target pos at t X: " + std::to_string(uplan_pos.X()) + " Y: " + std::to_string(uplan_pos.Y()) + " Z: " + std::to_string(uplan_pos.Z()));
+                    PrintToFile(1, "ComputeVelocity", "Target pos at t+2 X: " + std::to_string(uplan_pos_future.X()) + " Y: " + std::to_string(uplan_pos_future.Y()) + " Z: " + std::to_string(uplan_pos_future.Z()));
+                }
+
+                //Compute difference between actual position and target position
+                ignition::math::Vector3d pos_diff = uplan_pos - pose.Pos();
+                ignition::math::Vector3d pos_diff_future = uplan_pos_future - pose.Pos();
+
+                ignition::math::Vector3d vel = pos_diff*0.7 + pos_diff_future*0.3;
+
+                return ignition::math::Vector4<double>(vel.X(), vel.Y(), vel.Z(), 0);
+            }
+            return ignition::math::Vector4<double>(0, 0, 0, 0);
+        }
+
         void KillTopicCallback(const std_msgs::BoolConstPtr &value){
-            //Deletion could be done with ros service /gazebo/remove-model
             //Disconnection from the Update events
             event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
             //Shutdown the topics
@@ -706,15 +759,20 @@ namespace gazebo
             this->ros_queue.disable();
             //Shutdown the nodes
             this->ros_node->shutdown();
-            //Stop the spinner
-            //this->ros_spinner.stop();
-            
+            //Now, Gazebo service /gazebo/remove-model with model name must be called from outside the plugin
         }
 
         void PrintToFile(int mode, std::string module, std::string message){
+            common::Time current_time = model->GetWorld()->SimTime();
             //TODO: Actually mode selection is not used
             if (control_out_file.is_open()){
-                control_out_file << "[" << module << "] " << message << std::endl;
+                control_out_file << "[" << current_time.Double() << "] (" << module << ") " << message << std::endl;
+            }
+        }
+
+        void PrintDelimToFile(){
+            if (control_out_file.is_open()){
+                control_out_file << "-----------------------------------------------------------------" << std::endl;
             }
         }
 

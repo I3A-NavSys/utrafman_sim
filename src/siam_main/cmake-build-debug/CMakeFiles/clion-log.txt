@@ -1,4 +1,4 @@
-/home/siamsim/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/siamsim/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/ninja/linux/ninja -G Ninja -S /opt/ros/noetic/share/siam_sim/src/siam_main -B /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug
+/home/galadriel-ubuntu/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/galadriel-ubuntu/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/ninja/linux/ninja -G Ninja -S /opt/ros/noetic/share/siam_sim/src/siam_main -B /opt/ros/noetic/share/siam_sim/src/siam_main/cmake-build-debug
 -- The C compiler identification is GNU 9.4.0
 -- The CXX compiler identification is GNU 9.4.0
 -- Detecting C compiler ABI info
@@ -11,13 +11,13 @@
 -- Check for working CXX compiler: /usr/bin/c++ - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
-CMake Warning (dev) at /home/siamsim/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/share/cmake-3.23/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+CMake Warning (dev) at /home/galadriel-ubuntu/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/share/cmake-3.23/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
   The package name passed to `find_package_handle_standard_args` (PkgConfig)
   does not match the name of the calling package (gazebo).  This can lead to
   problems in calling code that expects `find_package` result variables
   (e.g., `_FOUND`) to follow a certain pattern.
 Call Stack (most recent call first):
-  /home/siamsim/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/share/cmake-3.23/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
+  /home/galadriel-ubuntu/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/share/cmake-3.23/Modules/FindPkgConfig.cmake:99 (find_package_handle_standard_args)
   /usr/lib/x86_64-linux-gnu/cmake/gazebo/gazebo-config.cmake:72 (include)
   CMakeLists.txt:11 (find_package)
 This warning is for project developers.  Use -Wno-dev to suppress it.
