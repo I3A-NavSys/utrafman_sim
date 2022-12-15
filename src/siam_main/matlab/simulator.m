@@ -12,7 +12,7 @@ operator = Operator('Jesus');
 UTM.S_Registry.regNewOperator(operator);
 
 %Creamos drones, lo registramos y los anadimos a Gazebo
-numDrones = 50;
+numDrones = 10;
 drone = Drone.empty(0,numDrones);
 p = 1;
 for i=1:numDrones
