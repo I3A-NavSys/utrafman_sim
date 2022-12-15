@@ -117,13 +117,7 @@
       <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/devel/lib/libDroneControl.so" beforeDir="false" afterPath="$PROJECT_DIR$/devel/lib/libDroneControl.so" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.23.2/CMakeSystem.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/3.23.2/CMakeSystem.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/CMakeError.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/CMakeError.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/rules.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CMakeFiles/rules.ninja" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CTestConfiguration.ini" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/CTestConfiguration.ini" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/build.ninja" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/build.ninja" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/cmake/siam_main-genmsg.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/cmake/siam_main-genmsg.cmake" afterDir="false" />
@@ -776,6 +770,11 @@
       <workItem from="1670916523776" duration="32000" />
       <workItem from="1670916771218" duration="1000" />
       <workItem from="1670920615004" duration="9279000" />
+      <workItem from="1671104004500" duration="6000" />
+      <workItem from="1671104017264" duration="551000" />
+      <workItem from="1671105655165" duration="3162000" />
+      <workItem from="1671108909166" duration="1000" />
+      <workItem from="1671108918055" duration="1000" />
     </task>
     <servers />
   </component>

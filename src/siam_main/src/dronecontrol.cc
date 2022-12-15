@@ -31,6 +31,12 @@ namespace gazebo
     class DroneControl : public ModelPlugin
     {
     private:
+        //Maximum log mode
+        // 1 -> Normal logging
+        // 2 -> Extended logging
+        // 3 -> All data loggging
+        int log_mode = 1;
+
         // Pointers to the model and the link
         physics::ModelPtr model;
         physics::LinkPtr link;
@@ -591,12 +597,12 @@ namespace gazebo
                 last_odom_publish_time = current_time;
 
                 //Log
-                PrintToFile(1, "DroneControl", "TTRW: " + std::to_string(ttrw));
-                PrintToFile(1, "DroneControl", "Drone pos: X: " + std::to_string(pose.Pos().X()) + " Y: " + std::to_string(pose.Pos().Y()) + " Z: " + std::to_string(pose.Pos().Z()));
-                PrintToFile(1,"DroneControl", "Waypoint X: " + std::to_string(target_waypoint.x) + " Y: " + std::to_string(target_waypoint.y) + " Z: " + std::to_string(target_waypoint.z));
-                PrintToFile(1, "DroneControl", "Distance to W  X: " + std::to_string(dx) + " Y: " + std::to_string(dy) + " Z: " + std::to_string(dz));
-                PrintToFile(1, "DroneControl", "Current vel X: " + std::to_string(linear_vel.X()) + " Y: " + std::to_string(linear_vel.Y()) + " Z: " + std::to_string(linear_vel.Z()));
-                PrintToFile(1, "DroneControl", "CMD HL vel X: " + std::to_string(vx) + " Y: " + std::to_string(vy) + " Z: " + std::to_string(vz));
+                PrintToFile(1, "OnUpdate", "TTRW: " + std::to_string(ttrw));
+                PrintToFile(1, "OnUpdate", "Drone pos: X: " + std::to_string(pose.Pos().X()) + " Y: " + std::to_string(pose.Pos().Y()) + " Z: " + std::to_string(pose.Pos().Z()));
+                PrintToFile(1,"OnUpdate", "Waypoint X: " + std::to_string(target_waypoint.x) + " Y: " + std::to_string(target_waypoint.y) + " Z: " + std::to_string(target_waypoint.z));
+                PrintToFile(1, "OnUpdate", "Distance to W  X: " + std::to_string(dx) + " Y: " + std::to_string(dy) + " Z: " + std::to_string(dz));
+                PrintToFile(1, "OnUpdate", "Current vel X: " + std::to_string(linear_vel.X()) + " Y: " + std::to_string(linear_vel.Y()) + " Z: " + std::to_string(linear_vel.Z()));
+                PrintToFile(1, "OnUpdate", "CMD HL vel X: " + std::to_string(vx) + " Y: " + std::to_string(vy) + " Z: " + std::to_string(vz));
                 PrintDelimToFile();
             }
         }
@@ -673,78 +679,48 @@ namespace gazebo
 
         ignition::math::Vector4<double> ComputeVelocity(int mode, double t, ignition::math::Pose3<double> pose, ignition::math::Vector3<double> pose_rot){
             //Variables used by the high level control
-            double ttrw; // Time to reach the waypoint
-            siam_main::Waypoint target_waypoint; //Next waypoint to reach
-            double vx, vy, vz, vrotz, dx, dy, dz; //Distances and velocities in each axis
+            ignition::math::Vector4<double> final_vel;
 
+            //Get last publish time to write logs in file
             double seconds_since_last_update = t - last_odom_publish_time.Double();
 
+            //Navigation mode selector
+            // 1 -> Navigation based in actual reference
+            // 2 -> Navigation based in actual al future reference (2 secs future)
             if (mode == 1) {
                 //Get target position in time t
                 ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
 
-                //Get target waypoint and positions vector
-                target_waypoint = route_local[actual_route_point];
-                ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x,target_waypoint.y,target_waypoint.z);
-                ignition::math::Vector2<double> target_way_vector2d = ignition::math::Vector2d(target_waypoint.x,target_waypoint.y);
-
-                //Get distance from drone position to target waypoint
-                double d3d = target_way_vector3d.Distance(pose.Pos());
-                double d2d = target_way_vector2d.Distance(ignition::math::Vector2d(pose.Pos().X(), pose.Pos().Y()));
-
-                //Get time remaining to the waypoint (to fullfill the Uplan)
-                ttrw = target_waypoint.t.sec - t;
-
-                //Angle between drone heading and target
-                double bearing =
-                        atan2(target_way_vector3d.Y() - pose.Pos().Y(), target_way_vector3d.X() - pose.Pos().X()) -
-                        pose_rot.Z();
-
-                //Target distance descomposed in body axes
-                dx = d2d * cos(bearing);
-                dy = d2d * sin(bearing);
-                dz = target_way_vector3d.Z() - pose.Pos().Z();
-
                 //Compute difference between actual position and target position
                 ignition::math::Vector3d posDiff = uplan_pos - pose.Pos();
 
-                //If the time is negative, return to 0.1
-                if (ttrw <= 0) {
-                    ttrw = 0.1;
-                }
-
-                //Velocities using UAL
-                vx = posDiff.X();
-                vy = posDiff.Y();
-                vz = posDiff.Z();
-                vrotz = 0;
-
-                return ignition::math::Vector4<double>(vx, vy, vz, vrotz);
+                //Assign final velocity
+                final_vel = ignition::math::Vector4<double>(posDiff.X(), posDiff.Y(), posDiff.Z(), 0);
             } else if (mode == 2){
-
-                //Get time remaining to the waypoint (to fullfill the Uplan)
-                ttrw = target_waypoint.t.sec - t;
-
                 //Get target position in time t
                 ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
 
                 //Get target position in time t+2
                 ignition::math::Vector3d uplan_pos_future = this->UplanAbstractionLayer(t+2);
 
-                if (seconds_since_last_update > (1.0 / odom_publish_rate)){
-                    PrintToFile(1, "ComputeVelocity", "Target pos at t X: " + std::to_string(uplan_pos.X()) + " Y: " + std::to_string(uplan_pos.Y()) + " Z: " + std::to_string(uplan_pos.Z()));
-                    PrintToFile(1, "ComputeVelocity", "Target pos at t+2 X: " + std::to_string(uplan_pos_future.X()) + " Y: " + std::to_string(uplan_pos_future.Y()) + " Z: " + std::to_string(uplan_pos_future.Z()));
-                }
-
                 //Compute difference between actual position and target position
                 ignition::math::Vector3d pos_diff = uplan_pos - pose.Pos();
                 ignition::math::Vector3d pos_diff_future = uplan_pos_future - pose.Pos();
 
+                //Mix both velocities
                 ignition::math::Vector3d vel = pos_diff*0.7 + pos_diff_future*0.3;
 
-                return ignition::math::Vector4<double>(vel.X(), vel.Y(), vel.Z(), 0);
+                //Assign final velocity
+                final_vel = ignition::math::Vector4<double>(vel.X(), vel.Y(), vel.Z(), 0);
+
+                //Log data
+                if (seconds_since_last_update > (1.0 / odom_publish_rate)){
+                    PrintToFile(1, "ComputVeloci", "Target pos at t X: " + std::to_string(uplan_pos.X()) + " Y: " + std::to_string(uplan_pos.Y()) + " Z: " + std::to_string(uplan_pos.Z()));
+                    PrintToFile(1, "ComputVeloci", "Target pos at t+2 X: " + std::to_string(uplan_pos_future.X()) + " Y: " + std::to_string(uplan_pos_future.Y()) + " Z: " + std::to_string(uplan_pos_future.Z()));
+                }
             }
-            return ignition::math::Vector4<double>(0, 0, 0, 0);
+
+            return final_vel;
         }
 
         void KillTopicCallback(const std_msgs::BoolConstPtr &value){
@@ -763,10 +739,12 @@ namespace gazebo
         }
 
         void PrintToFile(int mode, std::string module, std::string message){
+            //Filter log messages
+            if (log_mode < mode) return;
+            //Get actual simulation time
             common::Time current_time = model->GetWorld()->SimTime();
-            //TODO: Actually mode selection is not used
             if (control_out_file.is_open()){
-                control_out_file << "[" << current_time.Double() << "] (" << module << ") " << message << std::endl;
+                control_out_file << "[" << std::fixed << std::setw(8) << std::setprecision(3) << current_time.Double() << "] (" << std::fixed << std::setw(12) << module << ") " << message << std::endl;
             }
         }
 
