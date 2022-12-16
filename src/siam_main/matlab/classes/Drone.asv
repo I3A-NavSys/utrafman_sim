@@ -117,14 +117,11 @@ classdef Drone < handle
 
         function tel = filterTelemetryByTime(drone, ti, tf)
             for i=1:length(drone.locs)
-                if (drone.locs(i).Time.Sec <= ti)
+                if (drone.locs(i).Time.Sec <= t)
                     first = i;
                 end
-                if (drone.locs(i).Time.Sec <= tf)
-                    last = i;
-                end
+                if (drone.locs(i).Time.Sec >)
             end
-            tel = drone.locs(first:last);
         end
     end
 

@@ -176,12 +176,4 @@ grid on;
 [possp.AxesProperties.LegendLocation] = deal('southeast','southeast','southeast');
 
 drawnow;
-% To check if velocities is correct
-% figure(2);
-% yyaxis left;
-% plot(ref_x_timetable,"Var1");
-% hold on;
-% yyaxis right;
-% grid on;
-% plot(ref_dx_timetable,"Var1");
-% hold off;
+

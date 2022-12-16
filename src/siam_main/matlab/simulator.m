@@ -47,7 +47,7 @@ end
 pause(1);
 
 delay = 0;      %Delay between Uplans (in the same drone) (not in use)
-tbp = 1;        %Delay between drones Uplan
+tbp = 0;        %Delay between drones Uplan
 fp = FlightPlan.empty(0,numDrones*1); %Uplan instance
 for i=1:numDrones*1
     rng(i);     %Random generator mix
@@ -58,7 +58,7 @@ for i=1:numDrones*1
     fp(i) = FlightPlan(operator, ... %Operator
                        drone(i), ... %Drone asignation
                        route, ... %Route
-                       30+((i-1)*tbp)); %DTTO
+                       15+((i-1)*tbp)); %DTTO
     %Uplan registration
     UTM.S_Registry.regNewFlightPlan(fp(i));
 end
