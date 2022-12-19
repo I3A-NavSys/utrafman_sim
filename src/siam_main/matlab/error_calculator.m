@@ -63,15 +63,30 @@ for j = 1:length(UTM.S_Registry.flightPlans)
     simProperties(j,3) = simProperties(j,1)/i;
 end
 
-% simProperties
-% cumError
-% mean(cumError)
-
 figure;
+%Organizacion y redondeo de los datos
 data = [error(:,2) error(:,1)./simProperties(:,1) error(:,3)];
+data = round(data,3);
 bar(data);
+%Limites de la grafica
+ylimits = [0 2];
+ylim(ylimits);
+%Obtencion de la posicion en X de las etiquetas
+disp = 0.22;
+x1 = (1:length(data(:,1)')) - disp;
+x2 = 1:length(data(:,2)');
+x3 = (1:length(data(:,3)')) + disp;
+%Copiamos los datos para obtener la posicion en Y de las etiquetas
+data2 = data;
+data2(data2 > ylimits(2)) = ylimits(2);
+data2(data2 < ylimits(1)) = ylimits(1); 
+%Creacion de las etiquetas
+text(x1,data2(:,1)',num2str(data(:,1)),'vert','bottom','horiz','center');
+text(x2,data2(:,2)',num2str(data(:,2)),'vert','bottom','horiz','center');
+text(x3,data2(:,3)',num2str(data(:,3)),'vert','bottom','horiz','center');
+box off
+%Restto de datos de las gráficas
 legend(["Min" "Mean" "Max"]);
 xlabel("Drone ID in the simulation");
 ylabel("Error (m) with the reference per second");
-ylim([0 1])
 grid on;
