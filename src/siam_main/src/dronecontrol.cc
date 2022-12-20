@@ -335,7 +335,7 @@ namespace gazebo
                 dz = target_way_vector3d.Z() - pose.Pos().Z();
 
                 //Computation target velocity
-                ignition::math::Vector4<double> vel = ComputeVelocity(2,current_time.Double(),pose,pose_rot);
+                ignition::math::Vector4<double> vel = ComputeVelocity(3,current_time.Double(),pose,pose_rot);
 
                 //Giving velocities to the low leven control
                 cmd_velX = vel.X();
@@ -686,7 +686,38 @@ namespace gazebo
                 if (seconds_since_last_update > (1.0 / odom_publish_rate)){
                     PrintToFile(1, "ComputVeloci", "Target pos at t X: " + std::to_string(uplan_pos.X()) + " Y: " + std::to_string(uplan_pos.Y()) + " Z: " + std::to_string(uplan_pos.Z()));
                     PrintToFile(1, "ComputVeloci", "Target pos at t+2 X: " + std::to_string(uplan_pos_future.X()) + " Y: " + std::to_string(uplan_pos_future.Y()) + " Z: " + std::to_string(uplan_pos_future.Z()));
+                    PrintToFile(1, "ComputVeloci", "Reference velocity at t X: " + std::to_string(pos_diff.X()) + " Y: " + std::to_string(pos_diff.Y()) + " Z:" + std::to_string(pos_diff.Z()));
+                    PrintToFile(1, "ComputVeloci", "Reference velocity at t+2  X: " + std::to_string(pos_diff_future.X()) + " Y: " + std::to_string(pos_diff_future.Y()) + " Z:" + std::to_string(pos_diff_future.Z()));
                 }
+            } else if (mode == 3){
+                int forward_seconds = 2;
+
+                //Get target position in time t
+                ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
+
+                //Get target position in time t+2
+                ignition::math::Vector3d uplan_pos_future = this->UplanAbstractionLayer(t+forward_seconds);
+
+                //Compute velocity to catch up the reference
+                ignition::math::Vector3d error_vel = uplan_pos-pose.Pos();
+
+                //Compute future reference following velocity
+                ignition::math::Vector3d future_vel = uplan_pos_future - uplan_pos;
+
+                //Mix both velocities
+                ignition::math::Vector3d target_vel = 0.3*error_vel + 0.7*(future_vel/forward_seconds);
+
+                //Compute final velocity
+                final_vel = ignition::math::Vector4d (target_vel.X(), target_vel.Y(), target_vel.Z(), 0);
+
+                //Log data
+                if (seconds_since_last_update > (1.0 / odom_publish_rate)){
+                    PrintToFile(1, "ComputVeloci", "Target pos at t X: " + std::to_string(uplan_pos.X()) + " Y: " + std::to_string(uplan_pos.Y()) + " Z: " + std::to_string(uplan_pos.Z()));
+                    PrintToFile(1, "ComputVeloci", "Target pos at t+2 X: " + std::to_string(uplan_pos_future.X()) + " Y: " + std::to_string(uplan_pos_future.Y()) + " Z: " + std::to_string(uplan_pos_future.Z()));
+                    PrintToFile(1, "ComputVeloci", "Error velocity X: " + std::to_string(error_vel.X()) + " Y: " + std::to_string(error_vel.Y()) + " Z:" + std::to_string(error_vel.Z()));
+                    PrintToFile(1, "ComputVeloci", "Future velocity at t+2  X: " + std::to_string((future_vel/forward_seconds).X()) + " Y: " + std::to_string((future_vel/forward_seconds).Y()) + " Z:" + std::to_string((future_vel/forward_seconds).Z()));
+                }
+
             }
 
             return final_vel;
