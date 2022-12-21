@@ -1,4 +1,6 @@
 %Calculo del error para un onjunto completo de simulacion
+load simulations\sim20.mat
+name = 'sim20';
 
 %Sim properties
     % 1-> Tiempo 
@@ -63,11 +65,12 @@ for j = 1:length(UTM.S_Registry.flightPlans)
     simProperties(j,3) = simProperties(j,1)/i;
 end
 
-figure;
+figure('Position',[0 100 1300 500]);
 %Organizacion y redondeo de los datos
 data = [error(:,2) error(:,1)./simProperties(:,1) error(:,3)];
 data = round(data,3);
 bar(data);
+title(name);
 %Limites de la grafica
 ylimits = [0 2];
 ylim(ylimits);
@@ -84,6 +87,16 @@ data2(data2 < ylimits(1)) = ylimits(1);
 text(x1,data2(:,1)',num2str(data(:,1)),'vert','bottom','horiz','center');
 text(x2,data2(:,2)',num2str(data(:,2)),'vert','bottom','horiz','center');
 text(x3,data2(:,3)',num2str(data(:,3)),'vert','bottom','horiz','center');
+
+%Print means at side
+text(j+0.7, ylimits(2),'Min mean:', 'vert','bottom','horiz','left');
+text(j+0.7, ylimits(2)-0.1,num2str(mean(data(:,1))), 'vert','bottom','horiz','left');
+
+text(j+0.7, ylimits(2)-0.3,'Total mean:', 'vert','bottom','horiz','left');
+text(j+0.7, ylimits(2)-0.4,num2str(mean(data(:,2))), 'vert','bottom','horiz','left');
+
+text(j+0.7, ylimits(2)-0.6,'Max mean:', 'vert','bottom','horiz','left');
+text(j+0.7, ylimits(2)-0.7,num2str(mean(data(:,3))), 'vert','bottom','horiz','left');
 box off
 %Restto de datos de las gráficas
 legend(["Min" "Mean" "Max"]);
