@@ -2,10 +2,10 @@
 addpath("classes\");
 
 %Load data from simulations
-load simulations\sim12.mat
+load simulations\sim21.mat
 
 %Drone and FP selection selection
-drone = 1;
+drone = 2;
 fp = drone;
 
 figure(1);
