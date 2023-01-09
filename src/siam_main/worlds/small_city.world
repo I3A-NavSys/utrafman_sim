@@ -4474,6 +4474,6 @@
       </pose>
       <uri>model://suv</uri>
     </include>
-
+	<plugin name="SIAM_God" filename="libSIAM_God.so"/>
   </world>
 </sdf>

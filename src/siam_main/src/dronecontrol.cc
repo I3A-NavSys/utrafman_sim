@@ -335,7 +335,7 @@ namespace gazebo
                 dz = target_way_vector3d.Z() - pose.Pos().Z();
 
                 //Computation target velocity
-                ignition::math::Vector4<double> vel = ComputeVelocity(3,current_time.Double(),pose,pose_rot);
+                ignition::math::Vector4<double> vel = ComputeVelocity(2,current_time.Double(),pose,pose_rot);
 
                 //Giving velocities to the low leven control
                 cmd_velX = vel.X();
@@ -418,42 +418,42 @@ namespace gazebo
 
                 // Truncamiento del error acumulado
                 if (E(0, 0) >  E_max){
-                    printf("Integral de error saturada\n\n");
+                    //printf("Integral de error saturada\n\n");
                     E(0, 0) =  E_max;
                 }
 
                 if (E(0, 0) < -E_max){
-                    printf("Integral de error saturada\n\n");
+                    //printf("Integral de error saturada\n\n");
                     E(0, 0) = -E_max;
                 }
 
                 if (E(1, 0) >  E_max){
-                    printf("Integral de error saturada\n\n");
+                    //printf("Integral de error saturada\n\n");
                     E(1, 0) =  E_max;
                 }
 
                 if (E(1, 0) < -E_max){
-                    printf("Integral de error saturada\n\n");
+                    //printf("Integral de error saturada\n\n");
                     E(1, 0) = -E_max;
                 }
 
                 if (E(2, 0) >  E_max){
-                    printf("Integral de error saturada\n\n");
+                    //printf("Integral de error saturada\n\n");
                     E(2, 0) =  E_max;
                 }
 
                 if (E(2, 0) < -E_max){
-                    printf("Integral de error saturada\n\n");
+                    //printf("Integral de error saturada\n\n");
                     E(2, 0) = -E_max;
                 }
 
                 if (E(3, 0) >  E_max){
-                    printf("Integral de error saturada\n\n");
+                    //printf("Integral de error saturada\n\n");
                     E(3, 0) =  E_max;
                 }
 
                 if (E(3, 0) < -E_max){
-                    printf("Integral de error saturada\n\n");
+                    //printf("Integral de error saturada\n\n");
                     E(3, 0) = -E_max;
                 }
 

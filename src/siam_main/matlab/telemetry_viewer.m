@@ -1,8 +1,9 @@
 %Added classes to the path
 addpath("classes\");
+addpath('.')
 
 %Load data from simulations
-load simulations\sim21.mat
+%load simulations\sim21.mat
 
 %Drone and FP selection selection
 drone = 2;

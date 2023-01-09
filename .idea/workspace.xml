@@ -114,7 +114,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o" beforeDir="false" afterPath="$PROJECT_DIR$/build/siam_main/CMakeFiles/DroneControl.dir/src/dronecontrol.cc.o" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/devel/lib/libDroneControl.so" beforeDir="false" afterPath="$PROJECT_DIR$/devel/lib/libDroneControl.so" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/siam_main/matlab/telemetry_viewer.m" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/matlab/telemetry_viewer.m" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/siam_main/src/dronecontrol.cc" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/src/dronecontrol.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/siam_main/worlds/small_city.world" beforeDir="false" afterPath="$PROJECT_DIR$/src/siam_main/worlds/small_city.world" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,11 +171,6 @@
     </key>
   </component>
   <component name="RunManager" selected="CMake Application._siam_main_generate_messages_check_deps_Telemetry">
-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="DroneControl" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="siam_main" TARGET_NAME="DroneControl" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -189,6 +187,11 @@
       </method>
     </configuration>
     <configuration name="_siam_main_generate_messages_check_deps_Waypoint" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="siam_main" TARGET_NAME="_siam_main_generate_messages_check_deps_Waypoint" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -777,6 +780,7 @@
       <workItem from="1671113756030" duration="471000" />
       <workItem from="1671445004690" duration="328000" />
       <workItem from="1671520103280" duration="7247000" />
+      <workItem from="1673255481031" duration="1635000" />
     </task>
     <servers />
   </component>
