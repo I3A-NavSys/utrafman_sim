@@ -33,7 +33,11 @@ classdef FlightPlan < handle
                 point.X = route(x,1);
                 point.Y = route(x,2);
                 point.Z = route(x,3);
-                point.T.Sec = dtto+(x*10);
+                if (length(route(x,:)) == 4)
+                    point.T.Sec = route(x,4);
+                else
+                    point.T.Sec = dtto+(x*10);
+                end
                 point.R = 0.5;
                 obj.route(x+1) = copy(point);
             end
