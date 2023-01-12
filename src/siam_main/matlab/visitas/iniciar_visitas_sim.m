@@ -19,7 +19,7 @@ end
 [rosInserterPub, rosInserterMsg] = rospublisher("/god/insert");
 
 for id=1:5
-    initPos = [0 -0.6*id+1.8 1];
+    initPos = [0 -0.6*id+1.8 0.1];
     %Definimos que SDF debe usarse y generamos el modelo del drone
     if id ~= 3
     	droneSDF = sprintf(userDroneModel, id, initPos(1), initPos(2), initPos(3), id, id, id);
