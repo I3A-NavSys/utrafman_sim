@@ -2,7 +2,7 @@ classdef FlightPlanExecution < handle
 
     properties
         fligtPlan FlightPlan
-        status
+        status uint8
     end
     
     methods

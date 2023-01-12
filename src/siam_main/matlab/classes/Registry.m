@@ -2,27 +2,27 @@ classdef Registry < handle
 
     properties
         %Properties for operators, drones and flightplans.
-        operators = Operator.empty;
-        operatorLastId = 0;
+        operators = Operator.empty;     %Array of Operators objects
+        operatorLastId uint32 = 0;
         
-        drones = Drone.empty;
-        droneLastId = 0;
+        drones = Drone.empty;           %Array of Drone objects
+        droneLastId uint32 = 0;
 
-        flightPlans = ros.msggen.siam_main.Uplan.empty; %Ordered queue using DTTO
-        flightPlanLastId = 0; %ID for FP
+        flightPlans = ros.msggen.siam_main.Uplan.empty;     %Array of FlightPlan (ordered queue using DTTO)
+        flightPlanLastId uint32 = 0;
 
-        %To register drones
-        ros_droneInsert_pub
-        ros_droneInsert_msg
+        ros_droneInsert_pub             %ROS publiser object reference to insert drones in the world
+        ros_droneInsert_msg             %ROS message
     end
     
     methods
-
+        %Class constructor
         function obj = Registry()
              obj.ros_droneInsert_pub = rospublisher('/god/insert','std_msgs/String');
              obj.ros_droneInsert_msg = rosmessage('std_msgs/String');
         end
         
+        %Function to register a new operator
         function obj = regNewOperator(obj,operator)
             %Compute operatorId
             id = obj.operatorLastId + 1;
@@ -33,6 +33,7 @@ classdef Registry < handle
             obj.operators(id) = operator;
         end
 
+        %Function to register a new drone
         function obj = regNewDrone(obj, drone)
             %Commpute droneId
             id = obj.droneLastId + 1;
@@ -53,6 +54,7 @@ classdef Registry < handle
             %start(t);
         end
 
+        %Function to register a new flight plan
         function obj = regNewFlightPlan(obj, fp)
             %Compute flightPlanId
             id = obj.flightPlanLastId + 1;
@@ -64,7 +66,7 @@ classdef Registry < handle
             obj.InsertFlightPlanQueue(fp)
         end
         
-        %Add flightPlan to a queue following dtto
+        %Add flightPlan to a order queue using dtto
         function InsertFlightPlanQueue(obj, fp)
             dtto = fp.dtto;
             qlen = size(obj.flightPlans,2);

@@ -3,34 +3,34 @@ classdef Drone < handle
     properties
         UTM
 
-        droneId
-        model
-        operator
+        droneId uint32              %Unique ID of the drone
+        model string                %TBR: Drone model 
+        operator Operator           %Operator of the drone
 
-        flightPlan
-        status
+        flightPlan FlightPlan       %FlightPlan object reference
+        status int8                 %Status flag
 
-        initLoc
-        loc
-        locs = ros.msggen.siam_main.Telemetry.empty(0);
+        initLoc                     %Vector3<double>: Spawn location of the drone in the world 
+        loc(1,3) double             %Current location of the drone
+        locs = ros.msggen.siam_main.Telemetry.empty(0); %Array of Vector3<Float>
 
-        droneModel
-        sdf
+        droneModel string
+        sdf string                  %String: SDF definition of the drone model
 
         %ROS
         %timer_Upd_Telemetry
-        ros_Telemetry_sub
+        ros_Telemetry_sub       %ROS Subscriber object reference
         %ros_Telemetry_msg
 
         %timer_Upd_Status
-        ros_flightPlans_pub
+        ros_flightPlans_pub     %ROS Publisher object reference 
         %ros_flightPlans_sub
         %ros_flightPlans_msg
-
         %SimulationInput
     end
     
     methods
+        %Constructor of the class
         function obj = Drone(utm, model, initLoc)
             obj.UTM = utm;
             obj.model = model;
@@ -39,7 +39,7 @@ classdef Drone < handle
 
         %Generate SDF model to be used in Gazebo
         function obj = generateSDF(obj)
-            obj.selectModel(); %Select drone model
+            obj.selectModel();
             obj.sdf = sprintf(obj.droneModel, obj.droneId, obj.initLoc(1), obj.initLoc(2), obj.initLoc(3), obj.droneId, obj.droneId, obj.droneId);
         end
 
@@ -53,26 +53,23 @@ classdef Drone < handle
 
         %Subcription to the drone odometry topic
         function obj = subToTelemety(obj, timer, time)
-            %pause(3);
             %Subscription with callback
             obj.ros_Telemetry_sub = rossubscriber(sprintf('/drone/%d/telemetry', obj.droneId),"siam_main/Telemetry",@obj.updateLoc);
         end
 
-        %Publish to the drone flight plan 
+        %Publisher for drone flight plans 
         function obj = pubsubToFlightPlan(obj, timer, time)
-            %Publisher to send Uplans
             obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/uplan', obj.droneId),"siam_main/Uplan");
         end
 
-        %Callback to update location of the drone
+        %Callback to update location of the drone with message received
+        %through the topic
         function updateLoc(obj, sub, msg)
-            %Location update
             obj.loc = [msg.Pose.Position.X msg.Pose.Position.Y msg.Pose.Position.Z];
-            %Telemetry message saving
             obj.locs(end+1) = msg;
         end
 
-        %Not in use
+        %Not in use - TBD
         %Callback to update status of the drone
         function obj = updateStatus(obj, timer, time)
             if isempty(obj.flightPlan)
@@ -98,23 +95,22 @@ classdef Drone < handle
             end
         end
 
-        %To remove models from the simulation
+        %To remove models from the world
         function obj = removeDrone(obj)
-            %if obj.status ~= -1
-                % First: send a topic message to the Gazebo model
-                pub = rospublisher("/drone/"+ obj.droneId + "/kill", "std_msgs/Bool");
-                msg = rosmessage(pub);
-                send(pub,msg);
-                %Second: call Gazebo remove model service
-                client = rossvcclient("/gazebo/delete_model");
-                msg = rosmessage(client);
-                msg.ModelName = "drone_" + obj.droneId;
-                call(client,msg,"Timeout",3);
-                % Mark drone as removed
-                obj.status = -1;
-            %end
+            % First: send a topic message to the drone
+            pub = rospublisher("/drone/"+ obj.droneId + "/kill", "std_msgs/Bool");
+            msg = rosmessage(pub);
+            send(pub,msg);
+            %Second: call Gazebo remove model service
+            client = rossvcclient("/gazebo/delete_model");
+            msg = rosmessage(client);
+            msg.ModelName = "drone_" + obj.droneId;
+            call(client,msg,"Timeout",3);
+            % Mark drone as removed
+            obj.status = -1;
         end
 
+        %Return drone telemetry between two times
         function tel = filterTelemetryByTime(drone, ti, tf)
             for i=1:length(drone.locs)
                 if (drone.locs(i).Time.Sec <= ti)

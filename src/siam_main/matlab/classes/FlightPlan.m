@@ -1,20 +1,20 @@
 classdef FlightPlan < handle
 
     properties
-        flightPlanId
-        status = 0;
-        priority = 0;
+        flightPlanId uint32         %Unique ID for the flight plan
+        status int8 = 0             %Status flag
+        priority uint8 = 0          %NOT USED
 
-        operator;
-        drone;
-        %Is dtto really needed?
-        dtto;
+        operator Operator           %Operator object reference
+        drone dronemodel            %Drone object reference
+        dtto double                 %Desired time to take off
 
-        route = ros.msggen.siam_main.Waypoint.empty;
-        sent = 0;
+        route = ros.msggen.siam_main.Waypoint.empty;       %Array of ROS Waypoint messages
+        sent uint8 = 0              %Sent status flag
     end
     
     methods
+        %Class constructor
         function obj = FlightPlan(operator, drone, route, dtto)
             obj.operator = operator;
             obj.drone = drone;
@@ -44,12 +44,13 @@ classdef FlightPlan < handle
 
         end
 
+        %Function to parse FlightPlan object to ROS object
         function msg = parseToROSMessage(obj)
-            %Generating ros messages
+            %Generating ROS messages
             msg = rosmessage('siam_main/Uplan');
             point = rosmessage("siam_main/Waypoint");
             time = rosmessage("std_msgs/Time");
-
+            %Assigning values
             msg.FlightPlanId = obj.flightPlanId;
             msg.Status = obj.status;
             msg.Priority = obj.priority;
@@ -58,11 +59,11 @@ classdef FlightPlan < handle
             msg.Dtto = obj.dtto;
 
             msg.Route = obj.route;
-
         end 
 
+        %Implementation of the AbstractionLayer for flight plans
         function p = AbstractionLayer(fp, t)
-            %If t before init Uplan, not valid pos
+            %If t is before init Uplan, return not valid pos
             if t < fp.route(1).T.Sec
                 p = [0 0 0];
                 return;
@@ -78,7 +79,7 @@ classdef FlightPlan < handle
             for i = 2:size(fp.route,2)
                 waypoint = fp.route(i);
                 
-                %until the next waypoint to t
+                %Until the next waypoint to t
                 if t > waypoint.T.Sec
                     continue;
                 end
@@ -88,27 +89,16 @@ classdef FlightPlan < handle
                 timeDifBetWayT = t - fp.route(i-1).T.Sec;               %Time dif between last waypoint and t
                 %Compute dif between waypoints
                 vectorDif = [waypoint.X waypoint.Y waypoint.Z] - [fp.route(i-1).X fp.route(i-1).Y fp.route(i-1).Z];
-                %Now vectorDIf is the RELATIVE vector between last waypoint and
-                %position in t, so must be convewrted to ABSOLUTE.
+                %Now vectorDif is the RELATIVE vector between last waypoint and
+                %position in t, so must be converted to ABSOLUTE.
                 p = (vectorDif.*(timeDifBetWayT/timeDifBetWays)) + [fp.route(i-1).X fp.route(i-1).Y fp.route(i-1).Z];
                 return;
             end
-
-        end
-
-        %Temporal
-        function CheckAbstractionLayer(fp)
-            figure(10);
-
-            for i= 1:1:200
-                pos(i,:) = jesus.AbstractionLayer(i);
-            end
-
-            plot3(pos(:,1),pos(:,2),pos(:,3));
         end
     end
 
     methods(Static)
+        %Function to generare random routes
         function route = GenerateRandomRoute(nway)
             %Airspace bounds
             bounds =   [[-4 4]
@@ -120,7 +110,6 @@ classdef FlightPlan < handle
                 x = (bounds(2,1)-bounds(1,1)) * rand(1) + bounds(1,1);
                 y = (bounds(2,2)-bounds(1,2)) * rand(1) + bounds(1,2);
                 z = 4 * rand(1) + 1;
-        
                 route(j,:) = [x y z];
             end
         end

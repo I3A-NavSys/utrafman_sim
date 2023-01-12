@@ -3,10 +3,10 @@ addpath("classes\");
 addpath('.')
 
 %Load data from simulations
-%load simulations\sim21.mat
+%load simulations\small_city_LaLlanura.mat
 
 %Drone and FP selection selection
-drone = 2;
+drone = 1;
 fp = drone;
 
 figure(1);
