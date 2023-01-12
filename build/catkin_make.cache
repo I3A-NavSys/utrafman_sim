@@ -1,2 +1,0 @@
-siam_god:siam_main
--DCATKIN_DEVEL_PREFIX=/opt/ros/noetic/share/siam_sim/devel -DCMAKE_INSTALL_PREFIX=/opt/ros/noetic/share/siam_sim/install -G Unix Makefiles
