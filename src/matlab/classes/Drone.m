@@ -47,7 +47,7 @@ classdef Drone < handle
         function obj = selectModel(obj)
             switch obj.model
                 otherwise
-                    obj.droneModel = fileread('../models/dronechallenge_models/drone2/template_model_2_simple.sdf');
+                    obj.droneModel = fileread('../gazebo-ros/src/siam_main/models/dronechallenge_models/drone2/template_model_2_simple.sdf');
             end
         end
 

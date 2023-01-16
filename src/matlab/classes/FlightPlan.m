@@ -6,7 +6,7 @@ classdef FlightPlan < handle
         priority uint8 = 0          %NOT USED
 
         operator Operator           %Operator object reference
-        drone dronemodel            %Drone object reference
+        drone Drone            %Drone object reference
         dtto double                 %Desired time to take off
 
         route = ros.msggen.siam_main.Waypoint.empty;       %Array of ROS Waypoint messages
