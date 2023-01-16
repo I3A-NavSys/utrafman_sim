@@ -2,7 +2,7 @@
 #include "gazebo/physics/physics.hh"
 #include "gazebo/common/common.hh"
 #include "gazebo/gazebo.hh"
-#include "libs/boost/format.hpp"
+#include <boost/format.hpp>
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
