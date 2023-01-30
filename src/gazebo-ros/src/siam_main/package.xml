@@ -73,7 +73,5 @@
     <!-- <gazebo_ros plugin_path="${prefix}/../../lib" gazebo_media_path="${prefix}" /> -->
     <gazebo_ros plugin_path="${prefix}/src" gazebo_media_path="${prefix}" />
     <gazebo_ros gazebo_model_path="${prefix}/models/"/>
-    <gazebo_ros gazebo_model_path="${prefix}/models/models/dronechallenge_models"/>
-    <gazebo_ros gazebo_model_path="${prefix}/models/gazebo_models_worlds_collection/models"/>
   </export>
 </package>
