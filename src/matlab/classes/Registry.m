@@ -9,6 +9,7 @@ classdef Registry < handle
         droneLastId uint32 = 0;
 
         flightPlans = ros.msggen.siam_main.Uplan.empty;     %Array of FlightPlan (ordered queue using DTTO)
+        
         flightPlanLastId uint32 = 0;
 
         ros_droneInsert_pub             %ROS publiser object reference to insert drones in the world

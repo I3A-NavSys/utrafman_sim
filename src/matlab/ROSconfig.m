@@ -11,6 +11,6 @@ elseif getenv("USERNAME") == "usuario"
 elseif getenv('USERNAME') == "siamsim"
     ROS_IP = 'localhost';
 
-elseif getenv("USERNAME") == 'galadriel-ubunut'
+elseif getenv("USERNAME") == 'galadriel-ubuntu'
     ROS_IP = 'localhost';
 end

@@ -1,7 +1,9 @@
+%Class for a UAV in the simulation
+
 classdef Drone < handle
 
     properties
-        UTM
+        UTM                         %Object reference to the airspace
 
         droneId uint32              %Unique ID of the drone
         model string                %TBR: Drone model 
@@ -44,10 +46,11 @@ classdef Drone < handle
         end
 
         %Select Gazebo model to insert
+        %This will in the future add new drone models 
         function obj = selectModel(obj)
             switch obj.model
                 otherwise
-                    obj.droneModel = fileread('../gazebo-ros/src/siam_main/models/dronechallenge_models/drone2/template_model_2_simple.sdf');
+                    obj.droneModel = fileread('../gazebo-ros/src/siam_main/models/drone2/template_model_2_simple.sdf');
             end
         end
 

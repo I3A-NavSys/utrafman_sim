@@ -5,7 +5,7 @@
 %--------------------------------------------------------------------------
 
 %Added classes to the path
-addpath("classes\");
+addpath("classes/");
 addpath('.')
 
 %If you want to load data from previous simulations, use this!

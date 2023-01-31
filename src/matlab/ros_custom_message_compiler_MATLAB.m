@@ -27,7 +27,7 @@ elseif getenv("USERNAME") == 'galadriel-ubuntu'
     addpath('../gazebo-ros/src/siam_main/');
     py = pyenv('Version', '/usr/bin/python3.9');
     rosgenmsg('../gazebo-ros/src/');
-    addpath('../gazebo-ros/src/siam_main/matlab_msg_gen_ros1\win64\install\m')
+    addpath('../,./gazebo-ros/src/matlab_msg_gen_ros1\win64\install\m')
 end
 
 savepath
