@@ -16,9 +16,9 @@ elseif getenv('username') == "usuario" %I3A computer
     addpath('C:\Users\usuario\Documents\i3a_repos\siam_sim\src\gazebo-ros\src\matlab_msg_gen_ros1\win64\install\m')
 
 elseif getenv('USERNAME') == "siamsim" %Virtual Machine
-    addpath('..');
-    py = pyenv('Version', '/usr/bin/python3.8');
-    rosgenmsg('../..');
+    addpath('../gazebo-ros/src/siam_main/');
+    py = pyenv('Version', '/usr/bin/python3.9');
+    rosgenmsg('../gazebo-ros/src/');
     addpath('../../matlab_msg_gen_ros1\win64\install\m')
 
 elseif getenv("USERNAME") == 'galadriel-ubuntu'

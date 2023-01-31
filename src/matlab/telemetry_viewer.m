@@ -1,16 +1,22 @@
+%This file is used to analyse flight plans and simulations. In the viewer,
+%you can see the commanded U-plan and the real followed trayectory traveled
+%by the aircraft. 
+
+%--------------------------------------------------------------------------
+
 %Added classes to the path
 addpath("classes\");
 addpath('.')
 
-%Load data from simulations
+%If you want to load data from previous simulations, use this!
 %load simulations\small_city_LaLlanura.mat
 
-%Drone and FP selection selection
+%Introduce drone ID and FlightPlan ID to be analysed
 drone = 1;
 fp = drone;
 
-figure(1);
 %Using simulated data
+figure(1);
 drone = UTM.S_Registry.drones(drone);
 uplan = UTM.S_Registry.flightPlans(fp);
 waypoints = [[uplan.route(1,:).X]', [uplan.route(1,:).Y]', [uplan.route(1,:).Z]'];
@@ -26,7 +32,7 @@ dy = zeros(1,size(drone.locs,2));
 dz = zeros(1,size(drone.locs,2));
 drotz = zeros(1,size(drone.locs,2));
 
-%Fill variables with simulated data
+%Fill variables with simulation data
 for i=1:1:size(drone.locs,2)
     tel = drone.locs(i);
     t(i) = tel.Time.Sec;
@@ -45,17 +51,19 @@ ut = zeros(1,size(uplan.route,2)+2);
 
 %Reference data
 %Sim data recoding must be start before Uplan execution and end after Uplan
-%finish. Reference data must start and end at the same time as simulated data to
+%finish. Reference data must start and end at the same time as simulation data to
 %interpolate it correctly.
 
-ut(1) = t(1); %Init telemetry
-ut(2) = uplan.dtto; %Init Uplan
+%Time
+ut(1) = t(1);           %Init telemetry
+ut(2) = uplan.dtto;     %Init Uplan
 for i=1:size(uplan.route,2)
     ut(i+2) = uplan.route(1,i).T.Sec;
 end     
-ut(i+3) = ut(i+2)+3; %Finish uplan
-ut(i+4) = t(end); %Finish telemetry
+ut(i+3) = ut(i+2)+3;    %Finish uplan
+ut(i+4) = t(end);       %Finish telemetry
 
+%Positions
 ux = [drone.initLoc(1) drone.initLoc(1) uplan.route(1,:).X uplan.route(1,end).X uplan.route(1,end).X];
 uy = [drone.initLoc(2) drone.initLoc(2) uplan.route(1,:).Y uplan.route(1,end).Y uplan.route(1,end).Y];
 uz = [0 0 uplan.route(1,:).Z 0 0];
@@ -69,11 +77,11 @@ uz = [0 0 uplan.route(1,:).Z 0 0];
 % end
 % dux(i+1) = 0; duy(i+1) = 0; duz(i+1) = 0;
 
-%Generating datetimes of simulated and reference data
+%Generating datetimes of simulation and reference data
 sim_dates = datetime(t,'ConvertFrom','epochtime','Epoch',0);
 ref_dates = datetime(ut,'ConvertFrom','epochtime','Epoch',0);
 
-% X Y Z of the simulation
+% X Y Z of the simulation (first load data, then remove duplicates)
 sim_x_timetable = timetable(sim_dates',x');
 sim_x_timetable = retime(sim_x_timetable,unique(sim_x_timetable.Time),'mean');
 sim_y_timetable = timetable(sim_dates',y');
@@ -93,7 +101,7 @@ sim_dz_timetable = retime(sim_dz_timetable,unique(sim_dz_timetable.Time),'mean')
 sim_drotz_timetable = timetable(sim_dates',drotz');
 sim_drotz_timetable = retime(sim_drotz_timetable,unique(sim_drotz_timetable.Time),'mean');
 
-% X Y Z of the reference
+% X Y Z of the reference (Uplan)
 ref_x_timetable = timetable(ref_dates', ux');
 ref_x_timetable = retime(ref_x_timetable,unique(ref_x_timetable.Time),'mean');
 ref_y_timetable = timetable(ref_dates', uy');
@@ -101,15 +109,17 @@ ref_y_timetable = retime(ref_y_timetable,unique(ref_y_timetable.Time),'mean');
 ref_z_timetable = timetable(ref_dates', uz');
 ref_z_timetable = retime(ref_z_timetable,unique(ref_z_timetable.Time),'mean');
 
-% dX dY dZ of the reference
+% dX dY dZ of the reference (Uplan)
 %Interpolation of time
 dut = [ut(1):1:ut(end)];
 ref_dates_interpolated = datetime(dut,'ConvertFrom','epochtime','Epoch',0); %Generate time
 ref_dates_temporal = timetable(ref_dates_interpolated');
+
 %Interpolation of XYZ positions
 ref_x_timetable = synchronize(ref_dates_temporal,ref_x_timetable,'first','linear');
 ref_y_timetable = synchronize(ref_dates_temporal,ref_y_timetable,'first','linear');
 ref_z_timetable = synchronize(ref_dates_temporal,ref_z_timetable,'first','linear');
+
 %Generating XYZ velocities
 ref_dx_timetable = timetable(ref_dates_interpolated(1:end-1)', diff(ref_x_timetable.Var1));
 ref_dy_timetable = timetable(ref_dates_interpolated(1:end-1)', diff(ref_y_timetable.Var1));

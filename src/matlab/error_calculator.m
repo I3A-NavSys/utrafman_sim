@@ -1,62 +1,67 @@
-%Calculo del error para un onjunto completo de simulacion
-load simulations\sim20.mat
-name = 'sim20';
+%This file is used to compute the error between U-plan and simulation route
+%traveled by an aircraft. With it, the autopilot software could be
+%evaluated measuring the error produced between the commanded route and the
+%traveled one.
 
-%Sim properties
-    % 1-> Tiempo 
+%If you want to load data from previous simulations, use this!
+% load simulations\sim20.mat
+% name = 'sim20';
+
+%Simulation propierties
+    % 1-> Time 
     % 2-> Waypoints
-    % 3-> Precision
+    % 3-> Precission
 simProperties = zeros(length(UTM.S_Registry.flightPlans),3);
 
-%Almacenamiento del error
-    % 1-> Error total acumulado
-    % 2-> Minimo
-    % 3-> Maximo
+%Errors
+    % 1-> Total cumulative error
+    % 2-> Minimum error
+    % 3-> Maximum error
 error = zeros(length(UTM.S_Registry.flightPlans),2);
 
-%Por cada plan de vuelo
+%For each U-plan in the entire simulation
 for j = 1:length(UTM.S_Registry.flightPlans)
-    %UPlan bajo analisis
+    %Take the U-plan
     Uplan = UTM.S_Registry.flightPlans(j);
     
-    %Obtenemos el tiempo de incio del Uplan
+    %Take the init and final timie of the U-plan
     inicio = Uplan.dtto;
     final = Uplan.route(end).T.Sec;
 
-    %Sim properties
+    %U-plan properties
     simProperties(j,1) = final-inicio;
     simProperties(j,2) = length(Uplan.route);
 
-    %Telemetria del drone
+    %Drone telemetry
     droneTelemetry = UTM.S_Registry.flightPlans(j).drone.filterTelemetryByTime(inicio, final);
     
-    %Maximos y minimos
+    %Max and min
     error(j,3) = 0;
 
-    %Analizamos cada mensaje de telemetria
-    % (la precision del error ira marcada por la resolucion de los mensajes
-    % de telemetria)
+    %For each telemetry sent by the drone 
+    % (precission of the error is determined by the sampling time)
     for i=1:length(droneTelemetry)
-        %Posicion real y posicion de referencia
+        %Compute difference between U-plan position and simulation drone
+        %position
         t = droneTelemetry(i).Time.Sec + droneTelemetry(i).Time.Nsec*10e-10;
         reference = Uplan.AbstractionLayer(t);
         real = [droneTelemetry(i).Pose.Position.X droneTelemetry(i).Pose.Position.Y droneTelemetry(i).Pose.Position.Z];
         err = norm(reference-real);
-        %Error acumulado
+        %Cumulative error
         error(j,1) = error(j,1) + err;
 
-        %Maximos y minimos
-        %Seteo del primer minimo
+        %Max and min
+        %Set the first min
         if i == 1
             error(j,2) = norm(reference-real);
         end
         
-        %Nuevo minimo
+        %If new min is found
         if error(j,2) > err
             error(j,2) = err;
         end
 
-        %Nuevo maximo
+        %If new max is found
         if error(j,3) < err
             error(j,3) = err;
         end
@@ -65,25 +70,29 @@ for j = 1:length(UTM.S_Registry.flightPlans)
     simProperties(j,3) = simProperties(j,1)/i;
 end
 
+%Data rounding and organization
 figure('Position',[0 100 1300 500]);
-%Organizacion y redondeo de los datos
 data = [error(:,2) error(:,1)./simProperties(:,1) error(:,3)];
 data = round(data,3);
 bar(data);
 title(name);
-%Limites de la grafica
+
+%Figure limits
 ylimits = [0 2];
 ylim(ylimits);
-%Obtencion de la posicion en X de las etiquetas
+
+%X position in the figure of the tags
 disp = 0.22;
 x1 = (1:length(data(:,1)')) - disp;
 x2 = 1:length(data(:,2)');
 x3 = (1:length(data(:,3)')) + disp;
-%Copiamos los datos para obtener la posicion en Y de las etiquetas
+
+%Y position in the figure of the tags
 data2 = data;
 data2(data2 > ylimits(2)) = ylimits(2);
-data2(data2 < ylimits(1)) = ylimits(1); 
-%Creacion de las etiquetas
+data2(data2 < ylimits(1)) = ylimits(1);
+
+%Tag at side
 text(x1,data2(:,1)',num2str(data(:,1)),'vert','bottom','horiz','center');
 text(x2,data2(:,2)',num2str(data(:,2)),'vert','bottom','horiz','center');
 text(x3,data2(:,3)',num2str(data(:,3)),'vert','bottom','horiz','center');
@@ -98,7 +107,8 @@ text(j+0.7, ylimits(2)-0.4,num2str(mean(data(:,2))), 'vert','bottom','horiz','le
 text(j+0.7, ylimits(2)-0.6,'Max mean:', 'vert','bottom','horiz','left');
 text(j+0.7, ylimits(2)-0.7,num2str(mean(data(:,3))), 'vert','bottom','horiz','left');
 box off
-%Restto de datos de las gráficas
+
+%Tag values
 legend(["Min" "Mean" "Max"]);
 xlabel("Drone ID in the simulation");
 ylabel("Error (m) with the reference per second");
