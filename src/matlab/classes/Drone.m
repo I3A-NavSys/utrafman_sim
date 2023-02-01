@@ -52,7 +52,7 @@ classdef Drone < handle
                 otherwise
                     obj.droneModel = fileread('../gazebo-ros/src/siam_main/models/drone2/template_model_2_simple.sdf');
             end
-        end
+        end 
 
         %Subcription to the drone odometry topic
         function obj = subToTelemety(obj, timer, time)

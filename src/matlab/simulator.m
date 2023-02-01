@@ -38,12 +38,10 @@ end
 pause(1);
 
 %For each drone in the U-space, subscribe and init pubs and subs
-for i=1:numUAV
-    uavs(i).subToTelemety();                    %Init drone telemetry updates
-    uavs(i).pubsubToFlightPlan();               %Init drone U-plan publisher
-end
-
-pause(1);
+% for i=1:numUAV
+%     uavs(i).subToTelemety();                    %Init drone telemetry updates
+%     uavs(i).pubsubToFlightPlan();               %Init drone U-plan publisher
+% end
 
 delay = 0;                                      %Delay between Uplans (in the same drone) (not in use)
 tbp = 0;                                        %Delay between drones Uplan
