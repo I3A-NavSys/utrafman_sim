@@ -108,6 +108,7 @@ classdef Drone < handle
 
         %Return drone telemetry between two times
         function tel = filterTelemetryByTime(drone, ti, tf)
+            first = 1; last = size(drone.locs,2);
             for i=1:length(drone.locs)
                 if (drone.locs(i).Time.Sec <= ti)
                     first = i;

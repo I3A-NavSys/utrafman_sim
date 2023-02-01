@@ -3,6 +3,10 @@
 %evaluated measuring the error produced between the commanded route and the
 %traveled one.
 
+addpath("classes\");
+name = 'Small City';
+droneIDs = []
+
 %If you want to load data from previous simulations, use this!
 % load simulations\sim20.mat
 % name = 'sim20';
@@ -34,6 +38,9 @@ for j = 1:length(UTM.S_Registry.flightPlans)
 
     %Drone telemetry
     droneTelemetry = UTM.S_Registry.flightPlans(j).drone.filterTelemetryByTime(inicio, final);
+
+    %Numero de drone
+    droneIDs(end+1) = UTM.S_Registry.flightPlans(j).drone.droneId;
     
     %Max and min
     error(j,3) = 0;
@@ -72,9 +79,10 @@ end
 
 %Data rounding and organization
 figure('Position',[0 100 1300 500]);
+
 data = [error(:,2) error(:,1)./simProperties(:,1) error(:,3)];
 data = round(data,3);
-bar(data);
+bar(droneIDs, data);
 title(name);
 
 %Figure limits
