@@ -1,3 +1,4 @@
+%This class is work in progress. It is not used in the current version of the simulator.
 classdef FlightPlanExecution < handle
 
     properties

@@ -1,25 +1,28 @@
-classdef FlightPlan < handle
+%This class defines the FlightPlan object, which is used to store the flight plan information and to parse it to ROS messages.
 
+classdef FlightPlan < handle
     properties
         flightPlanId uint32         %Unique ID for the flight plan
-        status int8 = 0             %Status flag
-        priority uint8 = 0          %NOT USED
+        status int8 = 0             %Status flag (to mark if the flight plan is waiting, in progress or finished)
+        priority uint8 = 0          %NOT USED actually
 
         operator Operator           %Operator object reference
-        drone Drone            %Drone object reference
-        dtto double                 %Desired time to take off
+        drone Drone                 %Drone object reference
+        dtto double                 %Desired time to take off (where the plan starts)
 
-        route = ros.msggen.siam_main.Waypoint.empty;       %Array of ROS Waypoint messages
-        sent uint8 = 0              %Sent status flag
+        route = ros.msggen.siam_main.Waypoint.empty;       %Array of ROS Waypoint messages defining the route of the flight plan
+        sent uint8 = 0                                      %Sent status flag (to mark if the flight plan has been sent to the drone)
     end
     
     methods
         %Class constructor
         function obj = FlightPlan(operator, drone, route, dtto)
+            %Assigning references
             obj.operator = operator;
             obj.drone = drone;
             obj.dtto = dtto;
             
+            %Generating first waypoint (where the drone before take off)
             init = ros.msggen.siam_main.Waypoint;
             init.X = drone.initLoc(1);
             init.Y = drone.initLoc(2);
@@ -34,12 +37,15 @@ classdef FlightPlan < handle
                 point.X = route(x,1);
                 point.Y = route(x,2);
                 point.Z = route(x,3);
+
+                %If the route is defined with time, use it, otherwise use the default time interval of 10 seconds
                 if (length(route(x,:)) == 4)
                     point.T.Sec = route(x,4);
                 else
                     point.T.Sec = dtto+(x*10);
                 end
                 point.R = 0.5;
+                %Add waypoint to route
                 obj.route(x+1) = copy(point);
             end
 
@@ -58,11 +64,12 @@ classdef FlightPlan < handle
             msg.OperatorId = obj.operator.operatorId;
             msg.DroneId = obj.drone.droneId;
             msg.Dtto = obj.dtto;
-
             msg.Route = obj.route;
         end 
 
         %Implementation of the AbstractionLayer for flight plans
+        %This function returns the position of the drone at any time t interpolating the route waypoints.
+        %Allow abstraction of the flight plan definition (waypoints) and the real flight plan execution (position of the drone at any time).
         function p = AbstractionLayer(fp, t)
             %If t is before init Uplan, return not valid pos
             if t < fp.route(1).T.Sec
@@ -76,7 +83,7 @@ classdef FlightPlan < handle
                 return;
             end
 
-            % Travel waypoint (assuming first waypoint is where drone is)
+            % Travel waypoint (assuming first waypoint is where drone is before take off)
             for i = 2:size(fp.route,2)
                 waypoint = fp.route(i);
                 
@@ -99,6 +106,8 @@ classdef FlightPlan < handle
     end
 
     methods(Static)
+        %To be reimplemented. This function is used to generate random flight plans inside bounds and with a given number of waypoints.
+        %Used for testing purposes.
         %Function to generare random routes
         function route = GenerateRandomRoute(nway)
             %Airspace bounds

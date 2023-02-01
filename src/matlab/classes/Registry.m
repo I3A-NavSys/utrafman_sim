@@ -1,19 +1,21 @@
+%Registry class maintains the state of the airspace and an update registry of the entities in the airspace
 classdef Registry < handle
 
     properties
         %Operators in the airspace
         operators = Operator.empty;     %Array of Operators objects
-        operatorLastId uint32 = 0;
+        operatorLastId uint32 = 0;      %Last operatorId assigned
         
         %Drones in the airspace
         drones = Drone.empty;           %Array of Drone objects
-        droneLastId uint32 = 0;
+        droneLastId uint32 = 0;         %Last droneId assigned
 
         %Flight plans in the airspace
         flightPlans = ros.msggen.siam_main.Uplan.empty;     %Array of FlightPlan (ordered queue using DTTO)
-        flightPlanLastId uint32 = 0;
+        flightPlanLastId uint32 = 0;                        %Last flightPlanId assigned 
 
         %ros publishers and messages for airspace's god
+        %god is the entity that adds or removes drones from Gazebo world
         ros_droneInsert_pub             %ROS publiser object reference to insert drones in the world
         ros_droneInsert_msg             %ROS message
     end
@@ -28,7 +30,7 @@ classdef Registry < handle
         
         %Register a new operator in the registry
         function obj = regNewOperator(obj,operator)
-            %Compute operatorId
+            %Compute new operatorId
             id = obj.operatorLastId + 1;
             obj.operatorLastId = id;
             %Assign operatorId
@@ -39,16 +41,16 @@ classdef Registry < handle
 
         %Register a new drone in the registry
         function obj = regNewDrone(obj, drone)
-            %Commpute droneId
+            %Commpute new droneId
             id = obj.droneLastId + 1;
             obj.droneLastId = id;
             %Assign droneId
             drone.droneId = id;
             %Signup in the registry
             obj.drones(id) = drone;
-            %Generate SDF model
+            %Generate SDF model to be inserted in Gazebo
             drone.generateSDF();
-            %Add drone to Gazebo
+            %Add model to Gazebo
             obj.ros_droneInsert_msg.Data = drone.sdf;
             send(obj.ros_droneInsert_pub, obj.ros_droneInsert_msg);
             %Pause is needed to avoid message queue deletion
@@ -60,7 +62,7 @@ classdef Registry < handle
 
         %Function to register a new flight plan
         function obj = regNewFlightPlan(obj, fp)
-            %Compute flightPlanId
+            %Compute new flightPlanId
             id = obj.flightPlanLastId + 1;
             obj.flightPlanLastId = id;
             %Assign flightPlanLastId

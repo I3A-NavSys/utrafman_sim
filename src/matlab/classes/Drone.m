@@ -6,7 +6,7 @@ classdef Drone < handle
         UTM                         %Object reference to the airspace
 
         droneId uint32              %Unique ID of the drone
-        model string                %TBR: Drone model 
+        model string                %TODO: (rename or redifine): Drone model 
         operator Operator           %Operator of the drone
 
         flightPlan FlightPlan       %FlightPlan object reference
@@ -20,15 +20,8 @@ classdef Drone < handle
         sdf string                  %String: SDF definition of the drone model
 
         %ROS
-        %timer_Upd_Telemetry
         ros_Telemetry_sub       %ROS Subscriber object reference
-        %ros_Telemetry_msg
-
-        %timer_Upd_Status
         ros_flightPlans_pub     %ROS Publisher object reference 
-        %ros_flightPlans_sub
-        %ros_flightPlans_msg
-        %SimulationInput
     end
     
     methods
@@ -72,7 +65,7 @@ classdef Drone < handle
             obj.locs(end+1) = msg;
         end
 
-        %Not in use - TBD
+        %Not in use - TODO: reimplement
         %Callback to update status of the drone
         function obj = updateStatus(obj, timer, time)
             if isempty(obj.flightPlan)
