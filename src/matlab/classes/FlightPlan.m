@@ -28,6 +28,7 @@ classdef FlightPlan < handle
             init.R = 0.5;
             obj.route(1) = init;
             
+            %For each waypoint in route, create a ROS Waypoint message and add it to the route array
             for x = 1:size(route,1)
                 point = ros.msggen.siam_main.Waypoint;
                 point.X = route(x,1);

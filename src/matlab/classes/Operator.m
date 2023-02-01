@@ -13,6 +13,7 @@ classdef Operator < handle
             obj.operatorName = operatorName;
         end
 
+         %Register a new drone to the operator adding it to the drone garage
         function obj = regNewDrone(obj, drone)
             drone.operator = obj;
             obj.droneGarage(end+1) = drone;
