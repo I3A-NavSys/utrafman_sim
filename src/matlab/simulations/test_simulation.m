@@ -1,6 +1,6 @@
 %PRE-SIMULATION TASKs
 timer; stop(timerfind); delete(timerfind)       %Stop all timers
-addpath("classes/");                            %Added classes path
+addpath("./classes/");                            %Added classes path
 
 %-----------------------------------------
 
@@ -12,7 +12,7 @@ operator = Operator('Sample_Operator');
 UTM.S_Registry.regNewOperator(operator);
 
 %Drone creation, registry and addition to Gazebo
-numUAV = 100;
+numUAV = 10;
 uavs = Drone.empty(0,numUAV);
 p = 1;
 
@@ -55,7 +55,7 @@ for i=1:numUAV*1
     fp(i) = FlightPlan(operator, ...        %Operator
                        uavs(i), ...         %Drone asignation
                        route, ...           %Route
-                       100+((i-1)*tbp));      %DTTO
+                       15+((i-1)*tbp));      %DTTO
     %Uplan registration
     UTM.S_Registry.regNewFlightPlan(fp(i));
 end

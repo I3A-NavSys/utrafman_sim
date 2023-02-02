@@ -24,7 +24,8 @@ classdef UTMAirspace < handle
         %Class constructor
         function obj = UTMAirspace()
             %Load ROS configuration variables
-            run(fullfile("../config/ros.m"));
+            run(fullfile("./config/ros.m"));
+            run(fullfile(""));
             obj.rosMasterIp = ROS_IP;
             %Connect with ROS master
             obj.ConnectWithROSMaster();

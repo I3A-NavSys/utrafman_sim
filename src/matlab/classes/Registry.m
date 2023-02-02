@@ -25,7 +25,7 @@ classdef Registry < handle
         function obj = Registry()
             %Initialize ROS publishers and messages for airspace's god
              obj.ros_droneInsert_pub = rospublisher('/god/insert','std_msgs/String');
-             obj.ros_droneInsert_m sg = rosmessage('std_msgs/String');
+             obj.ros_droneInsert_msg = rosmessage('std_msgs/String');
         end
         
         %Register a new operator in the registry

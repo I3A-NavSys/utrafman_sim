@@ -3,9 +3,11 @@
 %evaluated measuring the error produced between the commanded route and the
 %traveled one.
 
+%TODO: Check if this works with only one drone in the simulation
+
 addpath("classes\");
 name = 'Small City';
-droneIDs = []
+droneIDs = 1:length(UTM.S_Registry.drones);
 
 %If you want to load data from previous simulations, use this!
 % load simulations\sim20.mat
@@ -82,7 +84,7 @@ figure('Position',[0 100 1300 500]);
 
 data = [error(:,2) error(:,1)./simProperties(:,1) error(:,3)];
 data = round(data,3);
-bar(droneIDs, data);
+bar(data);
 title(name);
 
 %Figure limits

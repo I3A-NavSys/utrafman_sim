@@ -5,14 +5,14 @@
 %--------------------------------------------------------------------------
 
 %Added classes to the path
-addpath("classes/");
+addpath("./classes/");
 addpath('.')
 
 %If you want to load data from previous simulations, use this!
 %load simulations\small_city_LaLlanura.mat
 
 %Introduce drone ID and FlightPlan ID to be analysed
-drone = 1;
+drone = 2;
 fp = drone;
 
 %Using simulated data
