@@ -539,17 +539,21 @@ namespace gazebo
         }
 
         //Member to receive an Uplan  using the topic
+        //Uplan is stored in Uplan_local and not be overwritten until the drone finish the current Uplan
+        //In the future, the drone will be able to ajust the current Uplan with Uplan changes
         void UplansTopicCallback(const siam_main::Uplan::ConstPtr &msg){
             //Open the file used to save logs
             if (!control_out_file.is_open()) {
                 control_out_file.open("/tmp/drone-" + id + "_fp-" + std::to_string(msg->flightPlanId) + ".txt");
             }
+
             //If the drone is following a U-plan, not interrupt it (at this moment). If not, assign the Uplan
             if (this->uplan_inprogress){
                 this->PrintToFile(1, "UPlanTopic", "New U-plan received for drone " + this->id + " but the drone is following its local U-plan");
                 return;
             } else {
                 this->PrintToFile(1, "UPlanTopic","Received U-plan for drone " + this->id);
+                // Set and reset variables and flags
                 this->uplan_local = msg;
                 this->actual_route_point = 0;
                 this->route_local = msg->route;
@@ -558,6 +562,8 @@ namespace gazebo
         }
 
         //Member to abstract drone control from the definition of an Uplan
+        //This function is called from the ComputeControl function and it is used to abstract the control from the definition of an Uplan
+        // Returns the position of the drone in the space at time t based on the Uplan
         ignition::math::Vector3<double> UplanAbstractionLayer(double t){
             //Function variables used in the function
             siam_main::UplanConstPtr uplan = this->uplan_local;     //Uplan
@@ -579,6 +585,7 @@ namespace gazebo
                 return ignition::math::Vector3d(route[route_s-1].x, route[route_s-1].y, route[route_s-1].z);
             }
 
+           //In case Uplan is in progress iterate over the route
             for(int i = 1; i < route_s; i++){
                 //Next waypoint
                 wp = route[i];
@@ -599,11 +606,11 @@ namespace gazebo
 
                 break;
             }
-            //Return target position
-            return position; //Target position at time t
+            return position;    //Target position at time t
         }
 
         //Member that compute the desired velocity depending the mode in use
+        //Returns the desired velocity for the drone at time t, using the UplanAbstractionLayer function
         ignition::math::Vector4<double> ComputeVelocity(int mode, double t, ignition::math::Pose3<double> pose, ignition::math::Vector3<double> pose_rot){
             //Variables used by the high level control
             ignition::math::Vector4<double> final_vel;
@@ -614,6 +621,7 @@ namespace gazebo
             //Navigation mode selector
             // 1 -> Navigation based in actual reference
             // 2 -> Navigation based in actual al future reference (2 secs future)
+
             if (mode == 1) {
                 //Get target position in time t
                 ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
@@ -628,6 +636,7 @@ namespace gazebo
                 if (seconds_since_last_update > (1.0 / odom_publish_rate)){
                     PrintToFile(1, "ComputVeloci", "Target pos at t X: " + std::to_string(uplan_pos.X()) + " Y: " + std::to_string(uplan_pos.Y()) + " Z: " + std::to_string(uplan_pos.Z()));
                 }
+
             } else if (mode == 2){
                 //Get target position in time t
                 ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
@@ -652,13 +661,14 @@ namespace gazebo
                     PrintToFile(1, "ComputVeloci", "Reference velocity at t X: " + std::to_string(pos_diff.X()) + " Y: " + std::to_string(pos_diff.Y()) + " Z:" + std::to_string(pos_diff.Z()));
                     PrintToFile(1, "ComputVeloci", "Reference velocity at t+2  X: " + std::to_string(pos_diff_future.X()) + " Y: " + std::to_string(pos_diff_future.Y()) + " Z:" + std::to_string(pos_diff_future.Z()));
                 }
+
             } else if (mode == 3){
                 int forward_seconds = 2;
 
                 //Get target position in time t
                 ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
 
-                //Get target position in time t+2
+                //Get target position in time t+forward_seconds
                 ignition::math::Vector3d uplan_pos_future = this->UplanAbstractionLayer(t+forward_seconds);
 
                 //Compute velocity to catch up the reference
@@ -686,7 +696,7 @@ namespace gazebo
             return final_vel;
         }
 
-        //Member to disconnect the drone from the ROS network to remove the model
+        //Member to disconnect the drone from the ROS network before remove the model
         void KillTopicCallback(const std_msgs::BoolConstPtr &value){
             //Disconnection from the Update events
             event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
@@ -720,7 +730,15 @@ namespace gazebo
             }
         }
 
+        //Member to Print message into screen in the future
         void PrintToScreen(){
+        }
+
+        //Print a delimiter into the screen
+        void PrintDelimToScreen(){
+            if (control_out_file.is_open()){
+                std::cout << "-----------------------------------------------------------------" << std::endl;
+            }
         }
     };
 
