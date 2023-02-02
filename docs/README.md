@@ -28,9 +28,9 @@ Packages are the main way to organize ROS code. A package is a directory contain
 
 #### Messages
 Message sent through topics and services are defined with present or custom ROS messages. Some ROS messages that are used in SiAM Sim are (_package_/_message_)):
-- **siam_main/FligjtPlan**: message that contains the flight plan of the UAV.
-- **siam_main/Telemetry**: message that contains the telemetry of the UAV, like position, velocity, acceleration, etc.
-- **siam_Waypoint**: message that contains the position of a 4D waypoint.
+- **siam_main/[Uplan](../src/gazebo-ros/src/siam_main/msg/Uplan.msg)**: message that contains the flight plan of the UAV.
+- **siam_main/[Telemetry](../src/gazebo-ros/src/siam_main/msg/Telemetry.msg)**: message that contains the telemetry of the UAV, like position, velocity, acceleration, etc.
+- **siam_main/[Waypoint](../src/gazebo-ros/src/siam_main/msg/Waypoint.msg)**: message that contains the position of a 4D waypoint.
 
 #### Topics
 The topics implemented in SiAM Sim are (_namespace_/_topic_):
@@ -50,11 +50,37 @@ Gazebo is used inside SiAM Sim to simulate the environment and the UAVs. The env
 
 Gazebo simulations are running in a separated thread (_gzserver_) that simulation viewer (_gzclient_), so the simulator could be paused, resumed, stopped, etc. This is useful to debug the simulation, or if you want to save computational resources, as _gzclient_ is not necessary to run the simulation.
 
-### 2.3. Extending Gazebo with plugins
 Simulations in Gazebo could be extended with plugins. Plugins are libraries that are loaded in Gazebo and allow to extend the simulator with new functionalities. For example, in SiAM Sim, a plugin is used to spawn and remove UAVs from the environment. Drone autonomous control software is implemented as a plugin as well, so it is possible to implement new control software without modifying the simulator.
 
 
 ## 3. Drone Control Software
-### 3.1. How is implemented?
+The UAV control plugin takes UAV positions / velocities / accelerations from Gazebo using the C++ API, computes the difference between UAV position and reference from the FlightPlan, computes the control action and computes the forces and moments to apply to the UAV in Gazebo. Moreover, this plugin also send telemetry data throgh topics with the frecuency selected. You could found the code of the plugin in _siam_main_ package, in _src_ folder. The plugin has been implemented the control present [in this paper](https://journals.sagepub.com/doi/10.1177/1729881418820425).
+
+
 ## 4. UTM Services
-## 5. Tutorials
+To be defined.
+
+# 5. Tutorials
+This section contains tutorials to install and use SiAM Simulator.
+
+## 5.1. Installation
+To install SiAM Simulator, you need to install first ROS and Gazebo. You can follow the official tutorials to install ROS and Gazebo [here](http://wiki.ros.org/noetic/Installation). Once you are be able to run a simulation in Gazebo and ROS, you can install SiAM Simulator. Remmember to define the ROS environment variables, as explained in the ROS installation tutorial!
+
+To install SiAM Simulator, you need to clone the repository in your workspace. To do that, you can use the following command:
+```shell
+cd /path-to-install-siam-simulator
+git clone https://github.com/I3A-NavSys/siam_sim
+```
+As you could see, `src/gazebo_ros/` is a ROS (_catkin_) workspace, and contains all the simulation environment. In the other hand, `src/matlab` includes simulator launch code, tools and telemetry viewer. Once you have cloned the repository, you need to compile the code. To do that, you can use the following commands:
+
+```shell
+cd /siam-simulator/src/gazebo_ros
+catkin_make
+```
+
+Once the workspace is compiled, you should be able to run a test simulation. To do that, you can use the following command:
+
+```shell
+rosrun siam_main test.launch
+```
+After that, Gazebo should be launched with a simple world, where a drone is placed.
