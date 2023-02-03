@@ -12,7 +12,7 @@ addpath('.')
 %load simulations\small_city_LaLlanura.mat
 
 %Introduce drone ID and FlightPlan ID to be analysed
-drone = 2;
+drone = 1;
 fp = drone;
 
 %Using simulated data

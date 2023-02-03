@@ -12,7 +12,7 @@ operator = Operator('Sample_Operator');
 UTM.S_Registry.regNewOperator(operator);
 
 %Drone creation, registry and addition to Gazebo
-numUAV = 10;
+numUAV = 5;
 uavs = Drone.empty(0,numUAV);
 p = 1;
 
@@ -47,6 +47,11 @@ delay = 0;                                      %Delay between Uplans (in the sa
 tbp = 0;                                        %Delay between drones Uplan
 fp = FlightPlan.empty(0,numUAV*1);              %U-plan instance
 
+%Wait until Gazebo clock has a value
+while(UTM.Gclock == -1)
+    pause(0.1)
+end
+
 for i=1:numUAV*1
     rng(i);                                     %Random generator mix
     %Random route generation
@@ -55,7 +60,7 @@ for i=1:numUAV*1
     fp(i) = FlightPlan(operator, ...        %Operator
                        uavs(i), ...         %Drone asignation
                        route, ...           %Route
-                       15+((i-1)*tbp));      %DTTO
+                       UTM.Gclock+5+((i-1)*tbp));      %DTTO
     %Uplan registration
     UTM.S_Registry.regNewFlightPlan(fp(i));
 end

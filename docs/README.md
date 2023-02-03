@@ -12,6 +12,8 @@ Nowadays, the simulator is composed of 3 main and essential components:
 -	**Gazebo**: as is said before, Gazebo offers the entire physics and dynamics engine simulator, as well as the environment and collision simulator. Moreover, Gazebo allows the use of LiDARs and cameras onboard, where behaviour of these sensors could be implemented through Gazebo plugins.
 -	**Services, analystics tools and gathering data**: a simulator launcher and telemetry viewer are provided in order to offer an example of how UAV are placed in the world, how to send a flight plan and a way to view afterward the route flied by the aircraft. These parts have been constructed using MATLAB.
 
+### Previous knowledge
+As you would read in the future section, the simulator is built using ROS and Gazebo. So, it is necessary to have some knowledge about these tools. Nowadays advanced concepts are not used, but know how ROS network works, use of packages, how to create a topic, how to create a service, etc **is a must**. If you are not familiar with ROS, you can read the [ROS wiki](http://wiki.ros.org/ROS/Tutorials) to learn the basics. If you are not familiar with Gazebo, you can read the [Gazebo tutorials](http://gazebosim.org/tutorials) to learn the basics.
 
 ## 2. Simulator environment
 SiAM Simulator has been built using Robot Operating System (ROS) and Gazebo, as lot of simulator do. The contribution of ROS and Gazebo to the simulator will be discuted in followed sections. Our objective with SiAM is produce a widely-use simulator that help us to develop and test our UAV control software, UTM services and other software designet to support Urban Air Mobility (UAM). 
@@ -63,24 +65,55 @@ To be defined.
 # 5. Tutorials
 This section contains tutorials to install and use SiAM Simulator.
 
-## 5.1. Installation
+## 5.1. Setup
+As you discover in the previous section, SiAM Simulator use ROS, Gazebo and MATLAB. ROS and Gazebo must be installed in the same computed, but MATLAB could workd in a different computer. This is because, in very large simulations, the resources of typical machines may not be enough. By dividing the load into two independent machines, larger simulations can be performed.
+
+If you use two-computer setup, both of then must be connected to the same network and be able to communicate with each other. If you want to avoid ROS network problems, you can use the same computer for ROS, Gazebo and MATLAB. 
+
+Either way, MATLAB must be configured with ROS_MASTER IP address, as explained in [this tutorial](https://es.mathworks.com/help/ros/ug/get-started-with-ros.html). If you use two-computer setup, you must configure MATLAB with the IP address of the computer where ROS is running, in the file `/src/matlab/config/ros.m`. If you use one-computer setup, you can simply use _localhost_ as ROS_MASTER IP address.
+
+
+## 5.2. Installation
+### ROS and Gazebo
+>:warning:  SiAM Simulator is only tested in **Ubuntu 20.04 and ROS Noetic**. Maybe it could work in other versions, but it is not guaranteed.
 To install SiAM Simulator, you need to install first ROS and Gazebo. You can follow the official tutorials to install ROS and Gazebo [here](http://wiki.ros.org/noetic/Installation). Once you are be able to run a simulation in Gazebo and ROS, you can install SiAM Simulator. Remmember to define the ROS environment variables, as explained in the ROS installation tutorial!
 
 To install SiAM Simulator, you need to clone the repository in your workspace. To do that, you can use the following command:
+
 ```shell
 cd /path-to-install-siam-simulator
 git clone https://github.com/I3A-NavSys/siam_sim
 ```
-As you could see, `src/gazebo_ros/` is a ROS (_catkin_) workspace, and contains all the simulation environment. In the other hand, `src/matlab` includes simulator launch code, tools and telemetry viewer. Once you have cloned the repository, you need to compile the code. To do that, you can use the following commands:
+As you could see, `src/gazebo_ros/` is a ROS (_catkin_) workspace, and contains all the simulation environment. In the other hand, `src/matlab/` includes simulator launch code, tools and telemetry viewer. Once you have cloned the repository, you need to compile the code. To do that, you can use the following commands:
 
 ```shell
 cd /siam-simulator/src/gazebo_ros
 catkin_make
 ```
+Once the workspace is compiled, you should be ready to run simulations.
 
-Once the workspace is compiled, you should be able to run a test simulation. To do that, you can use the following command:
+### MATLAB
+>:warning:  SiAM Simulator is only tested with **MATLAB R2022a and newer versions, and Python 3.9**. Maybe it could work in other versions, but it is not guaranteed.
 
+To install MATLAB, you can follow the official tutorial [here](https://es.mathworks.com/help/install/ug/install-mathworks-software.html). Once you have installed MATLAB, you need to install the ROS Toolbox. To do that, you can follow the official tutorial [here](https://es.mathworks.com/help/ros/ug/install-ros-toolbox.html). When MATLAB and all the dependencies are installed, you only need to open the `/src/matlab/` folder in MATLAB. 
+
+MATLAB Current Folder section should be like this:
+- **classes**: folder that contains all the classes used.
+- **config**: folder that contains configuration files.
+- **simulations**: folder that contains simulation definitions files.
+- **tools**: folder that contains tools, like telemetry viewer or error.
+
+Finally, as custom ROS messages are used, you need to compile them. Use script file `/src/matlab/tools/ros-custom-message-compiler.m` to compile them. Edit the file to define where python is installed in your computer. Once you have compiled the messages, you are ready to run simulations. You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). Once you have done all previous steps, you are ready to run simulations.
+
+## 5.2 Running a test simulation
+SiAM Sim comes with a test simulation to test if ROS, Gazebo and MATLAB are working properly. Open MATLAB with `/src/matlab/` as current directory and, in a new terminal, run the following command:
 ```shell
-rosrun siam_main test.launch
+roslaunch siam_main test.launch
 ```
-After that, Gazebo should be launched with a simple world, where a drone is placed.
+You should see how ROS is launched in the terminal, and Gazebo is launched in a new window. In the Gazebo window, you should see empty world. 
+![Empty World](./img/tutorials/test-simulation-world-1.png)
+Now is time to add UAVs to the world and send flight plans to them. To do that, you must run in MATLAB the following script: `/src/matlab/simulations/test_simulation.m`. This script will add five UAVs to the world, and send a flight plan to it. Few seconds after, you should see how the UAV moves in the Gazebo window.
+![UAVs](./img/tutorials/test-simulation-world-2.png)
+
+If you want to see the telemetry data, you can run ´/src/tools/telemetry-viewer.m´ script in MATLAB. This script will open a new window with the telemetry viewer. You can change the UAV to see the telemetry data in the line 15, `drone = 1`.
+![Telemetry Viewer](./img/tutorials/test-simulation-telemetry-viewer-1.jpg)

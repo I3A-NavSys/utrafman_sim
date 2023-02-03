@@ -17,7 +17,7 @@ classdef UTMAirspace < handle
         %Gazebo Clock
         GClock_sub;                 %Subscriber to Gazebo clock
         GClock_Upt_timer;           %Timer to update Gazebo clock
-        Gclock;                     %Gazebo clock value
+        Gclock = -1;                     %Gazebo clock value
     end
     
     methods
