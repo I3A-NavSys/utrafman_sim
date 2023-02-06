@@ -56,11 +56,13 @@ Simulations in Gazebo could be extended with plugins. Plugins are libraries that
 
 
 ## 3. Drone Control Software
-The UAV control plugin takes UAV positions / velocities / accelerations from Gazebo using the C++ API, computes the difference between UAV position and reference from the FlightPlan, computes the control action and computes the forces and moments to apply to the UAV in Gazebo. Moreover, this plugin also send telemetry data throgh topics with the frecuency selected. You could found the code of the plugin in _siam_main_ package, in _src_ folder. The plugin has been implemented the control present [in this paper](https://journals.sagepub.com/doi/10.1177/1729881418820425).
+The UAV control plugin takes UAV positions / velocities / accelerations from Gazebo using the C++ API, computes the difference between UAV position and reference from the FlightPlan, computes the control action and computes the forces and moments to apply to the UAV in Gazebo. Moreover, this plugin also send telemetry data throgh topics with the frecuency selected. You could found the code of the plugin in _siam\_main_ package, in _src_ folder. The plugin has been implemented the control present [in this paper](https://journals.sagepub.com/doi/10.1177/1729881418820425).
 
 
 ## 4. UTM Services
 To be defined.
+
+---
 
 # 5. Tutorials
 This section contains tutorials to install and use SiAM Simulator.
@@ -76,6 +78,7 @@ Either way, MATLAB must be configured with ROS_MASTER IP address, as explained i
 ## 5.2. Installation
 ### ROS and Gazebo
 >:warning:  SiAM Simulator is only tested in **Ubuntu 20.04 and ROS Noetic**. Maybe it could work in other versions, but it is not guaranteed.
+
 To install SiAM Simulator, you need to install first ROS and Gazebo. You can follow the official tutorials to install ROS and Gazebo [here](http://wiki.ros.org/noetic/Installation). Once you are be able to run a simulation in Gazebo and ROS, you can install SiAM Simulator. Remmember to define the ROS environment variables, as explained in the ROS installation tutorial!
 
 To install SiAM Simulator, you need to clone the repository in your workspace. To do that, you can use the following command:
@@ -105,15 +108,19 @@ MATLAB Current Folder section should be like this:
 
 Finally, as custom ROS messages are used, you need to compile them. Use script file `/src/matlab/tools/ros-custom-message-compiler.m` to compile them. Edit the file to define where python is installed in your computer. Once you have compiled the messages, you are ready to run simulations. You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). Once you have done all previous steps, you are ready to run simulations.
 
-## 5.2 Running a test simulation
+## 5.3. Running a test simulation
 SiAM Sim comes with a test simulation to test if ROS, Gazebo and MATLAB are working properly. Open MATLAB with `/src/matlab/` as current directory and, in a new terminal, run the following command:
 ```shell
 roslaunch siam_main test.launch
 ```
-You should see how ROS is launched in the terminal, and Gazebo is launched in a new window. In the Gazebo window, you should see empty world. 
-![Empty World](./img/tutorials/test-simulation-world-1.png)
+You should see how ROS is launched in the terminal, and Gazebo is launched in a new window. In the Gazebo window, you should see empty world.
+s
+![Empty World](./img/tutorials/test-simulation-world-1.png ':size=800px')
+
 Now is time to add UAVs to the world and send flight plans to them. To do that, you must run in MATLAB the following script: `/src/matlab/simulations/test_simulation.m`. This script will add five UAVs to the world, and send a flight plan to it. Few seconds after, you should see how the UAV moves in the Gazebo window.
-![UAVs](./img/tutorials/test-simulation-world-2.png)
+
+![UAVs](./img/tutorials/test-simulation-world-2.png ':size=800px')
 
 If you want to see the telemetry data, you can run ´/src/tools/telemetry-viewer.m´ script in MATLAB. This script will open a new window with the telemetry viewer. You can change the UAV to see the telemetry data in the line 15, `drone = 1`.
-![Telemetry Viewer](./img/tutorials/test-simulation-telemetry-viewer-1.jpg)
+
+![Telemetry Viewer](./img/tutorials/test-simulation-telemetry-viewer-1.jpg ':size=800px')

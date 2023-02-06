@@ -1,16 +1,16 @@
 <!-- _coverpage.md -->
-![logo](./img/logo.png ':size=200')
+![logo](./img/logo2-circle.png ':size=300')
 
 # SiAM Simulator <small>1.0</small>
 
-> A magical documentation site generator.
+> A UTM simulator to develop and test services, control software and tools.
 
-- Simple and lightweight
-- No statically built html files
-- Multiple themes
+<!-- - Develop and test UTM services and tools -->
+- Easy to use, easy to extend, easy to integrate
+- Built on ROS, Gazebo and MATLAB
 
-<!-- [GitHub](https://github.com/docsifyjs/docsify/)
-[Get Started](#docsify) -->
+[GitHub](https://github.com/I3A-NavSys/siam_sim)
+<!-- [Get Started](#docsify) -->
 
 <!-- background image -->
 
