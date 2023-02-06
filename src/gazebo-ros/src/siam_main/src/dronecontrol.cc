@@ -614,6 +614,19 @@ namespace gazebo
         ignition::math::Vector4<double> ComputeVelocity(int mode, double t, ignition::math::Pose3<double> pose, ignition::math::Vector3<double> pose_rot){
             //Variables used by the high level control
             ignition::math::Vector4<double> final_vel;
+            //Get next waypoint
+            siam_main::Waypoint target_waypoint = this->route_local[this->actual_route_point];
+            //Compute 3D velocity to it
+            ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x, target_waypoint.y, target_waypoint.z);
+            //Compute the bearing to do
+            double target_bearing = atan2(target_way_vector3d.Y()-pose.Pos().Y(),target_way_vector3d.X()-pose.Pos().X());
+            double drone_yaw = pose_rot.Z();
+
+            /*std::cout << "Brearing: " << bearing << "\n";
+            std::cout << "rotZ: " << rotZ << "\n";
+            bearing = bearing - rotZ;
+            std::cout << "Diff: " << bearing << "\n";
+            std::cout << "-----------" << "\n";*/
 
             //Get last publish time to write logs in file
             double seconds_since_last_update = t - last_odom_publish_time.Double();
@@ -625,13 +638,10 @@ namespace gazebo
             if (mode == 1) {
                 //Get target position in time t
                 ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
-
                 //Compute difference between actual position and target position
                 ignition::math::Vector3d posDiff = uplan_pos - pose.Pos();
-
                 //Assign final velocity
                 final_vel = ignition::math::Vector4<double>(posDiff.X(), posDiff.Y(), posDiff.Z(), 0);
-
                 //Log
                 if (seconds_since_last_update > (1.0 / odom_publish_rate)){
                     PrintToFile(1, "ComputVeloci", "Target pos at t X: " + std::to_string(uplan_pos.X()) + " Y: " + std::to_string(uplan_pos.Y()) + " Z: " + std::to_string(uplan_pos.Z()));
@@ -640,19 +650,27 @@ namespace gazebo
             } else if (mode == 2){
                 //Get target position in time t
                 ignition::math::Vector3d uplan_pos = this->UplanAbstractionLayer(t);
-
                 //Get target position in time t+2
                 ignition::math::Vector3d uplan_pos_future = this->UplanAbstractionLayer(t+2);
-
                 //Compute difference between actual position and target position
                 ignition::math::Vector3d pos_diff = uplan_pos - pose.Pos();
                 ignition::math::Vector3d pos_diff_future = uplan_pos_future - pose.Pos();
-
                 //Mix both velocities
                 ignition::math::Vector3d vel = pos_diff*0.7 + pos_diff_future*0.3;
-
+                //Transform velocity to drone body axes
+                vel = EulerTransformation(vel,drone_yaw);
+                //Compute yaw velocity
+                double yaw_vel = target_bearing - drone_yaw;
+                //If the yaw velocity to apply is high, only modify rotation velocity and z velocity
+                if (yaw_vel > 0.5 || yaw_vel < -0.5){
+                    final_vel = ignition::math::Vector4<double>(0, 0, vel.Z(), yaw_vel/2);
+                }
+                //If the yaw velocity is too small, the dont apply yaw velocity
+                if (yaw_vel < 0.1 && yaw_vel > -0.1){
+                    yaw_vel = 0;
+                }
                 //Assign final velocity
-                final_vel = ignition::math::Vector4<double>(vel.X(), vel.Y(), vel.Z(), 0);
+                final_vel = ignition::math::Vector4<double>(vel.X(), vel.Y(), vel.Z(), yaw_vel/2);
 
                 //Log data
                 if (seconds_since_last_update > (1.0 / odom_publish_rate)){
@@ -680,8 +698,15 @@ namespace gazebo
                 //Mix both velocities
                 ignition::math::Vector3d target_vel = 0.3*error_vel + 0.7*(future_vel/forward_seconds);
 
+                //Get next waypoint
+                siam_main::Waypoint target_waypoint = this->route_local[this->actual_route_point];
+                //Compute 3D velocity to it
+                ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x, target_waypoint.y, target_waypoint.z);
+                //Compute the bearing to do
+                double bearing = atan2(target_way_vector3d.Y()-pose.Pos().Y(),target_way_vector3d.X()-pose.Pos().X()) - pose_rot.Z();
+
                 //Compute final velocity
-                final_vel = ignition::math::Vector4d (target_vel.X(), target_vel.Y(), target_vel.Z(), 0);
+                final_vel = ignition::math::Vector4d (target_vel.X(), target_vel.Y(), target_vel.Z(), bearing);
 
                 //Log data
                 if (seconds_since_last_update > (1.0 / odom_publish_rate)){
@@ -694,6 +719,10 @@ namespace gazebo
             }
 
             return final_vel;
+        }
+
+        ignition::math::Vector3d EulerTransformation(ignition::math::Vector3d vel, double yaw){
+            return ignition::math::Vector3d(vel.X()*cos(yaw) + vel.Y()*sin(yaw), vel.X()*-1*sin(yaw) + vel.Y()* cos(yaw), vel.Z());
         }
 
         //Member to disconnect the drone from the ROS network before remove the model
