@@ -54,13 +54,33 @@ Gazebo simulations are running in a separated thread (_gzserver_) that simulatio
 
 Simulations in Gazebo could be extended with plugins. Plugins are libraries that are loaded in Gazebo and allow to extend the simulator with new functionalities. For example, in SiAM Sim, a plugin is used to spawn and remove UAVs from the environment. Drone autonomous control software is implemented as a plugin as well, so it is possible to implement new control software without modifying the simulator.
 
+### 2.3. MATLAB
+> :warning: **MATLAB** is a registered trademark of The MathWorks, Inc. Moreover, is a commercial software, so you need to have a license to use it. However, you can use the free trial version of MATLAB for 30 days.
+
+> :heavy_check_mark: As is said before, this simulator is flexible enougt to be used with other languages. You can use the MATLAB part done before, and implement your work on the simulator in the language you want.
+
+MATLAB is a high-level language and interactive environment that enables you to perform computationally intensive tasks. MATLAB allows matrix manipulations, plotting of functions and data, implementation of algorithms, creation of user interfaces, and interfacing with programs written in other languages, including C, C++, C#, Java, Fortran and Python.
+
+In SiAM Simulator, MATLAB is used to define everithing that involves the simulation. This includes the simulation definition, UTM services, telemetry data processing, etc. The main reason to use MATLAB is that it is a widely-used language in the aerospace industry, so it is easy to find people that know how to use it. Moreover, it is easy to implement new functionalities in MATLAB, as it is a high-level language. And of course, with ROS Toolbox, it is easy to communicate with ROS network, node and more.
+
+Nowadays, MATLAB is used to define the simulation, insert and remove UAVs from the environment, send flight plans to UAVs, receive telemetry data from UAVs, analyze telemetry data, etc. MATLAB part in the repository shows the following repository structure:
+- **classes**: folder that contains definitios and methods of the classes. <span style="color: red; font-weight: bold">Add class definition here.</span>
+- **config**: folder that contains configuration files.
+    - **ros.m**: file to configure ROS network in MATLAB.
+- **simulations**: folder that contains simulation definitions files.
+    - **test_simulation.m**: file that defines a test simulation.
+- **tools**: folder that contains tools, like telemetry viewer or error.
+    - **telemetry_viewer.m**: Telemetry data tool. Telemetry viewer was built to check if the autonomous control software is working correctly, and how precise is compared to the flight plan. The telemetry viewer window is divided in two parts. In the left part, you can see the flight plan route and the UAV route, and in the right part, you can see the telemetry data with the position and velocity the UAV compared to the flight plan. You can change the UAV under analysis in the line 15, `drone = 1`.
+    - **error.m**: Error computation tool. THis tool was built to compute the error between the UAV position and the flight plan position through time. Min, mean and max error are computed. Error is computed for all the UAVs in the simulation.
+
 
 ## 3. Drone Control Software
-The UAV control plugin takes UAV positions / velocities / accelerations from Gazebo using the C++ API, computes the difference between UAV position and reference from the FlightPlan, computes the control action and computes the forces and moments to apply to the UAV in Gazebo. Moreover, this plugin also send telemetry data throgh topics with the frecuency selected. You could found the code of the plugin in _siam_main_ package, in _src_ folder. The plugin has been implemented the control present [in this paper](https://journals.sagepub.com/doi/10.1177/1729881418820425).
-
+The UAV control plugin takes UAV positions / velocities / accelerations from Gazebo using the C++ API, computes the difference between UAV position and reference from the FlightPlan, computes the control action and computes the forces and moments to apply to the UAV in Gazebo. Moreover, this plugin also send telemetry data throgh topics with the frecuency selected. You could found the code of the plugin in _siam\_main_ package, in _src_ folder. The plugin has been implemented the control present [in this paper](https://journals.sagepub.com/doi/10.1177/1729881418820425).
 
 ## 4. UTM Services
-To be defined.
+TODO: Done
+
+---
 
 # 5. Tutorials
 This section contains tutorials to install and use SiAM Simulator.
@@ -76,6 +96,7 @@ Either way, MATLAB must be configured with ROS_MASTER IP address, as explained i
 ## 5.2. Installation
 ### ROS and Gazebo
 >:warning:  SiAM Simulator is only tested in **Ubuntu 20.04 and ROS Noetic**. Maybe it could work in other versions, but it is not guaranteed.
+
 To install SiAM Simulator, you need to install first ROS and Gazebo. You can follow the official tutorials to install ROS and Gazebo [here](http://wiki.ros.org/noetic/Installation). Once you are be able to run a simulation in Gazebo and ROS, you can install SiAM Simulator. Remmember to define the ROS environment variables, as explained in the ROS installation tutorial!
 
 To install SiAM Simulator, you need to clone the repository in your workspace. To do that, you can use the following command:
@@ -97,23 +118,20 @@ Once the workspace is compiled, you should be ready to run simulations.
 
 To install MATLAB, you can follow the official tutorial [here](https://es.mathworks.com/help/install/ug/install-mathworks-software.html). Once you have installed MATLAB, you need to install the ROS Toolbox. To do that, you can follow the official tutorial [here](https://es.mathworks.com/help/ros/ug/install-ros-toolbox.html). When MATLAB and all the dependencies are installed, you only need to open the `/src/matlab/` folder in MATLAB. 
 
-MATLAB Current Folder section should be like this:
-- **classes**: folder that contains all the classes used.
-- **config**: folder that contains configuration files.
-- **simulations**: folder that contains simulation definitions files.
-- **tools**: folder that contains tools, like telemetry viewer or error.
-
 Finally, as custom ROS messages are used, you need to compile them. Use script file `/src/matlab/tools/ros-custom-message-compiler.m` to compile them. Edit the file to define where python is installed in your computer. Once you have compiled the messages, you are ready to run simulations. You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). Once you have done all previous steps, you are ready to run simulations.
 
-## 5.2 Running a test simulation
+## 5.3. Running a test simulation
 SiAM Sim comes with a test simulation to test if ROS, Gazebo and MATLAB are working properly. Open MATLAB with `/src/matlab/` as current directory and, in a new terminal, run the following command:
 ```shell
 roslaunch siam_main test.launch
 ```
-You should see how ROS is launched in the terminal, and Gazebo is launched in a new window. In the Gazebo window, you should see empty world. 
-![Empty World](./img/tutorials/test-simulation-world-1.png)
-Now is time to add UAVs to the world and send flight plans to them. To do that, you must run in MATLAB the following script: `/src/matlab/simulations/test_simulation.m`. This script will add five UAVs to the world, and send a flight plan to it. Few seconds after, you should see how the UAV moves in the Gazebo window.
-![UAVs](./img/tutorials/test-simulation-world-2.png)
+You should see how ROS is launched in the terminal, and Gazebo is launched in a new window. In the Gazebo window, you should see empty world.
+![Empty World](./img/tutorials/test-simulation-world-1.png ':size=800px')
 
-If you want to see the telemetry data, you can run ´/src/tools/telemetry-viewer.m´ script in MATLAB. This script will open a new window with the telemetry viewer. You can change the UAV to see the telemetry data in the line 15, `drone = 1`.
-![Telemetry Viewer](./img/tutorials/test-simulation-telemetry-viewer-1.jpg)
+Now is time to add UAVs to the world and send flight plans to them. To do that, you must run in MATLAB the following script: `/src/matlab/simulations/test_simulation.m`. This script will add five UAVs to the world, and send a flight plan to it. Few seconds after, you should see how the UAV moves in the Gazebo window.
+
+![UAVs](./img/tutorials/test-simulation-world-2.png ':size=800px')
+
+If you want to see the telemetry data, you can run ´/src/tools/telemetry-viewer.m´ script in MATLAB. This script will open a new window with the telemetry viewer.
+
+![Telemetry Viewer](./img/tutorials/test-simulation-telemetry-viewer-1.jpg ':size=800px')
