@@ -6,7 +6,7 @@
 > A UTM simulator to develop and test services, control software and tools.
 
 <!-- - Develop and test UTM services and tools -->
-- Easy to use, easy to extend, easy to integrate
+- Easy to use, easy to extend
 - Built on ROS, Gazebo and MATLAB
 
 [GitHub](https://github.com/I3A-NavSys/siam_sim)
