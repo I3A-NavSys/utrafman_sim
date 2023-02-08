@@ -43,12 +43,12 @@ roslaunch siam_main test.launch
 ```
 You should see how ROS is launched in the terminal, and Gazebo is launched in a new window. In the Gazebo window, you should see empty world.
 
-![Empty World](../img/tutorials/test-simulation-world-1.png 'Gazebo Viewer. Empty world.  :size=800px')
+![Empty World](./img/tutorials/test-simulation-world-1.png 'Gazebo Viewer. Empty world.  :size=800px')
 
 Now is time to add UAVs to the world and send flight plans to them. To do that, you must run in MATLAB the following script: `/src/matlab/simulations/test_simulation.m`. This script will add five UAVs to the world, and send a flight plan to it. Few seconds after, you should see how the UAV moves in the Gazebo window.
 
-![UAVs](../img/tutorials/test-simulation-world-2.png 'Gazebo Viewer. Five UAV flying. :size=800px')
+![UAVs](./img/tutorials/test-simulation-world-2.png 'Gazebo Viewer. Five UAV flying. :size=800px')
 
 If you want to see the telemetry data, you can run ´/src/tools/telemetry-viewer.m´ script in MATLAB. This script will open a new window with the telemetry viewer.
 
-![Telemetry Viewer](../img/tutorials/test-simulation-telemetry-viewer-1.jpg 'MATLAB Telemetry Viewer window :size=800px')
+![Telemetry Viewer](./img/tutorials/test-simulation-telemetry-viewer-1.jpg 'MATLAB Telemetry Viewer window :size=800px')
