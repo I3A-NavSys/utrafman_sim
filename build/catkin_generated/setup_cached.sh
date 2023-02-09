@@ -7,5 +7,9 @@
 # new environment variables
 
 # modified environment variables
-export LD_LIBRARY_PATH='/opt/ros/noetic/share/siam_sim/devel/lib:/opt/ros/noetic/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins'
+export CMAKE_PREFIX_PATH="/opt/ros/noetic/share/siam_sim/devel:$CMAKE_PREFIX_PATH"
+export LD_LIBRARY_PATH="/opt/ros/noetic/share/siam_sim/devel/lib:$LD_LIBRARY_PATH"
+export PKG_CONFIG_PATH="/opt/ros/noetic/share/siam_sim/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/opt/ros/noetic/share/siam_sim/build'
+export ROSLISP_PACKAGE_DIRECTORIES='/opt/ros/noetic/share/siam_sim/devel/share/common-lisp'
+export ROS_PACKAGE_PATH="/opt/ros/noetic/share/siam_sim/src:$ROS_PACKAGE_PATH"
