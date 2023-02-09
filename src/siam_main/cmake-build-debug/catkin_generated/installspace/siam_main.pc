@@ -1,8 +1,0 @@
-prefix=/usr/local
-
-Name: siam_main
-Description: Description of siam_main
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <world name="default">
+
+    <!-- A global light source -->
+    <scene>
+      <ambient>0.7 0.7 0.7 1.0</ambient>
+      <shadows>true</shadows>
+    </scene>
+
+    <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <!-- A ground plane -->
+    <include>
+      <uri>model://ground_plane</uri>
+    </include>
+
+    <!-- Coordinates -->
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+
+    <!-- Camera -->
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>-20 -50 20 0 0.2 1</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+
+    <!-- Buldings -->
+    <include>
+      <name>building1</name>
+      <uri>model://house</uri>
+      <pose>120 0 5 0 0 0</pose>
+    </include>
+
+    <include>
+      <name>building2</name>
+      <uri>model://house</uri>
+      <pose>0 150 5 0 0 1</pose>
+    </include>
+
+    <include>
+      <name>building3</name>
+      <uri>model://house</uri>
+      <pose>-20 10 5 0 0 2</pose>
+    </include>
+
+    <include>
+      <name>I3A</name>
+      <uri>model://i3a</uri>
+      <pose>20 0 0 0 0 0</pose>
+    </include>
+
+
+    <!-- Floor -->
+    <include>
+      <name>floor</name>
+      <uri>model://floor</uri>
+      <pose>0 0 0.025 0 0 0</pose>
+    </include>
+
+    <!-- Frames -->
+    <include>
+      <name>frame_red</name>
+      <uri>model://frame_red</uri>
+      <pose>3 2 2 0 0 6</pose>
+    </include>
+
+    <include>
+      <name>frame_green</name>
+      <uri>model://frame_green</uri>
+      <pose>-2 1 0.5 0 0 8</pose>
+    </include>
+
+    <include>
+      <name>frame_blue</name>
+      <uri>model://frame_blue</uri>
+      <pose>3 -1 1 0 0 13</pose>
+    </include>
+
+  </world>
+</sdf>

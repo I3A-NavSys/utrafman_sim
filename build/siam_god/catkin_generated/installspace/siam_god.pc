@@ -1,8 +1,0 @@
-prefix=/opt/ros/noetic/share/siam_sim/install
-
-Name: siam_god
-Description: Description of siam_god
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

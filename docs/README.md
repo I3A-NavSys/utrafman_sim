@@ -1,0 +1,1 @@
+If you are reading this, you are reading the documentation from Markdown files. We suggest you to read the documentation from our [GitHub Page](https://i3a-navsys.github.io/siam_sim/#/).

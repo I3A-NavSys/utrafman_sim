@@ -1,2 +1,0 @@
-- setup-file:
-    local-name: /opt/ros/noetic/share/siam_sim/src/cmake-build-debug/devel/setup.sh
