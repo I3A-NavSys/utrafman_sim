@@ -14,6 +14,7 @@ UTM.S_Registry.regNewOperator(operator);
 %Drone creation, registry and addition to Gazebo
 numUAV = 2;
 uavs = Drone.empty(0,numUAV);
+p = 1;
 
 for i=1:numUAV
     %Generating the spawn position
