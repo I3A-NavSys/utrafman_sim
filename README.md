@@ -2,10 +2,11 @@
 
 <p align="center">
     <img src="./docs/img/logo2-circle.png" width="300" height="300" alt="U-TRAFMAN logo" />
-    <h1 style="text-align: center;">U-TRAFMAN: Unmmaned Traffic Management Simulator</h1>
-    [![Documentation]][DocLink]
+    <h1 align="center" style="text-align: center;">U-TRAFMAN: Unmmaned Traffic Management Simulator</h1>
 </p>
 
+**[Read documentation](https://i3a-navsys.github.io/siam_sim/)**
+ 
 ---
 
 ## What is U-TRAFMAN?
@@ -33,9 +34,7 @@ _Jover, J., Bermúdez, A. and Casado, R. (2023) I3a-NavSys/U-TRAFMAN: Unmmaned T
 ## License
 This project is licensed under the GNU GLP v3 license - see the [LICENSE](LICENSE) file for details.
 
-
-![Center](https://www.i3a.uclm.es/raap/wp-content/uploads/2016/04/LOGO-RAAP-Ingl%C3%A9s-e1461149901803.png ' :size=300px')
-![LAB](https://www.uclm.es/-/media/Files/C01-Centros/I3A/Imagenes/logowebi3a-uclm.ashx)
-
-[Documentation]: https://img.shields.io/badge/doc-READ%20DOCUMENTATION-blue
-[DocLink]: https://i3a-navsys.github.io/siam_sim/#/
+<p align="center">
+    <img src="https://www.uclm.es/-/media/Files/C01-Centros/I3A/Imagenes/logowebi3a-uclm.ashx" alt="I3A" />
+    <img src="https://www.i3a.uclm.es/raap/wp-content/uploads/2016/04/LOGO-RAAP-Ingl%C3%A9s-e1461149901803.png" width="350" alt="RAAP" />
+</p>
