@@ -1,10 +1,10 @@
 <!-- # U-TRAFMAN: Unmmaned Traffic Management Simulator -->
 
-<div style="display: flex; align-items: center; flex-direction: column">
+<p align="center">
     <img src="./docs/img/logo2-circle.png" width="300" height="300" alt="U-TRAFMAN logo" />
     <h1 style="text-align: center;">U-TRAFMAN: Unmmaned Traffic Management Simulator</h1>
-    <a style="width: 300px; padding: 20px; font-weight: bold; background-color: #3498DB; color: white; text-align: center;">Documentation</a>
-</div>
+    [![Documentation]][DocLink]
+</p>
 
 ---
 
@@ -27,9 +27,15 @@ Feel free to contribute to this project. If you find any bug or you want to sugg
 - Rafael Casado - rafael.casado (at) uclm.es
 - Aurelio Bermúdez - aurelio.bermudez (at) uclm.es
 
+## How to cite
+_Jover, J., Bermúdez, A. and Casado, R. (2023) I3a-NavSys/U-TRAFMAN: Unmmaned Traffic Management Simulator, GitHub Repository. GitHub. Available at: https://github.com/I3A-NavSys/siam_sim_
+
 ## License
 This project is licensed under the GNU GLP v3 license - see the [LICENSE](LICENSE) file for details.
 
 
 ![Center](https://www.i3a.uclm.es/raap/wp-content/uploads/2016/04/LOGO-RAAP-Ingl%C3%A9s-e1461149901803.png ' :size=300px')
 ![LAB](https://www.uclm.es/-/media/Files/C01-Centros/I3A/Imagenes/logowebi3a-uclm.ashx)
+
+[Documentation]: https://img.shields.io/badge/doc-READ%20DOCUMENTATION-blue
+[DocLink]: https://i3a-navsys.github.io/siam_sim/#/
