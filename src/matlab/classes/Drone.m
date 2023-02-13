@@ -14,7 +14,7 @@ classdef Drone < handle
 
         initLoc                     %Vector3<double>: Spawn location of the drone in the world 
         loc(1,3) double             %Current location of the drone
-        locs = ros.msggen.siam_main.Telemetry.empty(0); %Array of Vector3<Float>
+        locs = ros.msggen.utrafman_main.Telemetry.empty(0); %Array of Vector3<Float>
 
         droneModel string
         sdf string                  %String: SDF definition of the drone model
@@ -43,19 +43,19 @@ classdef Drone < handle
         function obj = selectModel(obj)
             switch obj.model
                 otherwise
-                    obj.droneModel = fileread('../gazebo-ros/src/siam_main/models/drone2/template_model_2_simple.sdf');
+                    obj.droneModel = fileread('../gazebo-ros/src/utrafman_main/models/drone2/template_model_2_simple.sdf');
             end
         end 
 
         %Subcription to the drone odometry topic
         function obj = subToTelemety(obj, timer, time)
             %Subscription with callback
-            obj.ros_Telemetry_sub = rossubscriber(sprintf('/drone/%d/telemetry', obj.droneId),"siam_main/Telemetry",@obj.updateLoc);
+            obj.ros_Telemetry_sub = rossubscriber(sprintf('/drone/%d/telemetry', obj.droneId),"utrafman_main/Telemetry",@obj.updateLoc);
         end
 
         %Publisher for drone flight plans 
         function obj = pubsubToFlightPlan(obj, timer, time)
-            obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/uplan', obj.droneId),"siam_main/Uplan");
+            obj.ros_flightPlans_pub = rospublisher(sprintf('/drone/%d/uplan', obj.droneId),"utrafman_main/Uplan");
         end
 
         %Callback to update location of the drone with message received

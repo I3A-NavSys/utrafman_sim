@@ -1,5 +1,3 @@
-// This file is part of SIAM simulator and implements the drone control
-
 #include <boost/bind.hpp>
 
 #include "ros/ros.h"
@@ -20,10 +18,10 @@
 
 #include <cmath>
 
-//Custom messages from siam simulator
-#include "siam_main/Telemetry.h"
-#include "siam_main/Waypoint.h"
-#include "siam_main/Uplan.h"
+//Custom messages from utrafman simulator
+#include "utrafman_main/Telemetry.h"
+#include <utrafman_main/Waypoint.h>
+#include <utrafman_main/Uplan.h>
 
 namespace gazebo
 {
@@ -63,8 +61,8 @@ namespace gazebo
         //Drone and U-plan execution
         std::string id;
         bool uplan_inprogress = false;
-        siam_main::Uplan::ConstPtr uplan_local;
-        std::vector<siam_main::Waypoint> route_local;
+        utrafman_main::Uplan::ConstPtr uplan_local;
+        std::vector<utrafman_main::Waypoint> route_local;
 
         //To control navigation
         int actual_route_point;
@@ -186,12 +184,12 @@ namespace gazebo
             //Assigning the queue
             this->ros_node->setCallbackQueue(&this->ros_queue);
             // Initiates the publication topic
-            this->ros_pub_telemetry = this->ros_node->advertise<siam_main::Telemetry>(this->telemetry_topic, 100);
+            this->ros_pub_telemetry = this->ros_node->advertise<utrafman_main::Telemetry>(this->telemetry_topic, 100);
             //Init last_odom_publish_time
             last_odom_publish_time = model->GetWorld()->SimTime();
 
             //Subscription options to Uplans topic published by the planner
-            ros::SubscribeOptions so = ros::SubscribeOptions::create<siam_main::Uplan>(
+            ros::SubscribeOptions so = ros::SubscribeOptions::create<utrafman_main::Uplan>(
                     this->uplans_topic,
                     1000,
                     boost::bind(&DroneControl::UplansTopicCallback, this, _1),
@@ -257,7 +255,7 @@ namespace gazebo
             ignition::math::Vector3<double> angular_vel = model->RelativeAngularVel();
 
             //Variables used by the high level control
-            siam_main::Waypoint target_waypoint;    //Next waypoint to reach
+            utrafman_main::Waypoint target_waypoint;    //Next waypoint to reach
 
             //High level control execution -----------------------------------
             // If have a Uplan and the desired time to take off has been reached
@@ -451,7 +449,7 @@ namespace gazebo
 
             //If is time to publish the telemetry
             if (seconds_since_last_update > (1.0 / odom_publish_rate)){
-                siam_main::Telemetry msg;
+                utrafman_main::Telemetry msg;
 
                 //Position in the space (world axes)
                 msg.pose.position.x = pose.Pos().X(); // eX
@@ -499,7 +497,7 @@ namespace gazebo
         //Member to receive an Uplan  using the topic
         //Uplan is stored in Uplan_local and not be overwritten until the drone finish the current Uplan
         //In the future, the drone will be able to ajust the current Uplan with Uplan changes
-        void UplansTopicCallback(const siam_main::Uplan::ConstPtr &msg){
+        void UplansTopicCallback(const utrafman_main::Uplan::ConstPtr &msg){
             //Open the file used to save logs
             if (!control_out_file.is_open()) {
                 control_out_file.open("/tmp/drone-" + id + "_fp-" + std::to_string(msg->flightPlanId) + ".txt");
@@ -524,10 +522,10 @@ namespace gazebo
         // Returns the position of the drone in the space at time t based on the Uplan
         ignition::math::Vector3<double> UplanAbstractionLayer(double t){
             //Function variables used in the function
-            siam_main::UplanConstPtr uplan = this->uplan_local;     //Uplan
-            std::vector<siam_main::Waypoint> route = uplan->route;  //Uplan route
+            utrafman_main::UplanConstPtr uplan = this->uplan_local;     //Uplan
+            std::vector<utrafman_main::Waypoint> route = uplan->route;  //Uplan route
             int route_s = route.size();                             //Number of waypoints in the route
-            siam_main::Waypoint wp;                                 //Waypoint
+            utrafman_main::Waypoint wp;                                 //Waypoint
             double timeDiffBetWPs, timeDiffBetWPt;                  //Time difference between waypoints and between waypooint and actual time
             ignition::math::Vector3d vectorDiff, position;          //Position and vector diff
 
@@ -573,13 +571,13 @@ namespace gazebo
             //Variables used by the high level control
             ignition::math::Vector4<double> final_vel;
             //Get previous next waypoint
-            siam_main::Waypoint previous_waypoint;
+            utrafman_main::Waypoint previous_waypoint;
             if (this->actual_route_point == 0) {
                 previous_waypoint = this->route_local[this->actual_route_point];
             } else {
                 previous_waypoint = this->route_local[this->actual_route_point - 1];
             }
-            siam_main::Waypoint target_waypoint = this->route_local[this->actual_route_point];
+            utrafman_main::Waypoint target_waypoint = this->route_local[this->actual_route_point];
             //Getting UAV velocity
             ignition::math::Vector3<double> linear_vel = this->model->RelativeLinearVel();
             //Time to reach the waypoint
@@ -659,7 +657,7 @@ namespace gazebo
                 //Mix both velocities
                 ignition::math::Vector3d target_vel = 0.3*error_vel + 0.7*(future_vel/forward_seconds);
                 //Get next waypoint
-                siam_main::Waypoint target_waypoint = this->route_local[this->actual_route_point];
+                utrafman_main::Waypoint target_waypoint = this->route_local[this->actual_route_point];
                 //Compute 3D velocity to it
                 ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x, target_waypoint.y, target_waypoint.z);
                 //Compute the bearing to do

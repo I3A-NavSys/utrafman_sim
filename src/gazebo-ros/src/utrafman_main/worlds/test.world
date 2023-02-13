@@ -53,6 +53,6 @@
 
 
     <!-- World god (to spawn and remove drones and models)
-    <plugin name="SIAM_God" filename="libSIAM_God.so" /> -->
+    <plugin name="UTRAFMAN_God" filename="libUTRAFMAN_God.so" /> -->
   </world>
 </sdf>

@@ -11,7 +11,7 @@ classdef Registry < handle
         droneLastId uint32 = 0;         %Last droneId assigned
 
         %Flight plans in the airspace
-        flightPlans = ros.msggen.siam_main.Uplan.empty;     %Array of FlightPlan (ordered queue using DTTO)
+        flightPlans = ros.msggen.utrafman_main.Uplan.empty;     %Array of FlightPlan (ordered queue using DTTO)
         flightPlanLastId uint32 = 0;                        %Last flightPlanId assigned 
 
         %ros publishers and messages for airspace's god
