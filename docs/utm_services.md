@@ -10,6 +10,6 @@ Some of these services are:
 - Conflict detection and resolution.
 - etc.
 
-As UTM technology advances, the services it offers will become more reliable, secure, and efficient, enabling the safe integration of UAVs into the airspace. But nowadays, UTM is still in its infancy, and there are not many services available. Services in development must be tested, and this is where SiAM Simulator comes in. SiAM Simulator is a flexible simulator that allows the development and test UTM services. These services could be implemented in MATLAB, as it is a widely-used language in the aerospace industry and the main language in this project, but **you can use any other language if you want**.
+As UTM technology advances, the services it offers will become more reliable, secure, and efficient, enabling the safe integration of UAVs into the airspace. But nowadays, UTM is still in its infancy, and there are not many services available. Services in development must be tested, and this is where U-TRAFMAN Simulator comes in. U-TRAFMAN Simulator is a flexible simulator that allows the development and test UTM services. These services could be implemented in MATLAB, as it is a widely-used language in the aerospace industry and the main language in this project, but **you can use any other language if you want**.
 
-In this 1.0 version, SiAM does not offers any UTM service. It just offer a way to implement them. However, in the next versions, some UTM services will be implemented. 
+In this 1.0 version, U-TRAFMAN does not offers any UTM service. It just offer a way to implement them. However, in the next versions, some UTM services will be implemented. 
