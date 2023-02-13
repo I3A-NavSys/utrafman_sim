@@ -5,7 +5,7 @@
     <h1 align="center" style="text-align: center;">U-TRAFMAN: Unmmaned Traffic Management Simulator</h1>
 </p>
 
-**[Read documentation](https://i3a-navsys.github.io/siam_sim/)**
+**[Read documentation](https://i3a-navsys.github.io/utrafman_sim/)**
  
 ---
 
@@ -18,7 +18,7 @@ U-TRAFMAN is a simulator for Unmanned Traffic Management (UTM) services and soft
 - **Provide realistic dynamics simulations of hundreds of UAVs inside an urban area:** due to the physics engine of Gazebo simulator and its possibilities, UAV behaviour could be implemented, making the simulations close to real-world behaviour.
 
 ## Install
-You could find the installation guide in the [documentation](https://i3a-navsys.github.io/siam_sim/#/tutorials?id=_51-setup).
+You could find the installation guide in the [documentation](https://i3a-navsys.github.io/utrafman_sim/#/tutorials?id=_51-setup).
 
 ## Contributing
 Feel free to contribute to this project. If you find any bugs or you want to suggest a new feature, please open an issue. If you want to contribute with code, please open a pull request.
