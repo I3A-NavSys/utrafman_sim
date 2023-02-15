@@ -64,3 +64,5 @@ for i=1:numUAV*1
     %Uplan registration
     UTM.S_Registry.regNewFlightPlan(fp(i));
 end
+
+
