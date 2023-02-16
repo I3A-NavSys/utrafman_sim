@@ -13,7 +13,7 @@
 
 namespace gazebo
 {
-    class SIAM_God : public WorldPlugin
+    class UTRAFMAN_God : public WorldPlugin
     {
         private:
             int drones = 0;
@@ -123,7 +123,7 @@ namespace gazebo
                 ros::SubscribeOptions so_insert = ros::SubscribeOptions::create<std_msgs::String>(
                         "insert",
                         1000,
-                        boost::bind(&SIAM_God::insertModel, this, _1),
+                        boost::bind(&UTRAFMAN_God::insertModel, this, _1),
                         ros::VoidPtr(),
                         &this->rosQueue
                 );
@@ -132,7 +132,7 @@ namespace gazebo
                 ros::SubscribeOptions so_remove = ros::SubscribeOptions::create<std_msgs::String>(
                         "remove",
                         1000,
-                        boost::bind(&SIAM_God::removeModel, this, _1),
+                        boost::bind(&UTRAFMAN_God::removeModel, this, _1),
                         ros::VoidPtr(),
                         &this->rosQueue
                 );
@@ -147,6 +147,6 @@ namespace gazebo
     };
 
     // Register this plugin with the simulator
-    GZ_REGISTER_WORLD_PLUGIN(SIAM_God)
+    GZ_REGISTER_WORLD_PLUGIN(UTRAFMAN_God)
 
 }
