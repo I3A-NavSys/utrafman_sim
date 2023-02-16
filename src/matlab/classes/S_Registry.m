@@ -37,7 +37,7 @@ classdef S_Registry < handle
             %Initializate ROS node
             obj.node = ros.Node("registry_service", ROS_MASTER_IP, 11311);
             %Initialize ROS publishers and messages for airspace's god
-            obj.ros_registry_serv_fps = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/FlightPlan",{@obj.regNewFlightPlan});
+            obj.ros_registry_serv_fps = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/FlightPlan",@obj.regNewFlightPlan);
             pause(Inf);
         end
         
@@ -74,14 +74,13 @@ classdef S_Registry < handle
         end
 
         %Function to register a new flight plan
-        function res = regNewFlightPlan(nd, req, res)
+        function res = regNewFlightPlan(obj, ss, req, res)
             %Compute new flightPlanId
             id = obj.flightPlanLastId + 1;
             obj.flightPlanLastId = id;
             %Assign flightPlanLastId
-            fp.flightPlanId = id;
-            %Signup in the registry
-            obj.InsertFlightPlanQueue(fp)
+            res.Fp = req.Fp;
+            res.Status = 1;
         end
         
         %Inserts a flight plan in the queue using dtto as order criteria
