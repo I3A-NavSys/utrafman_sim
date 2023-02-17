@@ -3,28 +3,23 @@ classdef S_Registry < handle
 
     properties
         %Operators in the airspace
-        operators = Operator.empty;     %Array of Operators objects
+        operators = ros.msggen.utrafman_main.Operator.empty;     %Array of Operators objects
         operatorLastId uint32 = 0;      %Last operatorId assigned
         
         %Drones in the airspace
-        drones = Drone.empty;           %Array of Drone objects
+        drones = ros.msggen.utrafman_main.Drone.empty;           %Array of Drone objects
         droneLastId uint32 = 0;         %Last droneId assigned
 
         %Flight plans in the airspace
-        flightPlans = ros.msggen.siam_main.Uplan.empty;     %Array of FlightPlan (ordered queue using DTTO)
+        flightPlans = ros.msggen.utrafman_main.Uplan.empty;     %Array of FlightPlan (ordered queue using DTTO)
         flightPlanLastId uint32 = 0;                        %Last flightPlanId assigned 
 
         %ros publishers and messages
         node
-
         ros_registry_serv_operators
-        %ros_registry_pub_operators
-
         ros_registry_serv_uavs
-        %ros_registry_pub_uavs
-
         ros_registry_serv_fps
-        %ros_registry_pub_fps
+
     end
     
     methods
@@ -37,19 +32,21 @@ classdef S_Registry < handle
             %Initializate ROS node
             obj.node = ros.Node("registry_service", ROS_MASTER_IP, 11311);
             %Initialize ROS publishers and messages for airspace's god
+            obj.ros_registry_serv_operators = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator);
             obj.ros_registry_serv_fps = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/FlightPlan",@obj.regNewFlightPlan);
             pause(Inf);
         end
         
         %Register a new operator in the registry
-        function obj = regNewOperator(obj,operator)
+        function res = regNewOperator(obj, ss, req, res)
             %Compute new operatorId
             id = obj.operatorLastId + 1;
             obj.operatorLastId = id;
             %Assign operatorId
-            operator.operatorId = id;
+            req.Id = id;
             %Signup in the registry
-            obj.operators(id) = operator;
+            obj.operators(id) = req;
+            res = req;
         end
 
         %Register a new drone in the registry

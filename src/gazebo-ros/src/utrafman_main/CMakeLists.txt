@@ -70,12 +70,15 @@ add_message_files(
   Telemetry.msg
   Waypoint.msg
   Uplan.msg
+  Drone.msg
+  Operator.msg
 )
 
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
   FlightPlan.srv
+  reg_new_operator.srv
 )
 
 ## Generate actions in the 'action' folder
