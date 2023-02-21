@@ -77,7 +77,7 @@ add_message_files(
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
-  FlightPlan.srv
+  reg_new_flightplan.srv
   reg_new_operator.srv
 )
 
