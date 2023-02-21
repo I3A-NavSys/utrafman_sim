@@ -4,10 +4,10 @@
 
 %Windows computer
 if getenv('username') == "jesus" %Jesus' personal computer
-    addpath('C:\Users\usuario\Documents\i3a_repos\siam_sim\src\utrafman_main');
+    addpath('C:\i3a_repos\utrafman_sim\src\gazebo-ros\src\utrafman_main');
     py = pyenv('Version', 'C:\Users\jesus\AppData\Local\Programs\Python\Python39\python.exe');
-    rosgenmsg('C:\i3a_repos\siam_sim\src\');
-    addpath('C:\i3a_repos\siam_sim\src\matlab_msg_gen_ros1\win64\install\m')
+    rosgenmsg('C:\i3a_repos\utrafman_sim\src\gazebo-ros\src\');
+    addpath('C:\i3a_repos\utrafman_sim\src\gazebo-ros\src\matlab_msg_gen_ros1\win64\install\m')
 
 %Windows computer
 elseif getenv('username') == "usuario" %I3A computer
