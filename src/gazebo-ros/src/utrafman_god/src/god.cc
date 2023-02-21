@@ -9,7 +9,7 @@
 #include "ros/callback_queue.h"
 #include "ros/subscribe_options.h"
 
-#define N_SPHERES 0
+#include "utrafman_main/insert_model.h"
 
 namespace gazebo
 {
@@ -28,13 +28,13 @@ namespace gazebo
             //Suscriptores
             ros::Subscriber rosSub_insert;
             ros::Subscriber rosSub_remove;
+            ros::ServiceServer insert_service;
 
             //Cola de mensajes
             ros::CallbackQueue rosQueue;
 
             //Spinners
             ros::AsyncSpinner rosSpinners = ros::AsyncSpinner(1, &this->rosQueue);
-
 
         public:
             //Handle para la insercion de modelos por cada uno de los mensajes en el topico
@@ -57,6 +57,28 @@ namespace gazebo
                 this->parent->InsertModelSDF(sdf_object);
 
                 ROS_INFO("Nuevo drone anadido. Total: %i", this->drones);
+            }
+
+            bool insert_callback(utrafman_main::insert_model::Request &req, utrafman_main::insert_model::Response &res) {
+                //Modelo SDF y puntero al modelo
+                sdf::SDF sdf_object;
+                sdf::ElementPtr model_ptr;
+                std::string model = req.modelSDF;
+
+                //Establecemos el SDF del modelo con el contenido del mensaje del topico
+                sdf_object.SetFromString(model);
+
+                //Obtenemos el modelo insertado y cambiamos el nombre
+                model_ptr = sdf_object.Root()->GetElement("model");
+
+                //Aumentamos el contador de drones
+                this->drones++;
+
+                //Insertamos el modelo en el mundo
+                this->parent->InsertModelSDF(sdf_object);
+
+                ROS_INFO("Nuevo drone anadido. Total: %i", this->drones);
+                return true;
             }
 
             void removeModel(const std_msgs::String::ConstPtr& msg)
@@ -128,18 +150,19 @@ namespace gazebo
                         &this->rosQueue
                 );
 
+                this->insert_service = this->rosNode->advertiseService("/godservice/insert_model", &UTRAFMAN_God::insert_callback, this);
                 //Creamos el subscriptor handle para eliminar modelos
-                ros::SubscribeOptions so_remove = ros::SubscribeOptions::create<std_msgs::String>(
+                /*ros::SubscribeOptions so_remove = ros::SubscribeOptions::create<std_msgs::String>(
                         "remove",
                         1000,
                         boost::bind(&UTRAFMAN_God::removeModel, this, _1),
                         ros::VoidPtr(),
                         &this->rosQueue
-                );
+                );*/
 
                 //Creamos la suscripcion del nodo a los topicos
                 this->rosSub_insert = this->rosNode->subscribe(so_insert);
-                this->rosSub_remove = this->rosNode->subscribe(so_remove);
+                //this->rosSub_remove = this->rosNode->subscribe(so_remove);
 
                 //Ejecutamos el spiner de manera asincrona y no bloqueante
                 this->rosSpinners.start();

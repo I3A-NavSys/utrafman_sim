@@ -79,6 +79,8 @@ add_service_files(
   FILES
   reg_new_flightplan.srv
   reg_new_operator.srv
+  reg_new_uav.srv
+  insert_model.srv
 )
 
 ## Generate actions in the 'action' folder

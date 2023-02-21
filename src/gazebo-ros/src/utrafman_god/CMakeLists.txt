@@ -13,7 +13,11 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   gazebo_ros
+  message_generation
 )
+
+#Add message header files to CLion
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../devel/include)
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
 include_directories(include ${catkin_INCLUDE_DIRS})
