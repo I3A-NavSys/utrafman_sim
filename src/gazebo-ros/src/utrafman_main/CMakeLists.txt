@@ -70,7 +70,7 @@ add_message_files(
   Telemetry.msg
   Waypoint.msg
   Uplan.msg
-  Drone.msg
+  UAV.msg
   Operator.msg
 )
 
