@@ -34,7 +34,7 @@ classdef S_Registry < handle
             %Initialize ROS publishers and messages for airspace's god
             obj.ros_registry_serv_operators = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator);
             obj.ros_registry_serv_uavs = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman_main/reg_new_uav", @obj.regNewUAV);
-            obj.ros_registry_serv_fps = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/FlightPlan",@obj.regNewFlightPlan);
+            obj.ros_registry_serv_fps = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/reg_new_flightplan",@obj.regNewFlightPlan);
             pause(Inf);
         end
         
@@ -44,32 +44,33 @@ classdef S_Registry < handle
             id = obj.operatorLastId + 1;
             obj.operatorLastId = id;
             %Assign operatorId
-            req.Id = id;
+            req.OperatorInfo.Id = id;
             %Signup in the registry
-            obj.operators(id) = req;
+            obj.operators(id) = req.OperatorInfo;
             %Response
             res = req;
         end
 
         %Register a new drone in the registry
-        function obj = regNewUAV(obj, UAV)
+        function res = regNewUAV(obj, ss, req, res)
             %Commpute new uavId
             id = obj.uavLastId + 1;
             obj.uavLastId = id;
             %Assign uavId
-            UAV.droneId = id;
+            req.Uav.Id = id;
             %Signup in the registry
-            obj.uavs(id) = UAV;
+            obj.uavs(id) = req.Uav;
             %Generate SDF model to be inserted in Gazebo
-            UAV.generateSDF();
+            %UAV.generateSDF();
             %Add model to Gazebo
-            obj.ros_droneInsert_msg.Data = UAV.sdf;
-            send(obj.ros_droneInsert_pub, obj.ros_droneInsert_msg);
+            %obj.ros_droneInsert_msg.Data = UAV.sdf;
+            %send(obj.ros_droneInsert_pub, obj.ros_droneInsert_msg);
             %Pause is needed to avoid message queue deletion
-            pause(0.2);
+            %pause(0.2);
             %Subscribe to drone topics
-            UAV.subToTelemety();
-            UAV.pubsubToFlightPlan();
+            %UAV.subToTelemety();
+            %UAV.pubsubToFlightPlan();
+            res = req;
         end
 
         %Function to register a new flight plan
@@ -78,7 +79,9 @@ classdef S_Registry < handle
             id = obj.flightPlanLastId + 1;
             %Assign flightPlanLastId
             obj.flightPlanLastId = id;
-            %obj.flightPlans(id) = req.
+            req.Fp.FlightPlanId = id;
+            %Save in the registry
+            obj.flightPlans(id) = req.Fp;
             %Response
             res.Fp = req.Fp;
             res.Status = 1;
