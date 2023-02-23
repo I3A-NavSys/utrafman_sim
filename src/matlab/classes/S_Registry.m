@@ -7,7 +7,7 @@ classdef S_Registry < handle
         operatorLastId uint32 = 0;      %Last operatorId assigned
         
         %Drones in the airspace
-        uavs = ros.msggen.utrafman_main.Drone.empty;              %Array of Drone objects
+        uavs = ros.msggen.utrafman_main.UAV.empty;              %Array of Drone objects
         uavLastId uint32 = 0;         %Last droneId assigned
 
         %Flight plans in the airspace
@@ -16,6 +16,7 @@ classdef S_Registry < handle
 
         %ros publishers and messages
         node
+        ros_model_pub
         ros_registry_serv_operators
         ros_registry_serv_uavs
         ros_registry_serv_fps
@@ -29,8 +30,13 @@ classdef S_Registry < handle
         end
 
         function obj = execute(obj, ROS_MASTER_IP)
+            %This is executed in a MATLAB worker
+            %gct = parfeval(bgp,@jesus.execute,0,"192.168.1.131")
+            
             %Initializate ROS node
             obj.node = ros.Node("registry_service", ROS_MASTER_IP, 11311);
+            %Initializate ROS Publisher
+            obj.ros_model_pub = ros.ServiceClient(obj.node,"/godservice/insert_model");
             %Initialize ROS publishers and messages for airspace's god
             obj.ros_registry_serv_operators = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator);
             obj.ros_registry_serv_uavs = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman_main/reg_new_uav", @obj.regNewUAV);
@@ -61,15 +67,17 @@ classdef S_Registry < handle
             %Signup in the registry
             obj.uavs(id) = req.Uav;
             %Generate SDF model to be inserted in Gazebo
-            %UAV.generateSDF();
+            sdf_model = obj.generateSDF(req.Uav);
             %Add model to Gazebo
-            %obj.ros_droneInsert_msg.Data = UAV.sdf;
-            %send(obj.ros_droneInsert_pub, obj.ros_droneInsert_msg);
-            %Pause is needed to avoid message queue deletion
-            %pause(0.2);
-            %Subscribe to drone topics
-            %UAV.subToTelemety();
-            %UAV.pubsubToFlightPlan();
+            insert_msg = obj.ros_model_pub.rosmessage;
+            insert_msg.ModelSDF = sdf_model;
+            %Check if Service is available and request
+            if isServerAvailable(obj.ros_model_pub)
+                insert_res = call(obj.ros_model_pub,insert_msg,"Timeout",3);
+            else
+                error("Service 'insert_model' not available on network");
+            end
+            %Send request
             res = req;
         end
 
@@ -86,6 +94,22 @@ classdef S_Registry < handle
             res.Fp = req.Fp;
             res.Status = 1;
         end
+
+         %Generate SDF model to be used in Gazebo
+        function sdf_model = generateSDF(obj, uav_msg)
+            model_file = obj.selectModel(uav_msg.Model);
+            sdf_model = sprintf(model_file, uav_msg.Id, 1, 1, 1, uav_msg.Id, uav_msg.Id, uav_msg.Id);
+        end
+
+        %Select Gazebo model to insert
+        %This will in the future add new drone models 
+        function file = selectModel(~,model)
+            switch model
+                otherwise
+                    file = fileread('../gazebo-ros/src/utrafman_main/models/drone2/template_model_2_simple.sdf');
+            end
+        end 
+
     end
 end
 
