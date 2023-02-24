@@ -5,10 +5,10 @@ classdef UTMAirspace < handle
         %Entities needed in the airspace
 
         %Registry service
-        S_Registry Registry;
+        S_Registry S_Registry;
 
         %Flight Planner service
-        S_FlightPlansPlanner FlightPlansPlanner;
+        %S_FlightPlansPlanner FlightPlansPlanner;
         
         %ROS network info
         rosMasterIp string
@@ -30,8 +30,9 @@ classdef UTMAirspace < handle
             %Connect with ROS master
             obj.ConnectWithROSMaster();
             %Create instances of objects
-            obj.S_Registry = Registry();
-            obj.S_FlightPlansPlanner = FlightPlansPlanner(obj);
+            obj.S_Registry = S_Registry();
+            obj.S_Registry.execute(obj.rosMasterIp);
+            %obj.S_FlightPlansPlanner = FlightPlansPlanner(obj);
         end
 
         %Connection with ROS Master
@@ -42,6 +43,7 @@ classdef UTMAirspace < handle
                 disp("ROS is already initialised. Restarting connection...");
                 rosshutdown;
                 rosinit(obj.rosMasterIp, obj.rosMasterPort);
+                disp("ROS main connection established.");
             end
 
             %Suscribe to Gazebo clock

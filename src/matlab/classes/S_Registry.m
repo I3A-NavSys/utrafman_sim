@@ -41,7 +41,11 @@ classdef S_Registry < handle
             obj.ros_registry_serv_operators = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator);
             obj.ros_registry_serv_uavs = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman_main/reg_new_uav", @obj.regNewUAV);
             obj.ros_registry_serv_fps = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/reg_new_flightplan",@obj.regNewFlightPlan);
-            pause(Inf);
+            disp("Registry service has been initialized");
+            %Check if is running in a worker
+            if ~isempty(gcp('nocreate'))
+                pause(Inf);
+            end
         end
         
         %Register a new operator in the registry
@@ -67,7 +71,7 @@ classdef S_Registry < handle
             %Signup in the registry
             obj.uavs(id) = req.Uav;
             %Generate SDF model to be inserted in Gazebo
-            sdf_model = obj.generateSDF(req.Uav);
+            sdf_model = obj.generateSDF(req.Uav, req.InitPos);
             %Add model to Gazebo
             insert_msg = obj.ros_model_pub.rosmessage;
             insert_msg.ModelSDF = sdf_model;
@@ -77,7 +81,7 @@ classdef S_Registry < handle
             else
                 error("Service 'insert_model' not available on network");
             end
-            %Send request
+            %Send response
             res = req;
         end
 
@@ -96,9 +100,9 @@ classdef S_Registry < handle
         end
 
          %Generate SDF model to be used in Gazebo
-        function sdf_model = generateSDF(obj, uav_msg)
+         function sdf_model = generateSDF(obj, uav_msg, init_pos)
             model_file = obj.selectModel(uav_msg.Model);
-            sdf_model = sprintf(model_file, uav_msg.Id, 1, 1, 1, uav_msg.Id, uav_msg.Id, uav_msg.Id);
+            sdf_model = sprintf(model_file, uav_msg.Id, init_pos(1), init_pos(2), init_pos(3), uav_msg.Id, uav_msg.Id, uav_msg.Id);
         end
 
         %Select Gazebo model to insert

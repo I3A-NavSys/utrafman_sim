@@ -1,13 +1,13 @@
 %This class defines the FlightPlan object, which is used to store the flight plan information and to parse it to ROS messages.
 
-classdef FlightPlan < handle
+classdef FlightPlanProperties < handle
     properties
-        flightPlanId uint32         %Unique ID for the flight plan
+        flightplan_id uint32         %Unique ID for the flight plan
         status int8 = 0             %Status flag (to mark if the flight plan is waiting, in progress or finished)
         priority uint8 = 0          %NOT USED actually
 
         operator Operator           %Operator object reference
-        drone Drone                 %Drone object reference
+        uav UAVProperties                 %Drone object reference
         dtto double                 %Desired time to take off (where the plan starts)
 
         route = ros.msggen.utrafman_main.Waypoint.empty;       %Array of ROS Waypoint messages defining the route of the flight plan
@@ -16,17 +16,17 @@ classdef FlightPlan < handle
     
     methods
         %Class constructor
-        function obj = FlightPlan(operator, drone, route, dtto)
+        function obj = FlightPlanProperties(operator, drone, route, dtto)
             %Assigning references
             obj.operator = operator;
-            obj.drone = drone;
+            obj.uav = drone;
             obj.dtto = dtto;
             
             %Generating first waypoint (where the drone before take off)
             init = ros.msggen.utrafman_main.Waypoint;
-            init.X = drone.initLoc(1);
-            init.Y = drone.initLoc(2);
-            init.Z = drone.initLoc(3);
+            init.X = drone.init_loc(1);
+            init.Y = drone.init_loc(2);
+            init.Z = drone.init_loc(3);
             init.T.Sec = dtto;
             init.R = 0.5;
             obj.route(1) = init;
@@ -58,11 +58,13 @@ classdef FlightPlan < handle
             point = rosmessage("utrafman_main/Waypoint");
             time = rosmessage("std_msgs/Time");
             %Assigning values
-            msg.FlightPlanId = obj.flightPlanId;
+            if ~isempty(obj.flightplan_id)
+                msg.FlightPlanId = obj.flightplan_id;
+            end
             msg.Status = obj.status;
             msg.Priority = obj.priority;
-            msg.OperatorId = obj.operator.operatorId;
-            msg.DroneId = obj.drone.droneId;
+            msg.OperatorId = obj.operator.operator_id;
+            msg.DroneId = obj.uav.drone_id;
             msg.Dtto = obj.dtto;
             msg.Route = obj.route;
         end 
