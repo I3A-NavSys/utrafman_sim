@@ -3,6 +3,7 @@ timer; stop(timerfind); delete(timerfind)       %Stop all timers
 addpath("./classes/");                            %Added classes path
 
 %-----------------------------------------
+parallelpool = gcp;
 
 %Creation of the entire airspace
 UTM = UTMAirspace();
