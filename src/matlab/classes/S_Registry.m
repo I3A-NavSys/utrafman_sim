@@ -17,9 +17,12 @@ classdef S_Registry < handle
         %ros publishers and messages
         node
         ros_model_pub
-        ros_registry_serv_operators
-        ros_registry_serv_uavs
-        ros_registry_serv_fps
+        ros_srv_reg_operator
+        ros_srv_reg_uav
+        ros_srv_reg_fp
+        ros_srv_get_operators
+        ros_srv_get_uavs
+        ros_srv_get_fps
 
     end
     
@@ -38,9 +41,14 @@ classdef S_Registry < handle
             %Initializate ROS Publisher
             obj.ros_model_pub = ros.ServiceClient(obj.node,"/godservice/insert_model");
             %Initialize ROS publishers and messages for airspace's god
-            obj.ros_registry_serv_operators = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator);
-            obj.ros_registry_serv_uavs = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman_main/reg_new_uav", @obj.regNewUAV);
-            obj.ros_registry_serv_fps = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/reg_new_flightplan",@obj.regNewFlightPlan);
+            obj.ros_srv_reg_operator = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator);
+            obj.ros_srv_reg_uav = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman_main/reg_new_uav", @obj.regNewUAV);
+            obj.ros_srv_reg_fp = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/reg_new_flightplan",@obj.regNewFlightPlan);
+            
+            obj.ros_srv_get_operators = ros.ServiceServer(obj.node, "/service/registry/get_operators", "utrafman_main/reg_get_operators", @obj.getOperators);
+            obj.ros_srv_get_uavs = ros.ServiceServer(obj.node, "/service/registry/get_uavs", "utrafman_main/reg_get_uavs", @obj.getUavs);
+            obj.ros_srv_get_fps = ros.ServiceServer(obj.node, "/service/registry/get_fps", "utrafman_main/reg_get_fps", @obj.getFps);
+
             disp("Registry service has been initialized");
             job = getCurrentJob;
             %Check if is running in a worker
@@ -98,6 +106,42 @@ classdef S_Registry < handle
             %Response
             res.Fp = req.Fp;
             res.Status = 1;
+        end
+
+        %Function to register a new flight plan
+        function res = getOperators(obj, ss, req, res)
+            %Check if operator ID is different
+            if (req.OperatorId == 0)
+                res.Operators = obj.operators;
+            else
+                if length(obj.operators) >= req.OperatorId
+                    res.Operators = obj.operators(req.OperatorId);
+                end
+            end
+        end
+
+        %Function to register a new flight plan
+        function res = getUavs(obj, ss, req, res)
+            %Check if operator ID is different
+            if (req.UavId == 0)
+                res.Uavs = obj.uavs;
+            else
+                if length(obj.uavs) >= req.UavId
+                    res.Uavs = obj.uavs(req.UavId);
+                end
+            end
+        end
+
+        %Function to register a new flight plan
+        function res = getFps(obj, ss, req, res)
+            %Check if operator ID is different
+            if (req.FpId == 0)
+                res.Fps = obj.flightPlans;
+            else
+                if length(obj.flightPlans) >= req.FpId
+                    res.Fps = obj.flightPlans(req.FpId);
+                end
+            end
         end
 
          %Generate SDF model to be used in Gazebo

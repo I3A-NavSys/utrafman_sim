@@ -80,6 +80,9 @@ add_service_files(
   reg_new_flightplan.srv
   reg_new_operator.srv
   reg_new_uav.srv
+  reg_get_operators.srv
+  reg_get_uavs.srv
+  reg_get_fps.srv
   insert_model.srv
 )
 
