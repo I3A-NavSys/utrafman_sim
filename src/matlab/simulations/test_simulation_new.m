@@ -12,7 +12,7 @@ UTM = UTMAirspace();
 operator = Operator('Sample_Operator', UTM.rosMasterIp);
 
 %Drone creation, registry and addition to Gazebo
-numUAV = 5;
+numUAV = 1;
 p = 1;
 uavs = UAVProperties.empty;
 

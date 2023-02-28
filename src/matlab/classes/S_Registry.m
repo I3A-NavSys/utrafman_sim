@@ -17,6 +17,7 @@ classdef S_Registry < handle
         %ros publishers and messages
         node
         ros_model_pub
+        ros_pub_new_uav_advertise
         ros_srv_reg_operator
         ros_srv_reg_uav
         ros_srv_reg_fp
@@ -28,7 +29,7 @@ classdef S_Registry < handle
     
     methods
         %Class constructor
-        function obj = Registry()
+        function obj = S_Registry()
             disp("Registry service instance created");
         end
 
@@ -38,8 +39,13 @@ classdef S_Registry < handle
             
             %Initializate ROS node
             obj.node = ros.Node("registry_service", ROS_MASTER_IP, 11311);
-            %Initializate ROS Publisher
+
+            %Initializate ROS Service Client to insert UAV in the simulator
             obj.ros_model_pub = ros.ServiceClient(obj.node,"/godservice/insert_model");
+
+            %Initializate ROS Published for new UAV advertise
+            obj.ros_pub_new_uav_advertise = ros.Publisher(obj.node,"/registry/new_uav_advertise","utrafman_main/UAV");
+
             %Initialize ROS publishers and messages for airspace's god
             obj.ros_srv_reg_operator = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator);
             obj.ros_srv_reg_uav = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman_main/reg_new_uav", @obj.regNewUAV);
@@ -90,6 +96,7 @@ classdef S_Registry < handle
             else
                 error("Service 'insert_model' not available on network");
             end
+            send(obj.ros_pub_new_uav_advertise,req.Uav);
             %Send response
             res = req;
         end

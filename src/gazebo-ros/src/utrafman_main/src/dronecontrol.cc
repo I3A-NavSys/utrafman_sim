@@ -43,7 +43,7 @@ namespace gazebo
 
         //Needed to control telemetry publish
         common::Time last_odom_publish_time;
-        double odom_publish_rate = 2; // updates per second
+        double odom_publish_rate = 1; // updates per second
 
         //ROS structures
         ros::NodeHandle *ros_node;

@@ -23,7 +23,7 @@ simProperties = zeros(length(UTM.S_Registry.flightPlans),3);
     % 1-> Total cumulative error
     % 2-> Minimum error
     % 3-> Maximum error
-error = zeros(length(UTM.S_Registry.flightPlans),2);
+error2 = zeros(length(UTM.S_Registry.flightPlans),2);
 
 %For each U-plan in the entire simulation
 for j = 1:length(UTM.S_Registry.flightPlans)
@@ -45,7 +45,7 @@ for j = 1:length(UTM.S_Registry.flightPlans)
     droneIDs(end+1) = UTM.S_Registry.flightPlans(j).drone.droneId;
     
     %Max and min
-    error(j,3) = 0;
+    error2(j,3) = 0;
 
     %For each telemetry sent by the drone 
     % (precission of the error is determined by the sampling time)
@@ -57,22 +57,22 @@ for j = 1:length(UTM.S_Registry.flightPlans)
         real = [droneTelemetry(i).Pose.Position.X droneTelemetry(i).Pose.Position.Y droneTelemetry(i).Pose.Position.Z];
         err = norm(reference-real);
         %Cumulative error
-        error(j,1) = error(j,1) + err;
+        error2(j,1) = error2(j,1) + err;
 
         %Max and min
         %Set the first min
         if i == 1
-            error(j,2) = norm(reference-real);
+            error2(j,2) = norm(reference-real);
         end
         
         %If new min is found
-        if error(j,2) > err
-            error(j,2) = err;
+        if error2(j,2) > err
+            error2(j,2) = err;
         end
 
         %If new max is found
-        if error(j,3) < err
-            error(j,3) = err;
+        if error2(j,3) < err
+            error2(j,3) = err;
         end
     end
 
@@ -82,7 +82,7 @@ end
 %Data rounding and organization
 figure('Position',[0 100 1300 500]);
 
-data = [error(:,2) error(:,1)./simProperties(:,1) error(:,3)];
+data = [error2(:,2) error2(:,1)./simProperties(:,1) error2(:,3)];
 data = round(data,3);
 bar(data);
 title(name);

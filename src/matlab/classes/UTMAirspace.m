@@ -8,6 +8,10 @@ classdef UTMAirspace < handle
         S_Registry S_Registry;
         gct_Registry
 
+        %Monitoring service
+        S_Monitoring S_Monitoring;
+        gct_Monitoring
+
         %Flight Planner service
         %S_FlightPlansPlanner FlightPlansPlanner;
         
@@ -30,12 +34,17 @@ classdef UTMAirspace < handle
             obj.rosMasterIp = ROS_IP;
             %Connect with ROS master
             obj.ConnectWithROSMaster();
+
             %Create instances of objects
             obj.S_Registry = S_Registry();
+            obj.S_Monitoring = S_Monitoring();
+            
             if ~isempty(gcp('nocreate'))
                 obj.gct_Registry = parfeval(gcp,@execute,0,obj.S_Registry,"192.168.1.131");
+                obj.gct_Monitoring = parfeval(gcp,@execute,0,obj.S_Monitoring,"192.168.1.131");
             else
                 obj.S_Registry.execute(obj.rosMasterIp);
+                obj.S_Monitoring.execute(obj.rosMasterIp);
             end
             %obj.S_FlightPlansPlanner = FlightPlansPlanner(obj);
         end

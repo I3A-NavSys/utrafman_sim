@@ -83,6 +83,7 @@ add_service_files(
   reg_get_operators.srv
   reg_get_uavs.srv
   reg_get_fps.srv
+  mon_get_locs.srv
   insert_model.srv
 )
 
