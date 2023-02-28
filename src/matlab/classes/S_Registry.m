@@ -42,8 +42,9 @@ classdef S_Registry < handle
             obj.ros_registry_serv_uavs = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman_main/reg_new_uav", @obj.regNewUAV);
             obj.ros_registry_serv_fps = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/reg_new_flightplan",@obj.regNewFlightPlan);
             disp("Registry service has been initialized");
+            job = getCurrentJob;
             %Check if is running in a worker
-            if ~isempty(gcp('nocreate'))
+            if ~isempty(job)
                 pause(Inf);
             end
         end

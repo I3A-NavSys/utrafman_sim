@@ -33,7 +33,7 @@ classdef UTMAirspace < handle
             %Create instances of objects
             obj.S_Registry = S_Registry();
             if ~isempty(gcp('nocreate'))
-                obj.gct_Registry = parfeval(gcp,@obj.S_Registry.execute,0,"192.168.1.131");
+                obj.gct_Registry = parfeval(gcp,@execute,0,obj.S_Registry,"192.168.1.131");
             else
                 obj.S_Registry.execute(obj.rosMasterIp);
             end
