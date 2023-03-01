@@ -1,8 +1,9 @@
 %PRE-SIMULATION TASKs
-timer; stop(timerfind); delete(timerfind)       %Stop all timers
-addpath("./classes/");                            %Added classes path
+timer; stop(timerfind); delete(timerfind)           %Stop all timers
+addpath("./classes/");                              %Added classes path
 
 %-----------------------------------------
+%Create a parallel pool to run services in parallel using workers
 %parallelpool = gcp;
 
 %Creation of the entire airspace
@@ -33,15 +34,9 @@ for i=1:numUAV
     uavs(i) = operator.regNewDrone("dji", pos);
 end
 
-% %For each drone in the U-space, subscribe and init pubs and subs
-% % for i=1:numUAV
-% %     uavs(i).subToTelemety();                    %Init drone telemetry updates
-% %     uavs(i).pubsubToFlightPlan();               %Init drone U-plan publisher
-% % end
-
-delay = 0;                                      %Delay between Uplans (in the same drone) (not in use)
-tbp = 0;                                        %Delay between drones Uplan
-fp = FlightPlanProperties.empty(0,numUAV*1);              %U-plan instance
+delay = 0;                                                  %Delay between Uplans (in the same drone)
+tbp = 0;                                                    %Delay between UAVs flightplans
+fp = FlightPlanProperties.empty(0,numUAV*1);                %FlightPlan instance
 
 % %Wait until Gazebo clock has a value
 while(UTM.Gclock == -1)
@@ -53,10 +48,10 @@ for i=1:numUAV*1
     %Random route generation
     route = FlightPlanProperties.GenerateRandomRoute(randi([6 10],1));
     %Uplan generation
-    fp(i) = FlightPlanProperties(operator, ...        %Operator
-                       uavs(i), ...         %Drone asignation
-                       route, ...           %Route
-                       UTM.Gclock+5+((i-1)*tbp));      %DTTO
+    fp(i) = FlightPlanProperties(operator, ...          %Operator
+                       uavs(i), ...                     %UAV asignation
+                       route, ...                       %Route
+                       UTM.Gclock+5+((i-1)*tbp));       %DTTO
     
     %FP registration
     operator.regNewFP(fp(i));

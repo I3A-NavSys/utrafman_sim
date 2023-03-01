@@ -4,26 +4,26 @@ classdef S_Registry < handle
     properties
         %Operators in the airspace
         operators = ros.msggen.utrafman_main.Operator.empty;        %Array of Operators objects
-        operatorLastId uint32 = 0;      %Last operatorId assigned
+        operatorLastId uint32 = 0;                                  %Last operatorId assigned
         
-        %Drones in the airspace
-        uavs = ros.msggen.utrafman_main.UAV.empty;              %Array of Drone objects
-        uavLastId uint32 = 0;         %Last droneId assigned
+        %UAVs in the airspace
+        uavs = ros.msggen.utrafman_main.UAV.empty;                  %Array of Drone objects
+        uavLastId uint32 = 0;                                       %Last droneId assigned
 
         %Flight plans in the airspace
         flightPlans = ros.msggen.utrafman_main.Uplan.empty;         %Array of FlightPlan (ordered queue using DTTO)
-        flightPlanLastId uint32 = 0;
+        flightPlanLastId uint32 = 0;                                %Last flightPlanId assigned
 
-        %ros publishers and messages
-        node
-        ros_model_pub
-        ros_pub_new_uav_advertise
-        ros_srv_reg_operator
-        ros_srv_reg_uav
-        ros_srv_reg_fp
-        ros_srv_get_operators
-        ros_srv_get_uavs
-        ros_srv_get_fps
+        %ros structs
+        node                            %Node
+        ros_model_pub                   %Service Client to insert models in Gazebo
+        ros_pub_new_uav_advertise       %New UAV registration advertiser
+        ros_srv_reg_operator            %Service to register a new operator
+        ros_srv_reg_uav                 %Service to register a new UAV
+        ros_srv_reg_fp                  %Service to register a new FP
+        ros_srv_get_operators           %Service to get a or the list of operators
+        ros_srv_get_uavs                %Service to get a or the list of UAV
+        ros_srv_get_fps                 %Service to get a or the list of FPs
 
     end
     
@@ -33,10 +33,7 @@ classdef S_Registry < handle
             disp("Registry service instance created");
         end
 
-        function obj = execute(obj, ROS_MASTER_IP)
-            %This is executed in a MATLAB worker
-            %gct = parfeval(bgp,@jesus.execute,0,"192.168.1.131")
-            
+        function obj = execute(obj, ROS_MASTER_IP)            
             %Initializate ROS node
             obj.node = ros.Node("registry_service", ROS_MASTER_IP, 11311);
 
@@ -46,18 +43,19 @@ classdef S_Registry < handle
             %Initializate ROS Published for new UAV advertise
             obj.ros_pub_new_uav_advertise = ros.Publisher(obj.node,"/registry/new_uav_advertise","utrafman_main/UAV");
 
-            %Initialize ROS publishers and messages for airspace's god
+            %Initialize ROS service servesrs to register into registry
             obj.ros_srv_reg_operator = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator);
             obj.ros_srv_reg_uav = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman_main/reg_new_uav", @obj.regNewUAV);
             obj.ros_srv_reg_fp = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/reg_new_flightplan",@obj.regNewFlightPlan);
             
+            %Initialize ROS service servesrs to get registry info
             obj.ros_srv_get_operators = ros.ServiceServer(obj.node, "/service/registry/get_operators", "utrafman_main/reg_get_operators", @obj.getOperators);
             obj.ros_srv_get_uavs = ros.ServiceServer(obj.node, "/service/registry/get_uavs", "utrafman_main/reg_get_uavs", @obj.getUavs);
             obj.ros_srv_get_fps = ros.ServiceServer(obj.node, "/service/registry/get_fps", "utrafman_main/reg_get_fps", @obj.getFps);
 
             disp("Registry service has been initialized");
             job = getCurrentJob;
-            %Check if is running in a worker
+            %Check if is running in a worker and make it infinite
             if ~isempty(job)
                 pause(Inf);
             end
@@ -90,12 +88,13 @@ classdef S_Registry < handle
             %Add model to Gazebo
             insert_msg = obj.ros_model_pub.rosmessage;
             insert_msg.ModelSDF = sdf_model;
-            %Check if Service is available and request
+            %Check if Gazebo god service is available and make the request
             if isServerAvailable(obj.ros_model_pub)
                 insert_res = call(obj.ros_model_pub,insert_msg,"Timeout",3);
             else
                 error("Service 'insert_model' not available on network");
             end
+            %Advertise about new UAV added to the registry
             send(obj.ros_pub_new_uav_advertise,req.Uav);
             %Send response
             res = req;
@@ -115,36 +114,39 @@ classdef S_Registry < handle
             res.Status = 1;
         end
 
-        %Function to register a new flight plan
+        %Function to get a or the list of operators in the registry
         function res = getOperators(obj, ss, req, res)
-            %Check if operator ID is different
+            %Check if operator ID is 0 (to get the entire list)
             if (req.OperatorId == 0)
                 res.Operators = obj.operators;
             else
+                %Check if the operator id exists
                 if length(obj.operators) >= req.OperatorId
                     res.Operators = obj.operators(req.OperatorId);
                 end
             end
         end
 
-        %Function to register a new flight plan
+        %Function to get a or the list of UAVs in the registry
         function res = getUavs(obj, ss, req, res)
-            %Check if operator ID is different
+            %Check if UAV ID is 0 (to get the entire list)
             if (req.UavId == 0)
                 res.Uavs = obj.uavs;
             else
+                %Check if the UAV id exists
                 if length(obj.uavs) >= req.UavId
                     res.Uavs = obj.uavs(req.UavId);
                 end
             end
         end
 
-        %Function to register a new flight plan
+        %Function to get a or the list of flightplans in the registry
         function res = getFps(obj, ss, req, res)
-            %Check if operator ID is different
+            %Check if fp ID is 0 (to get the entire list)
             if (req.FpId == 0)
                 res.Fps = obj.flightPlans;
             else
+                %Check if the FP id exists
                 if length(obj.flightPlans) >= req.FpId
                     res.Fps = obj.flightPlans(req.FpId);
                 end
@@ -158,7 +160,7 @@ classdef S_Registry < handle
         end
 
         %Select Gazebo model to insert
-        %This will in the future add new drone models 
+        %This will used in the future to add new drone models 
         function file = selectModel(~,model)
             switch model
                 otherwise
@@ -168,4 +170,3 @@ classdef S_Registry < handle
 
     end
 end
-

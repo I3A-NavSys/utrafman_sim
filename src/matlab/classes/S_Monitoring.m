@@ -1,15 +1,15 @@
-%Monitoring class receives data from UAV 
+%Monitoring class receives data from UAV             
 classdef S_Monitoring< handle
 
     properties
-        %Drones in the airspace
-        uavs;              %Array of UAV objects
-        uavs_telemetry_subs = ros.Subscriber.empty;
+        %UAV in the airspace
+        uavs;                                           %Array of UAV (struct format)
+        uavs_telemetry_subs = ros.Subscriber.empty;     %Array of ROS subscribers for each UAV to receive telemetry data
 
-        %ros publishers and messages
-        node
-        ros_subs_new_uavs
-        ros_srv_get_locs
+        %ROS structs
+        node                                            %Node
+        ros_subs_new_uavs                               %Subscrition to new UAV advertiser topic to know when a new UAV is added
+        ros_srv_get_locs                                %Service server to get the Telemetry data of a UAV
     end
     
     methods
@@ -22,17 +22,14 @@ classdef S_Monitoring< handle
             %Initializate ROS node
             obj.node = ros.Node("monitoring_service", ROS_MASTER_IP, 11311);
             %Initializate ROS new UAV subscriber
-            obj.ros_subs_new_uavs = ros.Subscriber(obj.node,"/registry/new_uav_advertise", "utrafman_main/UAV", @obj.newUav);
-
-%             %Initialize ROS publishers and messages for airspace's god
-%             obj.ros_srv_reg_operator = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator); 
-
-             obj.ros_srv_get_locs = ros.ServiceServer(obj.node, "/service/monitoring/get_locs", "utrafman_main/mon_get_locs", @obj.getLocs);
+            obj.ros_subs_new_uavs = ros.Subscriber(obj.node,"/registry/new_uav_advertise", "utrafman_main/UAV", @obj.newUav); 
+            %Initializate ROS Service server to get telemetry of a UAV
+            obj.ros_srv_get_locs = ros.ServiceServer(obj.node, "/service/monitoring/get_locs", "utrafman_main/mon_get_locs", @obj.getLocs);
 
 
             disp("Registry service has been initialized");
             job = getCurrentJob;
-            %Check if is running in a worker
+            %Check if is running in a worker and make it infinite
             if ~isempty(job)
                 pause(Inf);
             end
@@ -40,26 +37,30 @@ classdef S_Monitoring< handle
 
         %This function is called when new UAV is registered
         function obj = newUav(obj, sub, msg)
+            %Get ID
             id = msg.Id;
-            obj.uavs(id).reg_msg = msg;
-            obj.uavs(id).loc = ros.msggen.utrafman_main.Telemetry;
-            obj.uavs(id).locs = ros.msggen.utrafman_main.Telemetry.empty;
+            %UAV data
+            obj.uavs(id).reg_msg = msg;                                             %UAV ROS msg
+            obj.uavs(id).loc = ros.msggen.utrafman_main.Telemetry;                  %To store the last location sent by the UAV
+            obj.uavs(id).telemetry = ros.msggen.utrafman_main.Telemetry.empty;      %Array with all telemetry data
+            %UAV Telemetry data subscription
             obj.ros_subs_new_uavs(id) = ros.Subscriber(obj.node, "/drone/"+id+"/telemetry", "utrafman_main/Telemetry", {@obj.newTelemetryData, id});
         end
 
         %This function is called every time a UAV sends telemetry data
         function newTelemetryData(obj, sub, msg, id)
+            %Store last location and add telemetry to the list of messages
             obj.uavs(id).loc = msg;
-             obj.uavs(id).locs(end+1) = msg;
-            %disp("Mensaje de telemetria recibido de " + id);
+            obj.uavs(id).telemetry(end+1) = msg;
         end
 
         %Function to get locs of a UAV
         function res = getLocs(obj, ss, req, res)
-            %Check if operator ID is different
+            %Check if operator ID is different from 0 (a UAVId must be defined)
             if (req.UavId ~= 0)
+                %Check if UAVId exists
                 if length(obj.uavs) >= req.UavId
-                    res.Telemetry = obj.uavs(req.UavId).locs;
+                    res.Telemetry = obj.uavs(req.UavId).telemetry;
                 end
             end
         end
