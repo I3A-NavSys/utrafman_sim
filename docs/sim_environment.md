@@ -11,19 +11,35 @@ Packages are the main way to organize ROS code. A package is a directory contain
 - **utrafman_main**: a package that contains the main parts of the simulator. It contains the launch files, the world files, the UAV sdf models, the UAV control software, etc.
 - **utrafman_god**: a package that contains the God code and dependencies. This contains the code for a Gazebo plugin that allows to spawn and remove UAVs from the environment. This plugin is present in each world file of the simulator.
 
-### Messages
-Messages sent through topics and services are defined with present or custom ROS messages. Some ROS messages that are used in U-TRAFMAN Sim are (_package_/_message_)):
-- **utrafman_main/[Uplan](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/msg/Uplan.msg)**: a message that contains the flight plan of the UAV.
-- **utrafman_main/[Telemetry](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/msg/Telemetry.msg)**: a message that contains the telemetry of the UAV, like position, velocity, acceleration, etc.
-- **utrafman_main/[Waypoint](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/msg/Waypoint.msg)**: a message that contains the position of a 4D waypoint.
+### Custom messages
+Messages sent through topics and services are defined with present or custom ROS messages. Some ROS messages that are used in U-TRAFMAN Sim are (_package_/_message_):
+- **utrafman_main/[Operator.msg](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/msg/Operator.msg)**: a message that contains the information of the operator.
+- **utrafman_main/[Telemetry.msg](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/msg/Telemetry.msg)**: a message that contains the telemetry of the UAV, like position, velocity, acceleration, etc.
+- **utrafman_main/[UAV.msg](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/msg/UAV.msg)**: a message that contains the information of the UAV.
+- **utrafman_main/[Uplan.msg](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/msg/Uplan.msg)**: a message that contains the flight plan of the UAV.
+- **utrafman_main/[Waypoint.msg](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/msg/Waypoint.msg)**: a message that contains the position of a 4D waypoint.
+
+
+- **utrafman_main/[insert_model.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/insert_model.srv)**: a service message used to insert a UAV in the simulation.
+- **utrafman_main/[mon_get_locs.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/mon_get_locs.srv)**: a service message used to get telemetry of UAVs from the Monitoring service.
+- **utrafman_main/[reg_get_fps.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/reg_get_fps.srv)**: a service message used to get (a / a list of) flight plans of UAVs from the Register service.
+- **utrafman_main/[reg_get_operators.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/reg_get_operators.srv)**: a service message used to get (a / a list of) operators from the Register service.
+- **utrafman_main/[reg_get_uavs.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/reg_get_uavs.srv)**: a service message used to get (a / a list of) UAVs from the Register service.
+- **utrafman_main/[reg_reg_flightplan.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/reg_reg_flightplan.srv)**: a service message used to register a flight plan into the Register service.
+- **utrafman_main/[reg_reg_operators.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/reg_reg_operators.srv)**: a service message used to register a operator into the Register service.
+- **utrafman_main/[reg_reg_uavs.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/reg_get_uavs.srv)**: a service message used to register a UAV intos the Register service.
+
+
 
 ### Topics
-The topics implemented in U-TRAFMAN Sim are (_namespace_/_topic_):
-- **/god/insert**: a topic that allows inserting a UAV in the environment. To insert a drone, it is necessary to send a message with the sdf model of the UAV to be inserted.
-- **/god/remove**: a topic that allows to remove UAVs from the environment. To remove a drone, it is necessary to send the drone ID to remove.
+The topics genereted by each UAV in the simulation are:
+<!-- - **/god/insert**: a topic that allows inserting a UAV in the environment. To insert a drone, it is necessary to send a message with the sdf model of the UAV to be inserted.
+- **/god/remove**: a topic that allows to remove UAVs from the environment. To remove a drone, it is necessary to send the drone ID to remove. -->
 - **/drone/%droneid/uplan**: a topic that allows sending a flight plan to a UAV. 
 - **/drone/%droneid/telemetry**: a topic that allows receiving the telemetry of a UAV.
 - **/drone/%droneid/kill**: a topic that allows killing a UAV.
+
+Topics and services created by UTM services could be found in the [UTM services documentation](./utm_services.md).
 
 As you could know, this is an open-source project, so you can contribute to it. You can create new packages, modify message definitions, add new topics, etc. 
 
