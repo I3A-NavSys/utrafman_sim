@@ -9,7 +9,8 @@ classdef S_Monitoring< handle
         %ROS structs
         node                                            %Node
         ros_subs_new_uavs                               %Subscrition to new UAV advertiser topic to know when a new UAV is added
-        ros_srv_get_locs                                %Service server to get the Telemetry data of a UAV
+        ros_srv_get_telemetry                           %Service server to get the Telemetry data of a UAV
+        ros_srv_get_currentloc                          %Service server to get the current Telemetry data of a UAV
     end
     
     methods
@@ -24,7 +25,7 @@ classdef S_Monitoring< handle
             %Initializate ROS new UAV subscriber
             obj.ros_subs_new_uavs = ros.Subscriber(obj.node,"/registry/new_uav_advertise", "utrafman_main/UAV", @obj.newUav); 
             %Initializate ROS Service server to get telemetry of a UAV
-            obj.ros_srv_get_locs = ros.ServiceServer(obj.node, "/service/monitoring/get_locs", "utrafman_main/mon_get_locs", @obj.getLocs);
+            obj.ros_srv_get_telemetry = ros.ServiceServer(obj.node, "/service/monitoring/get_telemetry", "utrafman_main/mon_get_locs", @obj.getLocs);
 
 
             disp("Registry service has been initialized");

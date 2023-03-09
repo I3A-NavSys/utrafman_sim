@@ -12,28 +12,56 @@ addpath('.')
 %load simulations\small_city_LaLlanura.mat
 
 %Introduce drone ID and FlightPlan ID to be analysed
-drone = 1;
-fp = drone;
+droneId = 1;
+fpId = 1;
+
+%Get ROS IP
+run(fullfile("./config/ros.m"));
+
+%Connect to ROS
+rosnode = ros.Node('telemetry_viewer',ROS_IP, 11311);
+ros_get_telemetry = ros.ServiceClient(rosnode,'/service/monitoring/get_telemetry');
+ros_get_flightplan = ros.ServiceClient(rosnode,'/service/registry/get_fps');
+
+msg = ros_get_telemetry.rosmessage;
+msg.UavId = droneId;
+if isServerAvailable(ros_get_telemetry)
+    telemetry = call(ros_get_telemetry,msg,"Timeout",10);
+else
+    error("Service '/service/monitoring/get_telemetry' not available on network");
+end
+drone.locs = telemetry.Telemetry;
+
+msg = ros_get_flightplan.rosmessage;
+msg.FpId = fpId;
+if isServerAvailable(ros_get_flightplan)
+    flightplan = call(ros_get_flightplan,msg,"Timeout",5);
+else
+    error("Service '/service/monitoring/get_telemetry' not available on network");
+end
+uplan = flightplan.Fps;
 
 %Using simulated data
 figure(1);
-drone = UTM.S_Registry.drones(drone);
-uplan = UTM.S_Registry.flightPlans(fp);
-waypoints = [[uplan.route(1,:).X]', [uplan.route(1,:).Y]', [uplan.route(1,:).Z]'];
+%drone = UTM.S_Registry.drones(drone);
+drone.initLoc = [drone.locs(1).Pose.Position.X drone.locs(1).Pose.Position.Y drone.locs(1).Pose.Position.Z];
+
+%uplan = UTM.S_Registry.flightPlans(fp);
+waypoints = [[uplan.Route(:).X]', [uplan.Route(:).Y]', [uplan.Route(:).Z]'];
 
 %Allocating variables
-t = zeros(1,size(drone.locs,2));
-x = zeros(1,size(drone.locs,2));
-y = zeros(1,size(drone.locs,2));
-z = zeros(1,size(drone.locs,2));
-rotz = zeros(1,size(drone.locs,2));
-dx = zeros(1,size(drone.locs,2));
-dy = zeros(1,size(drone.locs,2));
-dz = zeros(1,size(drone.locs,2));
-drotz = zeros(1,size(drone.locs,2));
+t = zeros(1,size(drone.locs',2));
+x = zeros(1,size(drone.locs',2));
+y = zeros(1,size(drone.locs',2));
+z = zeros(1,size(drone.locs',2));
+rotz = zeros(1,size(drone.locs',2));
+dx = zeros(1,size(drone.locs',2));
+dy = zeros(1,size(drone.locs',2));
+dz = zeros(1,size(drone.locs',2));
+drotz = zeros(1,size(drone.locs',2));
 
 %Fill variables with simulation data
-for i=1:1:size(drone.locs,2)
+for i=1:1:size(drone.locs',2)
     tel = drone.locs(i);
     t(i) = tel.Time.Sec;
     x(i) = tel.Pose.Position.X;
@@ -47,7 +75,7 @@ for i=1:1:size(drone.locs,2)
 end
 
 %Generating data from Uplan
-ut = zeros(1,size(uplan.route,2)+2);
+ut = zeros(1,size(uplan.Route',2)+2);
 
 %Reference data
 %Sim data recoding must be start before Uplan execution and end after Uplan
@@ -56,17 +84,17 @@ ut = zeros(1,size(uplan.route,2)+2);
 
 %Time
 ut(1) = t(1);           %Init telemetry
-ut(2) = uplan.dtto;     %Init Uplan
-for i=1:size(uplan.route,2)
-    ut(i+2) = uplan.route(1,i).T.Sec;
+ut(2) = uplan.Dtto;     %Init Uplan
+for i=1:size(uplan.Route',2)
+    ut(i+2) = uplan.Route(i).T.Sec;
 end     
 ut(i+3) = ut(i+2)+3;    %Finish uplan
 ut(i+4) = t(end);       %Finish telemetry
 
 %Positions
-ux = [drone.initLoc(1) drone.initLoc(1) uplan.route(1,:).X uplan.route(1,end).X uplan.route(1,end).X];
-uy = [drone.initLoc(2) drone.initLoc(2) uplan.route(1,:).Y uplan.route(1,end).Y uplan.route(1,end).Y];
-uz = [0 0 uplan.route(1,:).Z 0 0];
+ux = [drone.initLoc(1) drone.initLoc(1) uplan.Route(:).X uplan.Route(end).X uplan.Route(end).X];
+uy = [drone.initLoc(2) drone.initLoc(2) uplan.Route(:).Y uplan.Route(end).Y uplan.Route(end).Y];
+uz = [0 0 uplan.Route(:).Z 0 0];
 
 % dux(1) = 0; duy(1) = 0; duz(1) = 0;
 % for i=2:size(uplan.route,2)
@@ -186,5 +214,5 @@ grid on;
 [possp.AxesProperties.LegendLabels] = deal({'Sim','Ref'},{'Sim','Ref'},{'Sim','Ref'});
 [possp.AxesProperties.LegendLocation] = deal('southeast','southeast','southeast');
 
-drawnow;
+drawnow ;
 
