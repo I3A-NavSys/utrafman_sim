@@ -21,6 +21,7 @@ classdef FlightPlanProperties < handle
             obj.operator = operator;
             obj.uav = drone;
             obj.dtto = dtto;
+            accumt = 0;
             
             %Generating first waypoint (where the drone before take off)
             init = ros.msggen.utrafman_main.Waypoint;
@@ -42,7 +43,18 @@ classdef FlightPlanProperties < handle
                 if (length(route(x,:)) == 4)
                     point.T.Sec = route(x,4);
                 else
-                    point.T.Sec = dtto+(x*10);
+                    if (x == 1)
+                        vel = 2;
+                         dist = norm(drone.init_loc - route(x,:));
+                        time_diff = ceil(dist/vel)+1;
+                        accumt = accumt + time_diff;
+                        point.T.Sec = dtto + accumt;
+                    else
+                        dist = norm(route(x-1,:) - route(x,:));
+                        time_diff = ceil(dist/vel);
+                        accumt = accumt + time_diff;
+                        point.T.Sec = dtto + accumt;
+                    end
                 end
                 point.R = 0.5;
                 %Add waypoint to route

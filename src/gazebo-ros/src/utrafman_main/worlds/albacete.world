@@ -24,7 +24,7 @@
     <!-- Camera -->
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>-20 -50 200 0 0.2 1</pose>
+        <pose>-50 -50 100 0 0.2 1</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>

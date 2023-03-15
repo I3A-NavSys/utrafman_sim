@@ -30,7 +30,9 @@ for i=1:numUAV
             pos = [-p/3 -p/3 0.3];
         case 3
             pos = [p/3 -p/3 0.3];
-    end   
+    end  
+    pos = [0 -7 -140]
+    pos = [0 0 1]
     uavs(i) = operator.regNewDrone("dji", pos);
 end
 
@@ -47,6 +49,13 @@ for i=1:numUAV*1
     rng(i);                                     %Random generator mix
     %Random route generation
     route = FlightPlanProperties.GenerateRandomRoute(randi([6 10],1));
+    %route = [[0 -7 -120],[-26 -10 -120] [0 -7 -120],[-26 -10 -120] [0 -7 -120],[-26 -10 -120]];
+    route =  [[24 17 30] 
+              [70 17 35] 
+              [70 48 30]
+              [110 48 40]
+              [150 120 30]]
+    
     %Uplan generation
     fp(i) = FlightPlanProperties(operator, ...          %Operator
                        uavs(i), ...                     %UAV asignation
