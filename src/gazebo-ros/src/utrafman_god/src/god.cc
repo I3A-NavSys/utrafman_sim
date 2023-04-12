@@ -76,6 +76,18 @@ namespace gazebo
 
                 //Insertamos el modelo en el mundo
                 this->parent->InsertModelSDF(sdf_object);
+                //std::string  name = model_ptr->GetName();
+
+                physics::ModelPtr drone = this->parent->ModelByName("drone_" + std::to_string(this->drones-1));
+                if (drone != NULL) {
+                    drone->SetScale(ignition::math::Vector3d(7, 7, 7), true);
+                    std::cout << "Drone " << this->drones << " modificado: " << drone << std::endl;
+                }
+
+                //auto models = this->parent->Models();
+                //for (auto model : models) {
+                //    std::cout << "Modelo: " << model->GetName() << std::endl;
+                //}
 
                 ROS_INFO("Nuevo drone anadido. Total: %i", this->drones);
                 return true;

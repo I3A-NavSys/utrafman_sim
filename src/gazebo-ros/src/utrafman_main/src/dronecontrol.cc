@@ -28,6 +28,8 @@ namespace gazebo
     class DroneControl : public ModelPlugin
     {
     private:
+        int it;
+
         //Maximum log mode
         // 1 -> Normal logging
         // 2 -> Extended logging
@@ -43,7 +45,7 @@ namespace gazebo
 
         //Needed to control telemetry publish
         common::Time last_odom_publish_time;
-        double odom_publish_rate = 2; // updates per second
+        double odom_publish_rate = 1; // updates per second
 
         //ROS structures
         ros::NodeHandle *ros_node;
@@ -239,6 +241,14 @@ namespace gazebo
         // Called by the world update start event
         void OnUpdate(const common::UpdateInfo &evento /*_info*/)
         {
+            this->it++;
+            if (this->it % 5 != 0)
+            {
+                return;
+            } else {
+                this->it = 0;
+            }
+
             // Check if the simulation was reset
             common::Time current_time = model->GetWorld()->SimTime();
             if (current_time < prev_iteration_time)
