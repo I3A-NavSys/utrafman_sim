@@ -17,6 +17,8 @@ classdef FlightPlanProperties < handle
     methods
         %Class constructor
         function obj = FlightPlanProperties(operator, drone, route, dtto)
+            vel = 2;
+
             %Assigning references
             obj.operator = operator;
             obj.uav = drone;
@@ -44,8 +46,7 @@ classdef FlightPlanProperties < handle
                     point.T.Sec = route(x,4);
                 else
                     if (x == 1)
-                        vel = 2;
-                         dist = norm(drone.init_loc - route(x,:));
+                        dist = norm(drone.init_loc - route(x,:));
                         time_diff = ceil(dist/vel)+1;
                         accumt = accumt + time_diff;
                         point.T.Sec = dtto + accumt;
@@ -60,6 +61,18 @@ classdef FlightPlanProperties < handle
                 %Add waypoint to route
                 obj.route(x+1) = copy(point);
             end
+
+            %Last waypoint
+            last = ros.msggen.utrafman_main.Waypoint;
+            last.X = route(end,1);
+            last.Y = route(end,2);
+            last.Z = 1;
+            last.R = 0.5;
+            dist = norm(route(end,:) - [last.X last.Y last.Z]);
+            time_diff = ceil(dist/vel);
+            accumt = accumt + time_diff;
+            last.T.Sec = dtto + accumt;
+            obj.route(end+1) = last;
 
         end
 

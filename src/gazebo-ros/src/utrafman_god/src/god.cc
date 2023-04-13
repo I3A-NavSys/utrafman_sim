@@ -78,11 +78,11 @@ namespace gazebo
                 this->parent->InsertModelSDF(sdf_object);
                 //std::string  name = model_ptr->GetName();
 
-                physics::ModelPtr drone = this->parent->ModelByName("drone_" + std::to_string(this->drones-1));
+                /*physics::ModelPtr drone = this->parent->ModelByName("drone_" + std::to_string(this->drones-1));
                 if (drone != NULL) {
                     drone->SetScale(ignition::math::Vector3d(7, 7, 7), true);
                     std::cout << "Drone " << this->drones << " modificado: " << drone << std::endl;
-                }
+                }*/
 
                 //auto models = this->parent->Models();
                 //for (auto model : models) {

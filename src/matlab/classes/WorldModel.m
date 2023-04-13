@@ -57,13 +57,19 @@ classdef WorldModel < handle
             grid on
         end
 
-        function waypoints = getRoute(obj, route_dist)
+        function waypoints = getRoute(obj, route_dist, init_loc)
             figure(obj.world_fig);
 
-            while 1
-                pos = obj.randomMatInd();
-                if obj.hasClearAround(pos, 6)
-                    break;
+            if init_loc ~= 0
+                x = ceil(init_loc(1));
+                y = ceil(init_loc(2));
+                pos = obj.pos2matind([x y]);
+            else
+                while 1
+                    pos = obj.randomMatInd();
+                    if obj.hasClearAround(pos, 6)
+                        break;
+                    end
                 end
             end
 
