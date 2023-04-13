@@ -6,6 +6,7 @@ classdef WorldModel < handle
         file
         filename
         world_fig
+        matrix_fig
 
         buildings = zeros(0, 6);
         world_size
@@ -19,6 +20,7 @@ classdef WorldModel < handle
             %   Detailed explanation goes here
             obj.filename = file;
             obj.world_fig = figure();
+            %obj.matrix_fig = figure();
             obj.readWorldFromFile();
         end
 
@@ -47,14 +49,20 @@ classdef WorldModel < handle
                 obj.world_occupancy(mat_init(1):mat_end(1), mat_init(2):mat_end(2)) = zeros(b_size(1:2)*2);
             
                 rectangle('FaceColor', 'red', 'Position',[start_bound,b_size(:,1:2)])
+                plotcube(b_size, obj.buildings(end,1:3)-[b_size(1:2)./2 0], 0.05, [1,0,0])
             end
             fclose(obj.file);
 
             xlim([-obj.world_size(1)/2 obj.world_size(1)/2])
             ylim([-obj.world_size(2)/2 obj.world_size(2)/2])
+            zlim([0 80])
             xticks(-obj.world_size(1)/2:10:obj.world_size(1)/2)
             yticks(-obj.world_size(2)/2:10:obj.world_size(2)/2)
             grid on
+            view(3);
+            view(0,90);
+            %figure(obj.matrix_fig)
+            %imagesc(obj.world_occupancy)
         end
 
         function waypoints = getRoute(obj, route_dist, init_loc)
@@ -85,7 +93,7 @@ classdef WorldModel < handle
                 if dir == -1
                     dir = randi([0 3]);
                 else
-                    dir = mod(dir,3) + 1;
+                    dir = mod(dir+1,4);
                 end
                 step = obj.getStep(dir);
         
@@ -102,7 +110,7 @@ classdef WorldModel < handle
                            route(end+1,:) = pos;
         
                            change_change_dir = rand();
-                           if change_change_dir < 0.002
+                           if change_change_dir < 0.01
                                 keep_straight = 0;
                            end
                         else
@@ -122,7 +130,15 @@ classdef WorldModel < handle
                 route_real(end+1,:) = r;
                 i = i + 1;
             end
-            line(route_real(:,1)', route_real(:,2)', 'Color', rand(1,3), 'LineWidth', 1);
+
+            waypoints3D = [];
+            for i=1:length(waypoints)
+                waypoints3D(i,:) = [waypoints(i,:) randi([30 40])];
+            end
+            hold on;
+            color = rand(1,3);
+            line(route_real(:,1)', route_real(:,2)', 'Color', color, 'LineWidth', 1);
+            plot3(waypoints3D(:,1)', waypoints3D(:,2)', waypoints3D(:,3)', 'Color',color);
             drawnow;
         end
     
