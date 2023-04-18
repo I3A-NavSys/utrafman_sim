@@ -166,7 +166,6 @@ classdef S_Registry < handle
                 otherwise
                     file = fileread('../gazebo-ros/src/utrafman_main/models/drone2/template_model_2_simple.sdf');
             end
-        end 
-
+        end
     end
 end

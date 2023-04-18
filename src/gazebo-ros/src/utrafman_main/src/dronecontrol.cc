@@ -242,7 +242,7 @@ namespace gazebo
         void OnUpdate(const common::UpdateInfo &evento /*_info*/)
         {
             this->it++;
-            if (this->it % 4 != 0)
+            if (this->it % 8 != 0)
             {
                 return;
             } else {
