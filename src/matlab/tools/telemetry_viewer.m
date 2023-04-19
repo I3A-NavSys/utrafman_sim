@@ -26,7 +26,7 @@ ros_get_flightplan = ros.ServiceClient(rosnode,'/service/registry/get_fps');
 msg = ros_get_telemetry.rosmessage;
 msg.UavId = droneId;
 if isServerAvailable(ros_get_telemetry)
-    telemetry = call(ros_get_telemetry,msg,"Timeout",10);
+    telemetry = call(ros_get_telemetry,msg,"Timeout",100);
 else
     error("Service '/service/monitoring/get_telemetry' not available on network");
 end

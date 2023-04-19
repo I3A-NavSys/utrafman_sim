@@ -18,7 +18,7 @@ UTM = UTMAirspace();
 operator = Operator('Sample_Operator', UTM.rosMasterIp);
 
 %UAVs
-numUAV = 30;
+numUAV = 20;
 uavs = UAVProperties.empty;
 tbp = 0;                                                    %Delay between UAVs flightplans
 
@@ -30,7 +30,7 @@ while(UTM.Gclock == -1)
     pause(0.1)
 end
 
-routeDistance = 1000;
+routeDistance = 500;
 nextExecution = 0;
 simulationTime = 24*60*60;
 
