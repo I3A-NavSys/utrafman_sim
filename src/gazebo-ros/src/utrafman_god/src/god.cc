@@ -6,10 +6,12 @@
 
 #include "ros/ros.h"
 #include "std_msgs/String.h"
+#include "std_msgs/Bool.h"
 #include "ros/callback_queue.h"
 #include "ros/subscribe_options.h"
 
 #include "utrafman_main/insert_model.h"
+#include "utrafman_main/teletransport.h"
 
 namespace gazebo
 {
@@ -28,7 +30,10 @@ namespace gazebo
             //Suscriptores
             ros::Subscriber rosSub_insert;
             ros::Subscriber rosSub_remove;
+
+            //Services
             ros::ServiceServer insert_service;
+            ros::ServiceServer transport_service;
 
             //Cola de mensajes
             ros::CallbackQueue rosQueue;
@@ -90,6 +95,22 @@ namespace gazebo
                 //}
 
                 ROS_INFO("Nuevo drone anadido. Total: %i", this->drones);
+                return true;
+            }
+
+            bool transport_callback(utrafman_main::teletransport::Request &req, utrafman_main::teletransport::Response &res) {
+                //Modelo SDF y puntero al modelo
+                physics::ModelPtr drone = this->parent->ModelByName("drone_" + std::to_string(req.uavId));
+                res.success.data = false;
+
+                if (drone != NULL) {
+                    ignition::math::Pose3d pose(req.pose.position.x, req.pose.position.y, req.pose.position.z, req.pose.orientation.x, req.pose.orientation.y, req.pose.orientation.z);
+                    drone->SetWorldPose(pose, true);
+                    //std::cout << "Drone " << req.uavId << " modificado: " << drone << std::endl;
+                    res.success.data = true;
+                }
+
+                //ROS_INFO("Nuevo drone anadido. Total: %i", this->drones);
                 return true;
             }
 
@@ -163,18 +184,10 @@ namespace gazebo
                 );
 
                 this->insert_service = this->rosNode->advertiseService("/godservice/insert_model", &UTRAFMAN_God::insert_callback, this);
-                //Creamos el subscriptor handle para eliminar modelos
-                /*ros::SubscribeOptions so_remove = ros::SubscribeOptions::create<std_msgs::String>(
-                        "remove",
-                        1000,
-                        boost::bind(&UTRAFMAN_God::removeModel, this, _1),
-                        ros::VoidPtr(),
-                        &this->rosQueue
-                );*/
+                this->transport_service = this->rosNode->advertiseService("/godservice/transport_model", &UTRAFMAN_God::transport_callback, this);
 
                 //Creamos la suscripcion del nodo a los topicos
                 this->rosSub_insert = this->rosNode->subscribe(so_insert);
-                //this->rosSub_remove = this->rosNode->subscribe(so_remove);
 
                 //Ejecutamos el spiner de manera asincrona y no bloqueante
                 this->rosSpinners.start();

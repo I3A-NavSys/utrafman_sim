@@ -41,7 +41,7 @@ while(UTM.Gclock == -1)
     pause(0.1)
 end
 
-routeDistance = 10000;
+routeDistance = 4000;
 nextExecution = 0;
 simulationTime = 24*60*60;
 
@@ -74,7 +74,8 @@ for i=1:numUAV*times
     
     if mod(i,10) == 0
         pause(10);
-        [status, cmdout] = system('env -i sh ./simulations/obtain-realtime-factor.sh');
+        [status, cmdout] = system('env -i sh ./simulations/realtime-factor-test/obtain-realtime-factor.sh');
+        pause(1);
         d = readmatrix('out.csv');
         data(((i/10)-1)*n_data_per_exec+1:((i/10)-1)*n_data_per_exec+n_data_per_exec, 2:5) = d(1:n_data_per_exec,:);
     end

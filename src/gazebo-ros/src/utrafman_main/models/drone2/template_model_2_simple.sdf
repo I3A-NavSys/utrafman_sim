@@ -55,7 +55,7 @@
         </material>
       </visual>
 
-      <sensor name='view_camera' type='camera'>
+      <!-- <sensor name='view_camera' type='camera'>
         <plugin name='camera_controller_2' filename='libgazebo_ros_camera.so'>
           <alwaysOn>true</alwaysOn>
           <updateRate>0.0</updateRate>
@@ -100,7 +100,7 @@
         <always_on>1</always_on>
         <update_rate>30</update_rate>
         <visualize>0</visualize>
-      </sensor>
+      </sensor> -->
 
       <visual name='brazo_NE'>
         <pose>0.0550 -0.0406 0 0 0 -1.0472</pose>

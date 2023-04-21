@@ -14,6 +14,10 @@ world = WorldModel('../gazebo-ros/src/utrafman_main/worlds/generated_city.wc');
 %Creation of the entire airspace
 UTM = UTMAirspace();
 
+%ROS variables
+rosnode = ros.Node('simulation_executer',UTM.rosMasterIp, 11311);
+ros_god_teletransporter = ros.ServiceClient(rosnode,'/godservice/transport_model');
+
 %Registry of a new operator
 operator = Operator('Sample_Operator', UTM.rosMasterIp);
 
@@ -30,7 +34,7 @@ while(UTM.Gclock == -1)
     pause(0.1)
 end
 
-routeDistance = 500;
+routeDistance = 1000;
 nextExecution = 0;
 simulationTime = 24*60*60;
 
@@ -64,14 +68,29 @@ end
 nextExecution = UTM.Gclock;
 round = 1;
 while UTM.Gclock < simulationTime
+    %Wait to send the next round
     nextExecution = nextExecution + (routeDistance+80)/2 + 10;
     secs = seconds(nextExecution);
     secs.Format = 'hh:mm:ss';
     fprintf('Ronda %d enviada. Proximo envío %s \n', round, secs);
     round = round + 1;
-
     while (UTM.Gclock < nextExecution)
         pause(0.1);
+    end
+
+    %UAV position updater
+    for i=1:numUAV
+        msg = ros.msggen.utrafman_main.teletransportRequest;
+        msg.UavId = i;
+        msg.Pose.Position.X = uavs(i).init_loc(1);
+        msg.Pose.Position.Y = uavs(i).init_loc(2);
+        msg.Pose.Position.Z = uavs(i).init_loc(3);
+
+        if isServerAvailable(ros_god_teletransporter)
+            telemetry = call(ros_god_teletransporter,msg,"Timeout",100);
+        else
+            error("/godservice/transport_model' not available on network");
+        end
     end
     
 

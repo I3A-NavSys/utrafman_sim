@@ -242,7 +242,7 @@ namespace gazebo
         void OnUpdate(const common::UpdateInfo &evento /*_info*/)
         {
             this->it++;
-            if (this->it % 4 != 0)
+            if (this->it % 2 != 0)
             {
                 return;
             } else {
@@ -270,14 +270,14 @@ namespace gazebo
 
             //High level control execution -----------------------------------
             // If have a Uplan and the desired time to take off has been reached
-            if (uplan_inprogress && (current_time.Double() >= uplan_local->dtto)){
+            if (uplan_inprogress && (current_time.Double() >= uplan_local->dtto)) {
 
                 //Start the rotors
                 cmd_on = 1.0;
                 target_waypoint = route_local[actual_route_point];
 
                 //Calling Compute Velocity function to get the velocities until the next iteration
-                ignition::math::Vector4<double> vel = ComputeVelocity(2,current_time.Double(),pose,pose_rot);
+                ignition::math::Vector4<double> vel = ComputeVelocity(2, current_time.Double(), pose, pose_rot);
 
                 //Giving velocities to the low leven control
                 cmd_velX = vel.X();
@@ -285,26 +285,30 @@ namespace gazebo
                 cmd_velZ = vel.Z();
                 cmd_rotZ = vel.W();
 
-                //Detect if drone reached and change to the next waypoint
-                if (current_time.Double() >= target_waypoint.t.sec) {
-                    //Check if exist more waypoint
-                    if (actual_route_point < (route_local.size() - 1)) {
-                        actual_route_point++;
-                        PrintToFile(1, "OnUpdate", "Drone has reached waypoint " + std::to_string(actual_route_point - 1) + " and change to the waypoiny " + std::to_string(actual_route_point));
-                    } else {
-                        //Stop
-                        cmd_on = 0;
-                        cmd_velX = 0.0;
-                        cmd_velY = 0.0;
-                        cmd_velZ = -1.0;
-                        uplan_inprogress = false;
-                        actual_route_point = 0;
-                        PrintToFile(1, "OnUpdate", "Drone has finished it uplan");
+                //if (something < target_waypoint.r){
+                    //Detect if drone reached and change to the next waypoint
+                    if (current_time.Double() >= target_waypoint.t.sec) {
+                        //Check if exist more waypoint
+                        if (actual_route_point < (route_local.size() - 1)) {
+                            actual_route_point++;
+                            PrintToFile(1, "OnUpdate",
+                                        "Drone has reached waypoint " + std::to_string(actual_route_point - 1) +
+                                        " and change to the waypoiny " + std::to_string(actual_route_point));
+                        } else {
+                            //Stop
+                            cmd_on = 0;
+                            cmd_velX = 0.0;
+                            cmd_velY = 0.0;
+                            cmd_velZ = -1.0;
+                            uplan_inprogress = false;
+                            actual_route_point = 0;
+                            PrintToFile(1, "OnUpdate", "Drone has finished it uplan");
 
-                        //Save Uplan high control logbook
-                        control_out_file.close();
+                            //Save Uplan high control logbook
+                            control_out_file.close();
+                        }
                     }
-                }
+                //}
             }
 
             //Low level control

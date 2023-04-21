@@ -1,3 +1,4 @@
+addpath simulations/realtime-factor-test/
 clear
 figure("Position",[0,0,1400,700]);
 for i=1:4
@@ -7,7 +8,7 @@ for i=1:4
         case 2
             load ("rtf-50hz.mat");
         case 3
-            load ("rtf-25hz.mat")
+            load ("rtf-2-25hz.mat")
         case 4
             load ("rtf-125hz.mat")
     end
@@ -46,7 +47,7 @@ for i=1:4
     p = plot(proc_data(:,1)', proc_data(:,2)', 'LineWidth', 2, 'Color', color);
     p.DisplayName = legend_label;
     
-    xlim([0 360])
+    xlim([0 450])
     hold on;
     grid on;
     ylabel('Real time factor in the simulation', 'FontSize',16)

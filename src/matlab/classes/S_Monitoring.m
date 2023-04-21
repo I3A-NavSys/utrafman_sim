@@ -26,7 +26,9 @@ classdef S_Monitoring< handle
             obj.ros_subs_new_uavs = ros.Subscriber(obj.node,"/registry/new_uav_advertise", "utrafman_main/UAV", @obj.newUav); 
             %Initializate ROS Service server to get telemetry of a UAV
             obj.ros_srv_get_telemetry = ros.ServiceServer(obj.node, "/service/monitoring/get_telemetry", "utrafman_main/mon_get_locs", @obj.getLocs);
-
+            %Initializate ROS Service server to get the current location of
+            %a UAV
+            obj.ros_srv_get_currentloc = ros.ServiceServer(obj.node, "/service/monitoring/get_current_loc", "utrafman_main/mon_get_locs", @obj.getCurrentLoc);
 
             disp("Monitoring service has been initialized");
             job = getCurrentJob;
@@ -44,16 +46,12 @@ classdef S_Monitoring< handle
             uav.reg_msg = msg;                                             %UAV ROS msg
             uav.loc = ros.msggen.utrafman_main.Telemetry;                  %To store the last location sent by the UAV
             uav.telemetry = ros.msggen.utrafman_main.Telemetry.empty;
-            
+            %Save UAV data
             if (id == 1)
                 obj.uavs = uav;
             else
                 obj.uavs = [obj.uavs uav];
             end
-            %obj.uavs(id).reg_msg = msg;                                             %UAV ROS msg
-            %obj.uavs(id).loc = ros.msggen.utrafman_main.Telemetry;                  %To store the last location sent by the UAV
-            %obj.uavs(id).telemetry = ros.msggen.utrafman_main.Telemetry.empty;      %Array with all telemetry data
-            
             %UAV Telemetry data subscription
             obj.uavs_telemetry_subs(id) = ros.Subscriber(obj.node, "/drone/"+id+"/telemetry", "utrafman_main/Telemetry", {@obj.newTelemetryData, id});
         end
@@ -72,6 +70,17 @@ classdef S_Monitoring< handle
                 %Check if UAVId exists
                 if length(obj.uavs) >= req.UavId
                     res.Telemetry = obj.uavs(req.UavId).telemetry;
+                end
+            end
+        end
+
+        %Function to get current loc of a UAV
+        function res = getCurrentLoc(obj, ss, req, res)
+            %Check if operator ID is different from 0 (a UAVId must be defined)
+            if (req.UavId ~= 0)
+                %Check if UAVId exists
+                if length(obj.uavs) >= req.UavId
+                    res.Telemetry = obj.uavs(req.UavId).loc;
                 end
             end
         end
