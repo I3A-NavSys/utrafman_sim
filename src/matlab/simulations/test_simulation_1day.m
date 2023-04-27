@@ -6,7 +6,7 @@ addpath("./classes/");                              %Added classes path
 
 %Create a parallel pool to run services in parallel using workers (disabled
 %by default)
-%parallelpool = gcp;
+%parallelpclcool = gcp;
 
 %World definition file
 world = WorldModel('../gazebo-ros/src/utrafman_main/worlds/generated_city.wc');
@@ -36,7 +36,7 @@ end
 
 routeDistance = 1000;
 nextExecution = 0;
-simulationTime = 24*60*60;
+simulationTime =24*60*60;
 
 %Foreach UAV
 for i=1:numUAV
@@ -115,4 +115,21 @@ while UTM.Gclock < simulationTime
         uavs(i).init_loc = [route3d(end,1:2) 1];
     end
 end
+%Pause simulation1000
+ros_pause_physics = ros.ServiceClient(rosnode,'/gazebo/pause_physics');
+msg = ros_pause_physics.rosmessage;
+if isServerAvailable(ros_god_teletransporter)
+    a = call(ros_pause_physics,msg,"Timeout",100);
+else
+    error("Physics couldn't be paused");
+end
 
+%End ros network
+rosshutdown
+
+%Save file
+secs = seconds(UTM.Gclock);
+secs.Format = 'hh:mm:ss';
+filename = sprintf("%s-%s", date, secs);
+save(filename, "UTM", "-v7.3");
+    

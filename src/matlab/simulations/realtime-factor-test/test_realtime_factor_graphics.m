@@ -1,12 +1,14 @@
 addpath simulations/realtime-factor-test/
-clear
 figure("Position",[0,0,1400,700]);
-for i=1:4
+
+max_x = 500;
+
+for i=1:3
     switch i
         case 1
-            load ("rtf-100hz.mat");
+            load ("rtf-2-100hz.mat");
         case 2
-            load ("rtf-50hz.mat");
+            load ("rtf-2-50hz.mat");
         case 3
             load ("rtf-2-25hz.mat")
         case 4
@@ -14,7 +16,7 @@ for i=1:4
     end
     
     proc_data = zeros(46,3);
-    for times = 1:46
+    for times = 1:(max_x/10)
         %Data1
         part_data = data(((times-1)*40)+1:((times-1)*40)+40,2);
         uavs = data(((times-1)*40)+1,1);
@@ -47,7 +49,9 @@ for i=1:4
     p = plot(proc_data(:,1)', proc_data(:,2)', 'LineWidth', 2, 'Color', color);
     p.DisplayName = legend_label;
     
-    xlim([0 450])
+    xlim([10 max_x])
+    ylim([0 10])
+    xticks(10:30:max_x)
     hold on;
     grid on;
     ylabel('Real time factor in the simulation', 'FontSize',16)
@@ -55,6 +59,8 @@ for i=1:4
     %legend('Navigation ex. at 100Hz','Navigation ex. at 500Hz','Navigation ex. at 25Hz','Navigation ex. at 12,5Hz')
     ax = gca;
     ax.FontSize = 16;
+
+    set(gca, 'YScale', 'log')
     
     clear data;
 end
