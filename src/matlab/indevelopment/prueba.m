@@ -2,8 +2,11 @@
 reg_ser = UTM.S_Registry;
 fps = reg_ser.flightPlans;
 num_uavs = length(reg_ser.uavs);
+
+
 %Remove last fp for each uav
 fps = fps(1:(length(fps)-num_uavs));
+
 %FP distances
 fps_distances = zeros(0,num_uavs);
 
@@ -19,6 +22,7 @@ fps_distances = zeros(0,num_uavs);
 
 fprintf("Distancia media recorrida por cada UAV: %f \n", mean(mean(fps_distances)));
 fprintf("Std distancia recorrida por los UAV: %f \n", std(std(fps_distances)));
+
 %figure()
 %bar(1:num_uavs,mean(fps_distances))
 
