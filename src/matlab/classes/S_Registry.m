@@ -1,14 +1,14 @@
-%Registry class maintains the state of the airspace and an update registry of the entities in the airspace
+%Registry Service class. Maintains the state of the airspace and an update registry of the entities in the airspace.
 classdef S_Registry < handle
 
     properties
         %Operators in the airspace
-        operators = ros.msggen.utrafman_main.Operator.empty;        %Array of Operators objects
-        operatorLastId uint32 = 0;                                  %Last operatorId assigned
+        operators               = ros.msggen.utrafman_main.Operator.empty;      %Array of Operators objects
+        operatorLastId  uint32  = 0;                                            %Last operatorId assigned
         
         %UAVs in the airspace
         uavs = ros.msggen.utrafman_main.UAV.empty;                  %Array of Drone objects
-        uavLastId uint32 = 0;                                       %Last droneId assigned
+        uavLastId       uint32 = 0;                                 %Last droneId assigned
 
         %Flight plans in the airspace
         flightPlans = ros.msggen.utrafman_main.Uplan.empty;         %Array of FlightPlan (ordered queue using DTTO)

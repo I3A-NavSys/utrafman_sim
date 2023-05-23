@@ -1,9 +1,9 @@
-%Monitoring class receives data from UAV             
-classdef S_Monitoring< handle
+%Monitoring Service class
 
+classdef S_Monitoring< handle
     properties
         %UAV in the airspace
-        uavs = struct([]);                                           %Array of UAV (struct format)
+        uavs = struct([]);                              %Array of UAV (struct format)
         uavs_telemetry_subs = ros.Subscriber.empty;     %Array of ROS subscribers for each UAV to receive telemetry data
 
         %ROS structs
@@ -26,8 +26,7 @@ classdef S_Monitoring< handle
             obj.ros_subs_new_uavs = ros.Subscriber(obj.node,"/registry/new_uav_advertise", "utrafman_main/UAV", @obj.newUav); 
             %Initializate ROS Service server to get telemetry of a UAV
             obj.ros_srv_get_telemetry = ros.ServiceServer(obj.node, "/service/monitoring/get_telemetry", "utrafman_main/mon_get_locs", @obj.getLocs);
-            %Initializate ROS Service server to get the current location of
-            %a UAV
+            %Initializate ROS Service server to get the current location of a UAV
             obj.ros_srv_get_currentloc = ros.ServiceServer(obj.node, "/service/monitoring/get_current_loc", "utrafman_main/mon_get_locs", @obj.getCurrentLoc);
 
             disp("Monitoring service has been initialized");

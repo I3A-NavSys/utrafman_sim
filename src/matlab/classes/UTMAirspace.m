@@ -11,9 +11,6 @@ classdef UTMAirspace < handle
         %Monitoring service
         S_Monitoring S_Monitoring;
         gct_Monitoring
-
-        %Flight Planner service
-        %S_FlightPlansPlanner FlightPlansPlanner;
         
         %ROS network info
         rosMasterIp string
@@ -22,18 +19,18 @@ classdef UTMAirspace < handle
         %Gazebo Clock
         GClock_sub;                 %Subscriber to Gazebo clock
         GClock_Upt_timer;           %Timer to update Gazebo clock
-        Gclock = -1;                     %Gazebo clock value
-
-        saveobj_timer
+        Gclock = -1;                %Gazebo clock value
     end
     
     methods
-        %Class constructor
+        %Initialisation of UTM Airspace
         function obj = UTMAirspace()
+
             %Load ROS configuration variables
             run(fullfile("./config/ros.m"));
-            run(fullfile(""));
+            %run(fullfile(""));
             obj.rosMasterIp = ROS_IP;
+            delete ROS_IP;
 
             %Connect with ROS master
             obj.ConnectWithROSMaster();
@@ -42,8 +39,7 @@ classdef UTMAirspace < handle
             obj.S_Registry = S_Registry();
             obj.S_Monitoring = S_Monitoring();
             
-            %If a pool is active, use parallel evaluation. If not, use
-            %shared interpreter
+            %If a pool is active, use parallel evaluation. If not, use shared interpreter
             if ~isempty(gcp('nocreate'))
                 obj.gct_Registry = parfeval(gcp,@execute,0,obj.S_Registry,"192.168.1.131");
                 obj.gct_Monitoring = parfeval(gcp,@execute,0,obj.S_Monitoring,"192.168.1.131");
@@ -71,9 +67,11 @@ classdef UTMAirspace < handle
 
             %Suscribe to Gazebo clock
             obj.GClock_sub = rossubscriber("/clock");
+
             %Configure timer to update Gazebo clock every 1sec
             %Timer is used because clock topic is published with a very high frequency
             obj.GClock_Upt_timer = timer("TimerFcn", @obj.updateGclock,"ExecutionMode","fixedRate");
+
             %Start timer
             start(obj.GClock_Upt_timer);
         end
@@ -95,7 +93,7 @@ classdef UTMAirspace < handle
             end
         end
 
-        %To sabe UTMAirspace object data
+        %To save UTMAirspace object data
         function obj = saveUTMobject(obj, timer, time)
             state = warning;
             warning('off','all');

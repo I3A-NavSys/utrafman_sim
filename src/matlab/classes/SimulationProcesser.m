@@ -1,6 +1,6 @@
 classdef SimulationProcesser < handle
-    %SIMULATIONPROCESSER Summary of this class goes here
-    %   Detailed explanation goes here
+    %This class is used to process the data from the UTM structure and make it easier to process
+    %Moreover, it contains functions to get information about the simulation, like telemetry, conflicts, etc.
     
     properties
         S_Registry
@@ -9,6 +9,9 @@ classdef SimulationProcesser < handle
     end
     
     methods
+        %This function takes as input the UTM structure and parses it to data structures that are easier to process
+        %This is done for performance reasons, since the UTM structure is not optimized for fast processing.
+
         function obj = SimulationProcesser(UTM)
             tic
             %Parsing S_Registry data (unmodified)
@@ -26,22 +29,6 @@ classdef SimulationProcesser < handle
                 %tele = zeros(1,length(tel),16);
                 for j=1:length(tel)
                     obj.S_Monitoring.telemetry(i,j,:) = [10e-10*tel(j).Time.Nsec+tel(j).Time.Sec tel(j).Pose.Position.X tel(j).Pose.Position.Y tel(j).Pose.Position.Z tel(j).Pose.Orientation.X tel(j).Pose.Orientation.Y tel(j).Pose.Orientation.Z tel(j).Velocity.Linear.X tel(j).Velocity.Linear.Y tel(j).Velocity.Linear.Z tel(j).Velocity.Angular.X tel(j).Velocity.Angular.Y tel(j).Velocity.Angular.Z double(tel(j).Wip) double(tel(j).Fpip)];
-%                         [10e-10*tel(j).Time.Nsec + tel(j).Time.Sec ...
-%                         tel(j).Pose.Position.X ...
-%                         tel(j).Pose.Position.Y ...
-%                         tel(j).Pose.Position.Z ...
-%                         tel(j).Pose.Orientation.X ...
-%                         tel(j).Pose.Orientation.Y ...
-%                         tel(j).Pose.Orientation.Z ...
-%                         tel(j).Pose.Orientation.W ...
-%                         tel(j).Velocity.Linear.X ...
-%                         tel(j).Velocity.Linear.Y ...
-%                         tel(j).Velocity.Linear.Z ...
-%                         tel(j).Velocity.Angular.X ...
-%                         tel(j).Velocity.Angular.Y ...
-%                         tel(j).Velocity.Angular.Z ...
-%                         tel(j).Wip ...
-%                         tel(j).Fpip];
                 end
             end
                
@@ -57,8 +44,8 @@ classdef SimulationProcesser < handle
             toc
         end
         
+        %Checks the conflicts between UAVs (v2, fast but not highly accurate, could skip some conflcts, around 5%, depending on telemetry sampling)
         function conflicts = check_conflicts_fast(obj,conf_dist)
-            %Conflict checker (v2, fast but not highly accurate, could skip some conflcts, around 5%, depending on telemetry sampling)
             locs = obj.S_Monitoring.telemetry;
 
             tic
@@ -71,7 +58,7 @@ classdef SimulationProcesser < handle
                     %Number of conflict between them
                     conf_count = 0;
             
-                    %Filter 0
+                    %Remove those rows with 0 values
                     uav_a = squeeze(locs(i,:,1:4));
                     idx = uav_a(:,1) > 0;
                     uav_a = uav_a(idx,:);
@@ -80,11 +67,11 @@ classdef SimulationProcesser < handle
                     idx = uav_b(:,1) > 0;
                     uav_b = uav_b(idx,:);
                     
-                    %Fixing time to int
+                    %Fixing time to int (for table join)
                     uav_a(:,5) = fix(uav_a(:,1));
                     uav_b(:,5) = fix(uav_b(:,1));
                     
-                    %Table generation
+                    %Table generation for join
                     table_a = table(uav_a(:,5), uav_a(:,1), uav_a(:,2), uav_a(:,3), uav_a(:,4), 'VariableNames',{'TimeInt' 'Time' 'X' 'Y' 'Z'});
                     table_b = table(uav_b(:,5), uav_b(:,1), uav_b(:,2), uav_b(:,3), uav_b(:,4), 'VariableNames',{'TimeInt' 'Time' 'X' 'Y' 'Z'});
                     
@@ -99,15 +86,15 @@ classdef SimulationProcesser < handle
                     a_pos = [table_join.X_left table_join.Y_left table_join.Z_left];
                     b_pos = [table_join.X_right table_join.Y_right table_join.Z_right];
                     
-                    %Computing distances
+                    %Computing distances between UAVs
                     diff = a_pos - b_pos;
                     dist = [];
                     for o=1:size(diff,1)
                         dist(o) = norm(diff(o,:));
                     end
                     dist = [dist' table_join.TimeInt];
-                    %Filtering where distance is less than conflict
-                    %distance
+
+                    %Filtering where distance is less than conflict distance
                     idx = dist(:,1) < conf_dist;
                     dist = dist(idx,:);
 
@@ -117,6 +104,7 @@ classdef SimulationProcesser < handle
                         conf_count = conf_count + 1;
                         conf_index = conf_index + 1;
                     end
+
                     %Summary of conflicts
                     if conf_count 
                         fprintf("Conflictos totales entre %d y %d son %d \n", i, j, conf_count)
@@ -127,8 +115,8 @@ classdef SimulationProcesser < handle
             conflicts = conflicts(1:conf_index,:);
         end
 
+        %Checks the conflicts between UAVs (v1, slow but more accurate than v2)
         function conflicts = check_conflicts_complete(obj,conf_dist)
-            %Conflict checker (v1, slow but accurate)
             locs = obj.S_Monitoring.telemetry;
 
             tic
@@ -137,6 +125,7 @@ classdef SimulationProcesser < handle
             
             %For each UAV
             for i=1:obj.num_uavs
+
                 %Get UAV_i telemetry
                 i_tel = locs(i,:,:);
             
@@ -156,14 +145,17 @@ classdef SimulationProcesser < handle
                            continue;
                        end
             
+                        %Get UAV_j telemetry
                         j_tel = squeeze(locs(j,:,:));
                         idx = j_tel(:,1)>(t_sec-1) & j_tel(:,1)<(t_sec+1);
                         j_tel = j_tel(idx,:);
             
+                        %For each telemetry msg in UAV_j
                         for k=1:size(j_tel,1)
                             a = squeeze(t_tel(:,2:4));
                             b = j_tel(k,2:4);
-            
+                            
+                            %Check if distance is less than conflict distance
                             if norm(a-b) <= conf_dist
                                 conflicts(conf_index+1,:) = [i j norm(a-b) t_sec];
                                 conf_count = conf_count + 1;
@@ -172,6 +164,7 @@ classdef SimulationProcesser < handle
                             end
                         end
                     end
+                    
                     %Summary of conflicts
                     if conf_count 
                         fprintf("Conflictos totales entre %d y %d son %d \n", i, j, conf_count)

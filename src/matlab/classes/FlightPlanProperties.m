@@ -2,16 +2,16 @@
 
 classdef FlightPlanProperties < handle
     properties
-        flightplan_id uint32         %Unique ID for the flight plan
+        flightplan_id uint32        %Unique ID for the flight plan
         status int8 = 0             %Status flag (to mark if the flight plan is waiting, in progress or finished)
         priority uint8 = 0          %NOT USED actually
 
         operator Operator           %Operator object reference
-        uav UAVProperties                 %Drone object reference
+        uav UAVProperties           %Drone object reference
         dtto double                 %Desired time to take off (where the plan starts)
 
-        route = ros.msggen.utrafman_main.Waypoint.empty;       %Array of ROS Waypoint messages defining the route of the flight plan
-        sent uint8 = 0                                      %Sent status flag (to mark if the flight plan has been sent to the drone)
+        route = ros.msggen.utrafman_main.Waypoint.empty;        %Array of ROS Waypoint messages defining the route of the flight plan
+        sent uint8 = 0                                          %Sent status flag (to mark if the flight plan has been sent to the drone)
     end
     
     methods
@@ -25,7 +25,7 @@ classdef FlightPlanProperties < handle
             obj.dtto = dtto;
             accumt = 0;
             
-            %Generating first waypoint (where the drone before take off)
+            %Generating first waypoint (where the drone is before take off)
             init = ros.msggen.utrafman_main.Waypoint;
             init.X = drone.init_loc(1);
             init.Y = drone.init_loc(2);
@@ -75,6 +75,7 @@ classdef FlightPlanProperties < handle
             obj.route(end+1) = last;
 
         end
+
 
         %Function to parse FlightPlan object to ROS object
         function msg = parseToROSMessage(obj)
@@ -133,9 +134,9 @@ classdef FlightPlanProperties < handle
     end
 
     methods(Static)
-        %To be reimplemented. This function is used to generate random flight plans inside bounds and with a given number of waypoints.
+        %To be reimplemented. 
+        %This function is used to generate random flight plans inside bounds and with a given number of waypoints.
         %Used for testing purposes.
-        %Function to generare random routes
         function route = GenerateRandomRoute(nway)
             %Airspace bounds
             bounds =   [[-4 4]

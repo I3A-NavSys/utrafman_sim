@@ -1,10 +1,11 @@
-%Operator class represents an operator of the drone system. Could be a company or a person. Each operator has a unique ID and a name. Each operator has a drone garage where it stores the drones it owns.
+%Operator class represents an operator of the UAV system. Could be a company or a person. 
+%Each operator has a unique ID and a name. Each operator has a drone garage where it stores the drones it owns.
 
 classdef Operator < handle
     properties
-        operator_id uint32                %Unique operator ID
-        operator_name string              %Operator name
-        drone_garage UAVProperties %Array of drone objects references
+        operator_id     uint32          %Unique operator ID
+        operator_name   string          %Operator name
+        drone_garage    UAVProperties   %Array of UAV objects references
 
         ros_node
         ros_reg_operator
