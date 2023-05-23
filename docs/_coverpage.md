@@ -1,5 +1,5 @@
 <!-- _coverpage.md -->
-![logo](./img/logo2-circle.png ':size=300')
+![logo](./img/logo-circle.png ':size=300')
 
 # U-TRAFMAN Simulator <small>1.0</small>
 

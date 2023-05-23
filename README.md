@@ -1,7 +1,7 @@
 <!-- # U-TRAFMAN: Unmmaned Traffic Management Simulator -->
 
 <p align="center">
-    <img src="./docs/img/logo2-circle.png" width="300" height="300" alt="U-TRAFMAN logo" />
+    <img src="./docs/img/logo-circle.png" width="300" height="300" alt="U-TRAFMAN logo" />
     <h1 align="center" style="text-align: center;">U-TRAFMAN: Unmmaned Traffic Management Simulator</h1>
 </p>
 
