@@ -2,37 +2,28 @@
 %messages to be used in MATLAB. If you use different machines to simulate,
 %you could define different configuration adding IF clausules.
 
-%Windows computer
-if getenv('username') == "jesus" %Jesus' personal computer
+%Windows computer (Jesus' personal computer)
+if getenv('username') == "jesus"
     addpath('C:\i3a_repos\utrafman_sim\src\gazebo-ros\src\utrafman_main');
     py = pyenv('Version', 'C:\Users\jesus\AppData\Local\Programs\Python\Python39\python.exe');
     rosgenmsg('C:\i3a_repos\utrafman_sim\src\gazebo-ros\src\');
     addpath('C:\i3a_repos\utrafman_sim\src\gazebo-ros\src\matlab_msg_gen_ros1\win64\install\m')
 
-%Windows computer
-elseif getenv('username') == "usuario" %I3A computer
+%Windows computer (I3A computer)
+elseif getenv('username') == "usuario"
     addpath('C:\Users\usuario\Documents\i3a_repos\siam_sim\src\gazebo-ros\src\utrafman_main');
     py = pyenv('Version', 'C:\Users\usuario\AppData\Local\Programs\Python\Python39\python.exe');
     rosgenmsg('C:\Users\usuario\Documents\i3a_repos\siam_sim\src\gazebo-ros\src\');
     addpath('C:\Users\usuario\Documents\i3a_repos\siam_sim\src\gazebo-ros\src\matlab_msg_gen_ros1\win64\install\m')
 
-%Ubuntu VM computer
+%Ubuntu VM
 elseif getenv('USERNAME') == "siamsim" %Virtual Machine
     addpath('../gazebo-ros/src/utrafman_main/');
     py = pyenv('Version', '/usr/bin/python3.9');
     rosgenmsg('../gazebo-ros/src/');
     addpath('../../matlab_msg_gen_ros1\win64\install\m')
 
-elseif getenv('USERNAME') == "jesusjover" %Virtual Machine
-    setenv("MY_PYTHON_VENV", "/tmp/venv");
-    ros.internal.createOrGetLocalPython(true);
-    addpath('../gazebo-ros/src/utrafman_main/');
-    py = pyenv('Version', '/usr/bin/python3.9');
-    rosgenmsg('../gazebo-ros/src/');
-    addpath('/opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/src/matlab_msg_gen_ros1/glnxa64/install/m')
-    savepath
-
-%Ubuntu computer
+%Ubuntu (galadriel computer)
 elseif getenv("USERNAME") == 'galadriel-ubuntu'
     setenv("MY_PYTHON_VENV", "/tmp/venv");
     ros.internal.createOrGetLocalPython(true);
