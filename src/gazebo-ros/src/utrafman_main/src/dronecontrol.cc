@@ -28,11 +28,13 @@ namespace gazebo
     class DroneControl : public ModelPlugin
     {
     private:
+        int it;
+
         //Maximum log mode
         // 1 -> Normal logging
         // 2 -> Extended logging
         // 3 -> All data loggging
-        int log_mode = 1;
+        int log_mode = 2;
 
         // Pointers to the model and the link
         physics::ModelPtr model;
@@ -43,7 +45,7 @@ namespace gazebo
 
         //Needed to control telemetry publish
         common::Time last_odom_publish_time;
-        double odom_publish_rate = 2; // updates per second
+        double odom_publish_rate = 1; // updates per second
 
         //ROS structures
         ros::NodeHandle *ros_node;
@@ -239,10 +241,19 @@ namespace gazebo
         // Called by the world update start event
         void OnUpdate(const common::UpdateInfo &evento /*_info*/)
         {
+            this->it++;
+            if (this->it % 4 != 0)
+            {
+                return;
+            } else {
+                this->it = 0;
+            }
+
             // Check if the simulation was reset
             common::Time current_time = model->GetWorld()->SimTime();
             if (current_time < prev_iteration_time)
-                prev_iteration_time = current_time;     // The simulation was reset
+                // The simulation was reset
+                prev_iteration_time = current_time;
 
             //Time since the last iteration
             double seconds_since_last_iteration = (current_time - prev_iteration_time).Double();
@@ -254,19 +265,19 @@ namespace gazebo
             ignition::math::Vector3<double> linear_vel = model->RelativeLinearVel();
             ignition::math::Vector3<double> angular_vel = model->RelativeAngularVel();
 
-            //Variables used by the high level control
-            utrafman_main::Waypoint target_waypoint;    //Next waypoint to reach
+            //Next waypoint to reach
+            utrafman_main::Waypoint target_waypoint;
 
             //High level control execution -----------------------------------
             // If have a Uplan and the desired time to take off has been reached
-            if (uplan_inprogress && (current_time.Double() >= uplan_local->dtto)){
+            if (uplan_inprogress && (current_time.Double() >= uplan_local->dtto)) {
 
                 //Start the rotors
                 cmd_on = 1.0;
                 target_waypoint = route_local[actual_route_point];
 
                 //Calling Compute Velocity function to get the velocities until the next iteration
-                ignition::math::Vector4<double> vel = ComputeVelocity(2,current_time.Double(),pose,pose_rot);
+                ignition::math::Vector4<double> vel = ComputeVelocity(2, current_time.Double(), pose, pose_rot);
 
                 //Giving velocities to the low leven control
                 cmd_velX = vel.X();
@@ -274,26 +285,30 @@ namespace gazebo
                 cmd_velZ = vel.Z();
                 cmd_rotZ = vel.W();
 
-                //Detect if drone reached and change to the next waypoint
-                if (current_time.Double() >= target_waypoint.t.sec) {
-                    //Check if exist more waypoint
-                    if (actual_route_point < (route_local.size() - 1)) {
-                        actual_route_point++;
-                        PrintToFile(1, "OnUpdate", "Drone has reached waypoint " + std::to_string(actual_route_point - 1) + " and change to the waypoiny " + std::to_string(actual_route_point));
-                    } else {
-                        //Stop
-                        cmd_on = 0;
-                        cmd_velX = 0.0;
-                        cmd_velY = 0.0;
-                        cmd_velZ = -1.0;
-                        uplan_inprogress = false;
-                        actual_route_point = 0;
-                        PrintToFile(1, "OnUpdate", "Drone has finished it uplan");
+                //if (something < target_waypoint.r){
+                    //Detect if drone reached and change to the next waypoint
+                    if (current_time.Double() >= target_waypoint.t.sec) {
+                        //Check if exist more waypoint
+                        if (actual_route_point < (route_local.size() - 1)) {
+                            actual_route_point++;
+                            PrintToFile(1, "OnUpdate",
+                                        "Drone has reached waypoint " + std::to_string(actual_route_point - 1) +
+                                        " and change to the waypoiny " + std::to_string(actual_route_point));
+                        } else {
+                            //Stop
+                            cmd_on = 0;
+                            cmd_velX = 0.0;
+                            cmd_velY = 0.0;
+                            cmd_velZ = -1.0;
+                            uplan_inprogress = false;
+                            actual_route_point = 0;
+                            PrintToFile(1, "OnUpdate", "Drone has finished it uplan");
 
-                        //Save Uplan high control logbook
-                        control_out_file.close();
+                            //Save Uplan high control logbook
+                            control_out_file.close();
+                        }
                     }
-                }
+                //}
             }
 
             //Low level control
@@ -487,9 +502,24 @@ namespace gazebo
                 last_odom_publish_time = current_time;
 
                 // Add logs to the file
-                std::stringstream message;
-                message << E;
-                PrintToFile(1, "OnUpdate", "Error: " + message.str());
+                //std::stringstream message;
+                //message << E;
+                //PrintToFile(1, "OnUpdate", " Control Error: " + message.str());
+
+                //Print variables all FT_* variables using PrintToFile
+                PrintToFile(2, "OnUpdate", "FT_NE: " + std::to_string(FT_NE.X()) + ", " + std::to_string(FT_NE.Y()) + ", " + std::to_string(FT_NE.Z()));
+                PrintToFile(2, "OnUpdate", "FT_NW: " + std::to_string(FT_NW.X()) + ", " + std::to_string(FT_NW.Y()) + ", " + std::to_string(FT_NW.Z()));
+                PrintToFile(2, "OnUpdate", "FT_SE: " + std::to_string(FT_SE.X()) + ", " + std::to_string(FT_SE.Y()) + ", " + std::to_string(FT_SE.Z()));
+                PrintToFile(2, "OnUpdate", "FT_SW: " + std::to_string(FT_SW.X()) + ", " + std::to_string(FT_SW.Y()) + ", " + std::to_string(FT_SW.Z()));
+
+                PrintToFile(2, "OnUpdate", "MDR_NE: " + std::to_string(MDR_NE.X()) + ", " + std::to_string(MDR_NE.Y()) + ", " + std::to_string(MDR_NE.Z()));
+                PrintToFile(2, "OnUpdate", "MDR_NW: " + std::to_string(MDR_NW.X()) + ", " + std::to_string(MDR_NW.Y()) + ", " + std::to_string(MDR_NW.Z()));
+                PrintToFile(2, "OnUpdate", "MDR_SE: " + std::to_string(MDR_SE.X()) + ", " + std::to_string(MDR_SE.Y()) + ", " + std::to_string(MDR_SE.Z()));
+                PrintToFile(2, "OnUpdate", "MDR_SW: " + std::to_string(MDR_SW.X()) + ", " + std::to_string(MDR_SW.Y()) + ", " + std::to_string(MDR_SW.Z()));
+
+                PrintToFile(2, "OnUpdate", "FD: " + std::to_string(FD.X()) + ", " + std::to_string(FD.Y()) + ", " + std::to_string(FD.Z()));
+                PrintToFile(2, "OnUpdate", "MD: " + std::to_string(MD.X()) + ", " + std::to_string(MD.Y()) + ", " + std::to_string(MD.Z()));
+
                 PrintDelimToFile();
             }
         }
@@ -498,6 +528,7 @@ namespace gazebo
         //Uplan is stored in Uplan_local and not be overwritten until the drone finish the current Uplan
         //In the future, the drone will be able to ajust the current Uplan with Uplan changes
         void UplansTopicCallback(const utrafman_main::Uplan::ConstPtr &msg){
+
             //Open the file used to save logs
             if (!control_out_file.is_open()) {
                 control_out_file.open("/tmp/drone-" + id + "_fp-" + std::to_string(msg->flightPlanId) + ".txt");
@@ -558,8 +589,13 @@ namespace gazebo
 
                 //Position where the drone must be in time t
                 position = vectorDiff * (timeDiffBetWPt/timeDiffBetWPs) + ignition::math::Vector3d(route[i-1].x, route[i-1].y, route[i-1].z);
-                PrintToFile(2, "UplaAbsLay", "Position to reach: X:" + std::to_string(position.X()) + " Y: " + std::to_string(position.Y()) + " Z: " + std::to_string(position.Z()) + " t: " + std::to_string(t));
 
+                double seconds_since_last_update = t - last_odom_publish_time.Double();
+                if (seconds_since_last_update > (1.0 / odom_publish_rate)) {
+                    PrintToFile(3, "UplaAbsLay", "2Position to reach: X:" + std::to_string(position.X()) + " Y: " +
+                                                 std::to_string(position.Y()) + " Z: " + std::to_string(position.Z()) +
+                                                 " t: " + std::to_string(t));
+                }
                 break;
             }
             return position;    //Target position at time t
@@ -568,9 +604,10 @@ namespace gazebo
         //Member that compute the desired velocity depending the mode in use
         //Returns the desired velocity for the drone at time t, using the UplanAbstractionLayer function
         ignition::math::Vector4<double> ComputeVelocity(int mode, double t, ignition::math::Pose3<double> pose, ignition::math::Vector3<double> pose_rot) {
+
             //Variables used by the high level control
             ignition::math::Vector4<double> final_vel;
-            //Get previous next waypoint
+
             utrafman_main::Waypoint previous_waypoint;
             if (this->actual_route_point == 0) {
                 previous_waypoint = this->route_local[this->actual_route_point];
@@ -578,12 +615,16 @@ namespace gazebo
                 previous_waypoint = this->route_local[this->actual_route_point - 1];
             }
             utrafman_main::Waypoint target_waypoint = this->route_local[this->actual_route_point];
+
             //Getting UAV velocity
             ignition::math::Vector3<double> linear_vel = this->model->RelativeLinearVel();
+
             //Time to reach the waypoint
             double ttrw = target_waypoint.t.toSec() - t;
+
             //Compute 3D distance to the waypoint
             ignition::math::Vector3<double> distance_to_way = ignition::math::Vector3d(target_waypoint.x - pose.Pos().X(), target_waypoint.y - pose.Pos().Y(), target_waypoint.z - pose.Pos().Z());
+
             //Compute the bearing to do
             double target_bearing = atan2(target_waypoint.y - pose.Pos().Y(),target_waypoint.x - pose.Pos().X());
             double drone_yaw = pose_rot.Z();
@@ -625,21 +666,25 @@ namespace gazebo
                 vel = EulerTransformation(vel,drone_yaw);
                 //Compute yaw velocity
                 double yaw_vel = target_bearing - drone_yaw;
+
                 //If the yaw velocity to apply is high, only modify rotation velocity and z velocity
-                if (yaw_vel > 0.5 || yaw_vel < -0.5){
-                    final_vel = ignition::math::Vector4<double>(0, 0, vel.Z(), yaw_vel/2);
-                }
+                //if (yaw_vel > 0.8 || yaw_vel < -0.8){
+                //    final_vel = ignition::math::Vector4<double>(0, 0, vel.Z(), yaw_vel/3);
+                //    vel = ignition::math::Vector3d(0, 0, vel.Z());
+                //}
                 //If the yaw velocity is too small, the dont apply yaw velocity
                 if (yaw_vel < 0.05 && yaw_vel > -0.05){
                     yaw_vel = 0;
                 }
+
                 //Assign final velocity
-                final_vel = ignition::math::Vector4<double>(vel.X(), vel.Y(), vel.Z(), yaw_vel/2);
+                final_vel = ignition::math::Vector4<double>(vel.X(), vel.Y(), vel.Z(), yaw_vel/3);
 
                 //Log data
                 if (seconds_since_last_update > (1.0 / odom_publish_rate)){
                     PrintToFile(1, "ComputVeloci", "Target pos at t X: " + std::to_string(uplan_pos.X()) + " Y: " + std::to_string(uplan_pos.Y()) + " Z: " + std::to_string(uplan_pos.Z()));
                     PrintToFile(1, "ComputVeloci", "Target pos at t+2 X: " + std::to_string(uplan_pos_future.X()) + " Y: " + std::to_string(uplan_pos_future.Y()) + " Z: " + std::to_string(uplan_pos_future.Z()));
+
                     PrintToFile(1, "ComputVeloci", "Reference velocity at t X: " + std::to_string(pos_diff.X()) + " Y: " + std::to_string(pos_diff.Y()) + " Z:" + std::to_string(pos_diff.Z()));
                     PrintToFile(1, "ComputVeloci", "Reference velocity at t+2  X: " + std::to_string(pos_diff_future.X()) + " Y: " + std::to_string(pos_diff_future.Y()) + " Z:" + std::to_string(pos_diff_future.Z()));
                 }
