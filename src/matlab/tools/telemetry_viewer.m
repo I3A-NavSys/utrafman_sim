@@ -12,7 +12,7 @@ addpath('.')
 %load simulations\small_city_LaLlanura.mat
 
 %Introduce drone ID and FlightPlan ID to be analysed
-fpId = 31;
+fpId = 1;
 
 %Get ROS IP
 % run(fullfile("./config/ros.m"));
@@ -88,9 +88,20 @@ x       = uav_tel.PositionX';
 y       = uav_tel.PositionY';
 z       = uav_tel.PositionZ';
 rotz    = uav_tel.OrientationZ';
+
 dx      = uav_tel.VelLinX';
 dy      = uav_tel.VelLinY';
 dz      = uav_tel.VelLinZ';
+
+%eul_trans = [cos(-uav_tel.OrientationZ) sin(-uav_tel.OrientationZ) 0 ; -sin(-uav_tel.OrientationZ) -cos(-uav_tel.OrientationZ) 0; 0 0 1] * [dx dy dz];
+eul_trans = zeros(length(dx), 3);
+for i=1:length(dx)
+    mat = [cos(-uav_tel.OrientationZ(i)) sin(-uav_tel.OrientationZ(i)) 0 ; -sin(-uav_tel.OrientationZ(i)) -cos(-uav_tel.OrientationZ(i)) 0; 0 0 1];
+    eul_trans(i,:) = mat * [dx(i); dy(i); dz(i)]; 
+end
+
+dx = eul_trans(:,1)';
+dy = eul_trans(:,2)';
 drotz   = uav_tel.VelAngZ';
 
 %Generating data from Uplan

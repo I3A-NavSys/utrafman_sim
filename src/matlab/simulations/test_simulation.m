@@ -9,7 +9,7 @@ addpath("./classes/");                              %Added classes path
 %parallelpool = gcp;
 
 %World definition file
-world = WorldModel('..\gazebo-ros\src\utrafman_main\worlds\generated_city.wc');
+world = WorldModel('../gazebo-ros/src/utrafman_main/worlds/generated_city.wc');
 
 %Creation of the entire airspace
 UTM = UTMAirspace();
@@ -18,7 +18,7 @@ UTM = UTMAirspace();
 operator = Operator('Sample_Operator', UTM.rosMasterIp);
 
 %UAVs
-numUAV = 30;
+numUAV = 1;
 uavs = UAVProperties.empty;
 tbp = 0;                                                    %Delay between UAVs flightplans
 
@@ -33,7 +33,7 @@ end
 %Foreach UAV
 for i=1:numUAV
     %Generate a new route (2D)
-    route = world.getRoute(1000);
+    route = world.getRoute(2000, 0);
     %Set UAV init pos at the route start
     pos = [route(1,:) 3];
     %Create and register a new UAV
