@@ -4,15 +4,15 @@ classdef S_Registry < handle
     properties
         %Operators in the airspace
         operators               = ros.msggen.utrafman_main.Operator.empty;      %Array of Operators objects
-        operatorLastId  uint32  = 0;                                            %Last operatorId assigned
+        operator_lastid  uint32  = 0;                                            %Last operatorId assigned
         
         %UAVs in the airspace
         uavs = ros.msggen.utrafman_main.UAV.empty;                  %Array of Drone objects
-        uavLastId       uint32 = 0;                                 %Last droneId assigned
+        uav_lastid       uint32 = 0;                                 %Last droneId assigned
 
         %Flight plans in the airspace
-        flightPlans = ros.msggen.utrafman_main.Uplan.empty;         %Array of FlightPlan (ordered queue using DTTO)
-        flightPlanLastId uint32 = 0;                                %Last flightPlanId assigned
+        flight_plans = ros.msggen.utrafman_main.Uplan.empty;         %Array of FlightPlan (ordered queue using DTTO)
+        flight_plan_lastid uint32 = 0;                                %Last flightPlanId assigned
 
         %ros structs
         node                            %Node
@@ -64,8 +64,8 @@ classdef S_Registry < handle
         %Register a new operator in the registry
         function res = regNewOperator(obj, ss, req, res)
             %Compute new operatorId
-            id = obj.operatorLastId + 1;
-            obj.operatorLastId = id;
+            id = obj.operator_lastid + 1;
+            obj.operator_lastid = id;
             %Assign operatorId
             req.OperatorInfo.Id = id;
             %Signup in the registry
@@ -77,8 +77,8 @@ classdef S_Registry < handle
         %Register a new drone in the registry
         function res = regNewUAV(obj, ss, req, res)
             %Commpute new uavId
-            id = obj.uavLastId + 1;
-            obj.uavLastId = id;
+            id = obj.uav_lastid + 1;
+            obj.uav_lastid = id;
             %Assign uavId
             req.Uav.Id = id;
             %Signup in the registry
@@ -102,13 +102,13 @@ classdef S_Registry < handle
 
         %Function to register a new flight plan
         function res = regNewFlightPlan(obj, ss, req, res)
-            %Compute new flightPlanId
-            id = obj.flightPlanLastId + 1;
-            %Assign flightPlanLastId
-            obj.flightPlanLastId = id;
+            %Compute new flight_plan_lastid
+            id = obj.flight_plan_lastid + 1;
+            %Assign flight_plan_lastid
+            obj.flight_plan_lastid = id;
             req.Fp.FlightPlanId = id;
             %Save in the registry
-            obj.flightPlans(id) = req.Fp;
+            obj.flight_plans(id) = req.Fp;
             %Response
             res.Fp = req.Fp;
             res.Status = 1;
@@ -144,11 +144,11 @@ classdef S_Registry < handle
         function res = getFps(obj, ss, req, res)
             %Check if fp ID is 0 (to get the entire list)
             if (req.FpId == 0)
-                res.Fps = obj.flightPlans;
+                res.Fps = obj.flight_plans;
             else
                 %Check if the FP id exists
-                if length(obj.flightPlans) >= req.FpId
-                    res.Fps = obj.flightPlans(req.FpId);
+                if length(obj.flight_plans) >= req.FpId
+                    res.Fps = obj.flight_plans(req.FpId);
                 end
             end
         end

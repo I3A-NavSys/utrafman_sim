@@ -55,7 +55,7 @@ end
 for i=1:numUAV*1
     rng(i);                                     %Random generator mix
     %Random route generation
-    route = FlightPlan.GenerateRandomRoute(randi([6 10],1));
+    route = FlightPlan.generateRandomRoute(randi([6 10],1));
     %Uplan generation
     fp(i) = FlightPlan(operator, ...        %Operator
                        uavs(i), ...         %Drone asignation

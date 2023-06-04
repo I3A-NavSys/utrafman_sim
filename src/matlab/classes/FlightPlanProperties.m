@@ -98,7 +98,7 @@ classdef FlightPlanProperties < handle
         %Implementation of the AbstractionLayer for flight plans
         %This function returns the position of the drone at any time t interpolating the route waypoints.
         %Allow abstraction of the flight plan definition (waypoints) and the real flight plan execution (position of the drone at any time).
-        function p = AbstractionLayer(fp, t)
+        function p = abstractionLayer(fp, t)
             %If t is before init Uplan, return not valid pos
             if t < fp.route(1).T.Sec
                 p = [0 0 0];
@@ -134,10 +134,10 @@ classdef FlightPlanProperties < handle
     end
 
     methods(Static)
-        %To be reimplemented. 
+        %No longer in use.
         %This function is used to generate random flight plans inside bounds and with a given number of waypoints.
         %Used for testing purposes.
-        function route = GenerateRandomRoute(nway)
+        function route = generateRandomRoute(nway)
             %Airspace bounds
             bounds =   [[-4 4]
                         [4 -4]];

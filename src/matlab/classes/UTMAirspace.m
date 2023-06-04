@@ -33,7 +33,7 @@ classdef UTMAirspace < handle
             delete ROS_IP;
 
             %Connect with ROS master
-            obj.ConnectWithROSMaster();
+            obj.connectWithROSMaster();
 
             %Create instances of objects
             obj.S_Registry = S_Registry();
@@ -55,7 +55,7 @@ classdef UTMAirspace < handle
         end
 
         %Connection with ROS Master
-        function ConnectWithROSMaster(obj)
+        function connectWithROSMaster(obj)
             try
                 rosinit(obj.rosMasterIp, obj.rosMasterPort);
             catch

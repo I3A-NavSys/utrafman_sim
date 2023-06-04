@@ -43,13 +43,13 @@ fpId = 1;
 %Using simulated data
 figure(1);
 
-fp_obj = SP.get_fp_by_id(fpId);
-fp_wps = SP.get_fp_waypoints(fp_obj);
+fp_obj = SP.getFpById(fpId);
+fp_wps = SP.getFpWaypoints(fp_obj);
 
 uavId = fp_obj.DroneId;
-uav_obj = SP.get_uav_by_id(uavId);
-uav_tel = SP.get_uav_telemetry(uav_obj);
-uav_tel = SP.filter_uav_telemetry_by_time(uav_tel, min(fp_wps.Time), max(fp_wps.Time));
+uav_obj = SP.getUavById(uavId);
+uav_tel = SP.getUavTelemetry(uav_obj);
+uav_tel = SP.filterUavTelemetryByTime(uav_tel, min(fp_wps.Time), max(fp_wps.Time));
 
 
 drone.initLoc = [uav_tel.PositionX(1) uav_tel.PositionY(1) uav_tel.PositionZ(1)];

@@ -17,7 +17,7 @@ classdef SimulationProcesser < handle
             %Parsing S_Registry data (unmodified)
             obj.S_Registry.operators = UTM.S_Registry.operators;
             obj.S_Registry.uavs = UTM.S_Registry.uavs;
-            obj.S_Registry.flightPlans = UTM.S_Registry.flightPlans;
+            obj.S_Registry.flight_plans = UTM.S_Registry.flight_plans;
             
             %Parsing S_Monitoring data
             obj.num_uavs = length(UTM.S_Registry.uavs);
@@ -45,7 +45,7 @@ classdef SimulationProcesser < handle
         end
         
         %Checks the conflicts between UAVs (v2, fast but not highly accurate, could skip some conflcts, around 5%, depending on telemetry sampling)
-        function conflicts = check_conflicts_fast(obj,conf_dist)
+        function conflicts = checkConflictsFast(obj,conf_dist)
             locs = obj.S_Monitoring.telemetry;
 
             tic
@@ -116,7 +116,7 @@ classdef SimulationProcesser < handle
         end
 
         %Checks the conflicts between UAVs (v1, slow but more accurate than v2)
-        function conflicts = check_conflicts_complete(obj,conf_dist)
+        function conflicts = checkConflictsComplete(obj,conf_dist)
             locs = obj.S_Monitoring.telemetry;
 
             tic
@@ -176,16 +176,16 @@ classdef SimulationProcesser < handle
         end
 
         % Get flightPlan object by id
-        function fp = get_fp_by_id(obj, id)
-            if id > length(obj.S_Registry.flightPlans)
+        function fp = getFpById(obj, id)
+            if id > length(obj.S_Registry.flight_plans)
                 fp = 0;
             else
-                fp = obj.S_Registry.flightPlans(id);
+                fp = obj.S_Registry.flight_plans(id);
             end
         end
 
         % Get UAV object by id
-        function fp = get_uav_by_id(obj, id)
+        function fp = getUavById(obj, id)
             if id > length(obj.S_Registry.uavs)
                 fp = 0;
             else
@@ -194,7 +194,7 @@ classdef SimulationProcesser < handle
         end
 
         % Get operator object by id
-        function fp = get_operator_by_id(obj, id)
+        function fp = getOperatorById(obj, id)
             if id > length(obj.S_Registry.operators)
                 fp = 0;
             else
@@ -203,7 +203,7 @@ classdef SimulationProcesser < handle
         end
 
         %Get UAV telemetry table by id
-        function tel = get_uav_telemetry(obj, uav)
+        function tel = getUavTelemetry(obj, uav)
             tel = obj.S_Monitoring.telemetry(uav.Id,:,:);
             tel = squeeze(tel);
 
@@ -212,14 +212,14 @@ classdef SimulationProcesser < handle
         end
 
         %Filter UAV telemetry table by time
-        function tel = filter_uav_telemetry_by_time(obj, tel, start_t, end_t)
+        function tel = filterUavTelemetryByTime(obj, tel, start_t, end_t)
             %Filter by time
             tel = tel(tel.Time > start_t,:);
             tel = tel(tel.Time < end_t,:);
         end
 
         %Get flightplan waypoints table
-        function wp = get_fp_waypoints(obj, fp)
+        function wp = getFpWaypoints(obj, fp)
             wps = fp.Route;
             times = [wps.T];
             times = [times.Sec] + [times.Nsec]*10e-10;
@@ -227,23 +227,23 @@ classdef SimulationProcesser < handle
             wp = table(times', [wps.X]', [wps.Y]', [wps.Z]', [wps.R]', 'VariableNames', {'Time', 'X', 'Y', 'Z', 'R'});
         end
 
-        function fig = telemetry_viewer(obj, fpId)
+        function fig = telemetryViewer(obj, fpId)
         
             fig = figure(1);
             
-            fp_obj = obj.get_fp_by_id(fpId);
-            fp_wps = obj.get_fp_waypoints(fp_obj);
+            fp_obj = obj.getFpById(fpId);
+            fp_wps = obj.getFpWaypoints(fp_obj);
             
             uavId = fp_obj.DroneId;
-            uav_obj = obj.get_uav_by_id(uavId);
-            uav_tel = obj.get_uav_telemetry(uav_obj);
-            uav_tel = obj.filter_uav_telemetry_by_time(uav_tel, min(fp_wps.Time), max(fp_wps.Time));
+            uav_obj = obj.getUavById(uavId);
+            uav_tel = obj.getUavTelemetry(uav_obj);
+            uav_tel = obj.filterUavTelemetryByTime(uav_tel, min(fp_wps.Time), max(fp_wps.Time));
             
             
             drone.initLoc = [uav_tel.PositionX(1) uav_tel.PositionY(1) uav_tel.PositionZ(1)];
             
             
-            %uplan = UTM.S_Registry.flightPlans(fp);
+            %uplan = UTM.S_Registry.flight_plans(fp);
             waypoints = [fp_wps.X, fp_wps.Y, fp_wps.Z];
             
             %Allocating variables

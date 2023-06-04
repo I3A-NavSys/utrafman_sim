@@ -53,7 +53,7 @@ for j = 1:length(UTM.S_Registry.flightPlans)
         %Compute difference between U-plan position and simulation drone
         %position
         t = droneTelemetry(i).Time.Sec + droneTelemetry(i).Time.Nsec*10e-10;
-        reference = Uplan.AbstractionLayer(t);
+        reference = Uplan.abstractionLayer(t);
         real = [droneTelemetry(i).Pose.Position.X droneTelemetry(i).Pose.Position.Y droneTelemetry(i).Pose.Position.Z];
         err = norm(reference-real);
         %Cumulative error

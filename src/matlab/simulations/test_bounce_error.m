@@ -53,7 +53,7 @@ while(UTM.Gclock == -1)
 end
 
 %Random route generation
-%route = FlightPlan.GenerateRandomRoute(randi([6 10],1));
+%route = FlightPlan.generateRandomRoute(randi([6 10],1));
 route1 = [[0  10 2]; [0  9 2]; [0 -10 2]];
 route2 = [[0 -10 2]; [0 -9 2]; [0  10 2]];
 
