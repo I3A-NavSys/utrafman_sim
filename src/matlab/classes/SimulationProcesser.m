@@ -420,7 +420,8 @@ classdef SimulationProcesser < handle
             drawnow ;
         end
 
-        function error2 = computFpFollowingError(SP, fp_id)
+        %Compute the errors (cum, mean, min, max) in the following of the reference during the simulation
+        function error2 = computeFpFollowingError(SP, fp_id)
             %Simulation propierties
                 % 1-> Uplan total time (end-init)
                 % 2-> Number of Waypoints
@@ -483,6 +484,21 @@ classdef SimulationProcesser < handle
                 end
             
                 error2(j,2) = error2(j,1)/i;
+            end
+        end
+
+        %Compute the distance traveled by the UAV in a U-plan following
+        function dist = computeFpTraveledDistance(obj, fp_id)
+            fp = obj.getFpById(fp_id);
+            t_init = fp.Dtto;
+            t_end = fp.Route(end).T.Sec;
+            fp_tel = obj.filterUavTelemetryByTime(obj.getUavTelemetry(fp.DroneId), t_init, t_end);
+            fp_tel = [fp_tel{:, "PositionX"} fp_tel{:, "PositionY"} fp_tel{:, "PositionZ"}];
+            
+            %Compute distance between each point
+            dist = 0;
+            for i=1:length(fp_tel)-1
+                dist = dist + norm(fp_tel(i,:)-fp_tel(i+1,:));
             end
         end
     end

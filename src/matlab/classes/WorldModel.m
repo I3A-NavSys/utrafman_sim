@@ -75,6 +75,7 @@ classdef WorldModel < handle
 
         %Function to generate a random route of a given length (in meters) starting from a given position
         function waypoints = getRoute(obj, route_dist, init_loc)
+            route_dist = route_dist *2;
             figure(obj.world_fig);
             
             %Get the initial position (if not given, generate a random one)
