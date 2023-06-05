@@ -177,6 +177,10 @@ classdef SimulationProcesser < handle
 
         % Get flightPlan object by id
         function fp = getFpById(obj, id)
+            if id == 0
+                fp = obj.S_Registry.flight_plans;
+                return;
+            end
             if id > length(obj.S_Registry.flight_plans)
                 fp = 0;
             else
@@ -185,26 +189,34 @@ classdef SimulationProcesser < handle
         end
 
         % Get UAV object by id
-        function fp = getUavById(obj, id)
+        function uavs = getUavById(obj, id)
+            if id == 0
+                uavs = obj.S_Registry.uavs;
+                return;
+            end
             if id > length(obj.S_Registry.uavs)
-                fp = 0;
+                uavs = 0;
             else
-                fp = obj.S_Registry.uavs(id);
+                uavs = obj.S_Registry.uavs(id);
             end
         end
 
         % Get operator object by id
-        function fp = getOperatorById(obj, id)
+        function op = getOperatorById(obj, id)
+            if id == 0
+                op = obj.S_Registry.operators;
+                return;
+            end
             if id > length(obj.S_Registry.operators)
-                fp = 0;
+                op = 0;
             else
-                fp = obj.S_Registry.operators(id);
+                op = obj.S_Registry.operators(id);
             end
         end
 
         %Get UAV telemetry table by id
-        function tel = getUavTelemetry(obj, uav)
-            tel = obj.S_Monitoring.telemetry(uav.Id,:,:);
+        function tel = getUavTelemetry(obj, uavId)
+            tel = obj.S_Monitoring.telemetry(uavId,:,:);
             tel = squeeze(tel);
 
             %Create a table with telemetry
@@ -247,30 +259,6 @@ classdef SimulationProcesser < handle
             waypoints = [fp_wps.X, fp_wps.Y, fp_wps.Z];
             
             %Allocating variables
-            % t = zeros(1,size(drone.locs',2));
-            % x = zeros(1,size(drone.locs',2));
-            % y = zeros(1,size(drone.locs',2));
-            % z = zeros(1,size(drone.locs',2));
-            % rotz = zeros(1,size(drone.locs',2));
-            % dx = zeros(1,size(drone.locs',2));
-            % dy = zeros(1,size(drone.locs',2));
-            % dz = zeros(1,size(drone.locs',2));
-            % drotz = zeros(1,size(drone.locs',2));
-            % 
-            % %Fill variables with simulation data
-            % for i=1:1:size(drone.locs',2)
-            %     tel = drone.locs(i);
-            %     t(i) = tel.Time.Sec;
-            %     x(i) = tel.Pose.Position.X;
-            %     y(i) = tel.Pose.Position.Y;
-            %     z(i) = tel.Pose.Position.Z;
-            %     rotz(i) = tel.Pose.Orientation.Z;
-            %     dx(i) = tel.Velocity.Linear.X;
-            %     dy(i) = tel.Velocity.Linear.Y;
-            %     dz(i) = tel.Velocity.Linear.Z;
-            %     drotz(i) = tel.Velocity.Angular.Z;
-            % end
-            
             t       = uav_tel.Time';
             x       = uav_tel.PositionX';
             y       = uav_tel.PositionY';
@@ -281,13 +269,12 @@ classdef SimulationProcesser < handle
             dy      = uav_tel.VelLinY';
             dz      = uav_tel.VelLinZ';
             
-            %eul_trans = [cos(-uav_tel.OrientationZ) sin(-uav_tel.OrientationZ) 0 ; -sin(-uav_tel.OrientationZ) -cos(-uav_tel.OrientationZ) 0; 0 0 1] * [dx dy dz];
+            %Transform body velocities to world velocities
             eul_trans = zeros(length(dx), 3);
             for i=1:length(dx)
                 mat = [cos(-uav_tel.OrientationZ(i)) sin(-uav_tel.OrientationZ(i)) 0 ; -sin(-uav_tel.OrientationZ(i)) -cos(-uav_tel.OrientationZ(i)) 0; 0 0 1];
                 eul_trans(i,:) = mat * [dx(i); dy(i); dz(i)]; 
             end
-            
             dx = eul_trans(:,1)';
             dy = eul_trans(:,2)';
             drotz   = uav_tel.VelAngZ';
@@ -313,15 +300,6 @@ classdef SimulationProcesser < handle
             ux = [drone.initLoc(1) drone.initLoc(1) fp_wps.X' fp_wps.X(end) fp_wps.X(end)];
             uy = [drone.initLoc(2) drone.initLoc(2) fp_wps.Y' fp_wps.Y(end) fp_wps.Y(end)];
             uz = [0 0 fp_wps.Z' 0 0];
-            
-            % dux(1) = 0; duy(1) = 0; duz(1) = 0;
-            % for i=2:size(uplan.route,2)
-            %     timeBetween = uplan.route(1,i).T.Sec - uplan.route(1,i-1).T.Sec;
-            %     dux(i) = (ux(i)-ux(i-1))/timeBetween;
-            %     duy(i) = (uy(i)-uy(i-1))/timeBetween;
-            %     duz(i) = (uz(i)-uz(i-1))/timeBetween;
-            % end
-            % dux(i+1) = 0; duy(i+1) = 0; duz(i+1) = 0;
             
             %Generating datetimes of simulation and reference data
             sim_dates = datetime(t,'ConvertFrom','epochtime','Epoch',0);
@@ -440,6 +418,72 @@ classdef SimulationProcesser < handle
             [possp.AxesProperties.LegendLocation] = deal('southeast','southeast','southeast');
             
             drawnow ;
+        end
+
+        function error2 = computFpFollowingError(SP, fp_id)
+            %Simulation propierties
+                % 1-> Uplan total time (end-init)
+                % 2-> Number of Waypoints
+                % 3-> Precission (not used)
+            simProperties = zeros(1,3);
+            
+            %Error variable
+                % 1-> Total cumulative error
+                % 2-> Mean error in each telemetry time
+                % 3-> Minimum error
+                % 4-> Maximum error
+            error2 = zeros(1,4);
+            
+            %For each U-plan in the entire simulation
+            uplans = SP.getFpById(fp_id);
+            for j = 1:length(uplans)
+                %Take the U-plan
+                uplan = uplans(j);
+                
+                %Take the init and final timie of the U-plan
+                t_init = uplan.Dtto;
+                t_end = uplan.Route(end).T.Sec;
+            
+                %U-plan properties
+                simProperties(j,1) = t_end-t_init;
+                simProperties(j,2) = length(uplan.Route);
+            
+                %UAV telemetry
+                uavTel = SP.filterUavTelemetryByTime(SP.getUavTelemetry(uplan.DroneId), t_init, t_end);
+                
+                %Max and min
+                error2(j,4) = 0;
+            
+                %For each telemetry sent by the UAV 
+                % (precission of the error is determined by the sampling time)
+                for i=1:height(uavTel)
+                    %Compute difference between U-plan position and simulation UAV position
+                    t = uavTel{i, "Time"};
+                    reference = FlightPlanProperties.abstractionLayerUplan(uplan, t);
+                    real = [uavTel{i,"PositionX"} uavTel{i,"PositionY"} uavTel{i,"PositionZ"}];
+                    err = norm(reference-real);
+                    %Cumulative error
+                    error2(j,1) = error2(j,1) + err;
+            
+                    %Max and min
+                    %Set the first min
+                    if i == 1
+                        error2(j,3) = norm(reference-real);
+                    end
+                    
+                    %If new min is found
+                    if error2(j,3) > err
+                        error2(j,3) = err;
+                    end
+            
+                    %If new max is found
+                    if error2(j,4) < err
+                        error2(j,4) = err;
+                    end
+                end
+            
+                error2(j,2) = error2(j,1)/i;
+            end
         end
     end
 end

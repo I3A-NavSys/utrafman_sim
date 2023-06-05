@@ -151,6 +151,40 @@ classdef FlightPlanProperties < handle
                 route(j,:) = [x y z];
             end
         end
+
+        function p = abstractionLayerUplan(uplan, t)
+            %If t is before init Uplan, return not valid pos
+            if t < uplan.Route(1).T.Sec
+                p = [0 0 0];
+                return;
+            end
+
+            %If t after finishing Uplan, return finish position
+            if t > uplan.Route(end).T.Sec
+                p = [uplan.Route(end).X uplan.Route(end).Y uplan.Route(end).Z];
+                return;
+            end
+
+            % Travel waypoint (assuming first waypoint is where drone is before take off)
+            for i = 2:size(uplan.Route,1)
+                waypoint = uplan.Route(i);
+                
+                %Until the next waypoint to t
+                if t > waypoint.T.Sec
+                    continue;
+                end
+
+                %Now waypoint is the next waypoint
+                timeDifBetWays = waypoint.T.Sec - uplan.Route(i-1).T.Sec;  %Time dif between last waypoint and enroute waypoint
+                timeDifBetWayT = t - uplan.Route(i-1).T.Sec;               %Time dif between last waypoint and t
+                %Compute dif between waypoints
+                vectorDif = [waypoint.X waypoint.Y waypoint.Z] - [uplan.Route(i-1).X uplan.Route(i-1).Y uplan.Route(i-1).Z];
+                %Now vectorDif is the RELATIVE vector between last waypoint and
+                %position in t, so must be converted to ABSOLUTE.
+                p = (vectorDif.*(timeDifBetWayT/timeDifBetWays)) + [uplan.Route(i-1).X uplan.Route(i-1).Y uplan.Route(i-1).Z];
+                return;
+            end
+        end
     end
 end
 
