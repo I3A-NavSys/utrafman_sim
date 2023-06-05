@@ -17,9 +17,13 @@ classdef UTMAirspace < handle
         rosMasterPort uint32 = 11311;
 
         %Gazebo Clock
+        Gclock = -1;                %Gazebo clock value
         GClock_sub;                 %Subscriber to Gazebo clock
         GClock_Upt_timer;           %Timer to update Gazebo clock
-        Gclock = -1;                %Gazebo clock value
+
+        %To automatically finish simulations
+        finish_simulation_time = inf;
+        finish_simulation_timer;
     end
     
     methods
@@ -30,7 +34,6 @@ classdef UTMAirspace < handle
             run(fullfile("./config/ros.m"));
             %run(fullfile(""));
             obj.rosMasterIp = ROS_IP;
-            delete ROS_IP;
 
             %Connect with ROS master
             obj.connectWithROSMaster();
@@ -74,6 +77,11 @@ classdef UTMAirspace < handle
 
             %Start timer
             start(obj.GClock_Upt_timer);
+
+            % %Wait until Gazebo clock has a value
+            while(obj.Gclock == -1)
+                pause(0.1)
+            end
         end
         
         %Update of Gazebo Clock value
@@ -93,13 +101,55 @@ classdef UTMAirspace < handle
             end
         end
 
-        %To save UTMAirspace object data
-        function obj = saveUTMobject(obj, timer, time)
-            state = warning;
-            warning('off','all');
-            save("simulations-results/utm", 'obj');
-            warning(state);
+        %To set the automatically finish simulation time
+        %Maintains the greatest time passed on all method calls
+        function setFinishSimulationTime(obj, finish_time)
+            if (obj.finish_simulation_time == inf) || (finish_time > obj.finish_simulation_time)
+                obj.finish_simulation_time = finish_time;
+            end
+            if isempty(obj.finish_simulation_timer)
+                obj.finish_simulation_timer = timer("TimerFcn", @obj.checkIfTimeToFinishSimulation,"ExecutionMode","fixedRate", "Period",5);
+                start(obj.finish_simulation_timer);
+            end
         end
+
+        %Check if is time to finish the simulation
+        function obj = checkIfTimeToFinishSimulation(obj, timer, time)
+            if obj.Gclock > obj.finish_simulation_time
+                obj.finishSimulation();
+            end
+        end
+
+        %To finish the simulation
+        function finishSimulation(obj)
+            stop(obj.finish_simulation_timer);
+            stop(obj.GClock_Upt_timer);
+            obj.pauseSimulation();
+            pause(1);
+            rosshutdown;
+            disp("Finishing simulation");
+            timer; stop(timerfind); delete(timerfind);
+            global SP;
+            SP = SimulationProcesser(obj);
+        end
+
+        function pauseSimulation(obj)
+            ros_pause_physics = rossvcclient('/gazebo/pause_physics');
+            msg = ros_pause_physics.rosmessage;
+            if isServerAvailable(ros_pause_physics)
+                a = call(ros_pause_physics,msg,"Timeout",5);
+            else
+                error("Error pausing Gazebo simulation");
+            end
+        end
+
+        %To save UTMAirspace object data
+%         function obj = saveUTMobject(obj, timer, time)
+%             state = warning;
+%             warning('off','all');
+%             save("simulations-results/utm", 'obj');
+%             warning(state);
+%         end
     end
 end
 

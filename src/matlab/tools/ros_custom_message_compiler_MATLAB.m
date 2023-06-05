@@ -24,13 +24,21 @@ elseif getenv('USERNAME') == "siamsim" %Virtual Machine
     addpath('../../matlab_msg_gen_ros1\win64\install\m')
 
 %Ubuntu (galadriel computer)
-elseif getenv("USERNAME") == 'galadriel-ubuntu'
+elseif getenv('USERNAME') == "galadriel-ubuntu"
     setenv("MY_PYTHON_VENV", "/tmp/venv");
     ros.internal.createOrGetLocalPython(true);
     addpath('../gazebo-ros/src/utrafman_main/');
     py = pyenv('Version', '/usr/bin/python3.9');
     rosgenmsg('../gazebo-ros/src/');
     addpath('../gazebo-ros/src/matlab_msg_gen_ros1\win64\install\m')
+
+elseif getenv('USERNAME') == "jesusjover"
+    setenv("MY_PYTHON_VENV", "/tmp/venv");
+    ros.internal.createOrGetLocalPython(true);
+    addpath('../gazebo-ros/src/utrafman_main/');
+    py = pyenv('Version', '/usr/bin/python3.9');
+    rosgenmsg('../gazebo-ros/src/');
+    addpath('/opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/src/matlab_msg_gen_ros1/glnxa64/install/m')
 end
 
 savepath
