@@ -46,8 +46,8 @@ classdef WorldModel < handle
                 obj.buildings(end+1,:) = str2double(building_line)';
                 
                 %Add building to the world
-                start_bound = [(obj.buildings(end,1)-b_size(1)/2) (obj.buildings(end,2)-b_size(2)/2)];
                 b_size = [obj.buildings(end,4) obj.buildings(end,5) obj.buildings(end,6)];
+                start_bound = [(obj.buildings(end,1)-b_size(1)/2) (obj.buildings(end,2)-b_size(2)/2)];
                 %end_bound = [(building(1)+b_size(1)/2) (building(2)+b_size(2)/2)]
                 
                 %Add building to the world occupancy matrix (setting to 0 the cells occupied by the building)
@@ -56,8 +56,8 @@ classdef WorldModel < handle
                 obj.world_occupancy(mat_init(1):mat_end(1), mat_init(2):mat_end(2)) = zeros(b_size(1:2)*2);
             
                 %Plot building
-                rectangle('FaceColor', 'red', 'Position',[start_bound,b_size(:,1:2)])
-                plotcube(b_size, obj.buildings(end,1:3)-[b_size(1:2)./2 0], 0.05, [1,0,0])
+                %rectangle('FaceColor', 'red', 'Position',[start_bound,b_size(:,1:2)])
+                plotcube(b_size, obj.buildings(end,1:3)-[b_size(1:2)./2 0], 0, [1,0,0])
             end
             %Close file
             fclose(obj.file);
@@ -75,6 +75,7 @@ classdef WorldModel < handle
 
         %Function to generate a random route of a given length (in meters) starting from a given position
         function waypoints = getRoute(obj, route_dist, init_loc)
+            route_dist = route_dist *2;
             figure(obj.world_fig);
             
             %Get the initial position (if not given, generate a random one)
@@ -105,7 +106,12 @@ classdef WorldModel < handle
                 if dir == -1
                     dir = randi([0 3]);
                 else
-                    dir = mod(dir+1,4);
+                    randbol = rand < 0.5;
+                    if randbol
+                        dir = mod(dir+1,4);
+                    else
+                        dir = mod(dir-1,4);
+                    end
                 end
                 step = obj.getStep(dir);
         
@@ -158,8 +164,8 @@ classdef WorldModel < handle
             %Plot the route
             hold on;
             color = rand(1,3);
-            line(route_real(:,1)', route_real(:,2)', 'Color', color, 'LineWidth', 1);
-            plot3(waypoints3D(:,1)', waypoints3D(:,2)', waypoints3D(:,3)', 'Color',color);
+            %line(route_real(:,1)', route_real(:,2)', 'Color', color, 'LineWidth', 1);
+            plot3(waypoints3D(:,1)', waypoints3D(:,2)', waypoints3D(:,3)', 'Color',color, 'LineWidth',2);
             drawnow;
         end
     

@@ -3,58 +3,52 @@
 %evaluated measuring the error produced between the commanded route and the
 %traveled one.
 
-%TODO: Check if this works with only one drone in the simulation
-
 addpath("classes\");
-name = 'Small City';
-droneIDs = 1:length(UTM.S_Registry.drones);
-
-%If you want to load data from previous simulations, use this!
-% load simulations\sim20.mat
-% name = 'sim20';
+uav_ids = [SP.getUavById(0).Id];
+uplan_id = 0;
 
 %Simulation propierties
-    % 1-> Time 
-    % 2-> Waypoints
-    % 3-> Precission
-simProperties = zeros(length(UTM.S_Registry.flightPlans),3);
+    % 1-> Uplan total time (end-init)
+    % 2-> Number of Waypoints
+    % 3-> Precission (not used)
+simProperties = zeros(length(uav_ids),3);
 
-%Errors
+%Error variable
     % 1-> Total cumulative error
     % 2-> Minimum error
     % 3-> Maximum error
-error2 = zeros(length(UTM.S_Registry.flightPlans),2);
+error2 = zeros(length(uav_ids),2);
 
 %For each U-plan in the entire simulation
-for j = 1:length(UTM.S_Registry.flightPlans)
+uplans = SP.getFpById(uplan_id);
+for j = 1:length(uplans)
     %Take the U-plan
-    Uplan = UTM.S_Registry.flightPlans(j);
+    uplan = uplans(j);
     
     %Take the init and final timie of the U-plan
-    inicio = Uplan.dtto;
-    final = Uplan.route(end).T.Sec;
+    t_init = uplan.Dtto;
+    t_end = uplan.Route(end).T.Sec;
 
     %U-plan properties
-    simProperties(j,1) = final-inicio;
-    simProperties(j,2) = length(Uplan.route);
+    simProperties(j,1) = t_end-t_init;
+    simProperties(j,2) = length(uplan.Route);
 
-    %Drone telemetry
-    droneTelemetry = UTM.S_Registry.flightPlans(j).drone.filterTelemetryByTime(inicio, final);
+    %UAV telemetry
+    uavTel = SP.filterUavTelemetryByTime(SP.getUavTelemetry(uplan.DroneId), t_init, t_end);
 
     %Numero de drone
-    droneIDs(end+1) = UTM.S_Registry.flightPlans(j).drone.droneId;
+    %droneIDs(end+1) = UTM.S_Registry.flightPlans(j).drone.droneId;
     
     %Max and min
     error2(j,3) = 0;
 
-    %For each telemetry sent by the drone 
+    %For each telemetry sent by the UAV 
     % (precission of the error is determined by the sampling time)
-    for i=1:length(droneTelemetry)
-        %Compute difference between U-plan position and simulation drone
-        %position
-        t = droneTelemetry(i).Time.Sec + droneTelemetry(i).Time.Nsec*10e-10;
-        reference = Uplan.AbstractionLayer(t);
-        real = [droneTelemetry(i).Pose.Position.X droneTelemetry(i).Pose.Position.Y droneTelemetry(i).Pose.Position.Z];
+    for i=1:height(uavTel)
+        %Compute difference between U-plan position and simulation UAV position
+        t = uavTel{i, "Time"};
+        reference = FlightPlanProperties.abstractionLayerUplan(uplan, t);
+        real = [uavTel{i,"PositionX"} uavTel{i,"PositionY"} uavTel{i,"PositionZ"}];
         err = norm(reference-real);
         %Cumulative error
         error2(j,1) = error2(j,1) + err;
@@ -85,7 +79,6 @@ figure('Position',[0 100 1300 500]);
 data = [error2(:,2) error2(:,1)./simProperties(:,1) error2(:,3)];
 data = round(data,3);
 bar(data);
-title(name);
 
 %Figure limits
 ylimits = [0 2];

@@ -98,7 +98,7 @@ classdef FlightPlanProperties < handle
         %Implementation of the AbstractionLayer for flight plans
         %This function returns the position of the drone at any time t interpolating the route waypoints.
         %Allow abstraction of the flight plan definition (waypoints) and the real flight plan execution (position of the drone at any time).
-        function p = AbstractionLayer(fp, t)
+        function p = abstractionLayer(fp, t)
             %If t is before init Uplan, return not valid pos
             if t < fp.route(1).T.Sec
                 p = [0 0 0];
@@ -134,10 +134,10 @@ classdef FlightPlanProperties < handle
     end
 
     methods(Static)
-        %To be reimplemented. 
+        %No longer in use.
         %This function is used to generate random flight plans inside bounds and with a given number of waypoints.
         %Used for testing purposes.
-        function route = GenerateRandomRoute(nway)
+        function route = generateRandomRoute(nway)
             %Airspace bounds
             bounds =   [[-4 4]
                         [4 -4]];
@@ -149,6 +149,40 @@ classdef FlightPlanProperties < handle
                 y = (bounds(2,2)-bounds(1,2)) * rand(1) + bounds(1,2);
                 z = 4 * rand(1) + 1;
                 route(j,:) = [x y z];
+            end
+        end
+
+        function p = abstractionLayerUplan(uplan, t)
+            %If t is before init Uplan, return not valid pos
+            if t < uplan.Route(1).T.Sec
+                p = [0 0 0];
+                return;
+            end
+
+            %If t after finishing Uplan, return finish position
+            if t > uplan.Route(end).T.Sec
+                p = [uplan.Route(end).X uplan.Route(end).Y uplan.Route(end).Z];
+                return;
+            end
+
+            % Travel waypoint (assuming first waypoint is where drone is before take off)
+            for i = 2:size(uplan.Route,1)
+                waypoint = uplan.Route(i);
+                
+                %Until the next waypoint to t
+                if t > waypoint.T.Sec
+                    continue;
+                end
+
+                %Now waypoint is the next waypoint
+                timeDifBetWays = waypoint.T.Sec - uplan.Route(i-1).T.Sec;  %Time dif between last waypoint and enroute waypoint
+                timeDifBetWayT = t - uplan.Route(i-1).T.Sec;               %Time dif between last waypoint and t
+                %Compute dif between waypoints
+                vectorDif = [waypoint.X waypoint.Y waypoint.Z] - [uplan.Route(i-1).X uplan.Route(i-1).Y uplan.Route(i-1).Z];
+                %Now vectorDif is the RELATIVE vector between last waypoint and
+                %position in t, so must be converted to ABSOLUTE.
+                p = (vectorDif.*(timeDifBetWayT/timeDifBetWays)) + [uplan.Route(i-1).X uplan.Route(i-1).Y uplan.Route(i-1).Z];
+                return;
             end
         end
     end
