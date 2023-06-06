@@ -95,12 +95,16 @@ The topics and services offered by the Monitoring Service are:
         <td>Used to get the telemetry data of a UAV. A uavId is mandatory to be specified.</td>
     </tr>
     <tr>
-        <td>/service/registry/reg_new_uav</td>
+        <td>/service/monitoring/get_current_loc</td>
         <td>Service</td>
-        <td>/service/registry/reg_new_uav</td>
-        <td>Used to register a new UAV</td>
+        <td>/service/monitoring/mon_get_locs</td>
+        <td>Used to get the current location of a UAV. An uavid is mandatory to be specified.</td>
     </tr>
 </table>
+
+In this image, you can see a class diagram of this services:
+
+![Class diagram](./diagrams/services-diagram.png 'Services class diagram  ').
 
 ## 4.2. Interaction between UTM Services
 Here is an example of how this service interacts between them and the simulator when a simulation is in progress:

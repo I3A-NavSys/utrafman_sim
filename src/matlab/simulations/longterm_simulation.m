@@ -11,8 +11,8 @@ global SP;
 
 %Simulation config
 num_uavs = 20;
-route_dist = 100;
-total_sim_time =24*1*60; %Minimum Simulation Time
+route_dist = 500;
+total_sim_time =24*60*60; %Minimum Simulation Time
 
 %Create a parallel pool to run services in parallel using workers (disabled by default)
 %parallelpclcool = gcp;
