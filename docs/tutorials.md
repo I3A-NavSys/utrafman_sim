@@ -21,13 +21,21 @@ To install U-TRAFMAN Simulator, you need to clone the repository in your ROS ins
 cd /opt/ros/noetic/share
 git clone https://github.com/I3A-NavSys/utrafman_sim
 ```
-You could install the simulator in other locations, but additional steps are needed. As you could see, `src/gazebo_ros/` is a ROS (_catkin_) workspace and contains all the simulation environment. On the other hand, `src/matlab/` includes simulator launch code, tools and telemetry viewer. Once you have cloned the repository, you need to compile the code. To do that, you can use the following commands:
+You could install the simulator in other locations, but additional steps are needed. As you could see, `src/gazebo-ros/` is a ROS (_catkin_) workspace and contains all the simulation environment. On the other hand, `src/matlab/` includes simulator launch code, tools and telemetry viewer. Once you have cloned the repository, you need to compile the code. To do that, you can use the following commands:
 
 ```bash
-cd /utrafman-simulator/src/gazebo_ros
+cd /utrafman-sim/src/gazebo-ros #(or just cd utrafman_sim)
 catkin_make
 ```
-Once the workspace is compiled, you should be ready to run simulations.
+>:warning:  _catkin\_make_ will not work if you have not sourced ROS `/opt/ros/noetic/setub.bash` file. Add the source in your `.bashrc` or source it in the terminal before compiling the workspace!
+
+Once the workspace is compiled, you also need to source the workspace into your `.bashrc` file. To do that, include the following line in your `.bashrc` file:
+
+```bash
+source /opt/ros/noetic/share/utrafman_sim/devel/setup.bash
+```
+
+Now you should be ready to run simulations.
 
 ### MATLAB
 >:warning:  U-TRAFMAN Simulator is only tested with **MATLAB R2022a and newer versions, and Python 3.9**. Maybe it could work in other versions, but it is not guaranteed.
