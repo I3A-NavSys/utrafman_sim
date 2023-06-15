@@ -1,18 +1,16 @@
 classdef Building
-    % Propiedades de la clase
     properties
-        % Posición predeterminada
-        x = 0
-        y = 0
-        z = 0
-        % Tamaño predeterminado
-        sx = 10
-        sy = 10
-        sz = 10
+        % Default position
+        x double = 0
+        y double = 0
+        z double = 0
+        % Default size
+        sx double = 10
+        sy double = 10
+        sz double = 10
     end
     
     methods
-        % Constructor de la clase
         function obj = Building(size)
             if nargin > 0
                 obj.sx = size(1);
@@ -21,15 +19,15 @@ classdef Building
             end
         end
         
-        % Método para establecer la posición del edificio
-        function obj = SetPos(obj, pos)
+        % Method to set the position of the building
+        function obj = setPos(obj, pos)
             obj.x = pos(1);
             obj.y = pos(2);
             obj.z = pos(3);
         end
         
-        % Método para generar el SDF
-        function sdf = GenerateSDF(obj)
+        % Method to generate the SDF of the building
+        function sdf = generateSDF(obj)
             color = [0.9, 0.9, 0.9];
             alpha = 1;
             

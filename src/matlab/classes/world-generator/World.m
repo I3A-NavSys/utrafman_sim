@@ -1,23 +1,23 @@
 classdef World
-    % Propiedades de la clase
     properties
-        % Posición predeterminada
+        % Default position
         x = 0
         y = 0
         z = 0
-        % Tamaño predeterminado
+        % Default size
         sx = 1000
         sy = 1000
         sz = 1
-        % Tamaño de las calles (mínimo y máximo)
+        % Streets size
         streets_size = [10, 20]
-        % Edificios dentro del mundo
+        % Buildings
         buildings = Building.empty(1000000, 0)
         buildings_total = 0;
+        %Figure
+        world_fig
     end
     
     methods
-        % Constructor de la clase
         function obj = World(init_pos, size)
             if nargin > 0
                 obj.x = init_pos(1);
@@ -28,14 +28,30 @@ classdef World
             end
         end
         
-        % Método para agregar un edificio al mundo
-        function obj = AddBuilding(obj, building)
+        % Method to add a building to the world
+        function obj = addBuilding(obj, building)
             obj.buildings(obj.buildings_total + 1) = building;
             obj.buildings_total = obj.buildings_total + 1;
         end
+
+        function createFig(obj)
+            obj.world_fig = figure('Name', 'World', 'NumberTitle', 'off');
+            figure(obj.world_fig);
+            clf(obj.world_fig);
+
+            for building = obj.buildings
+                b_size = [building.sx building.sy building.sz];
+                b_pos = [building.x building.y building.z];
+                plotcube(b_size, b_pos - [b_size(1:2)/2 0], 0.1, [0.5, 0.5, 0.5]);
+            end
+            xlim([0-obj.sx/2 obj.sx/2]);
+            xlabel("X");
+            ylim([0-obj.sy/2 obj.sy/2]);
+            ylabel("Y");
+        end
         
-        % Método para generar el SDF
-        function sdf = GenerateSDF(obj)
+        % Method to generate .sdf file
+        function sdf = generateSDF(obj)
             color = [1, 0.7, 0];
             alpha = 1;
             
@@ -45,7 +61,8 @@ classdef World
                 building_sdf = strcat(building_sdf, building.GenerateSDF());
             end
             
-            sdf = sprintf(['   <scene>\n',...
+            sdf = sprintf(['<?xml version="1.0"?><sdf version="1.7"><world name="default">' ...
+                           '   <scene>\n',...
                            '      <ambient>0.5 0.5 0.5 1.0</ambient>\n',...
                            '      <shadows>true</shadows>\n',...
                            '   </scene>\n',...
@@ -55,7 +72,7 @@ classdef World
                            '   <!-- Camera -->\n',...
                            '   <gui fullscreen="0">\n',...
                            '      <camera name="user_camera">\n',...
-                           '         <pose>0 0 1000 0 1.57 0</pose>\n',...
+                           '         <pose>0 0 1000 -1.57 1.57 0</pose>\n',...
                            '         <view_controller>orbit</view_controller>\n',...
                            '         <projection_type>perspective</projection_type>\n',...
                            '      </camera>\n',...
@@ -98,7 +115,9 @@ classdef World
                            '         <gravity>1</gravity>\n',...
                            '      </link>\n',...
                            '   </model>\n',...
-                           '%s'],...
+                           '%s',...
+                           '<plugin name="UTRAFMAN_God" filename="libUTRAFMAN_God.so" />', ...
+                           '</world></sdf>'],...
                            obj.x, obj.y, obj.z - obj.sz,...
                            obj.sx, obj.sy, obj.sz,...
                            obj.sx, obj.sy, obj.sz,...
