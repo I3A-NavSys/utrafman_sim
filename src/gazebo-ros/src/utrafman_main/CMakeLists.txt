@@ -86,6 +86,7 @@ add_service_files(
   reg_get_fps.srv
   mon_get_locs.srv
   insert_model.srv
+  remove_model.srv
 )
 
 ## Generate actions in the 'action' folder

@@ -50,11 +50,6 @@ classdef UTMAirspace < handle
                 obj.S_Registry.execute(obj.rosMasterIp);
                 obj.S_Monitoring.execute(obj.rosMasterIp);
             end
-
-            %obj.S_FlightPlansPlanner = FlightPlansPlanner(obj);
-
-            %obj.saveobj_timer = timer("TimerFcn", @obj.saveUTMobject ,"ExecutionMode", "fixedRate", "Period", 60);
-            %start(obj.saveobj_timer);
         end
 
         %Connection with ROS Master
@@ -95,9 +90,13 @@ classdef UTMAirspace < handle
 
         %To remove all models from simulation
         function obj = removeAllModelsFromSimulation(obj)
-            for i=1:size(obj.S_Registry.drones,2)
-                drone = obj.S_Registry.drones(i);
-                drone.removeDrone();
+            client = rossvcclient('/godservice/remove_model');
+
+            for i = obj.S_Registry.uavs
+                drone = i;
+                msg = rosmessage(client);
+                msg.UavId = drone.Id;
+                call(client, msg, 'Timeout', 10);
             end
         end
 
@@ -142,14 +141,6 @@ classdef UTMAirspace < handle
                 error("Error pausing Gazebo simulation");
             end
         end
-
-        %To save UTMAirspace object data
-%         function obj = saveUTMobject(obj, timer, time)
-%             state = warning;
-%             warning('off','all');
-%             save("simulations-results/utm", 'obj');
-%             warning(state);
-%         end
     end
 end
 

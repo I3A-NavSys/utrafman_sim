@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<sdf version='1.5'>
+<sdf version='1.7'>
   <model name='drone_%i'>
     <name>abejorro</name>
     <pose>%f %f %f 0 0 0</pose>
