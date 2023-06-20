@@ -10,7 +10,7 @@
 
 %Unix configuration
 if isunix
-    repo_path = '/opt/ros/noetic/share/siam_sim'; %Set it with your repo installation path
+    repo_path = '/opt/ros/noetic/share/utrafman_sim'; %Set it with your repo installation path
 
     setenv("MY_PYTHON_VENV", "/tmp/venv");
     ros.internal.createOrGetLocalPython(true);
