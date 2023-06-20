@@ -6,6 +6,7 @@ As you discover in the previous section, U-TRAFMAN Simulator uses ROS, Gazebo an
 
 If you use a two-computer setup, both of them must be connected to the same network and be able to communicate with each other. If you want to avoid ROS network problems, you can use the same computer for ROS, Gazebo and MATLAB. 
 
+#### Setting up ROS_MASTER IP address in MATLAB
 Either way, MATLAB must be configured with ROS_MASTER IP address, as explained in [this tutorial](https://es.mathworks.com/help/ros/ug/get-started-with-ros.html). If you use a two-computer setup, you must configure MATLAB with the IP address of the computer where ROS is running, in the file `/src/matlab/config/ros.m`. If you use a one-computer setup, you can simply use `localhost` as ROS_MASTER IP address.
 
 
@@ -13,7 +14,7 @@ Either way, MATLAB must be configured with ROS_MASTER IP address, as explained i
 ### ROS and Gazebo
 >:warning:  U-TRAFMAN Simulator is only tested in **Ubuntu 20.04 and ROS Noetic**. Maybe it could work in other versions, but it is not guaranteed.
 
-To install U-TRAFMAN Simulator, you need to install first ROS and Gazebo. You can follow the official tutorials to install ROS and Gazebo [here](http://wiki.ros.org/noetic/Installation). Once you are  able to run a simulation in Gazebo and ROS, you can install U-TRAFMAN Simulator. Remember to define the ROS environment variables, as explained in the ROS installation tutorial!
+To install U-TRAFMAN Simulator, you need to install first ROS and Gazebo. You can follow the official tutorials to install ROS and Gazebo [here](http://wiki.ros.org/noetic/Installation). Once your Gazebo and ROS installation is complete, you can install U-TRAFMAN Simulator. **Remember to define the ROS environment variables, as explained in the ROS installation tutorial!**.
 
 To install U-TRAFMAN Simulator, you need to clone the repository in your ROS installation. To do that, you can use the following command:
 
@@ -21,6 +22,8 @@ To install U-TRAFMAN Simulator, you need to clone the repository in your ROS ins
 cd /opt/ros/noetic/share
 git clone https://github.com/I3A-NavSys/utrafman_sim
 ```
+> :warning:  Depending on your `share` folder permissions, you may need to use `sudo` to clone the repository and change the `utrafman_sim` folder permissions and/or owner after cloning.
+
 You could install the simulator in other locations, but additional steps are needed. As you could see, `src/gazebo-ros/` is a ROS (_catkin_) workspace and contains all the simulation environment. On the other hand, `src/matlab/` includes simulator launch code, tools and telemetry viewer. Once you have cloned the repository, you need to compile the code. To do that, you can use the following commands:
 
 ```bash
@@ -38,11 +41,25 @@ source /opt/ros/noetic/share/utrafman_sim/devel/setup.bash
 Now you should be ready to run simulations.
 
 ### MATLAB
->:warning:  U-TRAFMAN Simulator is only tested with **MATLAB R2022a and newer versions, and Python 3.9**. Maybe it could work in other versions, but it is not guaranteed.
 
-To install MATLAB, you can follow the official tutorial [here](https://es.mathworks.com/help/install/ug/install-mathworks-software.html). Once you have installed MATLAB, you need to install the ROS Toolbox. To do that, you can follow the official tutorial [here](https://es.mathworks.com/help/ros/ug/install-ros-toolbox.html). When MATLAB and all the dependencies are installed, you only need to open the `/src/matlab/` folder in MATLAB. 
+>:warning:  U-TRAFMAN Simulator is only tested with **MATLAB R2022a and newer versions, and Python 3.8**. Maybe it could work in other versions, but it is not guaranteed.
 
-Finally, as custom ROS messages are used, you need to compile them. Use script file `/src/matlab/tools/ros-custom-message-compiler.m` to compile them. Edit the file to define where python is installed on your computer. Once you have compiled the messages, you are ready to run simulations. You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). Once you have done all previous steps, you are ready to run simulations.
+To install MATLAB, you can follow the official tutorial [here](https://es.mathworks.com/help/install/ug/install-mathworks-software.html).
+
+#### Dependences
+> :exclamation: This dependences are mandatory and needed to run the simulator.
+
+ Once you have installed MATLAB, install all dependences:
+- ROS Toolbox for MATLAB by MathWorks.
+- Parallel Computing Toolbox for MATLAB by MathWorks.
+- PLOTCUBE for MATLAB by Olivier (installed after MATLAB installation).
+- Python3.x-venv (installed thougt terminal using apt install python3.x-venv).
+
+
+#### Compiling ROS messages using MATLAB
+Finally, as custom ROS messages are used, you need to compile them in order to be used in MATLAB. Use script file `/src/matlab/tools/ros-custom-message-compiler.m` to compile them. Edit the file to define where the working directory (repo) and python is installed on your computer and run the script. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
+
+You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). Once you have done all previous steps, you are ready to run simulations.
 
 ## 5.3. Running a simple simulation
 U-TRAFMAN Sim comes with a simple simulation to test if ROS, Gazebo and MATLAB are working properly. Open MATLAB with `/src/matlab/` as current directory and, in a new terminal, run the following command:
