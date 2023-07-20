@@ -17,13 +17,18 @@ classdef WorldModel < handle
         %Constructor of the class to read the world from a file
         function obj = WorldModel(file)
             obj.filename = file;
-            obj.world_fig = figure();
-            %obj.matrix_fig = figure();
+            
+            %Delete previous fig if exist
+            prev_fig = findobj('Type', 'Figure', 'Name','Generated routes');
+            delete(prev_fig);
+
+            obj.world_fig = figure('Name','Generated routes');
             obj.readWorldFromFile();
         end
 
         %Read the world definition from a file (.wc format)
         function obj = readWorldFromFile(obj)
+
             %Use figure
             figure(obj.world_fig);
 

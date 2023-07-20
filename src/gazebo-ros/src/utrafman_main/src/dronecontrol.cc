@@ -9,6 +9,7 @@
 #include <gazebo/common/common.hh>
 
 #include <std_msgs/Bool.h>
+#include <std_msgs/Int16.h>
 
 #include <Eigen/Core>
 #include <Eigen/Geometry>
@@ -43,41 +44,47 @@ namespace gazebo
         // Pointer to the update event connection
         event::ConnectionPtr updateConnection;
 
-        //Needed to control telemetry publish
+        //Telemetry message frequency control
         common::Time last_odom_publish_time;
-        double odom_publish_rate = 1; // updates per second
+        double odom_publish_rate = 1;           // updates per second
 
         //ROS structures
         ros::NodeHandle *ros_node;
-        ros::Subscriber ros_sub_uplans;
+
         ros::Subscriber ros_sub_kill;
+        ros::Subscriber ros_sub_uplans;
+        ros::Subscriber ros_sub_stop;
+
         ros::Publisher ros_pub_telemetry;
+        ros::Publisher ros_pub_status;
+
         ros::CallbackQueue ros_queue;
         ros::AsyncSpinner ros_spinner = ros::AsyncSpinner(1,&this->ros_queue);
 
-        //Topic structures
-        std::string uplans_topic = "uplan";
-        std::string telemetry_topic = "telemetry";
+        //Topic names
         std::string kill_topic = "kill";
+        std::string uplans_topic = "uplan";
+        std::string stop_uplan_topic = "stop"; //TODO: finish implementation
 
-        //Drone and U-plan execution
+        std::string telemetry_topic = "telemetry";
+        std::string status_topic = "status"; //TODO: finish implementation
+
+
         std::string id;
+
+        //Uplan variables
         bool uplan_inprogress = false;
         utrafman_main::Uplan::ConstPtr uplan_local;
         std::vector<utrafman_main::Waypoint> route_local;
-
-        //To control navigation
-        int actual_route_point;
+        int uplan_current_wp = 0;
 
         //Log file
         std::ofstream control_out_file;
 
 
-        //-------------------------------------------------------------------------------------------------
-
+    private:
         // Drone parameters
         //Rotors position at distance 15cms from the center of mass, inclination 45º from the axes
-    private:
         const double mass = 0.3;
         ignition::math::Vector3<double> pos_CM = ignition::math::Vector3<double>(0, 0, 0);              // center of mass
         ignition::math::Vector3<double> pos_NE = ignition::math::Vector3<double>( 0.075, -0.075, 0);   // cosd(45º) * 0.15m
@@ -128,8 +135,6 @@ namespace gazebo
         //operating MDz  = MDR (the air friction compensates the effect of the rotors) and kMDz = kMDR* (2 * w_hov2²) / Vyaw_max² we get that...
         const double kMDz = 1.1078e-04;
 
-//------------------------------------------------------------------------------------------------------
-
         // Control commands variables
         double cmd_on = 0;
         double cmd_velX = 0.0;
@@ -162,10 +167,6 @@ namespace gazebo
             this->model = _parent;
             this->link = model->GetLink("dronelink");
 
-            // Listen to the update event. This event is broadcast every iteration.
-            this->updateConnection = event::Events::ConnectWorldUpdateBegin(
-                    boost::bind(&DroneControl::OnUpdate, this, _1));
-
             // Ensure that ROS has been initialized
             if (!ros::isInitialized())
             {
@@ -173,9 +174,9 @@ namespace gazebo
                 return;
             }
 
-            // Getting Drone ID
+            // Getting Drone identifier
             if(!_sdf->HasElement("id")){
-                std::cout << "Missing parameter <id> in PluginCall, default to 0" << std::endl;
+                std::cout << "Missing parameter <id> during model definition, default 0 will be used" << std::endl;
                 this->id = "0";
             } else {
                 this->id = _sdf->GetElement("id")->GetValue()->GetAsString();
@@ -183,15 +184,16 @@ namespace gazebo
 
             //Creating a ROS Node for the drone
             this->ros_node = new ros::NodeHandle("drone/"+this->id);
+
             //Assigning the queue
             this->ros_node->setCallbackQueue(&this->ros_queue);
-            // Initiates the publication topic
+
+            // Initiates pubs topics
             this->ros_pub_telemetry = this->ros_node->advertise<utrafman_main::Telemetry>(this->telemetry_topic, 100);
-            //Init last_odom_publish_time
-            last_odom_publish_time = model->GetWorld()->SimTime();
+            this->ros_pub_status    = this->ros_node->advertise<std_msgs::Int16>(this->status_topic, 100);
 
             //Subscription options to Uplans topic published by the planner
-            ros::SubscribeOptions so = ros::SubscribeOptions::create<utrafman_main::Uplan>(
+            ros::SubscribeOptions topic_uplan_subscribe_options = ros::SubscribeOptions::create<utrafman_main::Uplan>(
                     this->uplans_topic,
                     1000,
                     boost::bind(&DroneControl::UplansTopicCallback, this, _1),
@@ -199,10 +201,10 @@ namespace gazebo
                     &this->ros_queue);
 
             // Subscription to the topic
-            this->ros_sub_uplans = this->ros_node->subscribe(so);
+            this->ros_sub_uplans = this->ros_node->subscribe(topic_uplan_subscribe_options);
 
             //Subscription options for kill topic
-            ros::SubscribeOptions so2 = ros::SubscribeOptions::create<std_msgs::Bool>(
+            ros::SubscribeOptions topic_kill_subscribe_options = ros::SubscribeOptions::create<std_msgs::Bool>(
                     this->kill_topic,
                     10,
                     boost::bind(&DroneControl::KillTopicCallback, this, _1),
@@ -210,10 +212,24 @@ namespace gazebo
                     &this->ros_queue);
 
             // Subscription to the topic
-            this->ros_sub_kill = this->ros_node->subscribe(so2);
+            this->ros_sub_kill = this->ros_node->subscribe(topic_kill_subscribe_options);
+
+            //Subscription options for stop topic
+            /*ros::SubscribeOptions topic_stop_subscribe_options = ros::SubscribeOptions::create<std_msgs::Bool>(
+                    this->stop_uplan_topic,
+                    10,
+                    boost::bind(&DroneControl::????, this, _1),
+                    ros::VoidPtr(),
+                    &this->ros_queue);*/
+
+            // Subscription to the topic
+            //this->ros_sub_kill = this->ros_node->subscribe(topic_stop_subscribe_options);
 
             //Asynchronous spinning start
             this->ros_spinner.start();
+
+            //Init last_odom_publish_time
+            last_odom_publish_time = model->GetWorld()->SimTime();
 
             //Initial control matrices
             Kx <<   -47.4820, -47.4820, -9.3626, -9.3626,  413.1508, -10.5091,  10.5091,  132.4440,
@@ -236,10 +252,17 @@ namespace gazebo
             E << 0, 0, 0, 0;
             //Control input signal
             u << 0, 0, 0, 0;
+
+            // Connect the update event callback to ConnectWorldUpdateBegin event. Each time the simulation updates, the
+            // OnUpdate function will be called, executing the ComputeNavigation function 1000 times per second by default.
+            this->updateConnection = event::Events::ConnectWorldUpdateBegin(
+                    boost::bind(&DroneControl::ComputeNavigation, this, _1));
         }
 
+
+
         // Called by the world update start event
-        void OnUpdate(const common::UpdateInfo &evento /*_info*/)
+        void ComputeNavigation(const common::UpdateInfo &evento /*_info*/)
         {
             this->it++;
             if (this->it % 4 != 0)
@@ -249,8 +272,9 @@ namespace gazebo
                 this->it = 0;
             }
 
-            // Check if the simulation was reset
             common::Time current_time = model->GetWorld()->SimTime();
+
+            // Check if the simulation was reset
             if (current_time < prev_iteration_time)
                 // The simulation was reset
                 prev_iteration_time = current_time;
@@ -268,13 +292,12 @@ namespace gazebo
             //Next waypoint to reach
             utrafman_main::Waypoint target_waypoint;
 
-            //High level control execution -----------------------------------
             // If have a Uplan and the desired time to take off has been reached
             if (uplan_inprogress && (current_time.Double() >= uplan_local->dtto)) {
 
                 //Start the rotors
                 cmd_on = 1.0;
-                target_waypoint = route_local[actual_route_point];
+                target_waypoint = route_local[uplan_current_wp];
 
                 //Calling Compute Velocity function to get the velocities until the next iteration
                 ignition::math::Vector4<double> vel = ComputeVelocity(2, current_time.Double(), pose, pose_rot);
@@ -289,11 +312,11 @@ namespace gazebo
                     //Detect if drone reached and change to the next waypoint
                     if (current_time.Double() >= target_waypoint.t.sec) {
                         //Check if exist more waypoint
-                        if (actual_route_point < (route_local.size() - 1)) {
-                            actual_route_point++;
-                            PrintToFile(1, "OnUpdate",
-                                        "Drone has reached waypoint " + std::to_string(actual_route_point - 1) +
-                                        " and change to the waypoiny " + std::to_string(actual_route_point));
+                        if (uplan_current_wp < (route_local.size() - 1)) {
+                            uplan_current_wp++;
+                            PrintToFile(1, "ComputeNavigation",
+                                        "Drone has reached waypoint " + std::to_string(uplan_current_wp - 1) +
+                                        " and change to the waypoiny " + std::to_string(uplan_current_wp));
                         } else {
                             //Stop
                             cmd_on = 0;
@@ -301,8 +324,8 @@ namespace gazebo
                             cmd_velY = 0.0;
                             cmd_velZ = -1.0;
                             uplan_inprogress = false;
-                            actual_route_point = 0;
-                            PrintToFile(1, "OnUpdate", "Drone has finished it uplan");
+                            uplan_current_wp = 0;
+                            PrintToFile(1, "ComputeNavigation", "Drone has finished it uplan");
 
                             //Save Uplan high control logbook
                             control_out_file.close();
@@ -418,13 +441,6 @@ namespace gazebo
             double w_rotor_SE = Wr(2, 0);
             double w_rotor_SW = Wr(3, 0);
 
-            /* // con esto simulamos rotacion de sustentacion
-            w_rotor_NE = sqrt(0.300*9.8/4 / kFT);  // = 430.18 con 4 rotores
-            w_rotor_NW = w_rotor_NE;
-            w_rotor_SE = w_rotor_NE;
-            w_rotor_SW = w_rotor_NE;
-            */
-
             //Apply the thrust force to the drone
             ignition::math::Vector3<double> FT_NE = ignition::math::Vector3<double>(0, 0, kFT * pow(w_rotor_NE, 2));
             link->AddLinkForce(FT_NE, pos_NE);
@@ -488,7 +504,7 @@ namespace gazebo
                 msg.velocity.angular.z = angular_vel.Z(); // bWz
 
                 //Waypoint and Uplan in progress
-                msg.wip = actual_route_point;
+                msg.wip = uplan_current_wp;
                 msg.fpip = uplan_inprogress;
 
                 // Telemetry sent time
@@ -501,32 +517,25 @@ namespace gazebo
                 // Store the last time the telemetry was sent
                 last_odom_publish_time = current_time;
 
-                // Add logs to the file
-                //std::stringstream message;
-                //message << E;
-                //PrintToFile(1, "OnUpdate", " Control Error: " + message.str());
-
                 //Print variables all FT_* variables using PrintToFile
-                PrintToFile(2, "OnUpdate", "FT_NE: " + std::to_string(FT_NE.X()) + ", " + std::to_string(FT_NE.Y()) + ", " + std::to_string(FT_NE.Z()));
-                PrintToFile(2, "OnUpdate", "FT_NW: " + std::to_string(FT_NW.X()) + ", " + std::to_string(FT_NW.Y()) + ", " + std::to_string(FT_NW.Z()));
-                PrintToFile(2, "OnUpdate", "FT_SE: " + std::to_string(FT_SE.X()) + ", " + std::to_string(FT_SE.Y()) + ", " + std::to_string(FT_SE.Z()));
-                PrintToFile(2, "OnUpdate", "FT_SW: " + std::to_string(FT_SW.X()) + ", " + std::to_string(FT_SW.Y()) + ", " + std::to_string(FT_SW.Z()));
+                PrintToFile(2, "ComputeNavigation", "FT_NE: " + std::to_string(FT_NE.X()) + ", " + std::to_string(FT_NE.Y()) + ", " + std::to_string(FT_NE.Z()));
+                PrintToFile(2, "ComputeNavigation", "FT_NW: " + std::to_string(FT_NW.X()) + ", " + std::to_string(FT_NW.Y()) + ", " + std::to_string(FT_NW.Z()));
+                PrintToFile(2, "ComputeNavigation", "FT_SE: " + std::to_string(FT_SE.X()) + ", " + std::to_string(FT_SE.Y()) + ", " + std::to_string(FT_SE.Z()));
+                PrintToFile(2, "ComputeNavigation", "FT_SW: " + std::to_string(FT_SW.X()) + ", " + std::to_string(FT_SW.Y()) + ", " + std::to_string(FT_SW.Z()));
 
-                PrintToFile(2, "OnUpdate", "MDR_NE: " + std::to_string(MDR_NE.X()) + ", " + std::to_string(MDR_NE.Y()) + ", " + std::to_string(MDR_NE.Z()));
-                PrintToFile(2, "OnUpdate", "MDR_NW: " + std::to_string(MDR_NW.X()) + ", " + std::to_string(MDR_NW.Y()) + ", " + std::to_string(MDR_NW.Z()));
-                PrintToFile(2, "OnUpdate", "MDR_SE: " + std::to_string(MDR_SE.X()) + ", " + std::to_string(MDR_SE.Y()) + ", " + std::to_string(MDR_SE.Z()));
-                PrintToFile(2, "OnUpdate", "MDR_SW: " + std::to_string(MDR_SW.X()) + ", " + std::to_string(MDR_SW.Y()) + ", " + std::to_string(MDR_SW.Z()));
+                PrintToFile(2, "ComputeNavigation", "MDR_NE: " + std::to_string(MDR_NE.X()) + ", " + std::to_string(MDR_NE.Y()) + ", " + std::to_string(MDR_NE.Z()));
+                PrintToFile(2, "ComputeNavigation", "MDR_NW: " + std::to_string(MDR_NW.X()) + ", " + std::to_string(MDR_NW.Y()) + ", " + std::to_string(MDR_NW.Z()));
+                PrintToFile(2, "ComputeNavigation", "MDR_SE: " + std::to_string(MDR_SE.X()) + ", " + std::to_string(MDR_SE.Y()) + ", " + std::to_string(MDR_SE.Z()));
+                PrintToFile(2, "ComputeNavigation", "MDR_SW: " + std::to_string(MDR_SW.X()) + ", " + std::to_string(MDR_SW.Y()) + ", " + std::to_string(MDR_SW.Z()));
 
-                PrintToFile(2, "OnUpdate", "FD: " + std::to_string(FD.X()) + ", " + std::to_string(FD.Y()) + ", " + std::to_string(FD.Z()));
-                PrintToFile(2, "OnUpdate", "MD: " + std::to_string(MD.X()) + ", " + std::to_string(MD.Y()) + ", " + std::to_string(MD.Z()));
+                PrintToFile(2, "ComputeNavigation", "FD: " + std::to_string(FD.X()) + ", " + std::to_string(FD.Y()) + ", " + std::to_string(FD.Z()));
+                PrintToFile(2, "ComputeNavigation", "MD: " + std::to_string(MD.X()) + ", " + std::to_string(MD.Y()) + ", " + std::to_string(MD.Z()));
 
                 PrintDelimToFile();
             }
         }
 
         //Member to receive an Uplan  using the topic
-        //Uplan is stored in Uplan_local and not be overwritten until the drone finish the current Uplan
-        //In the future, the drone will be able to ajust the current Uplan with Uplan changes
         void UplansTopicCallback(const utrafman_main::Uplan::ConstPtr &msg){
 
             //Open the file used to save logs
@@ -536,13 +545,30 @@ namespace gazebo
 
             //If the drone is following a U-plan, not interrupt it (at this moment). If not, assign the Uplan
             if (this->uplan_inprogress){
-                this->PrintToFile(1, "UPlanTopic", "New U-plan received for drone " + this->id + " but the drone is following its local U-plan");
+                this->PrintToFile(1, "UPlanTopic", "New U-plan received for drone " + this->id + ". Updating uplan_local to the new one received.");
+                // TODO: Check if the new U-plan start before the drones has already in the air
+                this->uplan_local = msg;
+                this->route_local = msg->route;
+                this->uplan_inprogress = true;
+
+                //Search the current wp based in time
+                double current_time = this->model->GetWorld()->SimTime().Double();
+                if (current_time < this->route_local[0].t.sec){
+                    this->uplan_current_wp = 0;
+                } else {
+                    for (int i = 0; i < this->route_local.size(); i++){
+                        if (current_time >= this->route_local[i].t.sec && current_time < this->route_local[i+1].t.sec){
+                            this->uplan_current_wp = i;
+                            break;
+                        }
+                    }
+                }
                 return;
             } else {
                 this->PrintToFile(1, "UPlanTopic","Received U-plan for drone " + this->id);
                 // Set and reset variables and flags
                 this->uplan_local = msg;
-                this->actual_route_point = 0;
+                this->uplan_current_wp = 0;
                 this->route_local = msg->route;
                 this->uplan_inprogress = true;
             }
@@ -609,12 +635,12 @@ namespace gazebo
             ignition::math::Vector4<double> final_vel;
 
             utrafman_main::Waypoint previous_waypoint;
-            if (this->actual_route_point == 0) {
-                previous_waypoint = this->route_local[this->actual_route_point];
+            if (this->uplan_current_wp == 0) {
+                previous_waypoint = this->route_local[this->uplan_current_wp];
             } else {
-                previous_waypoint = this->route_local[this->actual_route_point - 1];
+                previous_waypoint = this->route_local[this->uplan_current_wp - 1];
             }
-            utrafman_main::Waypoint target_waypoint = this->route_local[this->actual_route_point];
+            utrafman_main::Waypoint target_waypoint = this->route_local[this->uplan_current_wp];
 
             //Getting UAV velocity
             ignition::math::Vector3<double> linear_vel = this->model->RelativeLinearVel();
@@ -702,7 +728,7 @@ namespace gazebo
                 //Mix both velocities
                 ignition::math::Vector3d target_vel = 0.3*error_vel + 0.7*(future_vel/forward_seconds);
                 //Get next waypoint
-                utrafman_main::Waypoint target_waypoint = this->route_local[this->actual_route_point];
+                utrafman_main::Waypoint target_waypoint = this->route_local[this->uplan_current_wp];
                 //Compute 3D velocity to it
                 ignition::math::Vector3<double> target_way_vector3d = ignition::math::Vector3d(target_waypoint.x, target_waypoint.y, target_waypoint.z);
                 //Compute the bearing to do
@@ -723,12 +749,12 @@ namespace gazebo
 
             //Pubblish on file
             if (seconds_since_last_update > (1.0 / odom_publish_rate)){
-                PrintToFile(1, "OnUpdate", "TTRW: " + std::to_string(ttrw));
-                PrintToFile(1, "OnUpdate", "Drone pos: X: " + std::to_string(pose.Pos().X()) + " Y: " + std::to_string(pose.Pos().Y()) + " Z: " + std::to_string(pose.Pos().Z()));
-                PrintToFile(1, "OnUpdate", "Waypoint X: " + std::to_string(target_waypoint.x) + " Y: " + std::to_string(target_waypoint.y) + " Z: " + std::to_string(target_waypoint.z));
-                PrintToFile(1, "OnUpdate", "Distance to W  X: " + std::to_string(distance_to_way.X()) + " Y: " + std::to_string(distance_to_way.Y()) + " Z: " + std::to_string(distance_to_way.Z()));
-                PrintToFile(1, "OnUpdate", "Current vel X: " + std::to_string(linear_vel.X()) + " Y: " + std::to_string(linear_vel.Y()) + " Z: " + std::to_string(linear_vel.Z()));
-                PrintToFile(1, "OnUpdate", "CMD HL vel X: " + std::to_string(cmd_velX) + " Y: " + std::to_string(cmd_velY) + " Z: " + std::to_string(cmd_velZ) + " RotZ: " + std::to_string(cmd_rotZ));
+                PrintToFile(1, "ComputeNavigation", "TTRW: " + std::to_string(ttrw));
+                PrintToFile(1, "ComputeNavigation", "Drone pos: X: " + std::to_string(pose.Pos().X()) + " Y: " + std::to_string(pose.Pos().Y()) + " Z: " + std::to_string(pose.Pos().Z()));
+                PrintToFile(1, "ComputeNavigation", "Waypoint X: " + std::to_string(target_waypoint.x) + " Y: " + std::to_string(target_waypoint.y) + " Z: " + std::to_string(target_waypoint.z));
+                PrintToFile(1, "ComputeNavigation", "Distance to W  X: " + std::to_string(distance_to_way.X()) + " Y: " + std::to_string(distance_to_way.Y()) + " Z: " + std::to_string(distance_to_way.Z()));
+                PrintToFile(1, "ComputeNavigation", "Current vel X: " + std::to_string(linear_vel.X()) + " Y: " + std::to_string(linear_vel.Y()) + " Z: " + std::to_string(linear_vel.Z()));
+                PrintToFile(1, "ComputeNavigation", "CMD HL vel X: " + std::to_string(cmd_velX) + " Y: " + std::to_string(cmd_velY) + " Z: " + std::to_string(cmd_velZ) + " RotZ: " + std::to_string(cmd_rotZ));
             }
             return final_vel;
         }
@@ -737,7 +763,7 @@ namespace gazebo
             return ignition::math::Vector3d(vel.X()*cos(yaw) + vel.Y()*sin(yaw), vel.X()*-1*sin(yaw) + vel.Y()* cos(yaw), vel.Z());
         }
 
-        //Member to disconnect the drone from the ROS network before remove the model
+        //Member to disconnect the drone from the ROS network before remove the model from the simulation
         void KillTopicCallback(const std_msgs::BoolConstPtr &value){
             //Disconnection from the Update events
             event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
@@ -763,16 +789,6 @@ namespace gazebo
                 control_out_file << "[" << std::fixed << std::setw(8) << std::setprecision(3) << current_time.Double() << "] (" << std::fixed << std::setw(12) << module << ") " << message << std::endl;
             }
         }
-
-        /*void PrintToFile(int mode, std::string module, std::string message, std::stringstream ss){
-            //Filter log messages
-            if (log_mode < mode) return;
-            //Get actual simulation time
-            common::Time current_time = model->GetWorld()->SimTime();
-            if (control_out_file.is_open()){
-                control_out_file << "[" << std::fixed << std::setw(8) << std::setprecision(3) << current_time.Double() << "] (" << std::fixed << std::setw(12) << module << ") " << message << ss.str() << std::endl;
-            }
-        }*/
 
         //Print a delimiter into the file
         void PrintDelimToFile(){
