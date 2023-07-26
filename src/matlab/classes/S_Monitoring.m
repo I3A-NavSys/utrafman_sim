@@ -16,6 +16,7 @@ classdef S_Monitoring< handle
         ros_subs_new_uavs                               %Subscrition to new UAV advertiser topic to know when a new UAV is added
         ros_srv_get_telemetry                           %Service server to get the Telemetry data of a UAV
         ros_srv_get_currentloc                          %Service server to get the current Telemetry data of a UAV
+        ros_pub_conflicts                               %Topic to send the conflict detected 
     end
     
     methods
@@ -33,6 +34,8 @@ classdef S_Monitoring< handle
             obj.ros_srv_get_telemetry = ros.ServiceServer(obj.node, "/service/monitoring/get_telemetry", "utrafman_main/mon_get_locs", @obj.getLocs);
             %Initializate ROS Service server to get the current location of a UAV
             obj.ros_srv_get_currentloc = ros.ServiceServer(obj.node, "/service/monitoring/get_current_loc", "utrafman_main/mon_get_locs", @obj.getCurrentLoc);
+            %Initializate ROS publisher to send conflict status
+            obj.ros_pub_conflicts = ros.Publisher(obj.node, '/service/monitoring/conflict_status', 'utrafman_main/ConflictStatus');
 
             disp("Monitoring service has been initialized");
             job = getCurrentJob;
@@ -100,9 +103,21 @@ classdef S_Monitoring< handle
             end
         end
 
+        function sendConflictStatus(obj, confid, id1, id2, dist, time, status)
+            %Create conflict msg
+            msg = rosmessage("utrafman_main/ConflictStatus");
+            msg.ConflictId = confid;
+            msg.UavId1 = id1;
+            msg.UavId2 = id2;
+            msg.Distance = dist;
+            msg.Time = time;
+            msg.InConflict = status;
+            %Send conflict msg
+            obj.ros_pub_conflicts.send(msg);
+        end
+
         %Check the existence of conflicts between two uavs given its ids
         function checkConflicts(obj, id1, id2, tel)
-
             %Get UAV positions
             pos1 = obj.uavs(id1).loc.Pose.Position;
             pos2 = obj.uavs(id2).loc.Pose.Position;
@@ -129,6 +144,8 @@ classdef S_Monitoring< handle
                     conf_id = obj.conflict_id;
                     obj.conflict_id = obj.conflict_id + 1;
                     obj.conflict_log(conf_id,1:4) = [min max dist tel.Time.Sec+tel.Time.Nsec*10e-10];
+                    %Send conflict status
+                    obj.sendConflictStatus(conf_id, min, max, dist, tel.Time, true);
                     fprintf("Conflict id %d between %d and %d at distance %f and time %d \n",conf_id,min,max,dist,tel.Time.Sec+tel.Time.Nsec*10e-10);
                 end
             
@@ -145,10 +162,11 @@ classdef S_Monitoring< handle
                 %Check if there is a conflict in the conflict matrix
                 if (obj.conflict_matrix(min,max) ~= 0)
                     %Remove conflict from the conflict matrix
-                    con_id = obj.conflict_matrix(min,max);
+                    conf_id = obj.conflict_matrix(min,max);
                     obj.conflict_matrix(min,max) = 0;
                     %Save conflict finish time
-                    obj.conflict_log(con_id,5) = tel.Time.Sec+tel.Time.Nsec*10e-10;
+                    obj.conflict_log(conf_id,5) = tel.Time.Sec+tel.Time.Nsec*10e-10;
+                    obj.sendConflictStatus(conf_id, min, max, dist, tel.Time, false);
                 end
             end
         end

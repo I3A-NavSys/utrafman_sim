@@ -72,6 +72,7 @@ add_message_files(
   Uplan.msg
   UAV.msg
   Operator.msg
+  ConflictStatus.msg
 )
 
 ## Generate services in the 'srv' folder
