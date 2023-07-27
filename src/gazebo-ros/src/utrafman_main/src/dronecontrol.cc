@@ -46,7 +46,7 @@ namespace gazebo
 
         //Telemetry message frequency control
         common::Time last_odom_publish_time;
-        double odom_publish_rate = 1;           // updates per second
+        double odom_publish_rate = 1;           // Updates per second
 
         //ROS structures
         ros::NodeHandle *ros_node;
@@ -69,7 +69,7 @@ namespace gazebo
         std::string telemetry_topic = "telemetry";
         std::string status_topic = "status"; //TODO: finish implementation
 
-
+        //Drone ID (yes, ID is a string)
         std::string id;
 
         //Uplan variables
@@ -207,7 +207,7 @@ namespace gazebo
             ros::SubscribeOptions topic_kill_subscribe_options = ros::SubscribeOptions::create<std_msgs::Bool>(
                     this->kill_topic,
                     10,
-                    boost::bind(&DroneControl::KillTopicCallback, this, _1),
+                    boost::bind(&DroneControl::KillModelCallback, this, _1),
                     ros::VoidPtr(),
                     &this->ros_queue);
 
@@ -264,6 +264,7 @@ namespace gazebo
         // Called by the world update start event
         void ComputeNavigation(const common::UpdateInfo &evento /*_info*/)
         {
+            //TODO: Check if is necessary to use it to simplify the simulations
             this->it++;
             if (this->it % 4 != 0)
             {
@@ -764,7 +765,7 @@ namespace gazebo
         }
 
         //Member to disconnect the drone from the ROS network before remove the model from the simulation
-        void KillTopicCallback(const std_msgs::BoolConstPtr &value){
+        void KillModelCallback(const std_msgs::BoolConstPtr &value){
             //Disconnection from the Update events
             event::Events::worldUpdateBegin.Disconnect(this->updateConnection->Id());
             //Shutdown the topics
@@ -803,9 +804,6 @@ namespace gazebo
 
         //Print a delimiter into the screen
         void PrintDelimToScreen(){
-            if (control_out_file.is_open()){
-                std::cout << "-----------------------------------------------------------------" << std::endl;
-            }
         }
     };
 
