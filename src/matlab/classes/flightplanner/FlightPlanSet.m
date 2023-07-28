@@ -115,7 +115,7 @@ classdef FlightPlanSet < handle
             for t = min_t:time_step:max_t
                 tic
                 %Get the position of the flightplans at time t using the abstraction layer
-                pos_mat = arrayfun(@(fp) fp.abstractionLayer(19), obj.flightplans, 'UniformOutput', false);
+                pos_mat = arrayfun(@(fp) fp.abstractionLayer(t), obj.flightplans, 'UniformOutput', false);
                 %Convert the cell array to a matrix
                 pos_mat = cell2mat(pos_mat);
                 %Reshape the matrix to a Nx3 matrix with X, Y and Z coordinates

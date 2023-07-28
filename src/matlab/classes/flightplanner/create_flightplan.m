@@ -1,11 +1,16 @@
+%Clean console and workspace
 clc; clear;
 
-
+%Create set of flight plans
 fps = FlightPlanSet();
 
-for x=1:10
-    % Create 10 random waypoints in the map with x,y,z between 0 and 10
-    way_locs = 10*rand(10,3);
+number_of_flightplans = 2;
+waypoints_per_fp = 50;
+max_aerospace_size = 10;        %meters
+    
+for x=1:number_of_flightplans
+    % Create random waypoints location
+    way_locs = max_aerospace_size*rand(waypoints_per_fp,3);
     
     waypoints = Waypoint.empty;
     t = 0;
@@ -22,23 +27,27 @@ for x=1:10
         t = t + 10;
     end
     
+    %Construct fp
     fp = FlightPlan(x,waypoints, 0);
+    %%Add it to the set
     fps.addFlightPlan(fp);
 end
 
-% 
+% Display route and velocity of FP
 % fp.routeFigure()
 % fp.velocityFigure()
-% 
-% fp.reverseWaypoints()
-% fp.velocityFigure()
-% 
-% fp.normalizeVelocity()
-% fp.velocityFigure()
 
-%fps.routesFigure()
+% Other methods
+% fp.reverseWaypoints()
+% fp.normalizeVelocity()
+
+%Display routes in the FPSet
+fps.routesFigure();
 
 tic
-%fps.detectConflicts(100,1);
-fps.detectConflictsBetTimes(100,1,-10,20);
+%Comput conflits with distance 1m and time_step 1s
+fps.detectConflicts(1,1)
 toc
+
+% Other method
+%fps.detectConflictsBetTimes(100,0,-10,20);
