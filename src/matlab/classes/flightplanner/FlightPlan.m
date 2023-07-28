@@ -6,7 +6,7 @@ classdef FlightPlan < handle
         id int8 = 0;
         waypoints Waypoint = Waypoint.empty;
         init_time double;
-        priority int8 = 0;
+        priority int8 = 0; 
     end
     
     methods
@@ -116,7 +116,24 @@ classdef FlightPlan < handle
             obj.waypoints = Waipoint.empty;
         end
 
-        function obj = displayRoute(obj)
+        function plt = plotRoute(obj, color)
+            %PLOTFIGURE This method add the flight plan to the current figure
+            
+            %If color is empty, set the default color to blue
+            if isempty(color)
+                color = 'b';
+            end
+            
+            %Display waypoints
+            plt = plot3([obj.waypoints(:).x], [obj.waypoints(:).y], [obj.waypoints(:).z], 'o', 'MarkerSize', 5, 'MarkerFaceColor', color);
+            
+            %Display routes between waypoints
+            for i = 1:length(obj.waypoints)-1
+                plot3([obj.waypoints(i).x, obj.waypoints(i+1).x], [obj.waypoints(i).y, obj.waypoints(i+1).y], [obj.waypoints(i).z, obj.waypoints(i+1).z], 'Color', color);
+            end
+        end
+
+        function obj = routeFigure(obj)
             %DISPLAYFIGURE This method allow to display the flight plan
             
             %Check if the flight plan is empty
@@ -145,17 +162,10 @@ classdef FlightPlan < handle
             ylabel("y [m]");
             zlabel("z [m]");
             title("Route for flight plan ID " + obj.id);
-            
-            %Display waypoints
-            plot3([obj.waypoints(:).x], [obj.waypoints(:).y], [obj.waypoints(:).z], 'o', 'MarkerSize', 10, 'MarkerFaceColor', 'r');
-            
-            %Display routes between waypoints
-            for i = 1:length(obj.waypoints)-1
-                plot3([obj.waypoints(i).x, obj.waypoints(i+1).x], [obj.waypoints(i).y, obj.waypoints(i+1).y], [obj.waypoints(i).z, obj.waypoints(i+1).z], 'b');
-            end
+            obj.plotRoute('b'); 
         end
 
-        function obj = displayVelocity(obj)
+        function obj = velocityFigure(obj)
             %DISPLAYVELOCITY This method allow to display the velocity of the flight plan
             
             %Check if the flight plan is empty
@@ -166,7 +176,7 @@ classdef FlightPlan < handle
 
             %Find if the figure is already open
             fig_name = "Velocity for flight plan ID " + obj.id;
-            fig = findobj("Name", fig_name);
+            fig = findobj('Type', 'Figure',"Name", fig_name);
             if isempty(fig)
                 %Display a figure with the flight plan
                 fig = figure("Name", fig_name);
@@ -198,9 +208,6 @@ classdef FlightPlan < handle
             %REVERSE This method allow to reverse the flight plan
             %It reverse the order of the waypoints keeping the same time of the previous waypoints, but not take into account if new section velocities between waypoints are fulfillable
             
-            %New fliplan init_time
-            obj.init_time = obj.waypoints(end).t;
-
             %Check if the flight plan is empty
             if isempty(obj.waypoints)
                 disp('The flight plan is empty');
@@ -251,6 +258,79 @@ classdef FlightPlan < handle
 
                 %Change the time of the waypoints
                 obj.waypoints(i).t = new_time;
+            end
+        end
+
+        function eq = isequal(obj, flightplan)
+            %ISEQUAL This method allow to compare two flight plans
+            %   Two flight plans are equal if they have the same waypoints in the same order
+            
+            %Check if the flight plan is a FlightPlan object
+            if ~isa(flightplan,'FlightPlan')
+                error('The flight plan must be a FlightPlan object');
+            end
+
+            %Check if the flight plan have the same number of waypoints
+            if length(obj.waypoints) ~= length(flightplan.waypoints)
+                eq = false;
+                return
+            end
+
+            %Check if the flight plan have the same waypoints
+            for i = 1:length(obj.waypoints)
+                if ~obj.waypoints(i).isequal(flightplan.waypoints(i))
+                    eq = false;
+                    return
+                end
+            end
+
+            %Check if the flight plan have the same init_time
+            if obj.init_time ~= flightplan.init_time
+                eq = false;
+                return
+            end
+
+            %Check if the flight plan have the same priority
+            if obj.priority ~= flightplan.priority
+                eq = false;
+                return
+            end
+
+            eq = true;
+        end
+
+        function p = abstractionLayer(fp, t)
+            %If t is before init flight plan, return not valid pos
+            if t < fp.init_time
+                p = [0 0 0];
+                return;
+            end
+
+            %If t after finishing Uplan, return finish position
+            if t > fp.waypoints(end).t
+                p = [fp.waypoints(end).x fp.waypoints(end).y fp.waypoints(end).z];
+                return;
+            end
+
+            % Travel waypoint (assuming first waypoint is where drone is before take off)
+            for i = 2:size(fp.waypoints)
+                waypoint = fp.waypoints(i);
+                
+                %Until the next waypoint to t
+                if t > waypoint.t
+                    continue;
+                end
+
+                %Now waypoint is the next waypoint
+                timeDifBetWays = waypoint.t - fp.waypoints(i-1).t;      %Time dif between last waypoint and enroute waypoint
+                timeDifBetWayT = t - fp.waypoints(i-1).t;               %Time dif between last waypoint and t
+
+                %Compute dif between waypoints
+                vectorDif = [waypoint.x waypoint.y waypoint.z] - [fp.waypoints(i-1).x fp.waypoints(i-1).y fp.waypoints(i-1).z];
+                %Now vectorDif is the RELATIVE vector between last waypoint and
+                %position in t, so must be converted to ABSOLUTE.
+                p = (vectorDif.*(timeDifBetWayT/timeDifBetWays)) + [fp.waypoints(i-1).x fp.waypoints(i-1).y fp.waypoints(i-1).z];
+                return;
             end
         end
     end

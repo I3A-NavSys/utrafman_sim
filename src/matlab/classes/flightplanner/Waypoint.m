@@ -23,13 +23,13 @@ classdef Waypoint < handle
             obj.mandaroty = m;
         end
 
-        function isw = isWaypoint(obj)
-            %ISWAYPOINT Check if the object is a Waypoint
-            if ~isa(obj,'Waypoint')
-                isw = false;
-                return;
-            end
-        end
+        %function isw = isWaypoint(obj)
+        %    %ISWAYPOINT Check if the object is a Waypoint
+        %    if ~isa(obj,'Waypoint')
+        %        isw = false;
+        %        return;
+        %    end
+        %end
         
         function obj = changeLocation(obj,x,y,z)
             %CHANGE_LOCATION Change the location of the waypoint
