@@ -137,7 +137,7 @@ classdef FlightPlanSet < handle
             conflicts = conflicts(1:conflicts_index-1, :);
         end
 
-        function conflicts =  detectConflcitsBetTimes(obj, conf_dist, time_step, init_time, finish_time)
+        function conflicts =  detectConflictsBetTimes(obj, conf_dist, time_step, init_time, finish_time)
             %CONFLICTSDETECTOR Detect conflicts between flightplans
             % Allows to detect conflicts between flightplans in a time interval
 

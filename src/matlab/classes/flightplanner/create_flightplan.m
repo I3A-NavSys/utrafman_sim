@@ -1,3 +1,6 @@
+clc; clear;
+
+
 fps = FlightPlanSet();
 
 for x=1:10
@@ -37,5 +40,5 @@ end
 
 tic
 %fps.detectConflicts(100,1);
-fps.detectConflcitsBetTimes(100,1,-10,20);
+fps.detectConflictsBetTimes(100,1,-10,20);
 toc
