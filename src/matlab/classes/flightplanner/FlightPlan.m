@@ -5,13 +5,16 @@ classdef FlightPlan < handle
     properties
         id int8 = 0;
         waypoints Waypoint = Waypoint.empty;
-        init_time double;
+        init_time double;       %Init_time is based on the time of the first waypoint
+        finish_time double;     %Finish_time is based on the time of the last waypoint
         priority int8 = 0; 
     end
     
     methods
-        function obj = FlightPlan(waypoints, init_time, priority)
+        function obj = FlightPlan(id, waypoints, priority)
             %FLIGHTPLAN Construct for FlightPlan class
+
+            obj.id = id;
 
             %Check if the waypoints list is empty ([])
             if ~isempty(waypoints)
@@ -21,14 +24,7 @@ classdef FlightPlan < handle
                 end
             end
 
-            obj.init_time = init_time;
             obj.priority = priority;
-        end
-
-        function obj = changeInitTime(obj,init_time)
-            %CHANGEINITTIME This method allow to change the init time of a flight plan
-
-            obj.init_time = init_time;
         end
 
         function obj = changePriority(obj,priority)
@@ -63,10 +59,14 @@ classdef FlightPlan < handle
                 for i = 1:length(obj.waypoints)
                     if obj.waypoints(i).t > waypoint.t
                         obj.waypoints = [obj.waypoints(1:i-1), waypoint, obj.waypoints(i:end)];
+                        %Update the init_time and finish_time
+                        obj.updateTimes(); 
                         return %The waypoint is added to the flight plan (out of order)
                     end
                 end
                 obj.waypoints = [obj.waypoints, waypoint]; %The waypoint is added to the end of the flight plan
+                %Update the init_time and finish_time
+                obj.updateTimes(); 
             end
         end
 
@@ -84,6 +84,9 @@ classdef FlightPlan < handle
                 for i = 1:length(obj.waypoints)
                     if obj.waypoints(i).isequal(waypoint)
                         obj.waypoints(i) = []; %The waypoint is removed from the flight plan
+
+                        %Update the init_time and finish_time
+                        obj.updateTimes(); 
                         return
                     end
                 end
@@ -104,6 +107,9 @@ classdef FlightPlan < handle
                 for i = 1:length(obj.waypoints)
                     if obj.waypoints(i).isequal(waypoint)
                         obj.waypoints(i) = waypoint; %The waypoint is updated from the flight plan
+                        
+                        %Update the init_time and finish_time
+                        obj.updateTimes();
                         return
                     end
                 end
@@ -112,8 +118,25 @@ classdef FlightPlan < handle
 
         function obj = clearWaypoints(obj)
             %CLEARWAYPOINTS This method allow to clear all the waypoints from a flight plan
-            
+
             obj.waypoints = Waipoint.empty;
+            %Update the init_time and finish_time
+            obj.updateTimes();
+        end
+
+        function obj = updateTimes(obj)
+            %UPDATETIMES This method allow to update the init_time and finish_time of a flight plan
+            
+            %Check if the flight plan is empty
+            if isempty(obj.waypoints)
+                obj.init_time = [];
+                obj.finish_time = [];
+                return
+            end
+
+            %Update the init_time and finish_time
+            obj.init_time = obj.waypoints(1).t;
+            obj.finish_time = obj.waypoints(end).t;
         end
 
         function plt = plotRoute(obj, color)
@@ -300,20 +323,20 @@ classdef FlightPlan < handle
         end
 
         function p = abstractionLayer(fp, t)
+            p = [Inf Inf Inf];
+
             %If t is before init flight plan, return not valid pos
             if t < fp.init_time
-                p = [0 0 0];
                 return;
             end
 
             %If t after finishing Uplan, return finish position
-            if t > fp.waypoints(end).t
-                p = [fp.waypoints(end).x fp.waypoints(end).y fp.waypoints(end).z];
+            if t > fp.finish_time
                 return;
             end
 
             % Travel waypoint (assuming first waypoint is where drone is before take off)
-            for i = 2:size(fp.waypoints)
+            for i = 2:size(fp.waypoints,2)
                 waypoint = fp.waypoints(i);
                 
                 %Until the next waypoint to t

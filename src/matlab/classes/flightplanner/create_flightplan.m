@@ -1,6 +1,6 @@
 fps = FlightPlanSet();
 
-for i=1:10
+for x=1:10
     % Create 10 random waypoints in the map with x,y,z between 0 and 10
     way_locs = 10*rand(10,3);
     
@@ -19,7 +19,7 @@ for i=1:10
         t = t + 10;
     end
     
-    fp = FlightPlan(waypoints, 0, 0);
+    fp = FlightPlan(x,waypoints, 0);
     fps.addFlightPlan(fp);
 end
 
@@ -33,4 +33,9 @@ end
 % fp.normalizeVelocity()
 % fp.velocityFigure()
 
-fps.routesFigure()
+%fps.routesFigure()
+
+tic
+%fps.detectConflicts(100,1);
+fps.detectConflcitsBetTimes(100,1,-10,20);
+toc

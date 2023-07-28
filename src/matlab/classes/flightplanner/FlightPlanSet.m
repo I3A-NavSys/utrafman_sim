@@ -88,5 +88,84 @@ classdef FlightPlanSet < handle
             legend(plt, plt_names);
         end
 
+        function conflicts = detectConflicts(obj, conf_dist, time_step)
+            %CONFLICTSDETECTOR Detect conflicts between flightplans
+            conflicts = zeros(1e6, 4);
+            conflicts_index = 1;
+            %Check if the set is empty
+            if isempty(obj.flightplans)
+                disp('The set is empty');
+                return
+            end
+
+            %Search min and max time of flightplans in the set
+            min_t = inf;
+            max_t = 0;
+
+            for i = 1:length(obj.flightplans)
+                if obj.flightplans(i).init_time < min_t
+                    min_t = obj.flightplans(i).init_time;
+                end
+                if obj.flightplans(i).finish_time > max_t
+                    max_t = obj.flightplans(i).finish_time;
+                end
+            end
+
+            %Loop to find conflicts
+            for t = min_t:time_step:max_t
+                tic
+                %Get the position of the flightplans at time t using the abstraction layer
+                pos_mat = arrayfun(@(fp) fp.abstractionLayer(19), obj.flightplans, 'UniformOutput', false);
+                %Convert the cell array to a matrix
+                pos_mat = cell2mat(pos_mat);
+                %Reshape the matrix to a Nx3 matrix with X, Y and Z coordinates
+                pos_mat = reshape(pos_mat, 3, length(obj.flightplans))';
+
+                %Calculate the distance between all the flightplans
+                for i = 1:length(obj.flightplans)
+                    for j = i+1:length(obj.flightplans)
+                        dist = norm(pos_mat(i,:) - pos_mat(j,:));
+                        % If the distance is less than the conflict distance, add the conflict to the list
+                        if dist < conf_dist
+                            %conflicts = [conflicts; i j dist t];
+                            conflicts(conflicts_index, :) = [i j dist t];
+                            conflicts_index = conflicts_index + 1;
+                        end
+                    end
+                end
+            end
+            conflicts = conflicts(1:conflicts_index-1, :);
+        end
+
+        function conflicts =  detectConflcitsBetTimes(obj, conf_dist, time_step, init_time, finish_time)
+            %CONFLICTSDETECTOR Detect conflicts between flightplans
+            % Allows to detect conflicts between flightplans in a time interval
+
+            %Get flightplans in the time interval
+            flightplans = obj.getFlightPlansBetTimes(init_time, finish_time);
+
+            %Construct the FlightPlanSubset
+            flightplan_subset = FlightPlanSet();
+            flightplan_subset.id = obj.id;
+            for i = 1:length(flightplans)
+                flightplan_subset.addFlightPlan(flightplans(i));
+            end
+
+            %Detect conflicts
+            conflicts = flightplan_subset.detectConflicts(conf_dist, time_step);
+        end
+
+        function flightplans = getFlightPlansBetTimes(obj, init_time, finish_time)
+            %GETFLIGHTPLANSBETTIMES Get the flightplans in a time interval
+
+            flightplans = [];
+
+            %Filter the flightplans in the time interval
+            for i = 1:length(obj.flightplans)
+                if  ~(obj.flightplans(i).init_time >= finish_time || obj.flightplans(i).finish_time <= init_time)
+                    flightplans = [flightplans obj.flightplans(i)];
+                end
+            end
+        end
     end
 end
