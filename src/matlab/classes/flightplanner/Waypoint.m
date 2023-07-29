@@ -9,7 +9,7 @@ classdef Waypoint < handle
         z double;
         t double;
         r double;
-        mandaroty logical;
+        mandatory logical;
     end
     
     methods
@@ -20,7 +20,7 @@ classdef Waypoint < handle
             obj.z = z;
             obj.t = t;
             obj.r = r;
-            obj.mandaroty = m;
+            obj.mandatory = m;
         end
 
         %function isw = isWaypoint(obj)
@@ -50,7 +50,7 @@ classdef Waypoint < handle
 
         function obj = changeMandatory(obj,m)
             %CHANGE_MANDATORY Change the mandatory of the waypoint
-            obj.mandaroty = m;
+            obj.mandatory = m;
         end
 
         function equal = isequal(a, b)
