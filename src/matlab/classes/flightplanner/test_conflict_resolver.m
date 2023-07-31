@@ -3,15 +3,13 @@ clc; clear;
 
 %Create set of flight plans
 fps = FlightPlanSet();
+way_locs = zeros([0,3]);
 
-%Properties
-number_of_flightplans = 7;
-waypoints_per_fp = 10;
-max_aerospace_size = 10;%meters
-    
-for x=1:number_of_flightplans
+for x=1:2
     % Create random waypoints location
-    way_locs = max_aerospace_size*rand(waypoints_per_fp,3);
+    for i = 1:5
+        way_locs(i,:) = [4+x,    i,    1];
+    end
     waypoints = Waypoint.empty;
     t = 0;
     
@@ -44,20 +42,15 @@ end
 %Display routes in the FPSet
 %fps.routesFigure();
 
-%fps.detectConflicts(1,1)
-
 %Time dimension figure and animation
-% fps.timeDimensionFig();
-% fps.animateTimeDimensionFig();
+fps.timeDimensionFig();
+fps.animateTimeDimensionFig();
 
-%Conflict resolution
-cr = ConflictResolver(1.5);
+cr = ConflictResolver();
 cr.simplerResolve(fps);
 
-% fps.timeDimensionFig();
-% fps.animateTimeDimensionFig();
-
-con = fps.detectConflicts(1,0.1)
+fps.timeDimensionFig();
+fps.animateTimeDimensionFig();
 
 %Comput conflits with distance 1m and time_step 1s
 %fps.detectConflicts(1,1)

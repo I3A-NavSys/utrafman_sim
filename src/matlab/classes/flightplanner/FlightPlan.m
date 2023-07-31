@@ -358,6 +358,41 @@ classdef FlightPlan < handle
             eq = true;
         end
 
+        function wp = getMostCloseWayByTime(obj, t)
+            %GETMOSTCLOSEWAYBYTIME This method allow to get the most close waypoint by time
+            %   It returns the most close waypoint by time to the time t
+            
+            %Check if the flight plan is empty
+            if isempty(obj.waypoints)
+                disp('The flight plan is empty');
+                return
+            end
+
+            %Check if the time is before the init time of the flight plan
+            if t < obj.init_time
+                wp = obj.waypoints(1);
+                return
+            end
+
+            %Check if the time is after the finish time of the flight plan
+            if t > obj.finish_time
+                wp = obj.waypoints(end);
+                return
+            end
+
+            %Find the most close waypoint by time
+            for i = 1:length(obj.waypoints)-1
+                if t >= obj.waypoints(i).t && t <= obj.waypoints(i+1).t
+                    if t >= obj.waypoints(i).t + (obj.waypoints(i+1).t - obj.waypoints(i).t)/2
+                        wp = obj.waypoints(i+1);
+                    else
+                        wp = obj.waypoints(i);
+                    end
+                    return;
+                end
+            end
+        end
+
         function p = abstractionLayer(fp, t)
             p = [Inf Inf Inf];
 

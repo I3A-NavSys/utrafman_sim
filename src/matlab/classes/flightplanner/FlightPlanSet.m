@@ -14,6 +14,30 @@ classdef FlightPlanSet < handle
             %FLIGHTPLANSET Construct for FlightPlanSet class
         end
 
+        function fp = getFlightPlanById(obj, id)
+            %GETFLIGHTPLANBYID Get a flightplan from the set by its id
+            % Return the flightplan with the given id or an empty flightplan if it doesn't exist
+
+            %Check if the set is empty
+            if isempty(obj.flightplans)
+                disp('The set is empty');
+                fp = FlightPlan.empty;
+                return
+            end
+
+            %Search the flightplan
+            for i = 1:length(obj.flightplans)
+                if obj.flightplans(i).id == id
+                    fp = obj.flightplans(i);
+                    return
+                end
+            end
+
+            %If the flightplan doesn't exist
+            disp('The flightplan with the given id doesn''t exist');
+            fp = [];
+        end
+
         function obj = addFlightPlan(obj, flightplan)
             %ADDFLIGHTPLAN Add a flightplan to the set
             % Insert a flightplan into the set ordenated using the flightplan init_time property
@@ -101,15 +125,14 @@ classdef FlightPlanSet < handle
             end
 
             fig_name = "Time Dimension for the set " + obj.id;
-            if isempty(obj.fig_time)
+            %if isempty(obj.fig_time)
                 obj.fig_time = uifigure('Name', fig_name);
                 g = uigridlayout(obj.fig_time);
                 g.RowHeight = {20,'1x',80, 20};
                 g.ColumnWidth = {20, '1x', 20};
-            else
-                % uifigure(obj.fig_time);
-                % clf(obj.fig_time);
-            end
+            %else
+                
+            %end
 
             %3D axes
             ax = uiaxes(g);
