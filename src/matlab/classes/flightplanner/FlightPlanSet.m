@@ -2,6 +2,11 @@ classdef FlightPlanSet < handle
     properties
         id = 0;
         flightplans FlightPlan = FlightPlan.empty;
+
+        % Figures
+        fig_routes;
+        fig_time;
+
     end
 
     methods
@@ -55,12 +60,12 @@ classdef FlightPlanSet < handle
 
             %Find the figure if it exists or create it
             fig_name = "Flight Plan Set ID " + obj.id;
-            fig = findobj('Type', 'Figure', 'Name', fig_name);
-            if isempty(fig)
-                fig = figure('Name', fig_name);
+            %fig = findobj('Type', 'Figure', 'Name', fig_name);
+            if isempty(obj.fig_routes)
+                obj.fig_routes = figure('Name', fig_name);
             else
-                figure(fig);
-                clf(fig);
+                figure(obj.fig_routes);
+                clf(obj.fig_routes);
             end
 
             %Figure settings
@@ -72,7 +77,7 @@ classdef FlightPlanSet < handle
             zlabel("z [m]");
             title("Routes for the set " + obj.id);
 
-            plt = [];
+            plt = zeros(1, length(obj.flightplans));
             plt_names = {};
             %Plot the routes
             for i = 1:length(obj.flightplans)
@@ -86,6 +91,72 @@ classdef FlightPlanSet < handle
             end
 
             legend(plt, plt_names);
+        end
+
+        function timeDimensionFig(obj)
+            %Check if the set is empty
+            if isempty(obj.flightplans)
+                disp('The set is empty');
+                return
+            end
+
+            fig_name = "Time Dimension for the set " + obj.id;
+            if isempty(obj.fig_time)
+                obj.fig_time = uifigure('Name', fig_name);
+                g = uigridlayout(obj.fig_time);
+                g.RowHeight = {20,'1x',80, 20};
+                g.ColumnWidth = {20, '1x', 20};
+            else
+                % uifigure(obj.fig_time);
+                % clf(obj.fig_time);
+            end
+
+            %3D axes
+            ax = uiaxes(g);
+            ax.Layout.Row = 2;
+            ax.Layout.Column = 2;
+            ax.XLabel.String = 'x [m]';
+            ax.YLabel.String = 'y [m]';
+            ax.ZLabel.String = 'z [m]';
+
+            % Set limits for X, Y and Z axes to the maximum distance between the flightplans
+            % TODO: use flightplan limits
+            ax.XLim = [0 10];
+            ax.YLim = [0 10];
+            ax.ZLim = [0 10];
+
+            hold(ax,"on");
+            grid(ax, "on");
+
+            % Slider
+            sld = uislider(g);
+            sld.Layout.Row = 3;
+            sld.Layout.Column = 2;
+            sld.Limits = [obj.flightplans(1).init_time obj.flightplans(end).finish_time];
+            sld.ValueChangedFcn = @(sld, event) FlightPlanSet.updateTimePlot(sld, event, ax, obj);
+        end
+
+        function animateTimeDimensionFig(obj)
+            %Check if the set is empty
+            if isempty(obj.flightplans)
+                disp('The set is empty');
+                return
+            end
+
+            sld = findobj(obj.fig_time, 'Type', 'UISlider');
+            if isempty(sld)
+                disp('The time dimension figure is not initialized');
+                return
+            end
+
+            % Animation
+            for t = obj.flightplans(1).init_time:1:obj.flightplans(end).finish_time
+                sld.Value = t;
+                %Fire the event
+                sld.ValueChangedFcn(sld, []);
+                drawnow
+                pause(0.01);
+            end
         end
 
         function conflicts = detectConflicts(obj, conf_dist, time_step)
@@ -127,7 +198,6 @@ classdef FlightPlanSet < handle
                         dist = norm(pos_mat(i,:) - pos_mat(j,:));
                         % If the distance is less than the conflict distance, add the conflict to the list
                         if dist < conf_dist
-                            %conflicts = [conflicts; i j dist t];
                             conflicts(conflicts_index, :) = [i j dist t];
                             conflicts_index = conflicts_index + 1;
                         end
@@ -165,6 +235,20 @@ classdef FlightPlanSet < handle
                 if  ~(obj.flightplans(i).init_time >= finish_time || obj.flightplans(i).finish_time <= init_time)
                     flightplans = [flightplans obj.flightplans(i)];
                 end
+            end
+        end
+    end
+
+    methods(Static)
+        function updateTimePlot(sld, event, ax, obj)
+            %Get the time from the slider
+            max_t = fix(sld.Value);
+            %Clear the axes
+            cla(ax);
+
+            %Plot the routes
+            for i = 1:length(obj.flightplans)
+                obj.flightplans(i).plotRouteBetTimes(ax, obj.flightplans(i).init_time, max_t);
             end
         end
     end

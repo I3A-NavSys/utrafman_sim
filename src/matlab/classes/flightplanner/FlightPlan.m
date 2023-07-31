@@ -7,7 +7,10 @@ classdef FlightPlan < handle
         waypoints Waypoint = Waypoint.empty;
         init_time double;       %Init_time is based on the time of the first waypoint
         finish_time double;     %Finish_time is based on the time of the last waypoint
-        priority int8 = 0; 
+        priority int8 = 0;
+
+        %Formatting
+        color;
     end
     
     methods
@@ -15,6 +18,7 @@ classdef FlightPlan < handle
             %FLIGHTPLAN Construct for FlightPlan class
 
             obj.id = id;
+            obj.color = rand(1,3);
 
             %Check if the waypoints list is empty ([])
             if ~isempty(waypoints)
@@ -139,9 +143,41 @@ classdef FlightPlan < handle
             obj.finish_time = obj.waypoints(end).t;
         end
 
+        function plt = plotRouteBetTimes(obj,ax,t_min,t_max)
+            %PLOTROUTEBETTIME This method add the flight plan to the current figure between t_min and t_max
+
+            %Check if the flight plan is empty
+            if isempty(obj.waypoints)
+                disp('The flight plan is empty');
+                return
+            end
+
+            position = [];
+
+            for t=t_min:1:t_max
+                %Get position of the flight plan at time t
+                position(end+1,:) = obj.abstractionLayer(t);
+            end
+
+            % If position array is empty, return
+            if isempty(position)
+                return
+            end
+
+            %Display routes between waypoints
+            plot3(ax, position(:,1), position(:,2), position(:,3), 'Color', obj.color);
+            plt = plot3(ax,position(end,1), position(end,2), position(end,3), 'o', 'MarkerSize', 5, 'MarkerFaceColor', obj.color);
+        end
+
         function plt = plotRoute(obj, color)
             %PLOTFIGURE This method add the flight plan to the current figure
             
+            %Check if the flight plan is empty
+            if isempty(obj.waypoints)
+                disp('The flight plan is empty');
+                return
+            end
+
             %If color is empty, set the default color to blue
             if isempty(color)
                 color = 'b';
