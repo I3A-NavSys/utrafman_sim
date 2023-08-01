@@ -1,13 +1,16 @@
 classdef FlightPlanSet < handle
+    
     properties
         id = 0;
         flightplans FlightPlan = FlightPlan.empty;
     end
 
     methods
+
         function obj = FlightPlanSet()
             %FLIGHTPLANSET Construct for FlightPlanSet class
         end
+
 
         function obj = addFlightPlan(obj, flightplan)
             %ADDFLIGHTPLAN Add a flightplan to the set
@@ -28,7 +31,8 @@ classdef FlightPlanSet < handle
 
         end
 
-        function obj = removeFlightPlan(obj, flightplan)
+
+        function obj = removeFlightPlan(obj, id)
             %REMOVEFLIGHTPLAN Remove a flightplan from the set
 
             %Check if the set is empty
@@ -36,7 +40,7 @@ classdef FlightPlanSet < handle
                 return
             else
                 for i = 1:length(obj.flightplans)
-                    if obj.flightplans(i).isequal(flightplan)
+                    if obj.flightplans(i).id == id
                         obj.flightplans = [obj.flightplans(1:i-1) obj.flightplans(i+1:end)];
                         return
                     end
@@ -44,6 +48,7 @@ classdef FlightPlanSet < handle
             end
         end
 
+ 
         function obj = routesFigure(obj)
             %ROUTESFIGURE Plot the routes of the flightplans in the set
 
@@ -88,6 +93,7 @@ classdef FlightPlanSet < handle
             legend(plt, plt_names);
         end
 
+
         function conflicts = detectConflicts(obj, conf_dist, time_step)
             %CONFLICTSDETECTOR Detect conflicts between flightplans
             conflicts = zeros(1e6, 4);
@@ -115,13 +121,14 @@ classdef FlightPlanSet < handle
             for t = min_t:time_step:max_t
                 tic
                 %Get the position of the flightplans at time t using the abstraction layer
-                pos_mat = arrayfun(@(fp) fp.abstractionLayer(t), obj.flightplans, 'UniformOutput', false);
+                pos_mat = arrayfun(@(fp) fp.positionAtTime(t), obj.flightplans, 'UniformOutput', false);
                 %Convert the cell array to a matrix
                 pos_mat = cell2mat(pos_mat);
                 %Reshape the matrix to a Nx3 matrix with X, Y and Z coordinates
                 pos_mat = reshape(pos_mat, 3, length(obj.flightplans))';
 
                 %Calculate the distance between all the flightplans
+
                 for i = 1:length(obj.flightplans)
                     for j = i+1:length(obj.flightplans)
                         dist = norm(pos_mat(i,:) - pos_mat(j,:));
@@ -136,6 +143,7 @@ classdef FlightPlanSet < handle
             end
             conflicts = conflicts(1:conflicts_index-1, :);
         end
+
 
         function conflicts =  detectConflictsBetTimes(obj, conf_dist, time_step, init_time, finish_time)
             %CONFLICTSDETECTOR Detect conflicts between flightplans
@@ -155,6 +163,7 @@ classdef FlightPlanSet < handle
             conflicts = flightplan_subset.detectConflicts(conf_dist, time_step);
         end
 
+
         function flightplans = getFlightPlansBetTimes(obj, init_time, finish_time)
             %GETFLIGHTPLANSBETTIMES Get the flightplans in a time interval
 
@@ -167,5 +176,7 @@ classdef FlightPlanSet < handle
                 end
             end
         end
+
+    
     end
 end
