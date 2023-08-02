@@ -3,34 +3,34 @@ clc; clear;
 
 %Create set of flight plans
 fps = FlightPlanSet();
-max_aerospace_size = 10;        %meters
+fp  = FlightPlan(1,Waypoint.empty,0);
+
 
 %             t  x  y  z
-way_locs = [ 00 00 05 05
+way_data = [ 00 00 05 05
              00 00 05 10
-             05 00 500 10
+             05 00 50 10
              10 10 05 05 ];
-
-waypoints = Waypoint.empty;
     
-%Create waypoint object
-for i = 1:size(way_locs,1)
-    waypoints(i) = Waypoint(...
-        way_locs(i,1),...
-        way_locs(i,2),...
-        way_locs(i,3),... 
-        way_locs(i,4),... 
+
+for i = 1:size(way_data,1)
+    wp = Waypoint(...
+        way_data(i,1),...
+        way_data(i,2),...
+        way_data(i,3),... 
+        way_data(i,4),... 
         0,...
         true);
+
+    fp.setWaypoint(wp);
 end
     
-%Construct fp
-fp = FlightPlan(1,waypoints,0);
+fp.velocityFigure()
 
-fp.removeWaypointAtTime(8);
+% fp.removeWaypointAtTime(8);
 fp.removeWaypointAtTime(5);
-fp.removeWaypointAtTime(0);
-fp.removeWaypointAtTime(10);
+% fp.removeWaypointAtTime(0);
+% fp.removeWaypointAtTime(10);
 
     
 %%Add it to the set
@@ -38,24 +38,24 @@ fps.addFlightPlan(fp);
 
 %%
 %             t  x  y  z
-way_locs = [ 00 05 00 06
+way_data = [ 00 05 00 06
              10 05 10 06 ];
 
 waypoints = Waypoint.empty;
     
 %Create waypoint object
-for i = 1:size(way_locs,1)
+for i = 1:size(way_data,1)
     waypoints(i) = Waypoint(...
-        way_locs(i,1),...
-        way_locs(i,2),...
-        way_locs(i,3),... 
-        way_locs(i,4),... 
+        way_data(i,1),...
+        way_data(i,2),...
+        way_data(i,3),... 
+        way_data(i,4),... 
         0,...
         true);
 end
     
 %Construct fp
-fp = FlightPlan(1,waypoints,0);
+fp = FlightPlan(2,waypoints,0);
     
 %%Add it to the set
 fps.addFlightPlan(fp);
@@ -63,8 +63,8 @@ fps.addFlightPlan(fp);
 
 
 % Display route and velocity of FP
-% fp.routeFigure()
-% fp.velocityFigure()
+fp.routeFigure()
+fp.velocityFigure()
 
 % Other methods
 % fp.reverseWaypoints()
@@ -73,7 +73,7 @@ fps.addFlightPlan(fp);
 %Display routes in the FPSet
 fps.routesFigure();
 
-%Compute conflits with distance 1m and time_step 1s
+%Compute conflits with distance 3m and time_step 1s
 tic
 fps.detectConflicts(3,1)
 toc
