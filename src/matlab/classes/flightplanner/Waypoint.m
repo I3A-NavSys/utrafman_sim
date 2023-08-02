@@ -16,6 +16,7 @@ classdef Waypoint %< handle
     
         % velocidad de desplazamiento
         % expresada en modulo, sin direccion en espacio 3D
+        % (esto puede que cambie a vector de acuerdo con Uspace)
         v    {mustBeNumeric}    % metros/s
 
         % Waypoint de obligado tránsito (en un plan de vuelo)
@@ -36,6 +37,19 @@ classdef Waypoint %< handle
         end
 
 
+        function obj = checkWaypoint(obj,wp)
+            if ~isa(wp,'Waypoint')
+               error('Error. \nValue must be a Waypoint object, not a %s.',class(wp))
+            end
+        end
+
+
+        function p = position(obj)
+            %POSITION Get the position of the waypoint
+            p = [ obj.x  obj.y  obj.z ];
+        end
+       
+
         function obj = setPosition(obj,p)
             %SET_POSITION Set the position of the waypoint
             obj.x = p(1);
@@ -44,41 +58,38 @@ classdef Waypoint %< handle
         end
 
 
-        function p = position(obj)
-            %POSITION Get the position of the waypoint
-            p = [ obj.x  obj.y  obj.z ];
+        function obj = movePosition(obj,m)
+            %MOVE_POSITION Move the position of the waypoint
+            obj.x = obj.x + m(1);
+            obj.y = obj.y + m(2);
+            obj.z = obj.z + m(3);
         end
 
 
         function time = timeTo(a,b)
-            %Check if A and B are Waypoints objects
-            if ~isa(a,'Waypoint') || ~isa(b,'Waypoint')
-                error('A and B must be Waypoint objects');
-            end
-
-            %TIME Calculate the time between two waypoints
+            %TIMETO Get the time elapsed from this waypoint to another given
+            a.checkWaypoint(b);
             time = b.t - a.t;
         end
 
 
         function dist = distanceTo(a,b)
-            %Check if A and B are Waypoints objects
-            if ~isa(a,'Waypoint') || ~isa(b,'Waypoint')
-                error('A and B must be Waypoint objects');
-            end
-
-            %DISTANCE Calculate the distance between two waypoints
+            %DISTANCE Get the distance between two waypoints
+            a.checkWaypoint(b);
             dist = norm(a.position - b.position);
         end
 
 
-        function vel = velocityTo(a,b)
-            %VELOCITY Calculate the velocity between two waypoints
+        function dir = directionTo(a,b)
+            %DISTANCE Get a direction vector from one waypoint to another            a.checkWaypoint(b);
+            a.checkWaypoint(b);
+            dir = (b.position - a.position) / a.distanceTo(b);
+        end
 
-            %Check if A and B are Waypoints objects
-            if ~isa(a,'Waypoint') || ~isa(b,'Waypoint')
-                error('A and B must be Waypoint objects');
-            end
+
+        function vel = velocityTo(a,b)
+            %VELOCITY Get the velocity between two waypoints
+            a.checkWaypoint(b);
 
             dist = a.distanceTo(b);
             time = a.timeTo(b);
@@ -91,25 +102,22 @@ classdef Waypoint %< handle
         end
     
     
-        function wp3 = interpolation4D(obj,wp2,t)
-            wp3   = Waypoint;
+        function wp3 = interpolation4D(wp1,wp2,t)
+            % PENDIENTE DE CHEQUEAR
+            %INTERPOLATION4D 
+            % dados dos waypoints, 
+            % genera un tercer waypoint interpolando a un tiempo dado.
+            % Equivale a realizar un movimiento rectilíneo y uniforme.
+            wp1.checkWaypoint(wp2);
+                    
+            wp3 = wp1;
+            wp3.movePosition(wp1.directionTo(wp2) * wp1.velocityTo(wp2) * t);
             wp3.t = t;
-        
-            p1  = obj.position;
-            p2  = wp2.position;
-            t12 = obj.timeTo(wp2);
-            t13 = obj.timeTo(wp3);
-
-            if t12==0
-                wp3 = setPosition(p1);
-            else
-                wp3.setPosition(p1 + (p2 - p1) * t13 / t12);
-            end
-
         end
 
 
         function wp3 = interpolation5D(obj,wp2,t)
+            % PENDIENTE DE CHEQUEAR
             wp3 = Waypoint;
         
             s12 = obj.distanceTo(wp2);
