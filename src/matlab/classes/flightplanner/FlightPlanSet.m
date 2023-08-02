@@ -1,7 +1,7 @@
 classdef FlightPlanSet < handle
     
     properties
-        id = 0;
+        id          int32      = 0;
         flightplans FlightPlan = FlightPlan.empty;
     end
 
