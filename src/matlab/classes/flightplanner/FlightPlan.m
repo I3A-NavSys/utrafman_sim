@@ -4,7 +4,7 @@ classdef FlightPlan < handle
     
     properties
         id          int32    = 0;
-        waypoints   Waypoint;     
+        waypoints   Waypoint = Waypoint.empty;     
         priority    int8     = 0; 
     end
     
@@ -23,7 +23,6 @@ classdef FlightPlan < handle
                     obj.setWaypoint(waypoints(i));
                 end
             end
-
         end
 
         
@@ -43,15 +42,11 @@ classdef FlightPlan < handle
                     return
                 end
                 if obj.waypoints(i).t > waypoint.t
-                    for j = l:-1:i
-                        obj.waypoints(j+1) = obj.waypoints(j);
-                    end
-                    obj.waypoints(i) = waypoint;
+                    obj.waypoints = [obj.waypoints(1:i-1)  waypoint  obj.waypoints(i:l)];
                     return
                 end
             end
             obj.waypoints(l+1) = waypoint;
-
         end
 
 
@@ -177,7 +172,7 @@ classdef FlightPlan < handle
             %Compute the velocity between waypoints
             velocity = [];
             for i = 1:length(obj.waypoints)-1
-                velocity = [velocity, obj.waypoints(i).velocityWithWaypoint(obj.waypoints(i+1))];
+                velocity = [velocity, obj.waypoints(i).velocityTo(obj.waypoints(i+1))];
             end
 
             %Display velocity
