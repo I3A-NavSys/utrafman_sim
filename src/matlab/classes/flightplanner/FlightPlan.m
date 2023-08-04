@@ -26,7 +26,7 @@ classdef FlightPlan < handle
         end
 
         
-        function obj = setWaypoint(obj,waypoint)
+        function setWaypoint(obj,waypoint)
             %SETWAYPOINT This method allow to add/modify a waypoint into a flight plan
             %   Inserting waypoints out of order are allowed using this method
             
@@ -50,7 +50,7 @@ classdef FlightPlan < handle
         end
 
 
-        function obj = removeWaypointAtTime(obj,t)
+        function removeWaypointAtTime(obj,t)
             %REMOVEWAYPOINT This method allow to remove a waypoint from a flight plan
             %   Removing waypoints out of order are allowed using this method
             
@@ -85,98 +85,6 @@ classdef FlightPlan < handle
             else
                 t = obj.waypoints(end).t;
             end        
-        end
-
-
-        function plt = plotRoute(obj, color)
-            %PLOTFIGURE This method add the flight plan to the current figure
-            %ERROR A CORREGIR. REVIENTA CUANDO UN FP NO TIENE WAYPOINTS
-            
-            %If color is empty, set the default color to blue
-            if isempty(color)
-                color = 'b';
-            end
-            
-            %Display waypoints
-            plt = plot3([obj.waypoints(:).x], [obj.waypoints(:).y], [obj.waypoints(:).z], 'o', 'MarkerSize', 5, 'MarkerFaceColor', color);
-            
-            %Display routes between waypoints
-            for i = 1:length(obj.waypoints)-1
-                plot3([obj.waypoints(i).x, obj.waypoints(i+1).x], [obj.waypoints(i).y, obj.waypoints(i+1).y], [obj.waypoints(i).z, obj.waypoints(i+1).z], 'Color', color);
-            end
-        end
-
-
-        function obj = routeFigure(obj)
-            %DISPLAYFIGURE This method allow to display the flight plan
-            
-            %Check if the flight plan is empty
-            if isempty(obj.waypoints)
-                disp('The flight plan is empty');
-                return
-            end
-
-            %Find if the figure is already open
-            fig_name = "Route for flight plan ID " + obj.id;
-            fig = findobj("Name", fig_name);
-            if isempty(fig)
-                %Display a figure with the flight plan
-                fig = figure("Name", fig_name);
-            else
-                %Select the figure
-                figure(fig)
-                clf(fig)
-            end
-
-            %Figure settings
-            hold on;
-            grid on;
-            axis equal;
-            xlabel("x [m]");
-            ylabel("y [m]");
-            zlabel("z [m]");
-            title("Route for flight plan ID " + obj.id);
-            obj.plotRoute('b'); 
-        end
-
-
-        function obj = velocityFigure(obj)
-            %DISPLAYVELOCITY This method allow to display the velocity of the flight plan
-            
-            %Check if the flight plan is empty
-            if isempty(obj.waypoints)
-                disp('The flight plan is empty');
-                return
-            end
-
-            %Find if the figure is already open
-            fig_name = "Velocity for flight plan ID " + obj.id;
-            fig = findobj('Type', 'Figure',"Name", fig_name);
-            if isempty(fig)
-                %Display a figure with the flight plan
-                fig = figure("Name", fig_name);
-                fig.Name = "Velocity for flight plan ID " + obj.id;
-            else
-                %Select the figure
-                figure(fig)
-                clf(fig)
-            end
-
-            %Figure settings
-            hold on;
-            grid on;
-            xlabel("Time [s]");
-            ylabel("Velocity [m/s]");
-            title("Velocity for flight plan ID " + obj.id);
-
-            %Compute the velocity between waypoints
-            velocity = [];
-            for i = 1:length(obj.waypoints)-1
-                velocity = [velocity, obj.waypoints(i).velocityTo(obj.waypoints(i+1))];
-            end
-
-            %Display velocity
-            plot([obj.waypoints(2:end).t], velocity);
         end
 
 
@@ -278,43 +186,286 @@ classdef FlightPlan < handle
         % end
 
 
-        function p = positionAtTime(fp, t)
-            p = [Inf Inf Inf];
-
-            %If t is before init flight plan, return not valid pos
-            if t < fp.init_time
+        function p = positionAtTime(obj, t)
+            % Check if t is out of flight plan schedule, returning not valid pos
+            if t < obj.init_time  ||  t > obj.finish_time
+                p = [Inf Inf Inf];
                 return;
             end
 
-            %If t after finishing Uplan, return finish position
-            if t > fp.finish_time
-                return;
-            end
-
-            % Travel waypoint (assuming first waypoint is where drone is before take off)
-            for i = 2:size(fp.waypoints,2)
-                waypoint = fp.waypoints(i);
-                
-                %Until the next waypoint to t
-                if t > waypoint.t
-                    continue;
+            % search for the current waypoints
+            for i = 2:length(obj.waypoints)
+                if t < obj.waypoints(i).t
+                    break;
                 end
+            end
+            wp1 = obj.waypoints(i-1);
+            wp2 = obj.waypoints(i);
+            wp3 = Waypoint(t,wp1.x,wp1.y,wp1.z,0,true);
+            wp3.movePosition(wp1.directionTo(wp2) * wp1.velocityTo(wp2) * wp1.timeTo(wp3) );
 
-                %Now waypoint is the next waypoint
-                timeDifBetWays = waypoint.t - fp.waypoints(i-1).t;      %Time dif between last waypoint and enroute waypoint
-                timeDifBetWays = fp.waypoints(i-1).timeTo(waypoint);    %Time dif between last waypoint and enroute waypoint
-                timeDifBetWayT = t - fp.waypoints(i-1).t;               %Time dif between last waypoint and t
+            p = wp3.position;
+     
+        end
 
-                %Compute dif between waypoints
-                % vectorDif = [waypoint.x waypoint.y waypoint.z] - [fp.waypoints(i-1).x fp.waypoints(i-1).y fp.waypoints(i-1).z];
-                vectorDif = waypoint.position - fp.waypoints(i-1).position;
 
-                %Now vectorDif is the RELATIVE vector between last waypoint and
-                %position in t, so must be converted to ABSOLUTE.
-                p = (vectorDif.*(timeDifBetWayT/timeDifBetWays)) + [fp.waypoints(i-1).x fp.waypoints(i-1).y fp.waypoints(i-1).z];
-                return;
+        % function p = positionAtTime(fp, t)
+        %     p = [Inf Inf Inf];
+        % 
+        %     %If t is before init flight plan, return not valid pos
+        %     if t < fp.init_time
+        %         return;
+        %     end
+        % 
+        %     %If t after finishing Uplan, return finish position
+        %     if t > fp.finish_time
+        %         return;
+        %     end
+        % 
+        %     % Travel waypoint (assuming first waypoint is where drone is before take off)
+        %     for i = 2:size(fp.waypoints,2)
+        %         waypoint = fp.waypoints(i);
+        % 
+        %         %Until the next waypoint to t
+        %         if t > waypoint.t
+        %             continue;
+        %         end
+        % 
+        %         %Now waypoint is the next waypoint
+        %         timeDifBetWays = waypoint.t - fp.waypoints(i-1).t;      %Time dif between last waypoint and enroute waypoint
+        %         timeDifBetWays = fp.waypoints(i-1).timeTo(waypoint);    %Time dif between last waypoint and enroute waypoint
+        %         timeDifBetWayT = t - fp.waypoints(i-1).t;               %Time dif between last waypoint and t
+        % 
+        %         %Compute dif between waypoints
+        %         % vectorDif = [waypoint.x waypoint.y waypoint.z] - [fp.waypoints(i-1).x fp.waypoints(i-1).y fp.waypoints(i-1).z];
+        %         vectorDif = waypoint.position - fp.waypoints(i-1).position;
+        % 
+        %         %Now vectorDif is the RELATIVE vector between last waypoint and
+        %         %position in t, so must be converted to ABSOLUTE.
+        %         p = (vectorDif.*(timeDifBetWayT/timeDifBetWays)) + [fp.waypoints(i-1).x fp.waypoints(i-1).y fp.waypoints(i-1).z];
+        %         return;
+        %     end
+        % end
+
+
+        function tr = trace(obj, time_step)
+            %TRACE This method expands the flight plan behavior over time
+            
+            instants = obj.init_time : time_step : obj.finish_time;
+            tr = zeros(length(instants),5);
+            tr(:,1) = instants;
+           
+            %Get position in time instants
+            for i = 1:length(instants)
+                p = obj.positionAtTime(tr(i,1));
+                tr(i,2:4) = p;
+            end
+
+            %Get velocity in time instants
+            for i = 1:length(instants)-1
+                p = obj.positionAtTime(tr(i,1));
+                tr(i,5) = norm(tr(i+1,2:4) - tr(i,2:4)) / time_step;
             end
         end
+
+
+        function dist = distanceTo(fp1, fp2, time_step)
+            %DISTANCETO This method obstains relative distance between two flight plans over time
+            
+            init_time   = min(fp1.init_time,  fp2.init_time);
+            finish_time = max(fp1.finish_time,fp2.finish_time);
+            
+            instants = init_time : time_step : finish_time;
+            dist = zeros(length(instants),2);
+            dist(:,1) = instants;
+           
+            %Get position in time instants
+            for i = 1:length(instants)
+                t = dist(i,1);
+                p1 = fp1.positionAtTime(t);
+                p2 = fp2.positionAtTime(t);
+                dist(i,2) = norm(p2-p1);
+            end
+        end
+
+         
+        % function plt = plotRoute(obj, color)
+        %     %PLOTFIGURE This method add the flight plan to the current figure
+        %     %ERROR A CORREGIR. REVIENTA CUANDO UN FP NO TIENE WAYPOINTS
+        % 
+        %     %If color is empty, set the default color to blue
+        %     if isempty(color)
+        %         color = 'b';
+        %     end
+        % 
+        %     %Display waypoints
+        %     plt = plot3([obj.waypoints(:).x], [obj.waypoints(:).y], [obj.waypoints(:).z], 'o', 'MarkerSize', 5, 'MarkerFaceColor', color);
+        % 
+        %     %Display routes between waypoints
+        %     for i = 1:length(obj.waypoints)-1
+        %         plot3([obj.waypoints(i).x, obj.waypoints(i+1).x], [obj.waypoints(i).y, obj.waypoints(i+1).y], [obj.waypoints(i).z, obj.waypoints(i+1).z], 'Color', color);
+        %     end
+        % end
+        
+
+        function obj = routeFigure(obj,time_step,color)
+            %ROUTEFIGURE This method allow to display the flight plan trajectory
+            
+            %Check if the flight plan is empty
+            if isempty(obj.waypoints)
+                disp('The flight plan is empty');
+                return
+            end
+
+            %Find if the figure is already open
+            fig_name = "Route for flight plan ID " + obj.id;
+            fig = findobj("Name", fig_name);
+            if isempty(fig)
+                %Display a figure with the flight plan
+                fig = figure("Name", fig_name);
+            else
+                %Select the figure
+                figure(fig)
+                clf(fig)
+            end
+
+            %Figure settings
+            hold on;
+            grid on;
+            axis equal;
+            xlabel("x [m]");
+            ylabel("y [m]");
+            zlabel("z [m]");
+            title("Route for flight plan ID " + obj.id);
+            % obj.plotRoute('b'); 
+
+
+            tr = obj.trace(time_step);
+            plt = plot3(tr(:,2),tr(:,3),tr(:,4), '.-', ...
+                'MarkerSize',5, ...
+                'MarkerFaceColor',color, ...
+                'Color',color );
+                
+               
+        end
+
+        
+        function obj = velocityFigure(obj,time_step,color)
+            %VELOCITYFIGURE This method allow to display the flight plan instant velocity
+            
+            % Check if the flight plan is empty
+            if isempty(obj.waypoints)
+                disp('The flight plan is empty');
+                return
+            end
+
+            %Find if the figure is already open
+            fig_name = "Velocity for flight plan ID " + obj.id;
+            fig = findobj('Type', 'Figure',"Name", fig_name);
+            if isempty(fig)
+                %Display a figure with the flight plan
+                fig = figure("Name", fig_name);
+                fig.Name = "Velocity for flight plan ID " + obj.id;
+            else
+                %Select the figure
+                figure(fig)
+                clf(fig)
+            end
+
+            %Figure settings
+            hold on;
+            grid on;
+            xlabel("Time [s]");
+            ylabel("Velocity [m/s]");
+            title("Velocity for flight plan ID " + obj.id);            
+
+            tr = obj.trace(time_step);
+            plt = plot(tr(:,1),tr(:,5), '.-', ...
+                'MarkerSize',5, ...
+                'MarkerFaceColor',color, ...
+                'Color',color );            
+        end
+
+
+        % function obj = velocityFigure(obj)
+        %     %DISPLAYVELOCITY This method allow to display the velocity of the flight plan
+        % 
+        %     %Check if the flight plan is empty
+        %     if isempty(obj.waypoints)
+        %         disp('The flight plan is empty');
+        %         return
+        %     end
+        % 
+        %     %Find if the figure is already open
+        %     fig_name = "Velocity for flight plan ID " + obj.id;
+        %     fig = findobj('Type', 'Figure',"Name", fig_name);
+        %     if isempty(fig)
+        %         %Display a figure with the flight plan
+        %         fig = figure("Name", fig_name);
+        %         fig.Name = "Velocity for flight plan ID " + obj.id;
+        %     else
+        %         %Select the figure
+        %         figure(fig)
+        %         clf(fig)
+        %     end
+        % 
+        %     %Figure settings
+        %     hold on;
+        %     grid on;
+        %     xlabel("Time [s]");
+        %     ylabel("Velocity [m/s]");
+        %     title("Velocity for flight plan ID " + obj.id);
+        % 
+        %     %Compute the velocity between waypoints
+        %     velocity = [];
+        %     for i = 1:length(obj.waypoints)-1
+        %         velocity = [velocity, obj.waypoints(i).velocityTo(obj.waypoints(i+1))];
+        %     end
+        % 
+        %     %Display velocity
+        %     plot([obj.waypoints(2:end).t], velocity);
+        % end
+        % 
+        %   function obj = velocityFigure(obj,time_step,color)
+        %     %DISPLAYVELOCITY This method allow to display the velocity of the flight plan
+        % 
+        %     %Check if the flight plan is empty
+        %     if isempty(obj.waypoints)
+        %         disp('The flight plan is empty');
+        %         return
+        %     end
+        % 
+        %     %Find if the figure is already open
+        %     fig_name = "Velocity for flight plan ID " + obj.id;
+        %     fig = findobj('Type', 'Figure',"Name", fig_name);
+        %     if isempty(fig)
+        %         %Display a figure with the flight plan
+        %         fig = figure("Name", fig_name);
+        %         fig.Name = "Velocity for flight plan ID " + obj.id;
+        %     else
+        %         %Select the figure
+        %         figure(fig)
+        %         clf(fig)
+        %     end
+        % 
+        %     %Figure settings
+        %     hold on;
+        %     grid on;
+        %     xlabel("Time [s]");
+        %     ylabel("Velocity [m/s]");
+        %     title("Velocity for flight plan ID " + obj.id);
+        % 
+        %     %Compute the velocity between waypoints
+        %     velocity = [];
+        %     for i = 1:length(obj.waypoints)-1
+        %         velocity = [velocity, obj.waypoints(i).velocityTo(obj.waypoints(i+1))];
+        %     end
+        % 
+        %     %Display velocity
+        %     plot([obj.waypoints(2:end).t], velocity);
+        % end
+
+        
     end
 end
 

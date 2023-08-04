@@ -12,7 +12,7 @@ classdef FlightPlanSet < handle
         end
 
 
-        function obj = addFlightPlan(obj, flightplan)
+        function addFlightPlan(obj, flightplan)
             %ADDFLIGHTPLAN Add a flightplan to the set
             % Insert a flightplan into the set ordenated using the flightplan init_time property
 
@@ -32,7 +32,7 @@ classdef FlightPlanSet < handle
         end
 
 
-        function obj = removeFlightPlan(obj, id)
+        function removeFlightPlan(obj, id)
             %REMOVEFLIGHTPLAN Remove a flightplan from the set
 
             %Check if the set is empty
@@ -49,7 +49,7 @@ classdef FlightPlanSet < handle
         end
 
  
-        function obj = routesFigure(obj)
+        function obj = routesFigure(obj,time_step)
             %ROUTESFIGURE Plot the routes of the flightplans in the set
 
             %Check if the set is empty
@@ -84,7 +84,11 @@ classdef FlightPlanSet < handle
                 %Generate random color
                 color = rand(1,3);
                 %Plot the route
-                plt(i) = obj.flightplans(i).plotRoute(color);
+                tr = obj.flightplans(i).trace(time_step);
+                plt(i) = plot3(tr(:,2),tr(:,3),tr(:,4), '.-', ...
+                    'MarkerSize',5, ...
+                    'MarkerFaceColor',color, ...
+                    'Color',color );
 
                 name = "FP ID " + int2str(obj.flightplans(i).id);
                 plt_names(i) = {name};
