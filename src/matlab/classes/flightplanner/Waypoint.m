@@ -1,4 +1,4 @@
-classdef Waypoint %< handle
+classdef Waypoint < handle
     %WAYPOINT This class represent a flight plan's waypoint
     %   Detailed explanation goes here
     
@@ -37,7 +37,7 @@ classdef Waypoint %< handle
         end
 
 
-        function obj = checkWaypoint(obj,wp)
+        function checkWaypoint(obj,wp)
             if ~isa(wp,'Waypoint')
                error('Error. \nValue must be a Waypoint object, not a %s.',class(wp))
             end
@@ -50,7 +50,7 @@ classdef Waypoint %< handle
         end
        
 
-        function obj = setPosition(obj,p)
+        function setPosition(obj,p)
             %SET_POSITION Set the position of the waypoint
             obj.x = p(1);
             obj.y = p(2);
@@ -58,7 +58,7 @@ classdef Waypoint %< handle
         end
 
 
-        function obj = movePosition(obj,m)
+        function movePosition(obj,m)
             %MOVE_POSITION Move the position of the waypoint
             obj.x = obj.x + m(1);
             obj.y = obj.y + m(2);
@@ -83,7 +83,12 @@ classdef Waypoint %< handle
         function dir = directionTo(a,b)
             %DISTANCE Get a direction vector from one waypoint to another            a.checkWaypoint(b);
             a.checkWaypoint(b);
-            dir = (b.position - a.position) / a.distanceTo(b);
+            dist = a.distanceTo(b);
+            if dist == 0
+                dir = [0,0,0];
+            else
+                dir = (b.position - a.position) / dist;
+            end
         end
 
 
@@ -111,8 +116,9 @@ classdef Waypoint %< handle
             wp1.checkWaypoint(wp2);
                     
             wp3 = wp1;
-            wp3.movePosition(wp1.directionTo(wp2) * wp1.velocityTo(wp2) * t);
             wp3.t = t;
+            wp3.movePosition(wp1.directionTo(wp2) * wp1.velocityTo(wp2) * wp1.timeTo(wp3) );
+
         end
 
 
