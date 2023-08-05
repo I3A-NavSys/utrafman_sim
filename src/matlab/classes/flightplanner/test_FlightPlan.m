@@ -3,11 +3,8 @@ clc; clear;
 
 time_step = 0.01;
 
-%Create set of flight plans
-fps = FlightPlanSet();
+%%
 
-
-fp1  = FlightPlan(1,Waypoint.empty,0);
 %             t  x  y  z
 way_data = [ 05 00 05 00
              10 00 05 00
@@ -16,8 +13,9 @@ way_data = [ 05 00 05 00
              40 10 05 00
              50 10 05 00 ];
     
-
+fp1  = FlightPlan(1,Waypoint.empty,0);
 for i = 1:size(way_data,1)
+
     wp = Waypoint(...
         way_data(i,1),...
         way_data(i,2),...
@@ -30,19 +28,15 @@ for i = 1:size(way_data,1)
 end
     
 
-% fp.removeWaypointAtTime(8);
-% fp.removeWaypointAtTime(5);
-% fp.removeWaypointAtTime(0);
-% fp.removeWaypointAtTime(10);
 
 
 
-% Display route and velocity of FP
-% fp.routeFigure(time_step,'b')
-% fp.velocityFigure(0.01,'b')
-
-
-% tr = fp.trace(1);
+% % Display route and velocity of FP
+% fp1.routeFigure(time_step,'b')
+fp1.velocityFigure(time_step,'b')
+% 
+% tr = fp1.trace(0.01);
+% figure
 % plot(tr(:,1),tr(:,2));
 % hold on
 % grid on
@@ -51,11 +45,14 @@ end
 % plot(tr(:,1),tr(:,5));
 
 
+
+% Other methods
+% fp1.removeWaypointAtTime(8);
+% fp1.reverseWaypoints()
+% fp1.normalizeVelocity()
+
+
     
-%%Add it to the set
-fps.addFlightPlan(fp1);
-
-
 
 %%
 %             t  x  y  z
@@ -79,43 +76,54 @@ for i = 1:size(way_data,1)
         true);
 end
     
-%Construct fp
-fp2 = FlightPlan(2,waypoints,0);
-% fp2.routeFigure(time_step,'r')
+fp2  = FlightPlan(2,waypoints,0);
 
-dist = fp1.distanceTo(fp2, time_step);
-%Figure settings
-color = 'b';
-plt = plot(dist(:,1),dist(:,2), '.-', ...
-    'MarkerSize',5, ...
-    'MarkerFaceColor',color, ...
-    'Color',color );
-grid on;
-title("Relative distance between flight plans " + fp1.id + " and " + fp2.id);            
-ylabel("distance [m]");
-xlabel("Time [s]");
 
+
+
+% Relative distance between two flightplans
+
+
+figure
+title("Relative distance between flight plans " + fp1.id + " and " + fp2.id)
+ylabel("distance [m]")
+xlabel("time [s]")
+grid on
+hold on
             
+dist = fp1.distanceTo(fp2, 5);
+plt = plot(dist(:,1),dist(:,2),  ...
+    LineWidth = 2, ...
+    Color = 'r' );
+
+dist = fp1.distanceTo(fp2, 1);
+plt = plot(dist(:,1),dist(:,2),  ...
+    LineWidth = 2, ...
+    Color = 'g' );
+
+
+dist = fp1.distanceTo(fp2, 0.1);
+plt = plot(dist(:,1),dist(:,2),  ...
+    LineWidth = 2, ...
+    Color = 'b' );
 
 
 
-%%Add it to the set
+
+%%
+%Create set of flight plans
+fps = FlightPlanSet();
+fps.addFlightPlan(fp1);
 fps.addFlightPlan(fp2);
 
 
-
-
-
-% Other methods
-% fp.reverseWaypoints()
-% fp.normalizeVelocity()
 
 %Display routes in the FPSet
 fps.routesFigure(time_step);
 
 %Compute conflits with distance 3m and time_step 1s
 tic
-fps.detectConflicts(3,1)
+fps.detectConflicts(3,0.1)
 toc
 
 

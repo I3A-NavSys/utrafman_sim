@@ -189,7 +189,7 @@ classdef FlightPlan < handle
         function p = positionAtTime(obj, t)
             % Check if t is out of flight plan schedule, returning not valid pos
             if t < obj.init_time  ||  t > obj.finish_time
-                p = [Inf Inf Inf];
+                p = [NaN NaN NaN];
                 return;
             end
 
@@ -199,11 +199,11 @@ classdef FlightPlan < handle
                     break;
                 end
             end
+
             wp1 = obj.waypoints(i-1);
             wp2 = obj.waypoints(i);
-            wp3 = Waypoint(t,wp1.x,wp1.y,wp1.z,0,true);
-            wp3.movePosition(wp1.directionTo(wp2) * wp1.velocityTo(wp2) * wp1.timeTo(wp3) );
 
+            wp3 = wp1.interpolation4D(wp2,t);
             p = wp3.position;
      
         end
@@ -308,7 +308,7 @@ classdef FlightPlan < handle
         % end
         
 
-        function obj = routeFigure(obj,time_step,color)
+        function routeFigure(obj,time_step,color)
             %ROUTEFIGURE This method allow to display the flight plan trajectory
             
             %Check if the flight plan is empty
@@ -337,20 +337,21 @@ classdef FlightPlan < handle
             ylabel("y [m]");
             zlabel("z [m]");
             title("Route for flight plan ID " + obj.id);
-            % obj.plotRoute('b'); 
 
-
+            %Display trajectory
             tr = obj.trace(time_step);
-            plt = plot3(tr(:,2),tr(:,3),tr(:,4), '.-', ...
-                'MarkerSize',5, ...
-                'MarkerFaceColor',color, ...
-                'Color',color );
-                
+            plot3(tr(:,2),tr(:,3),tr(:,4), '-', ...
+                Color = color );
+            %Display waypoints
+            plot3([obj.waypoints(:).x], [obj.waypoints(:).y], [obj.waypoints(:).z], 'o',...
+                MarkerSize = 5, ...
+                MarkerFaceColor = 'w', ...
+                MarkerEdgeColor = color );
                
         end
 
         
-        function obj = velocityFigure(obj,time_step,color)
+        function velocityFigure(obj,time_step,color)
             %VELOCITYFIGURE This method allow to display the flight plan instant velocity
             
             % Check if the flight plan is empty
@@ -379,11 +380,15 @@ classdef FlightPlan < handle
             ylabel("Velocity [m/s]");
             title("Velocity for flight plan ID " + obj.id);            
 
+            %Display instant velocity
             tr = obj.trace(time_step);
-            plt = plot(tr(:,1),tr(:,5), '.-', ...
-                'MarkerSize',5, ...
-                'MarkerFaceColor',color, ...
-                'Color',color );            
+            plot(tr(:,1),tr(:,5), '-', ...
+                Color = color );
+            %Display waypoints velocity
+            plot([obj.waypoints(:).t], [obj.waypoints(:).v], 'o',...
+                MarkerSize = 5, ...
+                MarkerFaceColor = 'w', ...
+                MarkerEdgeColor = color );
         end
 
 

@@ -108,17 +108,14 @@ classdef Waypoint < handle
     
     
         function wp3 = interpolation4D(wp1,wp2,t)
-            % PENDIENTE DE CHEQUEAR
             %INTERPOLATION4D 
             % dados dos waypoints, 
             % genera un tercer waypoint interpolando a un tiempo dado.
             % Equivale a realizar un movimiento rectilíneo y uniforme.
             wp1.checkWaypoint(wp2);
                     
-            wp3 = wp1;
-            wp3.t = t;
+            wp3 = Waypoint(t,wp1.x,wp1.y,wp1.z,0,true);
             wp3.movePosition(wp1.directionTo(wp2) * wp1.velocityTo(wp2) * wp1.timeTo(wp3) );
-
         end
 
 

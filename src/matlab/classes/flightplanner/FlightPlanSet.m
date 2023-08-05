@@ -83,12 +83,18 @@ classdef FlightPlanSet < handle
             for i = 1:length(obj.flightplans)
                 %Generate random color
                 color = rand(1,3);
-                %Plot the route
-                tr = obj.flightplans(i).trace(time_step);
-                plt(i) = plot3(tr(:,2),tr(:,3),tr(:,4), '.-', ...
-                    'MarkerSize',5, ...
-                    'MarkerFaceColor',color, ...
-                    'Color',color );
+
+                fp = obj.flightplans(i);
+
+                %Display trajectory
+                tr = fp.trace(time_step);
+                plot3(tr(:,2),tr(:,3),tr(:,4), '-', ...
+                    Color = color );
+                %Display waypoints
+                plt(i) = plot3([fp.waypoints(:).x], [fp.waypoints(:).y], [fp.waypoints(:).z], 'o',...
+                    MarkerSize = 5, ...
+                    MarkerFaceColor = 'w', ...
+                    MarkerEdgeColor = color );
 
                 name = "FP ID " + int2str(obj.flightplans(i).id);
                 plt_names(i) = {name};
@@ -149,37 +155,37 @@ classdef FlightPlanSet < handle
         end
 
 
-        function conflicts =  detectConflictsBetTimes(obj, conf_dist, time_step, init_time, finish_time)
-            %CONFLICTSDETECTOR Detect conflicts between flightplans
-            % Allows to detect conflicts between flightplans in a time interval
+        % function conflicts =  detectConflictsBetTimes(obj, conf_dist, time_step, init_time, finish_time)
+        %     %CONFLICTSDETECTOR Detect conflicts between flightplans
+        %     % Allows to detect conflicts between flightplans in a time interval
+        % 
+        %     %Get flightplans in the time interval
+        %     flightplans = obj.getFlightPlansBetTimes(init_time, finish_time);
+        % 
+        %     %Construct the FlightPlanSubset
+        %     flightplan_subset = FlightPlanSet();
+        %     flightplan_subset.id = obj.id;
+        %     for i = 1:length(flightplans)
+        %         flightplan_subset.addFlightPlan(flightplans(i));
+        %     end
+        % 
+        %     %Detect conflicts
+        %     conflicts = flightplan_subset.detectConflicts(conf_dist, time_step);
+        % end
 
-            %Get flightplans in the time interval
-            flightplans = obj.getFlightPlansBetTimes(init_time, finish_time);
 
-            %Construct the FlightPlanSubset
-            flightplan_subset = FlightPlanSet();
-            flightplan_subset.id = obj.id;
-            for i = 1:length(flightplans)
-                flightplan_subset.addFlightPlan(flightplans(i));
-            end
-
-            %Detect conflicts
-            conflicts = flightplan_subset.detectConflicts(conf_dist, time_step);
-        end
-
-
-        function flightplans = getFlightPlansBetTimes(obj, init_time, finish_time)
-            %GETFLIGHTPLANSBETTIMES Get the flightplans in a time interval
-
-            flightplans = [];
-
-            %Filter the flightplans in the time interval
-            for i = 1:length(obj.flightplans)
-                if  ~(obj.flightplans(i).init_time >= finish_time || obj.flightplans(i).finish_time <= init_time)
-                    flightplans = [flightplans obj.flightplans(i)];
-                end
-            end
-        end
+        % function flightplans = getFlightPlansBetTimes(obj, init_time, finish_time)
+        %     %GETFLIGHTPLANSBETTIMES Get the flightplans in a time interval
+        % 
+        %     flightplans = [];
+        % 
+        %     %Filter the flightplans in the time interval
+        %     for i = 1:length(obj.flightplans)
+        %         if  ~(obj.flightplans(i).init_time >= finish_time || obj.flightplans(i).finish_time <= init_time)
+        %             flightplans = [flightplans obj.flightplans(i)];
+        %         end
+        %     end
+        % end
 
     
     end
