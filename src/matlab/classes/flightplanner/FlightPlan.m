@@ -318,11 +318,12 @@ classdef FlightPlan < handle
             end
 
             %Find if the figure is already open
-            fig_name = "Route for flight plan ID " + obj.id;
+            fig_name = "Flight plan " + obj.id + ": POSITION";
             fig = findobj("Name", fig_name);
             if isempty(fig)
                 %Display a figure with the flight plan
                 fig = figure("Name", fig_name);
+                fig.Position = [100 100 1000 500];
             else
                 %Select the figure
                 figure(fig)
@@ -330,24 +331,75 @@ classdef FlightPlan < handle
             end
 
             %Figure settings
-            hold on;
-            grid on;
-            axis equal;
-            xlabel("x [m]");
-            ylabel("y [m]");
-            zlabel("z [m]");
-            title("Route for flight plan ID " + obj.id);
+            tl = tiledlayout(3,5);
+            tl.Padding = 'compact';
+            tl.TileSpacing = 'tight';
+            
 
-            %Display trajectory
+            %Display Position 3D
+            XYZtile = nexttile([3,3]);
+            title("Position 3D")
+            hold on
+            grid on
+            axis equal
+            view(30,10)
+            xlabel("x [m]")
+            ylabel("y [m]")
+            zlabel("z [m]")
+
             tr = obj.trace(time_step);
-            plot3(tr(:,2),tr(:,3),tr(:,4), '-', ...
+            pt = plot3(tr(:,2),tr(:,3),tr(:,4), '-', ...
                 Color = color );
-            %Display waypoints
             plot3([obj.waypoints(:).x], [obj.waypoints(:).y], [obj.waypoints(:).z], 'o',...
                 MarkerSize = 5, ...
                 MarkerFaceColor = 'w', ...
                 MarkerEdgeColor = color );
                
+            %Display Position X versus time
+            Xtile   = nexttile([1,2]);
+            title("Position versus time");
+            hold on
+            grid on
+            % xlabel("t [s]");
+            ylabel("x [m]");
+
+            plot(tr(:,1),tr(:,2), '-', ...
+                Color = color );
+            plot([obj.waypoints(:).t], [obj.waypoints(:).x], 'o',...
+                MarkerSize = 5, ...
+                MarkerFaceColor = 'w', ...
+                MarkerEdgeColor = color );
+
+            %Display Position Y versus time
+            Ytile   = nexttile([1,2]);
+            % title("Position Y");
+            hold on
+            grid on
+            % xlabel("t [s]");
+            ylabel("y [m]");
+
+            plot(tr(:,1),tr(:,3), '-', ...
+                Color = color );
+            plot([obj.waypoints(:).t], [obj.waypoints(:).y], 'o',...
+                MarkerSize = 5, ...
+                MarkerFaceColor = 'w', ...
+                MarkerEdgeColor = color );
+
+            %Display Position Z versus time
+            Ztile   = nexttile([1,2]);
+            % title("Position Z");
+            hold on
+            grid on
+            xlabel("t [s]");
+            ylabel("z [m]");
+
+            plot(tr(:,1),tr(:,4), '-', ...
+                Color = color );
+            plot([obj.waypoints(:).t], [obj.waypoints(:).z], 'o',...
+                MarkerSize = 5, ...
+                MarkerFaceColor = 'w', ...
+                MarkerEdgeColor = color );
+
         end
 
         

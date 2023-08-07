@@ -32,7 +32,7 @@ end
 
 
 % % Display route and velocity of FP
-% fp1.routeFigure(time_step,'b')
+fp1.routeFigure(time_step,'b')
 fp1.velocityFigure(time_step,'b')
 % 
 % tr = fp1.trace(0.01);
