@@ -14,10 +14,11 @@ classdef Waypoint < handle
         y    {mustBeNumeric}    % metros hacia el norte
         z    {mustBeNumeric}    % metros hacia arriba
     
-        % velocidad de desplazamiento
-        % expresada en modulo, sin direccion en espacio 3D
-        % (esto puede que cambie a vector de acuerdo con Uspace)
-        v    {mustBeNumeric}    % metros/s
+        % velocidad en espacio 3D
+        % establecida sobre un eje de referencia prefijado en el escenario
+        vx   {mustBeNumeric}    % metros/s hacia el este
+        vy   {mustBeNumeric}    % metros/s hacia el norte
+        vz   {mustBeNumeric}    % metros/s hacia arriba
 
         % Waypoint de obligado tránsito (en un plan de vuelo)
         % valor lógico (verdadero/falso)
@@ -26,14 +27,16 @@ classdef Waypoint < handle
     
     methods
 
-        function obj = Waypoint(t,x,y,z,v,m)
+        function obj = Waypoint()
             %WAYPOINT Constructor for the class
-            obj.t = t;
-            obj.x = x;
-            obj.y = y;
-            obj.z = z;
-            obj.v = v;
-            obj.mandatory = m;
+            obj.t  = 0;
+            obj.x  = 0;
+            obj.y  = 0;
+            obj.z  = 0;
+            obj.vx = 0;
+            obj.vy = 0;
+            obj.vz = 0;
+            obj.mandatory = true;
         end
 
 
@@ -57,12 +60,18 @@ classdef Waypoint < handle
             obj.z = p(3);
         end
 
+  
+        function v = velocity(obj)
+            %POSITION Get the position of the waypoint
+            v = [ obj.vx  obj.vy  obj.vz ];
+        end
+       
 
-        function movePosition(obj,m)
-            %MOVE_POSITION Move the position of the waypoint
-            obj.x = obj.x + m(1);
-            obj.y = obj.y + m(2);
-            obj.z = obj.z + m(3);
+        function setVelocity(obj,v)
+            %SET_VELOCITY Set the velocity of the waypoint
+            obj.vx = v(1);
+            obj.vy = v(2);
+            obj.vz = v(3);
         end
 
 
@@ -92,8 +101,8 @@ classdef Waypoint < handle
         end
 
 
-        function vel = velocityTo(a,b)
-            %VELOCITY Get the velocity between two waypoints
+        function vel = uniformVelocityTo(a,b)
+            %VELOCITY Get the uniform velocity between two waypoints
             a.checkWaypoint(b);
 
             dist = a.distanceTo(b);
@@ -114,8 +123,11 @@ classdef Waypoint < handle
             % Equivale a realizar un movimiento rectilíneo y uniforme.
             wp1.checkWaypoint(wp2);
                     
-            wp3 = Waypoint(t,wp1.x,wp1.y,wp1.z,0,true);
-            wp3.movePosition(wp1.directionTo(wp2) * wp1.velocityTo(wp2) * wp1.timeTo(wp3) );
+            wp3 = Waypoint();
+            wp3.t = t;
+            wp3.setPosition(wp1.position + ...
+                            wp1.directionTo(wp2) * wp1.uniformVelocityTo(wp2) * wp1.timeTo(wp3) );
+
         end
 
 

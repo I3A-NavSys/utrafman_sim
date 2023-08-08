@@ -252,7 +252,7 @@ classdef FlightPlan < handle
             %TRACE This method expands the flight plan behavior over time
             
             instants = obj.init_time : time_step : obj.finish_time;
-            tr = zeros(length(instants),5);
+            tr = zeros(length(instants),7);
             tr(:,1) = instants;
            
             %Get position in time instants
@@ -263,8 +263,7 @@ classdef FlightPlan < handle
 
             %Get velocity in time instants
             for i = 1:length(instants)-1
-                p = obj.positionAtTime(tr(i,1));
-                tr(i,5) = norm(tr(i+1,2:4) - tr(i,2:4)) / time_step;
+                tr(i,5:7) = (tr(i+1,2:4) - tr(i,2:4)) / time_step;
             end
         end
 
@@ -323,7 +322,7 @@ classdef FlightPlan < handle
             if isempty(fig)
                 %Display a figure with the flight plan
                 fig = figure("Name", fig_name);
-                fig.Position = [100 100 1000 500];
+                fig.Position = [100 100 800 350];
             else
                 %Select the figure
                 figure(fig)
@@ -413,12 +412,13 @@ classdef FlightPlan < handle
             end
 
             %Find if the figure is already open
-            fig_name = "Velocity for flight plan ID " + obj.id;
+            fig_name = "Flight plan " + obj.id + ": VELOCITY";
             fig = findobj('Type', 'Figure',"Name", fig_name);
             if isempty(fig)
                 %Display a figure with the flight plan
                 fig = figure("Name", fig_name);
-                fig.Name = "Velocity for flight plan ID " + obj.id;
+                fig.Position = [910 100 290 455];
+
             else
                 %Select the figure
                 figure(fig)
@@ -426,21 +426,61 @@ classdef FlightPlan < handle
             end
 
             %Figure settings
-            hold on;
-            grid on;
-            xlabel("Time [s]");
-            ylabel("Velocity [m/s]");
-            title("Velocity for flight plan ID " + obj.id);            
+            tl = tiledlayout(4,2);
+            tl.Padding = 'compact';
+            tl.TileSpacing = 'tight';
 
             %Display instant velocity
+            Vtile = nexttile([1,2]);
+            title("Velocity versus time")
+            hold on
+            grid on
+            ylabel("3D [m/s]");
+
             tr = obj.trace(time_step);
+            plot(tr(:,1),sqrt(tr(:,5).^2 + tr(:,6).^2 + tr(:,7).^2), '-', ...
+                Color = color );
+
+            %Display Velocity X versus time
+            Xtile   = nexttile([1,2]);
+            hold on
+            grid on
+            ylabel("vx [m/s]");
+
             plot(tr(:,1),tr(:,5), '-', ...
                 Color = color );
-            %Display waypoints velocity
-            plot([obj.waypoints(:).t], [obj.waypoints(:).v], 'o',...
+            plot([obj.waypoints(:).t], [obj.waypoints(:).vx], 'o',...
                 MarkerSize = 5, ...
                 MarkerFaceColor = 'w', ...
                 MarkerEdgeColor = color );
+
+            %Display Position Y versus time
+            Ytile   = nexttile([1,2]);
+            hold on
+            grid on
+            ylabel("vy [m/s]");
+
+            plot(tr(:,1),tr(:,6), '-', ...
+                Color = color );
+            plot([obj.waypoints(:).t], [obj.waypoints(:).vy], 'o',...
+                MarkerSize = 5, ...
+                MarkerFaceColor = 'w', ...
+                MarkerEdgeColor = color );
+
+            %Display Position Z versus time
+            Ztile   = nexttile([1,2]);
+            hold on
+            grid on
+            ylabel("vz [m/s]");
+            xlabel("t [s]");
+
+            plot(tr(:,1),tr(:,7), '-', ...
+                Color = color );
+            plot([obj.waypoints(:).t], [obj.waypoints(:).vz], 'o',...
+                MarkerSize = 5, ...
+                MarkerFaceColor = 'w', ...
+                MarkerEdgeColor = color );
+
         end
 
 
