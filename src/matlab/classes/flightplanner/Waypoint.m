@@ -59,10 +59,10 @@ classdef Waypoint < handle
             obj.y = p(2);
             obj.z = p(3);
         end
-
   
+
         function v = velocity(obj)
-            %POSITION Get the position of the waypoint
+            %POSITION Get the velocity of the waypoint
             v = [ obj.vx  obj.vy  obj.vz ];
         end
        
@@ -116,56 +116,61 @@ classdef Waypoint < handle
         end
     
     
-        function wp3 = interpolation4D(wp1,wp2,t)
-            %INTERPOLATION4D 
+        function wp3 = interpolationTP(wp1,wp2,t)
+            %INTERPOLATIONTP 
             % dados dos waypoints, 
-            % genera un tercer waypoint interpolando a un tiempo dado.
+            % genera un tercer waypoint interpolando posiciones a un tiempo dado.
             % Equivale a realizar un movimiento rectilíneo y uniforme.
             wp1.checkWaypoint(wp2);
                     
-            wp3 = Waypoint();
+            wp3 = Waypoint;
             wp3.t = t;
-            wp3.setPosition(wp1.position + ...
-                            wp1.directionTo(wp2) * wp1.uniformVelocityTo(wp2) * wp1.timeTo(wp3) );
+            s13 = wp1.directionTo(wp2) * wp1.uniformVelocityTo(wp2) * wp1.timeTo(wp3);
+            wp3.setPosition(wp1.position + s13);
 
         end
 
 
-        function wp3 = interpolation5D(obj,wp2,t)
+        function wp3 = interpolationTPV(wp1,wp2,t)
             % PENDIENTE DE CHEQUEAR
+            %INTERPOLATIONTPV
+            % dados dos waypoints, 
+            % genera un tercer waypoint interpolando posiciones y velocidades a un tiempo dado.
+            wp1.checkWaypoint(wp2);
+
             wp3 = Waypoint;
+            wp3.t = t;
         
-            s12 = obj.distanceTo(wp2);
-            if s12==0
-                wp3 = obj;
+            % s12 = wp1.distanceTo(wp2);
+            s12 = wp2.position - wp1.position;
+            if norm(s12)==0
+                wp3.setPosition(wp1.position);
                 return
             end
             
-            t12 = wp2.t - obj.t;
-            t13 =    t - obj.t;
-            v1  = obj.v;
-            v2  = wp2.v;
+            t12 = wp1.timeTo(wp2);
+            t13 = wp1.timeTo(wp3);
+            v1  = wp1.velocity;
+            v2  = wp2.velocity;
             
             A = [ t12^2/2   t12^3/6 ;
                   t12       t12^2/2 ];
+
             B = [ s12-v1*t12 ;
-                  v2-v1    ];
+                  v2-v1      ];
+
+
             if rank(A) == 2
                 X = A\B;
-                a = X(1);
-                j = X(2);
+                a = X(1,:);
+                j = X(2,:);
             else
-                disp('NO existe solución')
-                return
+                error('Error. Interpolación TPV sin solución')
             end  
         
             s13 = v1*t13 + 1/2 *a*t13^2 + 1/6 *j*t13^3;
+            wp3.setPosition( wp1.position + s13 );
         
-            wp3.x = obj.x + (wp2.x-obj.x) * s13 / s12;
-            wp3.y = obj.y + (wp2.y-obj.y) * s13 / s12;
-            wp3.z = obj.z + (wp2.z-obj.z) * s13 / s12;
-            wp3.t = obj.t + (wp2.t-obj.t) * s13 / s12;
-            
         end
     
     end
