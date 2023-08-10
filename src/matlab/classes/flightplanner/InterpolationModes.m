@@ -1,5 +1,6 @@
 classdef InterpolationModes
    enumeration
-      TP, TPV
+      TP,       % time position
+      TPV       % time position velocity
    end
 end

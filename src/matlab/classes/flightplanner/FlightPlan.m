@@ -228,12 +228,16 @@ classdef FlightPlan < handle
             end
 
             %Find if the figure is already open
-            fig_name = "Flight plan " + obj.id + ": POSITION";
+            fig_name = "FP" + obj.id + ": POSITION";
             fig = findobj("Name", fig_name);
             if isempty(fig)
                 %Display a figure with the flight plan
                 fig = figure("Name", fig_name);
-                fig.Position = [100 100 800 350];
+                fig.Position(3:4) = [800 350];
+                fig.NumberTitle = "off";
+                fig.MenuBar = "none";
+                fig.ToolBar = "none";
+
             else
                 %Select the figure
                 figure(fig)
@@ -323,13 +327,15 @@ classdef FlightPlan < handle
             end
 
             %Find if the figure is already open
-            fig_name = "Flight plan " + obj.id + ": VELOCITY";
+            fig_name = "FP" + obj.id + ": VELOCITY";
             fig = findobj('Type', 'Figure',"Name", fig_name);
             if isempty(fig)
                 %Display a figure with the flight plan
                 fig = figure("Name", fig_name);
-                fig.Position = [910 100 290 455];
-
+                fig.Position(3:4) = [290 455];
+                fig.NumberTitle = "off";
+                fig.MenuBar = "none";
+                fig.ToolBar = "none";
             else
                 %Select the figure
                 figure(fig)
@@ -397,6 +403,34 @@ classdef FlightPlan < handle
                     MarkerFaceColor = 'w', ...
                     MarkerEdgeColor = color );
             end
+        end
+        
+
+        function distanceFigure(fp1,fp2,time_step,color)
+            % Relative distance between two flightplans
+            
+            %Find if the figure is already open
+            fig_name = "FP" + fp1.id + "-FP" + fp2.id + ": DISTANCE";
+            fig = findobj('Type', 'Figure',"Name", fig_name);
+            if isempty(fig)
+                fig = figure("Name", fig_name);
+                fig.Position(3:4) = [350 140];
+                fig.NumberTitle = "off";
+                fig.MenuBar = "none";
+                fig.ToolBar = "none";
+            else
+                figure(fig)
+                clf(fig)
+            end
+
+            %Figure settings
+            ylabel("distance [m]")
+            xlabel("time [s]")
+            grid on
+            hold on
+            
+            dist = fp1.distanceTo(fp2, time_step);
+            plot(dist(:,1),dist(:,2), Color = color );            
         end
 
 

@@ -63,6 +63,10 @@ classdef FlightPlanSet < handle
             fig = findobj('Type', 'Figure', 'Name', fig_name);
             if isempty(fig)
                 fig = figure('Name', fig_name);
+                % fig.Position(3:4) = [350 140];
+                fig.NumberTitle = "off";
+                fig.MenuBar = "none";
+                fig.ToolBar = "none";
             else
                 figure(fig);
                 clf(fig);
