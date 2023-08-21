@@ -256,7 +256,7 @@ classdef FlightPlan < handle
             hold on
             grid on
             axis equal
-            view(30,10)
+            % view(30,10)
             xlabel("x [m]")
             ylabel("y [m]")
             zlabel("z [m]")
