@@ -1,5 +1,5 @@
 # 2. Simulator environment <!-- {docsify-ignore} -->
-U-TRAFMAN Simulator has been built using Robot Operating System (ROS) and Gazebo, as a lot of simulators do. The contribution of ROS and Gazebo to the simulator will be discussed in followed sections. Our objective with U-TRAFMAN is to produce a widely-used simulator that helps us to develop and test our UAV control software, UTM services and other software designed to support Urban Air Mobility (UAM). 
+U-TRAFMAN Simulator has been built using Robot Operating System (ROS) and Gazebo, as a lot of simulators do. The contribution of ROS and Gazebo to the simulator will be discussed in followed sections. Our objective with U-TRAFMAN is to produce a widely-used simulator dor Urban Air Mobility (UAM) and Advanced Air Mobility (AAM).
 
 ## 2.1. Robotic Operating System (ROS 1)
 Robotic Operating System (ROS) is an open-source robotics middleware that provides tools and libraries for building complex robot applications. It enables quick development and integration of robotic components, such as sensors, actuators, and algorithms. ROS is designed to be a flexible and modular platform that can be used on a wide range of robots and provide a wide range of services. ROS is used in many robotics applications, such as autonomous vehicles, robotic manipulation, and service robots.

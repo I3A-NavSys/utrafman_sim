@@ -108,6 +108,7 @@ In this image, you can see a class diagram of this services:
 
 ## 4.2. Interaction between UTM Services
 Here is an example of how this service interacts between them and the simulator when a simulation is in progress:
+**If the diagram is not shown, please reload the page (F5).**
 
 ```mermaid
 sequenceDiagram
