@@ -38,10 +38,9 @@ This project is licensed under the GNU GLP v3 license - see the [LICENSE](LICENS
 
 U-TRAFMAN is being developed by the [I3A Navigation Systems team in High-Performance Networks and Architectures group](https://www.i3a.uclm.es/raap/) at the [University of Castilla-La Mancha](https://www.uclm.es/).
 
-![I3A](address "I3A")
-[![UCLM](/img/UCLM-logo.png "UCLM")](https://www.uclm.es)
+![RAAP](./docs/img/RAAPlogo.png "RAAP")](https://www.uclm.es/es/centros-investigacion/I3A/secciones-investigacion/RAAP)
+![I3A](./docs/img/I3Alogo.png "I3A")](https://www.uclm.es/centros-investigacion/i3a)
+[![UCLM](./docs/img/UCLMlogo.png "UCLM")](https://www.uclm.es)
 
-<p align="center">
-    <img src="https://www.uclm.es/-/media/Files/C01-Centros/I3A/Imagenes/logowebi3a-uclm.ashx" alt="I3A" />
-    <img src="https://www.i3a.uclm.es/raap/wp-content/uploads/2016/04/LOGO-RAAP-Ingl%C3%A9s-e1461149901803.png" width="350" alt="RAAP" />
-</p>
+
+
