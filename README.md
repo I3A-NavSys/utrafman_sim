@@ -29,7 +29,7 @@ Feel free to contribute to this project. If you find any bugs or you want to sug
 - Aurelio Bermúdez - aurelio.bermudez (at) uclm.es
 
 ## How to cite
-_Jover, J., Bermúdez, A. and Casado, R. (2023) I3a-NavSys/U-TRAFMAN: Unmmaned Traffic Management Simulator, GitHub Repository. GitHub. Available at: https://github.com/I3A-NavSys/siam_sim_
+_Jover, J., Bermúdez, A. and Casado, R. (2023) I3a-NavSys/U-TRAFMAN: Unmmaned Traffic Management Simulator, GitHub Repository. GitHub. Available at: https://github.com/I3A-NavSys/utrafman_sim_
 
 ## License
 This project is licensed under the GNU GLP v3 license - see the [LICENSE](LICENSE) file for details.
