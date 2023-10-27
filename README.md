@@ -9,8 +9,10 @@
  
 ---
 
-## What is U-TRAFMAN?
-U-TRAFMAN is a simulator for Unmanned Traffic Management (UTM) services and software. The main objective of this simulator is to allow users to develop functionality and realistically simulate flight plans and navigations of Unmanned Aerial Vehicles (UAVs) in urban scenarios. It is based on ROS and Gazebo, and it is developed by the [I3A Navigation Systems team in High-Performance Networks and Architectures group](https://www.i3a.uclm.es/raap/) at the [University of Castilla-La Mancha](https://www.uclm.es/).
+## Welcome to U-TRAFMAN
+U-TRAFMAN is a simulator for UAM (Urban Air Mobility). In particular, it is suitable for developing UTM (Unmanned aerial vehicle Traffic Management) software tools and services.
+
+
 
 ## Features
 - **Develop and test UAV autonomous control software and services implementations:** control systems of the Unmanned Aerial Vehicles could be modified, reimplemented or amplified.
@@ -20,19 +22,24 @@ U-TRAFMAN is a simulator for Unmanned Traffic Management (UTM) services and soft
 ## Install
 You could find the installation guide in the [documentation](https://i3a-navsys.github.io/utrafman_sim/#/tutorials?id=_51-setup).
 
-## Contributing
-Feel free to contribute to this project. If you find any bugs or you want to suggest a new feature, please open an issue. If you want to contribute with code, please open a pull request.
+## Contributors
 
-## Authors and contact
-- Jesús Jover - jesus.jover (at) uclm.es
 - Rafael Casado - rafael.casado (at) uclm.es
 - Aurelio Bermúdez - aurelio.bermudez (at) uclm.es
+- Jesús Jover - jesus.jover (at) uclm.es
+
+Feel free to contribute to this project. If you find any bugs or you want to suggest a new feature, please open an issue. If you want to contribute with code, please open a pull request.
 
 ## How to cite
-_Jover, J., Bermúdez, A. and Casado, R. (2023) I3a-NavSys/U-TRAFMAN: Unmmaned Traffic Management Simulator, GitHub Repository. GitHub. Available at: https://github.com/I3A-NavSys/utrafman_sim_
+U-TRAFMAN: Unmmaned Traffic Management Simulator (2023). Available at GitHub repository: https://github.com/I3A-NavSys/utrafman_sim_
 
 ## License
 This project is licensed under the GNU GLP v3 license - see the [LICENSE](LICENSE) file for details.
+
+U-TRAFMAN is being developed by the [I3A Navigation Systems team in High-Performance Networks and Architectures group](https://www.i3a.uclm.es/raap/) at the [University of Castilla-La Mancha](https://www.uclm.es/).
+
+![I3A](address "I3A")
+[![UCLM](/img/UCLM-logo.png "UCLM")](https://www.uclm.es)
 
 <p align="center">
     <img src="https://www.uclm.es/-/media/Files/C01-Centros/I3A/Imagenes/logowebi3a-uclm.ashx" alt="I3A" />
