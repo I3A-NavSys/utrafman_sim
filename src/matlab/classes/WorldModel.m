@@ -23,7 +23,7 @@ classdef WorldModel < handle
         end
 
         %Read the world definition from a file (.wc format)
-        function obj = readWorldFromFile(obj)
+        function readWorldFromFile(obj)
             %Use figure
             figure(obj.world_fig);
 
@@ -57,7 +57,8 @@ classdef WorldModel < handle
             
                 %Plot building
                 %rectangle('FaceColor', 'red', 'Position',[start_bound,b_size(:,1:2)])
-                plotcube(b_size, obj.buildings(end,1:3)-[b_size(1:2)./2 0], 0, [1,0,0])
+                %plotcube(b_size, obj.buildings(end,1:3)-[b_size(1:2)./2 0], 0, [1,0,0])
+                obj.plotBOX(b_size, obj.buildings(end,1:3)-[b_size(1:2)./2 0], 0, [1,0,0])
             end
             %Close file
             fclose(obj.file);
@@ -217,5 +218,44 @@ classdef WorldModel < handle
                     step = [0 -1];
             end
         end
+
+        function plotBOX(obj,box_size,origin,alpha,color)
+
+            x = box_size(1);
+            y = box_size(2);
+            z = box_size(3);
+            
+            BOX.Vertices = [
+                0  0  0      % 1
+                0  y  0      % 2
+                x  y  0      % 3
+                x  0  0      % 4
+                0  0  z      % 5
+                0  y  z      % 6
+                x  y  z      % 7
+                x  0  z   ]; % 8
+
+            BOX.Vertices(:,1) = BOX.Vertices(:,1) + origin(1);
+            BOX.Vertices(:,2) = BOX.Vertices(:,2) + origin(2);
+            BOX.Vertices(:,3) = BOX.Vertices(:,3) + origin(3);
+                        
+            BOX.Faces = [
+                1  2  3  4   % bottom face
+                5  6  7  8   % top    face
+                1  2  6  5   % left   face
+                4  3  7  8   % right  face
+                1  5  8  4   % front  face
+                2  6  7  3 ];% back face
+            
+            BOX.FaceVertexCData = 0;
+            BOX.FaceColor = color;
+            BOX.FaceAlpha = alpha;
+            BOX.EdgeColor = 'black';
+            BOX.LineWidth = 0.1;
+            patch(BOX);
+            view(3)
+
+        end
+
     end
 end
