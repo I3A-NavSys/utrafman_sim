@@ -103,11 +103,49 @@ You should install PLOTCUBE by Olivier from [Mathworks File Exchange](https://ww
 ------
 
 
+## Running your first simulation
+
+U-TRAFMAN includes a basic simulation to help you verify if everything is functioning correctly. To get started, open a new terminal and execute the following command:
+
+```bash
+roslaunch utrafman_main generated_city.launch
+```
+You should observe ROS being launched in the terminal, and Gazebo opening in a new window. In the Gazebo window, you should see a world with simple buildings.
+
+![Empty World](./img/tutorials/simple-simulation-1.png 'Gazebo Viewer with a generated city world.  :size=800px')
 
 
+Next, to add UAVs to the world and send flight plans, follow these steps:
+
+1. In MATLAB, set `opt/ros/noetic/share/utrafman_sim/src/matlab/` as the current directory.
+2. From that directory, run `simulations/simple_simulation.m`. This script will perform the following tasks:
+   - Connect with the ROS master from MATLAB.
+   - Load the world definition file in MATLAB.
+   - Instance an _operator_ and 10 _UAVs_.
+   - Register both the operator and UAVs using the "Registry" service.
+   - Generate a flight plan for each UAV with a random route of 500 meters.
+   - Send the generated flight plans to the UAVs.
+
+This will set up your simulation environment with UAVs and their flight plans.
 
 
+![UAVs](./img/tutorials/simple-simulation-2.png 'Gazebo Viewer. Ten UAVs flying in the world. :size=800px')
 
--------------
-Once you have done all previous steps, you are ready to run simulations.
+![UAVs](./img/tutorials/simple-simulation-3.png 'Gazebo Viewer. Ten UAVs flying in the world. :size=800px')
+
+Each time a random route is generated for a UAV, the script will display it in a 3D figure, showing both the flight path and the buildings in the world. This visualization can help you understand the path that each UAV will follow in the simulation.
+
+![Routes generated](./img/tutorials/simple-simulation-random-routes.png 'Random routes generated :size=800px')
+
+Once the simulation has completed, you will have access to a `SimulationProcesser` object in the MATLAB workspace, referenced by the variable name `SP`. This object allows you to retrieve and analyze simulation data. For instance, if you want to visualize the telemetry data of a specific flight plan, you can execute the following command in MATLAB:
+
+```matlab
+SP.telemetryViewer(fp_id);
+```
+Where `fp_id` is the identifier of the flight plan you wish to analyze. This command will enable you to view and analyze telemetry data for that specific flight plan.
+
+
+![Telemetry Viewer](./img/tutorials/simple-simulation-telemetry-viewer.png 'MATLAB Telemetry Viewer :size=800px')
+
+
 
