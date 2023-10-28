@@ -3,7 +3,7 @@
 
 ## Set up your machine
 
-You can install U-TRAFMAN on either a computer or a virtual machine. We have successfully tested it with VMware Workstation Player 17. You can obtain it [here](https://www.vmware.com/es/products/workstation-player/workstation-player-evaluation.html).
+You can install U-TRAFMAN on either a real computer or a virtual machine. In the second case, we have successfully tested it with VMware Workstation Player 17. You can obtain it [here](https://www.vmware.com/es/products/workstation-player/workstation-player-evaluation.html).
 
 Configure a computer with **Ubuntu 20.04.6 LTS (Focal Fossa)**. You can obtain a Desktop Image [here](https://releases.ubuntu.com/focal).
 
@@ -13,8 +13,11 @@ Configure a computer with **Ubuntu 20.04.6 LTS (Focal Fossa)**. You can obtain a
 ## ROS and Gazebo
 
 U-TRAFMAN runs on **ROS** (Robot Operating System) **Noetic**. 
-You can follow the official tutorials to install it [here](https://wiki.ros.org/noetic/Installation/Ubuntu).
-Don't forget to perform a _full desktop_ installation and install the necessary dependencies for building packages.
+Please follow the official [tutorial](https://wiki.ros.org/noetic/Installation/Ubuntu) to install it.
+Make sure that:
+- A _full desktop_ installation is performed.
+- The necessary dependencies for building packages are installed.
+- File `/opt/ros/noetic/setup.bash` was sourced in your `.bashrc`.
 
 As a part of _ROS Noetic_, the _Gazebo 11_ simulator will be installed. To check it, execute the command `gazebo` in a terminal. The graphical interface of Gazebo should open:
 
@@ -55,8 +58,8 @@ source ~/.bashrc
 
 ## MATLAB
 
-U-TRAFMAN provides several tools for launching and analyzing simulations. 
-To manage these tools, you must install MATLAB by following the official tutorial [here](https://es.mathworks.com/help/install/ug/install-mathworks-software.html). 
+U-TRAFMAN provides a variety of tools for launching and analyzing simulations. To manage these tools, you need to download MATLAB® from the official Mathworks [website](https://es.mathworks.com/downloads), and install it following this [tutorial](https://www.mathworks.com/help/matlab/matlab_env/start-matlab-on-linux-platforms.html).
+
 Please ensure that you install at least the following components:
 - MATLAB R2023a
 - ROS Toolbox
@@ -64,34 +67,46 @@ Please ensure that you install at least the following components:
 
 >:warning:  U-TRAFMAN simulator has been tested in **MATLAB R2023a**. While it might work in other versions, there are no guarantees of compatibility.
 
->:warning:  The ideal option is to install ROS/Gazebo and MATLAB on the same computer. However, in the case of very large simulations where the resources of typical machines may not be sufficient, it could be advantageous to run them on different computers. In such cases, ensure that the computers are connected to the same network and can communicate with each other.
+>:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer. However, in the case of very large simulations where the resources of typical machines may be insufficient, it may be beneficial to run MATLAB on a different computer, including Windows platforms. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
+
+If you have installed MATLAB in the default folder, you can open it with the following commands:
+```bash
+cd /opt/ros/noetic/share/utrafman_sim/src/matlab
+/usr/local/MATLAB/R2023a/bin/matlab
+```
 
 
-----------
-### PlotCube
-PLOTCUBE for MATLAB by Olivier (installed after MATLAB installation)
->:warning: ¿desde donde se instala?
->:warning: ¿donde se instala?
+### Compiling ROS messages with MATLAB
 
+Custom ROS messages are used by U-TRAFMAN. Although the simulator is not coded in Python, MATLAB will require it to compile ROS messages. You can install Python 3.8 executing the following command in a terminal:
+```bash
+sudo apt install python3.8-venv
+```
+>⚠️ U-TRAFMAN simulator has been tested with **Python 3.8**. While it may work with other versions, there are no guarantees of compatibility.
 
-### Python
-Python 3.8-venv (installed through the terminal using `apt install python3.x-venv`).
->:warning:  U-TRAFMAN simulator has been tested in **Python 3.8**. While it might work in other versions, there are no guarantees of compatibility.
----------
-
-
-### Compiling ROS messages using MATLAB
-Custom ROS messages are used by U-TRAFMAN. You need to compile them in order to be used in MATLAB. Use script file `/src/matlab/tools/ros-custom-message-compiler.m` to compile them. Edit the file to define where the working directory (repo) and python is installed on your computer and run the script. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
+To compile ROS messages, in Matlab open the script `/src/matlab/tools/ros-custom-message-compiler.m`. Edit the file to define where the working directory (repo) and python is installed on your computer and run the script. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
 
 You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). 
 
 
-
-
-#### Setting up ROS_MASTER IP address in MATLAB
+### Setting up ROS_MASTER IP address in MATLAB
 MATLAB must be configured with ROS_MASTER IP address, as explained in this [tutorial](https://es.mathworks.com/help/ros/ug/get-started-with-ros.html).
 - If you use a one-computer setup, you can simply use `localhost` as ROS_MASTER IP address.
 - If you use a two-computer setup, you must configure MATLAB with the IP address of the computer where ROS is running, in the file `/src/matlab/config/ros.m`. 
+
+
+----------
+### PlotCube
+
+You should install PLOTCUBE by Olivier from [Mathworks File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/15161-plotcube)
+>:warning: ¿donde se instala?
+------
+
+
+
+
+
+
 
 -------------
 Once you have done all previous steps, you are ready to run simulations.
