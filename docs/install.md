@@ -1,12 +1,13 @@
 # Installation
 
-## Operative system
+
+## Set up your machine
+
+You can install U-TRAFMAN on either a computer or a virtual machine. We have successfully tested it with VMware Workstation Player 17. You can obtain it [here](https://www.vmware.com/es/products/workstation-player/workstation-player-evaluation.html).
 
 Configure a computer with **Ubuntu 20.04.6 LTS (Focal Fossa)**. You can obtain a Desktop Image [here](https://releases.ubuntu.com/focal).
 
 >:warning: U-TRAFMAN has been developed and tested in the specified Ubuntu version. While it might work in other versions, there are no guarantees of compatibility.
-
-You can install it on either a physical machine or a virtual machine. We have successfully tested it with VMware Workstation Player. You can obtain it [here](https://www.vmware.com/es/products/workstation-player/workstation-player-evaluation.html).
 
 
 ## ROS and Gazebo
@@ -14,13 +15,12 @@ You can install it on either a physical machine or a virtual machine. We have su
 U-TRAFMAN runs on **ROS** (Robot Operating System) **Noetic**. 
 You can follow the official tutorials to install it [here](https://wiki.ros.org/noetic/Installation/Ubuntu).
 Don't forget to perform a _full desktop_ installation and install the necessary dependencies for building packages.
-As a part of ROS, the Gazebo simulator will be installed. To check its installation, execute the command `gazebo` in a terminal. The graphical interface of Gazebo should open, and you should see something like this:
+
+As a part of _ROS Noetic_, the _Gazebo 11_ simulator will be installed. To check it, execute the command `gazebo` in a terminal. The graphical interface of Gazebo should open:
 
 ![Gazebo](./img/gazebo.png 'Gazebo simulator. :size=400px')
 
-
 >:warning: U-TRAFMAN has been developed and tested in the specified ROS/Gazebo versions. While it might work in other versions, there are no guarantees of compatibility.
-
 
 
 ## U-TRAFMAN package
@@ -32,18 +32,19 @@ cd /opt/ros/noetic/share
 sudo git clone https://github.com/I3A-NavSys/utrafman_sim
 ```
 
-To change the permissions of the `utrafman_sim` folder after cloning to your user, execute the following commands (replace `username` with your actual _username_):
+After cloning, change the permissions of the `utrafman_sim` folder to your user executing the following commands (replace `username` with your actual _username_):
 ```bash
 sudo chown -R username utrafman_sim
 sudo chgrp -R username utrafman_sim
 ```
 
-Once you have cloned the repository, a ROS (Catkin) workspace containing the simulation environment is located in `src/gazebo-ros/`. You need to compile the code with the following commands:
+A ROS (Catkin) workspace containing the simulation environment is located in `src/gazebo-ros/`. 
+You need to compile it with the following commands:
 ```bash
 cd utrafman-sim/src/gazebo-ros
 catkin_make
 ```
->:warning: Please note that `catkin_make` will not work if you haven't sourced the ROS `/opt/ros/noetic/setup.bash` file. Be sure to add the source command to your `.bashrc` as instructed in the ROS installation steps above.
+>:warning: Make sure that the `/opt/ros/noetic/setup.bash` file was sourced in your `.bashrc` file as instructed in the ROS installation step above. Failure to do so may cause the `catkin_make` command to not work properly.
 
 You also need to source the compiled workspace into your `.bashrc` file for it to be accessible:
 ```bash
