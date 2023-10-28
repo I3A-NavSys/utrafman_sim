@@ -95,14 +95,6 @@ MATLAB must be configured with ROS_MASTER IP address, as explained in this [tuto
 - If you use a two-computer setup, you must configure MATLAB with the IP address of the computer where ROS is running, in the file `/src/matlab/config/ros.m`. 
 
 
-----------
-### PlotCube
-
-You should install PLOTCUBE by Olivier from [Mathworks File Exchange](https://www.mathworks.com/matlabcentral/fileexchange/15161-plotcube)
->:warning: ¿donde se instala?
-------
-
-
 ## Running your first simulation
 
 U-TRAFMAN includes a basic simulation to help you verify if everything is functioning correctly. To get started, open a new terminal and execute the following command:
