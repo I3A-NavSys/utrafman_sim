@@ -8,9 +8,7 @@ The U-TRAFMAN simulator is designed to enable the development of Urban Air Mobil
 
 - **Development and Testing of UTM Services:** U-TRAFMAN offers a platform for the development and testing of Unmanned Traffic Management (UTM) services and frameworks, allowing you to validate their effectiveness. Data generated during simulations can be stored and analyzed post-simulation to assist with further analysis and debugging.
 
-
-
-To achieve these objectives, the simulator comprises the following components/technologies.
+The simulator is developed emplying the following components and technologies.
 
 
 ## Robotic Operating System (ROS 1)
