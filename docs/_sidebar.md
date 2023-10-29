@@ -2,7 +2,8 @@
 
 * [Install](install.md "Install")
 * [Architecture](architecture.md "Architecture")
-
+* [ROS API](ROS_api.md "ROS API")
+* [MATLAB API](MATLAB_api.md "MATLAB API")
 --------
 
 <!-- This section contains the previous version.  -->
