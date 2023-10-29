@@ -1,5 +1,6 @@
 # U-TRAFMAN APIs 
 
+> Rehacer: describir todos los TOPICS, cuales son sus mensajes asociados, todos los servicios y sus mensajes asociados
 
 ## ROS API
 
@@ -32,7 +33,6 @@ Some of the custom ROS messages used in U-TRAFMAN include(_package_/_message_):
 - **utrafman_main/[reg_reg_uavs.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/reg_get_uavs.srv)**: a service message used to register a UAV intos the Register service.
 <!-- Add the teletransport service -->
 - **utrafman_main/[teletransport.srv](https://github.com/I3A-NavSys/utrafman_sim/tree/main/src/gazebo-ros/src/utrafman_main/srv/teletransport.srv)**: a service message used to teletransport a UAV to a different position in the world.
-
 
 
 ### Topics
