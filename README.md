@@ -14,9 +14,9 @@ U-TRAFMAN is a simulator designed for Urban Air Mobility (UAM) applications. Spe
 
 
 ## Features
-- **Develop and test UAV autonomous control software and service implementations:** The control systems of Unmanned Aerial Vehicles (UAVs) can be modified, re-implemented, or extended.
-- **Develop and verify UTM services:** Services and frameworks can be developed and tested to validate their feasibility. Information exchange between aircraft and services can occur through topics, and data can be stored and analyzed post-simulation for debugging. These services can be implemented on any platform compatible with ROS.
-- **Provide realistic dynamic simulations of hundreds of UAVs within an urban area:** Thanks to the physics engine of the Gazebo simulator and its capabilities, UAV behaviors can be accurately modeled, making the simulations closely resemble real-world scenarios.
+- **Provide realistic dynamic simulation of hundreds of UAVs within an urban area:** Thanks to the physics engine of the Gazebo simulator and its capabilities, UAV behaviors can be accurately modeled, making the simulations closely resemble real-world scenarios.
+- **Develop and test autonomous UAV control software and service implementations:** The control systems of Unmanned Aerial Vehicles (UAVs) can be modified, re-implemented, or extended.
+- **Develop and test UTM services:** Services and frameworks can be developed and tested to validate their feasibility. Information exchange between aircraft and services can occur through topics, and data can be stored and analyzed post-simulation for debugging. These services can be implemented on any platform compatible with ROS.
 
 
 ## Install
