@@ -1,6 +1,7 @@
 <!-- This file contains the sidebar index of the documentation.  -->
 
 * [Install](install.md "Install")
+* [Architecture](architecture.md "Architecture")
 
 --------
 
