@@ -39,20 +39,20 @@ If you are not familiar with Gazebo, you can explore the [Gazebo tutorials](http
 
 
 ### MATLAB
-> :warning: **MATLAB** is a registered trademark of The MathWorks, Inc. Furthermore, it is a commercial software, and a valid license is required for its use. However, a free trial version of MATLAB is available, offering a 30-day trial period for evaluation.
 
+MATLAB is a high-level programming language known for its support of matrix manipulations, data plotting, algorithm implementation, user interface creation, and interoperability with programs written in other languages such as C, C++, C#, Java, Fortran, and Python. Additionally, it offers seamless interaction with ROS networks.
+MATLAB is extensively utilized in the aerospace industry, making it a popular choice for various applications.
 
-
-
-
-
-
-- **MATLAB**: MATLAB is used to launch simulations, run UTM services, and analyze the data collected during the simulation. MATLAB is chosen for its simplicity and robust data analysis tools. However,
-
+In the context of the U-TRAFMAN Simulator, MATLAB serves the following purposes:
+- Defining the simulation environment.
+- Managing the insertion and removal of UAVs within the environment.
+- Sending flight plans to UAVs.
+- Receiving telemetry data from UAVs.
+- Analyzing telemetry data to facilitate in-depth analysis.
 
 >:heavy_check_mark: It's important to emphasize that MATLAB is not obligatory for utilizing the simulator. Communication between UAVs and UTM services, as well as among different UTM services, is established through ROS. Consequently, any other tool capable of communicating with ROS can be integrated with the simulator. U-TRAFMAN is designed to be adaptable and can be used with other programming languages, allowing you to take advantage of the provided MATLAB components and implement your work using a language of your preference.
 
-
+> :warning: **MATLAB** is a registered trademark of The MathWorks, Inc. Furthermore, it is a commercial software, and a valid license is required for its use. However, a free trial version of MATLAB is available, offering a 30-day trial period for evaluation.
 
 
 
