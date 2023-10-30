@@ -58,22 +58,50 @@ source ~/.bashrc
 
 ## MATLAB
 
-U-TRAFMAN provides a variety of tools for launching and analyzing simulations. To manage these tools, you need to download MATLAB® from the official Mathworks [website](https://es.mathworks.com/downloads), and install it following this [tutorial](https://www.mathworks.com/help/matlab/matlab_env/start-matlab-on-linux-platforms.html).
+U-TRAFMAN provides a variety of tools for launching and analyzing simulations. These tools are programmed in MATLAB®.
+To install MATLAB, you can follow these steps:
 
-Please ensure that you install at least the following components:
-- MATLAB R2023a
-- ROS Toolbox
-- Parallel Computing Toolbox
 
->:warning:  U-TRAFMAN simulator has been tested in **MATLAB R2023a**. While it might work in other versions, there are no guarantees of compatibility.
+1. Download MATLAB R2023a from the official MathWorks website: [MathWorks Downloads](https://es.mathworks.com/downloads).
+
+   >:warning:  U-TRAFMAN simulator has been tested in **MATLAB R2023a**. While it might work in other versions, there are no guarantees of compatibility.
+
+2. Unzip the installer package by running the following commands in your terminal:
+```bash
+unzip matlab_R2023a_glnxa64.zip -d matlabinstaller
+cd matlabinstaller
+```
+3. Execute the installation script with root privileges:
+```bash
+sudo ./install
+```
+4. Follow the installation process:
+
+   a) Select your license and user information.
+   
+   b) Choose the destination folder (the default location is fine).
+
+   c) Select the MATLAB products you want to install. Ensure that you select at least the following components:
+      - MATLAB R2023a
+      - ROS Toolbox
+      - Parallel Computing Toolbox
+      
+   d) Configure installation options:
+      - Set "Create symbolic links to MATLAB scripts in:" to `/usr/local/bin`
+      - Choose "Improve MATLAB startup performance" based on your preferences.
+      
+   e) Confirm your selections.
+
+Once MATLAB is installed, you can delete the temporary `matlabinstaller` folder.
 
 >:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer. However, in the case of very large simulations where the resources of typical machines may be insufficient, it may be beneficial to run MATLAB on a different computer, including Windows platforms. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
 
-If you have installed MATLAB in the default folder, you can open it with the following commands:
+In a new terminal, open MATLAB in the working folder employing the following commands:
 ```bash
 cd /opt/ros/noetic/share/utrafman_sim/src/matlab
-/usr/local/MATLAB/R2023a/bin/matlab
+matlab
 ```
+Matlab indicates that there is a new release available and prompts you to update. Click on "Don't Show Again."
 
 
 ### Compiling ROS messages with MATLAB
