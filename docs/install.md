@@ -79,16 +79,16 @@ sudo ./install
 
    a) Select your license and user information.
    
-   b) Choose the destination folder (the default location is fine).
+   b) Choose the destination folder (the default location `/usr/local/MATLAB/R2023a` is fine).
 
    c) Select the MATLAB products you want to install. Ensure that you select at least the following components:
       - MATLAB R2023a
-      - ROS Toolbox
       - Parallel Computing Toolbox
+      - ROS Toolbox
       
    d) Configure installation options:
-      - Set "Create symbolic links to MATLAB scripts in:" to `/usr/local/bin`
-      - Choose "Improve MATLAB startup performance" based on your preferences.
+      - Set _Create symbolic links to MATLAB scripts in:_ `/usr/local/bin`
+      - Choose _Improve MATLAB startup performance_ based on your preferences.
       
    e) Confirm your selections.
 
