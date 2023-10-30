@@ -21,7 +21,7 @@ Make sure that:
 
 As a part of _ROS Noetic_, the _Gazebo 11_ simulator will be installed. To check it, execute the command `gazebo` in a terminal. The graphical interface of Gazebo should open:
 
-![Gazebo](./img/gazebo.png 'Gazebo simulator. :size=400px')
+![Gazebo](./img/gazebo.png 'Gazebo simulator. :size=600px')
 
 >:warning: U-TRAFMAN has been developed and tested in the specified ROS/Gazebo versions. While it might work in other versions, there are no guarantees of compatibility.
 
