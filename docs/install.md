@@ -112,7 +112,12 @@ sudo apt install python3.8-venv
 ```
 >⚠️ U-TRAFMAN simulator has been tested with **Python 3.8**. While it may work with other versions, there are no guarantees of compatibility.
 
-To compile ROS messages, in Matlab open the script `/src/matlab/tools/ros-custom-message-compiler.m`. Edit the file to define where the working directory (repo) and python is installed on your computer and run the script. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
+To compile ROS messages, 
+
+1. Create folder "/tmp/venv"
+2. Run matlab as root to compile ROS messages (otherwise, a warning appears))
+3. Edit the script `tools/ros-custom-message-compiler.m` to define where the working directory (repo) and python is installed on your computer.
+4. Run the script. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
 
 You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). 
 
