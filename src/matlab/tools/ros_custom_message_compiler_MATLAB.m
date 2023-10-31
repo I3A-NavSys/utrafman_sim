@@ -14,7 +14,7 @@ if isunix
 
     setenv("MY_PYTHON_VENV", "/tmp/venv");
     ros.internal.createOrGetLocalPython(true);
-    py = pyenv('Version', '/usr/bin/python3.9');        %Set it with your python path (3.8 or higher)
+    py = pyenv('Version', '/usr/bin/python3.8');        %Set it with your python path (3.8 or higher)
     addpath(strcat(repo_path, '/src/gazebo-ros/src/utrafman_main/'));
     rosgenmsg(strcat(repo_path, '/src/gazebo-ros/src/'));
     addpath(strcat(repo_path, '/src/gazebo-ros/src/matlab_msg_gen_ros1/glnxa64/install/m'));
