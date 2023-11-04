@@ -59,8 +59,10 @@ source ~/.bashrc
 ## MATLAB
 
 U-TRAFMAN provides a variety of tools for launching and analyzing simulations. These tools are programmed in MATLAB®.
-To install MATLAB, you can follow these steps:
 
+### Install MATLAB
+
+To install MATLAB, you can follow these steps:
 
 1. Download MATLAB R2023a from the official MathWorks website: [MathWorks Downloads](https://es.mathworks.com/downloads).
 
@@ -96,36 +98,61 @@ Once MATLAB is installed, you can delete the temporary `matlabinstaller` folder.
 
 >:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer. However, in the case of very large simulations where the resources of typical machines may be insufficient, it may be beneficial to run MATLAB on a different computer, including Windows platforms. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
 
-In a new terminal, open MATLAB in the working folder employing the following commands:
-```bash
-cd /opt/ros/noetic/share/utrafman_sim/src/matlab
-matlab
-```
-If Matlab indicates that there is a new release available and prompts you to update, click on "Don't Show Again."
 
 
 ### Compiling ROS messages with MATLAB
 
-Custom ROS messages are used by U-TRAFMAN. Although the simulator is not coded in Python, MATLAB will require it to compile ROS messages. You can install Python 3.8 executing the following command in a terminal:
+Custom ROS messages are used by U-TRAFMAN. Although the simulator is not coded in Python, MATLAB will require it to compile ROS messages. You can install Python 3.8 executing the following commands in a terminal:
 ```bash
 sudo apt install python3.8-venv
+mkdir /tmp/venv
 ```
+
 >⚠️ U-TRAFMAN simulator has been tested with **Python 3.8**. While it may work with other versions, there are no guarantees of compatibility.
 
-To compile ROS messages, 
 
-1. Create folder "/tmp/venv"
-2. Run matlab as root to compile ROS messages (otherwise, a warning appears))
-3. Edit the script `tools/ros-custom-message-compiler.m` to define where the working directory (repo) and python is installed on your computer.
-4. Run the script. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
+To compile ROS messages, perform the following steps:
+
+1. In a new terminal, open MATLAB in the working folder:
+```bash
+cd /opt/ros/noetic/share/utrafman_sim/src/matlab/tools
+matlab
+```
+>If Matlab indicates that there is a new release available and prompts you to update, click on "Don't Show Again."
+
+2. Run the script `ros-custom-message-compiler.m`. It may take several minutes. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
+
+3. Exit Matlab to return to the terminal.
+4. Move the generated path file to the Matlab application folder:
+```bash
+sudo chown root pathdef.m
+sudo chgrp root pathdef.m
+sudo mv ./pathdef.m /usr/local/MATLAB/R2023a/toolbox//local/
+```
 
 You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). 
 
 
+
 ### Setting up ROS_MASTER IP address in MATLAB
-MATLAB must be configured with ROS_MASTER IP address, as explained in this [tutorial](https://es.mathworks.com/help/ros/ug/get-started-with-ros.html).
-- If you use a one-computer setup, you can simply use `localhost` as ROS_MASTER IP address.
-- If you use a two-computer setup, you must configure MATLAB with the IP address of the computer where ROS is running, in the file `/src/matlab/config/ros.m`. 
+
+To set up the `ROS_MASTER` IP address in MATLAB for U-TRAFMAN, you can follow these steps:
+
+1. In a new terminal, open MATLAB in the working folder:
+```bash
+cd /opt/ros/noetic/share/utrafman_sim/src/matlab/config
+matlab
+```
+2. Find the `ros.m` script and open it using the MATLAB editor.
+
+3. In the script you'll see a line specifying the `ROS_MASTER` IP address. You can set it to either `localhost` or `127.0.0.1` if you are running ROS/Gazebo on the same computer as MATLAB. If you are using a two-computer setup, replace the IP address with the actual IP address of the computer where ROS/Gazebo is running.
+
+4. Save the changes to the `ros.m` script.
+
+You could find more information about how to configure MATLAB ROS_MASTER IP address in Matlab [here](https://es.mathworks.com/help/ros/ug/get-started-with-ros.html).
+
+
+
 
 
 ## Running your first simulation
