@@ -17,7 +17,17 @@ classdef WorldModel < handle
         %Constructor of the class to read the world from a file
         function obj = WorldModel(file)
             obj.filename = file;
-            obj.world_fig = figure();
+
+            obj.world_fig = findobj('Type','figure','Name','World');
+            if isempty(obj.world_fig)
+                obj.world_fig = figure( ...
+                    'Name','World', ...
+                    'NumberTitle','off', ...
+                    'Resize','on');     
+            else
+                clf(obj.world_fig);
+            end
+
             %obj.matrix_fig = figure();
             obj.readWorldFromFile();
         end
