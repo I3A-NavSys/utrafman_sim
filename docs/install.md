@@ -178,24 +178,23 @@ Next, to add UAVs to the world and send flight plans, follow these steps:
    - Generate a flight plan for each UAV with a random route of 500 meters.
    - Send the generated flight plans to the UAVs.
 
-This will set up your simulation environment with UAVs and their flight plans.
+This will set up your simulation environment with 10 UAVs following their respective flight plans. In Gazebo left panel, you can check select one of them and configure the camera to follow it.
 
 
 ![UAVs](./img/tutorials/simple-simulation-2.png 'Gazebo Viewer. Ten UAVs flying in the world. :size=800px')
 
 ![UAVs](./img/tutorials/simple-simulation-3.png 'Gazebo Viewer. Ten UAVs flying in the world. :size=800px')
 
-Each time a random route is generated for a UAV, the script will display it in a 3D figure, showing both the flight path and the buildings in the world. This visualization can help you understand the path that each UAV will follow in the simulation.
+Each time a random route is generated for a UAV, the script will display it in a 3D visualization, depicting both the flight path and the buildings within the virtual environment. This visualization can aid in comprehending the trajectory that each UAV will follow during the simulation.
 
 ![Routes generated](./img/tutorials/simple-simulation-random-routes.png 'Random routes generated :size=800px')
 
-Once the simulation has completed, you will have access to a `SimulationProcesser` object in the MATLAB workspace, referenced by the variable name `SP`. This object allows you to retrieve and analyze simulation data. For instance, if you want to visualize the telemetry data of a specific flight plan, you can execute the following command in MATLAB:
+Once the simulation has completed, you will have access to a `SimulationProcessor` object in the MATLAB workspace, referenced by the variable name `SP`. This object enables you to retrieve and analyze simulation data. For example, if you wish to visualize the telemetry data of a specific flight plan, you can execute the following command in MATLAB:
 
 ```matlab
 SP.telemetryViewer(fp_id);
 ```
-Where `fp_id` is the identifier of the flight plan you wish to analyze. This command will enable you to view and analyze telemetry data for that specific flight plan.
-
+Where `fp_id` is the identifier of the flight plan you want to analyze. This command will enable you to view and analyze telemetry data for the specified flight plan.
 
 ![Telemetry Viewer](./img/tutorials/simple-simulation-telemetry-viewer.png 'MATLAB Telemetry Viewer :size=800px')
 
