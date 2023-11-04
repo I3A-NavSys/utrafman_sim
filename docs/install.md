@@ -101,7 +101,7 @@ In a new terminal, open MATLAB in the working folder employing the following com
 cd /opt/ros/noetic/share/utrafman_sim/src/matlab
 matlab
 ```
-Matlab indicates that there is a new release available and prompts you to update. Click on "Don't Show Again."
+If Matlab indicates that there is a new release available and prompts you to update, click on "Don't Show Again."
 
 
 ### Compiling ROS messages with MATLAB
