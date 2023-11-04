@@ -51,7 +51,7 @@ catkin_make
 
 You also need to source the compiled workspace into your `.bashrc` file for it to be accessible:
 ```bash
-echo "source /opt/ros/noetic/share/utrafman_sim/devel/setup.bash" >> ~/.bashrc
+echo "source /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 ```
 
