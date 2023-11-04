@@ -2,6 +2,7 @@
 %perform a FP of 500 meters inside 'generated_city' world.
 
 %PRE-SIMULATION TASKs
+clc; clear
 timer; stop(timerfind); delete(timerfind)           %Stop all timers
 addpath("./classes/");                              %Added classes path
 global SP;

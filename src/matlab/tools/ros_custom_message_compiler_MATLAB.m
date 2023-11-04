@@ -29,7 +29,7 @@ else ispc
     addpath(strcat(repo_path, 'src\gazebo-ros\src\matlab_msg_gen_ros1\win64\install\m'));
 end
 
-savepath
+savepath ./pathdef.m
 clear classes
 rehash toolboxcache
 
