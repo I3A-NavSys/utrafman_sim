@@ -11,17 +11,9 @@
 #include "ros/callback_queue.h"
 #include "ros/subscribe_options.h"
 
-
-
-
-//#include "utrafman_main/insert_model.h"
-#include "/opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/devel/include/utrafman_main/insert_model.h"
-
-//#include "utrafman_main/remove_model.h"
-#include "/opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/devel/include/utrafman_main/remove_model.h"
-
-//#include "utrafman_main/teletransport.h"
-#include "/opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/devel/include/utrafman_main/teletransport.h"
+#include "utrafman_main/insert_model.h"
+#include "utrafman_main/remove_model.h"
+#include "utrafman_main/teletransport.h"
 
 
 namespace gazebo

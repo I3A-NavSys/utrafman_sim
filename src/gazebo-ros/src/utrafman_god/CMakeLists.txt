@@ -17,7 +17,10 @@ find_package(catkin REQUIRED COMPONENTS
 )
 
 #Add message header files to CLion
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../devel/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../devel/include)
+#message("===================== El valor de CMAKE_CURRENT_SOURCE_DIR es: ${CMAKE_CURRENT_SOURCE_DIR}")
+#         ===================== El valor de CMAKE_CURRENT_SOURCE_DIR es: /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/src/utrafman_god
+
 
 include_directories(${GAZEBO_INCLUDE_DIRS})
 include_directories(include ${catkin_INCLUDE_DIRS})
