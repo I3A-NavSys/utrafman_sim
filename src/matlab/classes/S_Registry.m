@@ -3,7 +3,7 @@ classdef S_Registry < handle
 
     properties
         %Operators in the airspace
-        operators               = ros.msggen.utrafman_main.Operator.empty;      %Array of Operators objects
+        operators                = ros.msggen.utrafman_main.Operator.empty;      %Array of Operators objects
         operator_lastid  uint32  = 0;                                            %Last operatorId assigned
         
         %UAVs in the airspace

@@ -10,7 +10,7 @@ global SP;
 %-----------------------------------------
 
 %Simulation config
-num_uavs = 10;
+num_uavs = 2;
 
 %Create a parallel pool to run services in parallel using workers (disabled by default)
 %parallelpool = gcp;
