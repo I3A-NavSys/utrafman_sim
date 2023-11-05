@@ -9,6 +9,6 @@ If you have any questions, please contact us at `[rafael.casado, aurelio.bermude
 ![LAB](https://www.uclm.es/-/media/Files/C01-Centros/I3A/Imagenes/logowebi3a-uclm.ashx ' :size=600px')
 ![RAAP](https://www.i3a.uclm.es/raap/wp-content/uploads/2016/04/LOGO-RAAP-Ingl%C3%A9s-e1461149901803.png ' :size=300px')
 
-[![RAAP](./img/RAAPlogo.png "RAAP :size=100px")](https://www.uclm.es/es/centros-investigacion/I3A/secciones-investigacion/RAAP)
-[![I3A](./img/I3Alogo.png "I3A :size=100px")](https://www.uclm.es/centros-investigacion/i3a)
-[![UCLM](./img/UCLMlogo.png "UCLM :size=100px")](https://www.uclm.es)
+[![RAAP](./img/RAAPlogo.png "size=100px")](https://www.uclm.es/es/centros-investigacion/I3A/secciones-investigacion/RAAP)
+[![I3A](./img/I3Alogo.png ":size=100px")](https://www.uclm.es/centros-investigacion/i3a)
+[![UCLM](./img/UCLMlogo.png ":size=100px")](https://www.uclm.es)
