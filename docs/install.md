@@ -68,12 +68,12 @@ To install MATLAB, you can follow these steps:
 
    >:warning:  U-TRAFMAN simulator has been tested in **MATLAB R2023a**. While it might work in other versions, there are no guarantees of compatibility.
 
-2. Unzip the installer package by running the following commands in your terminal:
+2. In Ubuntu, unzip the installer package by running the following commands in your terminal:
 ```bash
 unzip matlab_R2023a_glnxa64.zip -d matlabinstaller
 cd matlabinstaller
 ```
-3. Execute the installation script with root privileges:
+3. In Windows, execute the installer. In Ubuntu, execute the installation script with root privileges:
 ```bash
 sudo ./install
 ```
@@ -127,7 +127,7 @@ matlab
 ```bash
 sudo chown root pathdef.m
 sudo chgrp root pathdef.m
-sudo mv ./pathdef.m /usr/local/MATLAB/R2023a/toolbox//local/
+sudo mv ./pathdef.m /usr/local/MATLAB/R2023a/toolbox/local/
 ```
 
 You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). 
