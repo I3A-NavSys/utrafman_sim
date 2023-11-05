@@ -4,7 +4,7 @@ Welcome to U-TRAFMAN Simulator documentation!
 
 Use the menu on the left to navigate through the documentation. You can use the search box at the top left to search for a specific topic. 
 
-If you have any questions, please contact us at
+If you have any questions, please contact us:
 
 `[rafael.casado, aurelio.bermudez] (at) uclm.es`.
 
