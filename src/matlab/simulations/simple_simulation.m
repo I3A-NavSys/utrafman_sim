@@ -35,7 +35,7 @@ uavs = UAVProperties.empty;
 last_fp_finish_time = 0;
 
 %Foreach UAV
-for i=1:num_uavs
+for i = 1:num_uavs
     %Generate a new route (2D)
     route = world.getRoute(500, 0);
 
