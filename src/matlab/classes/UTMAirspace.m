@@ -31,8 +31,7 @@ classdef UTMAirspace < handle
         function obj = UTMAirspace()
 
             %Load ROS configuration variables
-            run(fullfile("./config/ros.m"));
-            %run(fullfile(""));
+            global ROS_IP;
             obj.rosMasterIp = ROS_IP;
 
             %Connect with ROS master

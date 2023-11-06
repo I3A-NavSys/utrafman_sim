@@ -6,8 +6,11 @@
 
 %PRE-SIMULATION TASKs
 clc; clear
-timer; stop(timerfind); delete(timerfind)           %Stop all timers
-addpath("./classes/");                              %Added classes path
+
+run('../tools/UTRAFMAN_init');
+
+timer; stop(timerfind); delete(timerfind);           %Stop all timers
+
 global SP;
 
 %-----------------------------------------
@@ -19,7 +22,9 @@ num_uavs = 2;
 %parallelpool = gcp;
 
 %World definition file
-world = WorldModel('../gazebo-ros/src/utrafman_main/worlds/generated_city.wc');
+world = WorldModel(fullfile(strcat(UTRAFMAN_DIR,...
+               '/gazebo-ros/src/utrafman_main/worlds/generated_city.wc')));
+
 
 %Creation of the entire airspace
 UTM = UTMAirspace();
