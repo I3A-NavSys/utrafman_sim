@@ -44,7 +44,7 @@ sudo chgrp -R username utrafman_sim
 A ROS (Catkin) workspace containing the simulation environment is located in `src/gazebo-ros/`. 
 You need to compile it with the following commands:
 ```bash
-cd utrafman-sim/src/gazebo-ros
+cd utrafman_sim/src/gazebo-ros
 catkin_make
 ```
 >:warning: Make sure that the `/opt/ros/noetic/setup.bash` file was sourced in your `.bashrc` file as instructed in the ROS installation step above. Failure to do so may cause the `catkin_make` command to not work properly.
