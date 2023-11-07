@@ -24,7 +24,10 @@ include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(${catkin_INCLUDE_DIRS})
 
 #Add message header files to CLion
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../../../devel/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../devel/include)
+#message("===================== El valor de CMAKE_CURRENT_SOURCE_DIR es: ${CMAKE_CURRENT_SOURCE_DIR}")
+#         ===================== El valor de CMAKE_CURRENT_SOURCE_DIR es: /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/src/utrafman_god
+
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
 
