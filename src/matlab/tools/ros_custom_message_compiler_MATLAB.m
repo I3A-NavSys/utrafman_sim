@@ -11,7 +11,7 @@ if isunix
 
     setenv("MY_PYTHON_VENV", "/tmp/venv");
     %ros.internal.createOrGetLocalPython(true);
-    %py = pyenv('Version', '/usr/bin/python3.8');        %Set it with your python path (3.8 or higher)
+    %py = pyenv('Version', '/usr/bin/python3.9');        %Set it with your python path (3.8 or higher)
     rosgenmsg(strcat(UTRAFMAN_DIR, 'gazebo-ros/src/'));
     addpath(  strcat(UTRAFMAN_DIR, 'gazebo-ros/src/matlab_msg_gen_ros1/glnxa64/install/m'));
 
@@ -25,7 +25,7 @@ elseif ispc
 
 end
 
-savepath ./pathdef.m
+%savepath ./pathdef.m
 clear classes
 rehash toolboxcache
 
