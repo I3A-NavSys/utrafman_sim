@@ -94,9 +94,17 @@ sudo ./install
       - Set _Create symbolic links to MATLAB scripts in:_ `/usr/local/bin`
       - Choose _Improve MATLAB startup performance_ based on your preferences.
       
-   e) Confirm your selections.
+   e) Confirm your selections and continue the installation process.
 
-Once MATLAB is installed, you can delete the temporary `matlabinstaller` folder.
+5. Once MATLAB is installed, you can delete the temporary `matlabinstaller` folder.
+
+6. In a terminal, open MATLAB:
+```bash
+matlab
+```
+and introduce your credentials again.
+
+>If Matlab indicates that there is a new release available and prompts you to update, click on "Don't Show Again."
 
 >:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer. However, in the case of very large simulations where the resources of typical machines may be insufficient, it may be beneficial to run MATLAB on a different computer, including Windows platforms. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
 
@@ -120,7 +128,6 @@ To compile ROS messages, perform the following steps:
 cd /opt/ros/noetic/share/utrafman_sim/src/matlab/tools
 matlab
 ```
->If Matlab indicates that there is a new release available and prompts you to update, click on "Don't Show Again."
 
 2. Run the script `ros-custom-message-compiler.m`. It may take several minutes. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
 
