@@ -175,26 +175,23 @@ roslaunch utrafman_main generated_city.launch
 ```
 You should observe ROS being launched in the terminal, and Gazebo opening in a new window. In the Gazebo window, you should see a world with simple buildings.
 
+>:warning: If you are running Gazebo within a virtual machine, the scenario may not be fully rendered as you are not utilizing your computer's 3D graphics card.
+
+
 ![Empty World](./img/tutorials/simple-simulation-1.png 'Gazebo Viewer with a generated city world.  :size=800px')
 
 
 Next, to add UAVs to the world and send flight plans, follow these steps:
 
-1. In MATLAB, set `opt/ros/noetic/share/utrafman_sim/src/matlab/` as the current directory.
-2. From that directory, run `simulations/simple_simulation.m`. This script will perform the following tasks:
-   - Connect with the ROS master from MATLAB.
-   - Load the world definition file in MATLAB.
-   - Instance an _operator_ and 10 _UAVs_.
-   - Register both the operator and UAVs using the "Registry" service.
-   - Generate a flight plan for each UAV with a random route of 500 meters.
-   - Send the generated flight plans to the UAVs.
+1. Open MATLAB and go to the folder `utrafman_sim/src/matlab/simulations/`.
 
-This will set up your simulation environment with 10 UAVs following their respective flight plans. In Gazebo left panel, you can check select one of them and configure the camera to follow it.
-
+2. Run the script `simple_simulation.m`. This will set up your simulation environment with 10 UAVs following their respective flight plans (a random route of 500 meters).
+3. In Gazebo, open the left panel and select **World > Models**. At the end of the list you can find several drones. Right-click one of them and configure the camera to **Follow** it.
 
 ![UAVs](./img/tutorials/simple-simulation-2.png 'Gazebo Viewer. Ten UAVs flying in the world. :size=800px')
 
 ![UAVs](./img/tutorials/simple-simulation-3.png 'Gazebo Viewer. Ten UAVs flying in the world. :size=800px')
+
 
 Each time a random route is generated for a UAV, the script will display it in a 3D visualization, depicting both the flight path and the buildings within the virtual environment. This visualization can aid in comprehending the trajectory that each UAV will follow during the simulation.
 
