@@ -156,8 +156,9 @@ We need to compile a ROS (Catkin) workspace containing the simulation environmen
 ```bash
 cd opt/ros/noetic/share/utrafman_sim/src/gazebo-ros
 catkin_make
+catkin_make
 ```
->:warning: Make sure that the `/opt/ros/noetic/setup.bash` file was sourced in your `.bashrc` file as instructed in the ROS installation step above. Failure to do so may cause the `catkin_make` command to not work properly.
+>:warning: You must execute `catkin_make` twice to work properly.
 
 After that, source the compiled workspace into your `.bashrc` file for it to be accessible:
 ```bash
