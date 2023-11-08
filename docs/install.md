@@ -9,8 +9,11 @@ Configure a computer with **Ubuntu 20.04.6 LTS (Focal Fossa)**. You can obtain a
 
 >:warning: U-TRAFMAN has been developed and tested in the specified Ubuntu version. While it might work in other versions, there are no guarantees of compatibility.
 
+>:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer. However, in the case of very large simulations where the resources of typical machines may be insufficient, it may be beneficial to run MATLAB on a different computer, including Windows platforms. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
 
-## ROS and Gazebo
+
+
+## Install ROS and Gazebo
 
 U-TRAFMAN runs on **ROS** (Robot Operating System) **Noetic**. 
 Please follow the official [tutorial](https://wiki.ros.org/noetic/Installation/Ubuntu) to install it.
@@ -26,7 +29,82 @@ As a part of _ROS Noetic_, the _Gazebo 11_ simulator will be installed. To check
 >:warning: U-TRAFMAN has been developed and tested in the specified ROS/Gazebo versions. While it might work in other versions, there are no guarantees of compatibility.
 
 
-## U-TRAFMAN package
+
+
+## Install Python
+
+Later, MATLAB ROS Toolbox will require Python.
+
+In Ubuntu, it is required Python version 3.9.x. 
+You may install it executing the following commands in a terminal:
+```bash
+sudo apt install python3.9-venv
+mkdir /tmp/venv
+```
+
+In Windows, it is required Python version 3.9.x or 3.10.x. 
+You may download Python 3.10.11 from the [official site](https://www.python.org/ftp/python/3.10.11/python-3.10.11-amd64.exe)
+
+
+>⚠️ U-TRAFMAN simulator has been tested with the mentioned versions of Python. While it may work with other versions, there are no guarantees of compatibility.
+
+
+
+
+
+## Install and configure MATLAB
+
+U-TRAFMAN provides a variety of tools for launching and analyzing simulations. These tools are programmed in MATLAB®. To install it , you can follow these steps:
+
+
+
+1. Download MATLAB R2023b from the official MathWorks website: [MathWorks Downloads](https://es.mathworks.com/downloads).
+
+   >:warning:  U-TRAFMAN simulator has been tested in **MATLAB R2023a** and **MATLAB R2023b**. While it might work in other versions, there are no guarantees of compatibility.
+
+2. In Ubuntu, unzip the installer package by running the following commands in your terminal:
+```bash
+unzip matlab_R2023b_glnxa64.zip -d matlabinstaller
+cd matlabinstaller
+```
+3. In Windows, execute the installer. In Ubuntu, execute the installation script with root privileges:
+```bash
+sudo ./install
+```
+4. Follow the installation process:
+
+   a) Select your license and user information.
+   
+   b) Choose the destination folder (the default location is fine).
+
+   c) Select the MATLAB products you want to install. Ensure that you select at least the following components:
+      - MATLAB R2023b
+      - Parallel Computing Toolbox
+      - ROS Toolbox
+      
+   d) Configure installation options:
+      - Set _Create symbolic links to MATLAB scripts in:_ `/usr/local/bin`
+      - Choose _Improve MATLAB startup performance_ based on your preferences.
+      
+   e) Confirm your selections and continue the installation process.
+
+5. Once MATLAB is installed, you can delete the instalation file and the `matlabinstaller` folder.
+
+6. Open MATLAB. In Windows start the application. In Ubuntu, execute `matlab` in a terminal.
+
+>If Matlab indicates that there is a new release available and prompts you to update, click on "Don't Show Again."
+
+7. Select **HOME > ENVIRONMENT > Preferences**. In the panel of the left select **ROS Toolbox**. Click on **Open ROS Toolbox Preferences**.
+8. In the _ROS Toolbox Preferences_ dialog box set the path to your Python installation.
+Typical values may be
+C:\Users\__User_\AppData\Local\Programs\Python\Python310\pythonw.exe
+
+
+10. Click on **Recreate Python Environment**. When it finish press **OK**.
+
+
+
+## Clone U-TRAFMAN package
 
 Once your ROS/Gazebo installation is complete, you can install U-TRAFMAN as a ROS package.
 You need to clone the repository in your ROS installation:
@@ -41,84 +119,9 @@ sudo chown -R username utrafman_sim
 sudo chgrp -R username utrafman_sim
 ```
 
-A ROS (Catkin) workspace containing the simulation environment is located in `src/gazebo-ros/`. 
-You need to compile it with the following commands:
-```bash
-cd utrafman_sim/src/gazebo-ros
-catkin_make
-```
->:warning: Make sure that the `/opt/ros/noetic/setup.bash` file was sourced in your `.bashrc` file as instructed in the ROS installation step above. Failure to do so may cause the `catkin_make` command to not work properly.
-
->>>⚠️ The first time you compile it will not work due to headers have not been built yet!
-
-You also need to source the compiled workspace into your `.bashrc` file for it to be accessible:
-```bash
-echo "source /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/devel/setup.bash" >> ~/.bashrc
-source ~/.bashrc
-```
-
-
-## MATLAB
-
-U-TRAFMAN provides a variety of tools for launching and analyzing simulations. These tools are programmed in MATLAB®.
-
-### Install MATLAB
-
-To install MATLAB, you can follow these steps:
-
-1. Download MATLAB R2023a from the official MathWorks website: [MathWorks Downloads](https://es.mathworks.com/downloads).
-
-   >:warning:  U-TRAFMAN simulator has been tested in **MATLAB R2023a**. While it might work in other versions, there are no guarantees of compatibility.
-
-2. In Ubuntu, unzip the installer package by running the following commands in your terminal:
-```bash
-unzip matlab_R2023a_glnxa64.zip -d matlabinstaller
-cd matlabinstaller
-```
-3. In Windows, execute the installer. In Ubuntu, execute the installation script with root privileges:
-```bash
-sudo ./install
-```
-4. Follow the installation process:
-
-   a) Select your license and user information.
-   
-   b) Choose the destination folder (the default location `/usr/local/MATLAB/R2023a` is fine).
-
-   c) Select the MATLAB products you want to install. Ensure that you select at least the following components:
-      - MATLAB R2023a
-      - Parallel Computing Toolbox
-      - ROS Toolbox
-      
-   d) Configure installation options:
-      - Set _Create symbolic links to MATLAB scripts in:_ `/usr/local/bin`
-      - Choose _Improve MATLAB startup performance_ based on your preferences.
-      
-   e) Confirm your selections and continue the installation process.
-
-5. Once MATLAB is installed, you can delete the temporary `matlabinstaller` folder.
-
-6. In a terminal, open MATLAB:
-```bash
-matlab
-```
-and introduce your credentials again.
-
->If Matlab indicates that there is a new release available and prompts you to update, click on "Don't Show Again."
-
->:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer. However, in the case of very large simulations where the resources of typical machines may be insufficient, it may be beneficial to run MATLAB on a different computer, including Windows platforms. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
-
 
 
 ### Compiling ROS messages with MATLAB
-
-Custom ROS messages are used by U-TRAFMAN. Although the simulator is not coded in Python, MATLAB will require it to compile ROS messages. You can install Python 3.8 executing the following commands in a terminal:
-```bash
-sudo apt install python3.8-venv
-mkdir /tmp/venv
-```
-
->⚠️ U-TRAFMAN simulator has been tested with **Python 3.8**. While it may work with other versions, there are no guarantees of compatibility.
 
 
 To compile ROS messages, perform the following steps:
@@ -140,6 +143,29 @@ sudo mv ./pathdef.m /usr/local/MATLAB/R2023a/toolbox/local/
 ```
 
 You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). 
+
+
+
+## Compile U-TRAFMAN simulator
+
+A ROS (Catkin) workspace containing the simulation environment is located in `src/gazebo-ros/`. 
+You need to compile it with the following commands:
+```bash
+cd utrafman_sim/src/gazebo-ros
+catkin_make
+```
+>:warning: Make sure that the `/opt/ros/noetic/setup.bash` file was sourced in your `.bashrc` file as instructed in the ROS installation step above. Failure to do so may cause the `catkin_make` command to not work properly.
+
+You also need to source the compiled workspace into your `.bashrc` file for it to be accessible:
+```bash
+echo "source /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/devel/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+
+
+
+
 
 
 
