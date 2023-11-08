@@ -179,15 +179,22 @@ You should observe ROS being launched in the terminal, and Gazebo opening in a n
 
 >:warning: If you are running Gazebo within a virtual machine, the scenario may not be fully rendered as you are not utilizing your computer's 3D graphics card.
 
-
 ![Empty World](./img/tutorials/simple-simulation-1.png 'Gazebo Viewer with a generated city world.  :size=800px')
 
+In a new terminal, check the ROS services responsible for managing drones in gazebo:
+```bash
+rosservice list /godservice/
+```
+The following services should be running. In other case, it means that there was a problem during the compilation phase:
+   - _/godservice/insert_model_
+   - _/godservice/remove_model_
+   - _/godservice/transport_model_
 
-Next, to add UAVs to the world and send flight plans, follow these steps:
 
-1. Open MATLAB and go to the folder `utrafman_sim/src/matlab/simulations/`.
+Next, let's go to generate some UAVs into the world and send flight plans to them:
 
-2. Run the script `simple_simulation.m`. This will set up your simulation environment with 10 UAVs following their respective flight plans (a random route of 500 meters).
+1. Open MATLAB and navigate to the folder **.../utrafman_sim/src/matlab/simulations/**.
+2. Run the script **simple_simulation.m**. This will set up your simulation environment with 10 UAVs following their respective flight plans (a random route of 500 meters).
 3. In Gazebo, open the left panel and select **World > Models**. At the end of the list you can find several drones. Right-click one of them and configure the camera to **Follow** it.
 
 ![UAVs](./img/tutorials/simple-simulation-2.png 'Gazebo Viewer. Ten UAVs flying in the world. :size=800px')
