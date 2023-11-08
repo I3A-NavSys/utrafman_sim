@@ -25,7 +25,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 
 #Add message header files to CLion
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../devel/include)
-message("=====================UTRAFMAN-MAIN ==== CMAKE_CURRENT_SOURCE_DIR  =  ${CMAKE_CURRENT_SOURCE_DIR}")
+#message("=====================UTRAFMAN-MAIN ==== CMAKE_CURRENT_SOURCE_DIR  =  ${CMAKE_CURRENT_SOURCE_DIR}")
 #        =====================UTRAFMAN-MAIN ==== CMAKE_CURRENT_SOURCE_DIR  =  /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/src/utrafman_main
 
 

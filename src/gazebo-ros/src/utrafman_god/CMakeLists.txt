@@ -18,7 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
 
 #Add message header files to CLion
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../devel/include)
-message("=====================UTRAFMAN-GOD ==== CMAKE_CURRENT_SOURCE_DIR  =  ${CMAKE_CURRENT_SOURCE_DIR}")
+#message("=====================UTRAFMAN-GOD ==== CMAKE_CURRENT_SOURCE_DIR  =  ${CMAKE_CURRENT_SOURCE_DIR}")
 #         ===================== El valor de CMAKE_CURRENT_SOURCE_DIR es: /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/src/utrafman_god
 
 
