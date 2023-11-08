@@ -96,12 +96,14 @@ sudo ./install
 
 7. Select **HOME > ENVIRONMENT > Preferences**. In the panel of the left select **ROS Toolbox**. Click on **Open ROS Toolbox Preferences**.
 
-8. In the _ROS Toolbox Preferences_ dialog box set the path to your Python installation.
+8. In the **ROS Toolbox Preferences** dialog box set the path to your Python installation.
 Typical values may be:
 
-   `Ubuntu`  /usr/bin/python3.9
-   
-   `Windows` C:\Users\__User_\AppData\Local\Programs\Python\Python310\pythonw.exe
+
+   | OS      | Python path |
+   |:--------|:------------|
+   | Ubuntu  | /usr/bin/python3.9 |
+   | Windows | C:\Users\User\AppData\Local\Programs\Python\Python310\pythonw.exe |
 
 
 10. Click on **Recreate Python Environment**. When it finish press **OK**.
@@ -111,13 +113,13 @@ Typical values may be:
 
 ### Clone U-TRAFMAN package
 
-You can download U-TRAFMAN clonning the repository in your ROS installation:
+You can download U-TRAFMAN cloning the repository in your ROS installation:
 ```bash
 cd /opt/ros/noetic/share
 sudo git clone https://github.com/I3A-NavSys/utrafman_sim
 ```
 
-After cloning, change the permissions of the `utrafman_sim` folder to your user executing the following commands (replace `username` with your actual _username_):
+After that, change the permissions of the `utrafman_sim` folder to your user executing the following commands (replace `username` with your actual _username_):
 ```bash
 sudo chown -R username utrafman_sim
 sudo chgrp -R username utrafman_sim
