@@ -121,8 +121,7 @@ sudo git clone https://github.com/I3A-NavSys/utrafman_sim
 
 After that, change the permissions of the `utrafman_sim` folder to your user executing the following commands (replace `username` with your actual _username_):
 ```bash
-sudo chown -R username utrafman_sim
-sudo chgrp -R username utrafman_sim
+sudo chown -R username:username utrafman_sim
 ```
 
 
