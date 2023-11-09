@@ -172,7 +172,7 @@ source ~/.bashrc
 
 ## Running your first simulation
 
-U-TRAFMAN includes a basic simulation to help you verify if everything is functioning correctly. To get started, open a new terminal and execute the following command:
+U-TRAFMAN includes a basic simulation to help you verify if everything is functioning correctly. To get started, **open a new terminal** (don't use the same where you did the compilation) and execute the following command:
 
 ```bash
 roslaunch utrafman_main generated_city.launch
