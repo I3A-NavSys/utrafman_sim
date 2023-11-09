@@ -1,6 +1,3 @@
-% ¡¡This simulation must be executed from de matlab folder!!
-
-
 %Very simple simulation, where num_uavs UAV are allocated and each one
 %perform a FP of 500 meters inside 'generated_city' world.
 
