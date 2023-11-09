@@ -11,7 +11,7 @@ Configure a computer with **Ubuntu 20.04.6 LTS (Focal Fossa)**. You can obtain a
 
 >:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer. However, in the case of very large simulations where the resources of typical machines may be insufficient, it may be beneficial to run MATLAB on a different computer, including Windows platforms. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
 
-
+HOLA!!!
 
 ## Install ROS and Gazebo
 
