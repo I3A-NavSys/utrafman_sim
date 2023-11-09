@@ -154,9 +154,12 @@ We need to compile a ROS (Catkin) workspace containing the simulation environmen
 ```bash
 cd opt/ros/noetic/share/utrafman_sim/src/gazebo-ros
 catkin_make
+```
+>:warning: If `catkin_make` does not work properly, execute this code:
+```bash
+cp -r src/matlab_msg_gen_ros1/glnxa64/install/include/utrafman_main devel/include/
 catkin_make
 ```
->:warning: You must execute `catkin_make` twice to work properly.
 
 After that, source the compiled workspace into your `.bashrc` file for it to be accessible:
 ```bash
