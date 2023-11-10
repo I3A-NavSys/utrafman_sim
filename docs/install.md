@@ -208,12 +208,13 @@ Each time a random route is generated for a UAV, the script will display it in a
 
 ![Routes generated](./img/tutorials/simple-simulation-random-routes.png 'Random routes generated :size=800px')
 
-Once the simulation has completed, you will have access to a `SimulationProcessor` object in the MATLAB workspace, referenced by the variable name `SP`. This object enables you to retrieve and analyze simulation data. For example, if you wish to visualize the telemetry data of a specific flight plan, you can execute the following command in MATLAB:
+Once the simulation has completed, you will have access to a **SimulationProcessor** object in the MATLAB workspace, referenced by the variable name `SP`. 
+This object enables you to retrieve and analyze simulation data of a specific flight plan. 
+For example, if you wish to visualize the telemetry data of _flight plan 1_, you can execute the following command in MATLAB:
 
 ```matlab
-SP.telemetryViewer(fp_id);
+SP.telemetryViewer(1);
 ```
-Where `fp_id` is the identifier of the flight plan you want to analyze. This command will enable you to view and analyze telemetry data for the specified flight plan.
 
 ![Telemetry Viewer](./img/tutorials/simple-simulation-telemetry-viewer.png 'MATLAB Telemetry Viewer :size=800px')
 
