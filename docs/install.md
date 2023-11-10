@@ -196,7 +196,7 @@ The following services should be running. In other case, it means that there was
 Next, let's go to generate some UAVs into the world and send flight plans to them:
 
 1. Open MATLAB and navigate to the folder **.../utrafman_sim/src/matlab/simulations/**.
-2. Run the script **simple_simulation.m**. This will set up your simulation environment with 10 UAVs following their respective flight plans (a random route of 500 meters).
+2. Run the script **simple_simulation.m**. This will set up your simulation environment with 2 UAVs following their respective flight plans (a random route of 500 meters).
 3. In Gazebo, open the left panel and select **World > Models**. At the end of the list you can find several drones. Right-click one of them and configure the camera to **Follow** it.
 
 ![UAVs](./img/tutorials/simple-simulation-2.png 'Gazebo Viewer. Ten UAVs flying in the world. :size=800px')
