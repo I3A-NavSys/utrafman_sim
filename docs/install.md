@@ -93,7 +93,7 @@ sudo ./install
 
 >If Matlab indicates that there is a new release available and prompts you to update, click on "Don't Show Again."
 
-7. Select **HOME > ENVIRONMENT > Preferences**. In the panel of the left select **ROS Toolbox**. Click on **Open ROS Toolbox Preferences**.
+7. Select **HOME > ENVIRONMENT tile > Preferences**. In the panel of the left select **ROS Toolbox**. Click on **Open ROS Toolbox Preferences**.
 
 8. In the **ROS Toolbox Preferences** dialog box set the path to your Python installation.
 Typical values may be:
@@ -118,9 +118,9 @@ cd /opt/ros/noetic/share
 sudo git clone https://github.com/I3A-NavSys/utrafman_sim
 ```
 
-After that, change the permissions of the `utrafman_sim` folder to your user executing the following commands (replace `username` with your actual _username_):
+After that, change the permissions of the `utrafman_sim` folder to your user executing the following commands (replace `username` with your actual _username_ and `groupname` with your actual _groupname_):
 ```bash
-sudo chown -R username:username utrafman_sim
+sudo chown -R username:groupname utrafman_sim
 ```
 
 
@@ -130,7 +130,7 @@ To compile custom ROS messages perform the following steps:
 
 1. Open MATLAB.
 
-2. Go to the folder `utrafman_sim/src/matlab/tools/`.
+2. Go to the folder `utrafman_sim/src/matlab/tools/` (the complete path in Ubuntu should be `/opt/ros/noetic/share/utrafman_sim/src/matlab/tools/`).
 
 3. Edit the script `UTRAFMAN_init.m`. If you are working in several machines, you may set these values in function of the user or machine names:
 
@@ -142,7 +142,7 @@ To compile custom ROS messages perform the following steps:
  
    - Set variable **UTRAFMAN_DIR** with the path to your simulation installation.
 
-4. Run the script `ros-custom-message-compiler.m`. It may take several minutes. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
+4. Run the script `ros_custom_message_compiler_MATLAB.m`. It may take several minutes. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
 
 You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). 
 
@@ -152,7 +152,7 @@ You could find more information about how to compile custom ROS messages [here](
 
 We need to compile a ROS (Catkin) workspace containing the simulation environment:
 ```bash
-cd opt/ros/noetic/share/utrafman_sim/src/gazebo-ros
+cd /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros
 catkin_make
 ```
 >:warning: If `catkin_make` does not work properly, execute this code:
@@ -161,7 +161,7 @@ cp -r src/matlab_msg_gen_ros1/glnxa64/install/include/utrafman_main devel/includ
 catkin_make
 ```
 
-After that, source the compiled workspace into your `.bashrc` file for it to be accessible:
+After that, source the compiled workspace into your `.bashrc` file (in your home directory) for it to be accessible:
 ```bash
 echo "source /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/devel/setup.bash" >> ~/.bashrc
 source ~/.bashrc
