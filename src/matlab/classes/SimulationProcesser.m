@@ -241,14 +241,23 @@ classdef SimulationProcesser < handle
 
         function fig = telemetryViewer(obj, fpId)
         
-            fig = figure(1);
-            
+            fig = findobj('Type','figure','Name','Telemetry');
+            if isempty(fig)
+                fig = figure( ...
+                    'Name','Telemetry', ...
+                    'NumberTitle','off', ...
+                    'Position',[200 200 1000 500]);     
+            else
+                clf(fig);
+            end
+
+
             fp_obj = obj.getFpById(fpId);
             fp_wps = obj.getFpWaypoints(fp_obj);
             
             uavId = fp_obj.DroneId;
-            uav_obj = obj.getUavById(uavId);
-            uav_tel = obj.getUavTelemetry(uav_obj);
+            % uav_obj = obj.getUavById(uavId);
+            uav_tel = obj.getUavTelemetry(uavId);
             uav_tel = obj.filterUavTelemetryByTime(uav_tel, min(fp_wps.Time), max(fp_wps.Time));
             
             

@@ -1,6 +1,6 @@
 %Monitoring Service class
 
-classdef S_Monitoring< handle
+classdef S_Monitoring < handle
     properties
         %UAV in the airspace
         uavs = struct([]);                              %Array of UAV (struct format)
