@@ -44,7 +44,7 @@
     </include>
 
 
-    <!-- Floor -->
+    <!-- UAV -->
     <include>
       <name>drone</name>
       <uri>model://drone</uri>

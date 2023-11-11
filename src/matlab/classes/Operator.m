@@ -15,9 +15,10 @@ classdef Operator < handle
     
     methods
         %Class constructor
-        function obj = Operator(operator_name, ROS_MASTER_IP)
+        function obj = Operator(operator_name)
             obj.operator_name = operator_name;
             %Create ROS object
+            global ROS_MASTER_IP;
             obj.ros_node = ros.Node("operator_"+operator_name, ROS_MASTER_IP, 11311);
             obj.ros_reg_operator = ros.ServiceClient(obj.ros_node,"/service/registry/reg_new_operator");
             obj.ros_reg_uav = ros.ServiceClient(obj.ros_node,"/service/registry/reg_new_uav");

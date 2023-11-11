@@ -27,7 +27,7 @@ world = WorldModel(fullfile(strcat(UTRAFMAN_DIR,...
 UTM = UTMAirspace();
 
 %Registry of a new operator
-operator = Operator('Sample_Operator', UTM.rosMasterIp);
+operator = Operator('Sample_Operator');
 
 %FPs
 fp = FlightPlanProperties.empty(0,num_uavs*1);                %FlightPlan instance

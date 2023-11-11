@@ -2,15 +2,15 @@
 % It is useful if you work with different machines.
 
 % ROS master IP configuration
-global ROS_IP
+global ROS_MASTER_IP
 switch  getenv("USERNAME")
     case 'Rafael.Casado'
-        ROS_IP = '192.168.225.128';
+        ROS_MASTER_IP = '192.168.225.128';
     case 'Rafa'
-        ROS_IP = '192.168.17.128';
+        ROS_MASTER_IP = '192.168.17.128';
     otherwise
         %Default value
-        ROS_IP = '127.0.0.1';
+        ROS_MASTER_IP = '127.0.0.1';
 end
 
 
