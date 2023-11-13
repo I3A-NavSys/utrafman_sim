@@ -45,7 +45,7 @@ In Windows, it is required Python version 3.9.x or 3.10.x.
 For example, you may download and install Python 3.10.11 from the [official site](https://www.python.org/ftp/python/3.10.11/python-3.10.11-amd64.exe).
 
 
->⚠️ U-TRAFMAN simulator has been tested with the mentioned versions of Python. While it may work with other versions, there are no guarantees of compatibility.
+>:warning:️ U-TRAFMAN simulator has been tested with the mentioned versions of Python. While it may work with other versions, there are no guarantees of compatibility.
 
 
 
