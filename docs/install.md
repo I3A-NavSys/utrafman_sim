@@ -1,6 +1,5 @@
 # Installation
 
-1
 
 ## Set up your machine
 
