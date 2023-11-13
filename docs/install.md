@@ -80,11 +80,11 @@ sudo ./install
       - MATLAB R2023b
       - Parallel Computing Toolbox
       - ROS Toolbox
-      
+
    d) Configure installation options:
       - Set _Create symbolic links to MATLAB scripts in:_ `/usr/local/bin`
       - Choose _Improve MATLAB startup performance_ based on your preferences.
-      
+
    e) Confirm your selections and continue the installation process.
 
 5. Once MATLAB is installed, you can delete the instalation file and the `matlabinstaller` folder.
