@@ -18,7 +18,7 @@ total_sim_time =24*60*60; %Minimum Simulation Time
 %parallelpclcool = gcp;
 
 %World definition file
-world = WorldModel('../gazebo-ros/src/utrafman_main/worlds/generated_city.wc');
+world = WorldModel('../gazebo-ros/src/utrafman/worlds/generated_city.wc');
 
 %Creation of the entire airspace
 UTM = UTMAirspace();
@@ -95,7 +95,7 @@ while UTM.Gclock < total_sim_time
 
     %UAV transport service request
     for i=1:num_uavs
-        msg = ros.msggen.utrafman_main.teletransportRequest;
+        msg = ros.msggen.utrafman.teletransportRequest;
         msg.UavId = i;
         msg.Pose.Position.X = uavs(i).init_loc(1);
         msg.Pose.Position.Y = uavs(i).init_loc(2);

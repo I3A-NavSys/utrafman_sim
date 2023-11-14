@@ -23,11 +23,11 @@ classdef S_Monitoring < handle
             %Initializate ROS node
             obj.node = ros.Node("monitoring_service", ROS_MASTER_IP, 11311);
             %Initializate ROS new UAV subscriber
-            obj.ros_subs_new_uavs = ros.Subscriber(obj.node,"/registry/new_uav_advertise", "utrafman_main/UAV", @obj.newUav); 
+            obj.ros_subs_new_uavs = ros.Subscriber(obj.node,"/registry/new_uav_advertise", "utrafman/UAV", @obj.newUav); 
             %Initializate ROS Service server to get telemetry of a UAV
-            obj.ros_srv_get_telemetry = ros.ServiceServer(obj.node, "/service/monitoring/get_telemetry", "utrafman_main/mon_get_locs", @obj.getLocs);
+            obj.ros_srv_get_telemetry = ros.ServiceServer(obj.node, "/service/monitoring/get_telemetry", "utrafman/mon_get_locs", @obj.getLocs);
             %Initializate ROS Service server to get the current location of a UAV
-            obj.ros_srv_get_currentloc = ros.ServiceServer(obj.node, "/service/monitoring/get_current_loc", "utrafman_main/mon_get_locs", @obj.getCurrentLoc);
+            obj.ros_srv_get_currentloc = ros.ServiceServer(obj.node, "/service/monitoring/get_current_loc", "utrafman/mon_get_locs", @obj.getCurrentLoc);
 
             disp("Monitoring service has been initialized");
             job = getCurrentJob;
@@ -43,8 +43,8 @@ classdef S_Monitoring < handle
             id = msg.Id;
             %UAV data
             uav.reg_msg = msg;                                             %UAV ROS msg
-            uav.loc = ros.msggen.utrafman_main.Telemetry;                  %To store the last location sent by the UAV
-            uav.telemetry = ros.msggen.utrafman_main.Telemetry.empty;
+            uav.loc = ros.msggen.utrafman.Telemetry;                  %To store the last location sent by the UAV
+            uav.telemetry = ros.msggen.utrafman.Telemetry.empty;
             %Save UAV data
             if (id == 1)
                 obj.uavs = uav;
@@ -52,7 +52,7 @@ classdef S_Monitoring < handle
                 obj.uavs = [obj.uavs uav];
             end
             %UAV Telemetry data subscription
-            obj.uavs_telemetry_subs(id) = ros.Subscriber(obj.node, "/drone/"+id+"/telemetry", "utrafman_main/Telemetry", {@obj.newTelemetryData, id});
+            obj.uavs_telemetry_subs(id) = ros.Subscriber(obj.node, "/drone/"+id+"/telemetry", "utrafman/Telemetry", {@obj.newTelemetryData, id});
         end
 
         %This function is called every time a UAV sends telemetry data

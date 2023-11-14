@@ -3,15 +3,15 @@ classdef S_Registry < handle
 
     properties
         %Operators in the airspace
-        operators                = ros.msggen.utrafman_main.Operator.empty;      %Array of Operators objects
+        operators                = ros.msggen.utrafman.Operator.empty;      %Array of Operators objects
         operator_lastid  uint32  = 0;                                            %Last operatorId assigned
         
         %UAVs in the airspace
-        uavs = ros.msggen.utrafman_main.UAV.empty;                  %Array of Drone objects
+        uavs = ros.msggen.utrafman.UAV.empty;                  %Array of Drone objects
         uav_lastid       uint32 = 0;                                 %Last droneId assigned
 
         %Flight plans in the airspace
-        flight_plans = ros.msggen.utrafman_main.Uplan.empty;         %Array of FlightPlan (ordered queue using DTTO)
+        flight_plans = ros.msggen.utrafman.Uplan.empty;         %Array of FlightPlan (ordered queue using DTTO)
         flight_plan_lastid uint32 = 0;                                %Last flightPlanId assigned
 
         %ros structs
@@ -41,17 +41,17 @@ classdef S_Registry < handle
             obj.ros_model_pub = ros.ServiceClient(obj.node,"/godservice/insert_model");
 
             %Initializate ROS Published for new UAV advertise
-            obj.ros_pub_new_uav_advertise = ros.Publisher(obj.node,"/registry/new_uav_advertise","utrafman_main/UAV");
+            obj.ros_pub_new_uav_advertise = ros.Publisher(obj.node,"/registry/new_uav_advertise","utrafman/UAV");
 
             %Initialize ROS service servesrs to register into registry
-            obj.ros_srv_reg_operator = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman_main/reg_new_operator",@obj.regNewOperator);
-            obj.ros_srv_reg_uav = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman_main/reg_new_uav", @obj.regNewUAV);
-            obj.ros_srv_reg_fp = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman_main/reg_new_flightplan",@obj.regNewFlightPlan);
+            obj.ros_srv_reg_operator = ros.ServiceServer(obj.node,"/service/registry/reg_new_operator","utrafman/reg_new_operator",@obj.regNewOperator);
+            obj.ros_srv_reg_uav = ros.ServiceServer(obj.node, "/service/registry/reg_new_uav", "utrafman/reg_new_uav", @obj.regNewUAV);
+            obj.ros_srv_reg_fp = ros.ServiceServer(obj.node,"/service/registry/reg_new_fp","utrafman/reg_new_flightplan",@obj.regNewFlightPlan);
             
             %Initialize ROS service servesrs to get registry info
-            obj.ros_srv_get_operators = ros.ServiceServer(obj.node, "/service/registry/get_operators", "utrafman_main/reg_get_operators", @obj.getOperators);
-            obj.ros_srv_get_uavs = ros.ServiceServer(obj.node, "/service/registry/get_uavs", "utrafman_main/reg_get_uavs", @obj.getUavs);
-            obj.ros_srv_get_fps = ros.ServiceServer(obj.node, "/service/registry/get_fps", "utrafman_main/reg_get_fps", @obj.getFps);
+            obj.ros_srv_get_operators = ros.ServiceServer(obj.node, "/service/registry/get_operators", "utrafman/reg_get_operators", @obj.getOperators);
+            obj.ros_srv_get_uavs = ros.ServiceServer(obj.node, "/service/registry/get_uavs", "utrafman/reg_get_uavs", @obj.getUavs);
+            obj.ros_srv_get_fps = ros.ServiceServer(obj.node, "/service/registry/get_fps", "utrafman/reg_get_fps", @obj.getFps);
 
             disp("Registry service has been initialized");
             job = getCurrentJob;
@@ -166,7 +166,7 @@ classdef S_Registry < handle
                 otherwise
                     global UTRAFMAN_DIR;
                     file = fileread(strcat(UTRAFMAN_DIR,...
-                        '/gazebo-ros/src/utrafman_main/models/drone2/template_model_2_simple.sdf'));
+                        '/gazebo-ros/src/utrafman/models/drone2/template_model_2_simple.sdf'));
             end
         end
     end

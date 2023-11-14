@@ -20,7 +20,7 @@ num_uavs = 2;
 
 %World definition file
 world = WorldModel(fullfile(strcat(UTRAFMAN_DIR,...
-               '/gazebo-ros/src/utrafman_main/worlds/generated_city.wc')));
+               '/gazebo-ros/src/utrafman/worlds/generated_city.wc')));
 
 
 %Creation of the entire airspace
