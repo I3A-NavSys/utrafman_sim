@@ -132,15 +132,17 @@ To compile custom ROS messages perform the following steps:
 
 2. Go to the folder `utrafman_sim/src/matlab/tools/` (the complete path in Ubuntu should be `/opt/ros/noetic/share/utrafman_sim/src/matlab/tools/`).
 
-3. Edit the script `UTRAFMAN_init.m`. If you are working in several machines, you may set these values in function of the user or machine names:
+3. Edit the script `UTRAFMAN_init.m`. If you are working with several machines, you may set these values in function of the user or machine names:
 
-   - Set variable **ROS_IP** with the IP of your machine.
+   - Set variable **ROS_MASTER_IP** with the IP of your machine.
 
       If you are running ROS/Gazebo and MATLAB on the same computer, you can set it to either `localhost` or `127.0.0.1`. If you are using a two-computer setup, set the actual IP address of the computer where ROS/Gazebo is running.
       >You can obtain your IP number employing the command `ifconfig`.
       >You could find more information about how to configure MATLAB ROS_MASTER IP address in Matlab [here](https://es.mathworks.com/help/ros/ug/get-started-with-ros.html).
  
-   - Set variable **UTRAFMAN_DIR** with the path to your simulation installation.
+   - Set variable **UTRAFMAN_DIR** with the path of the folder where your simulation installation resides.
+     
+     >Default value will be `/opt/ros/noetic/share/utrafman_sim/src/`. Change this variable if U-TRAFMAN installation is in another directory, or when using a different OS.
 
 4. Run the script `ros_custom_message_compiler_MATLAB.m`. It may take several minutes. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
 
