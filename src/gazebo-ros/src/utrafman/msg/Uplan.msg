@@ -7,4 +7,4 @@ uint16 droneId
 
 uint32 dtto
 
-utrafman_main/Waypoint[] route
+utrafman/Waypoint[] route

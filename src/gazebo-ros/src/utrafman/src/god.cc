@@ -11,9 +11,9 @@
 #include "ros/callback_queue.h"
 #include "ros/subscribe_options.h"
 
-#include "utrafman_main/insert_model.h"
-#include "utrafman_main/remove_model.h"
-#include "utrafman_main/teletransport.h"
+#include "utrafman/insert_model.h"
+#include "utrafman/remove_model.h"
+#include "utrafman/teletransport.h"
 
 
 namespace gazebo
@@ -38,7 +38,7 @@ namespace gazebo
             //ros::AsyncSpinner rosSpinners = ros::AsyncSpinner(1, &this->rosQueue);
 
         public:
-            bool insert_callback(utrafman_main::insert_model::Request &req, utrafman_main::insert_model::Response &res) {
+            bool insert_callback(utrafman::insert_model::Request &req, utrafman::insert_model::Response &res) {
                 //SDF object, model pointer and model string from the request
                 sdf::SDF sdf_object;
                 sdf::ElementPtr model_ptr;
@@ -60,7 +60,7 @@ namespace gazebo
                 return true;
             }
 
-            bool remove_callback(utrafman_main::remove_model::Request &req, utrafman_main::remove_model::Response &res) {
+            bool remove_callback(utrafman::remove_model::Request &req, utrafman::remove_model::Response &res) {
                 res.success.data = false;
 
                 //Sent message to a topic to kill the drone
@@ -88,7 +88,7 @@ namespace gazebo
                 return true;
             }
 
-            bool transport_callback(utrafman_main::teletransport::Request &req, utrafman_main::teletransport::Response &res) {
+            bool transport_callback(utrafman::teletransport::Request &req, utrafman::teletransport::Response &res) {
                 //Get the model
                 physics::ModelPtr drone = this->parent->ModelByName("drone_" + std::to_string(req.uavId));
                 res.success.data = false;

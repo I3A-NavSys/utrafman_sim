@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(utrafman_main)
+project(utrafman)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -25,8 +25,8 @@ include_directories(${catkin_INCLUDE_DIRS})
 
 #Add message header files to CLion
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../../devel/include)
-#message("=====================UTRAFMAN-MAIN ==== CMAKE_CURRENT_SOURCE_DIR  =  ${CMAKE_CURRENT_SOURCE_DIR}")
-#        =====================UTRAFMAN-MAIN ==== CMAKE_CURRENT_SOURCE_DIR  =  /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/src/utrafman_main
+#message("=====================UTRAFMAN ==== CMAKE_CURRENT_SOURCE_DIR  =  ${CMAKE_CURRENT_SOURCE_DIR}")
+#        =====================UTRAFMAN ==== CMAKE_CURRENT_SOURCE_DIR  =  /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros/src/utrafman
 
 
 link_directories(${GAZEBO_LIBRARY_DIRS})
