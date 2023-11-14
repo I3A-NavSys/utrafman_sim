@@ -38,6 +38,10 @@ set (CMAKE_CXX_STANDARD 17)
 add_library(DroneControl SHARED src/dronecontrol.cc)
 target_link_libraries(DroneControl ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
+add_library(UTRAFMAN_God SHARED src/god.cc)
+target_link_libraries(UTRAFMAN_God ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+
+
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -150,7 +154,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 # include
-# ${catkin_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
