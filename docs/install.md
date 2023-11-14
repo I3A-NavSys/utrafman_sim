@@ -7,9 +7,9 @@ You can install U-TRAFMAN on either a real computer or a virtual machine. In the
 
 Configure a computer with **Ubuntu 20.04.6 LTS (Focal Fossa)**. You can obtain a Desktop Image [here](https://releases.ubuntu.com/focal).
 
->:warning: U-TRAFMAN has been developed and tested in the specified Ubuntu version. While it might work in other versions, there are no guarantees of compatibility.
+>:warning: U-TRAFMAN has been developed and tested in the specified Ubuntu version. While it might work in other versions, there are no compatibility guarantees.
 
->:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer. However, in the case of very large simulations where the resources of typical machines may be insufficient, it may be beneficial to run MATLAB on a different computer, including Windows platforms. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
+>:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer.  However, running MATLAB on a different computer, including Windows platforms, may be beneficial in the case of extensive simulations where the resources of typical machines may be insufficient. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
 
 
 ## Install ROS and Gazebo
@@ -25,7 +25,7 @@ As a part of _ROS Noetic_, the _Gazebo 11_ simulator will be installed. To check
 
 ![Gazebo](./img/gazebo.png 'Gazebo simulator. :size=600px')
 
->:warning: U-TRAFMAN has been developed and tested in the specified ROS/Gazebo versions. While it might work in other versions, there are no guarantees of compatibility.
+>:warning: U-TRAFMAN has been developed and tested in the specified ROS/Gazebo versions. While it might work in other versions, there are no compatibility guarantees.
 
 
 
@@ -35,7 +35,7 @@ As a part of _ROS Noetic_, the _Gazebo 11_ simulator will be installed. To check
 Later, MATLAB ROS Toolbox will require Python.
 
 In Ubuntu, it is required Python version 3.9.x. 
-You may install it executing the following commands in a terminal:
+You may install it by executing the following commands in a terminal:
 ```bash
 sudo apt install python3.9-venv
 mkdir /tmp/venv
@@ -45,7 +45,7 @@ In Windows, it is required Python version 3.9.x or 3.10.x.
 For example, you may download and install Python 3.10.11 from the [official site](https://www.python.org/ftp/python/3.10.11/python-3.10.11-amd64.exe).
 
 
->:warning:️ U-TRAFMAN simulator has been tested with the mentioned versions of Python. While it may work with other versions, there are no guarantees of compatibility.
+>:warning:️ U-TRAFMAN simulator has been tested with the mentioned versions of Python. While it may work with other versions, there are no compatibility guarantees.
 
 
 
@@ -53,13 +53,13 @@ For example, you may download and install Python 3.10.11 from the [official site
 
 ## Install and configure MATLAB
 
-U-TRAFMAN provides a variety of tools for launching and analyzing simulations. These tools are programmed in MATLAB®. To install it , you can follow these steps:
+U-TRAFMAN provides a variety of tools for launching and analyzing simulations. These tools are programmed in MATLAB®. To install it, you can follow these steps:
 
 
 
 1. Download MATLAB R2023b from the official [MathWorks website](https://es.mathworks.com/downloads).
 
-   >:warning:  U-TRAFMAN simulator has been tested in **MATLAB R2023a** and **MATLAB R2023b**. While it might work in other versions, there are no guarantees of compatibility.
+   >:warning:  U-TRAFMAN simulator has been tested in **MATLAB R2023a** and **MATLAB R2023b**. While it might work in other versions, there are no compatibility guarantees.
 
 2. In Ubuntu, unzip the installer package by running the following commands in your terminal:
 ```bash
@@ -87,15 +87,15 @@ sudo ./install
 
    e) Confirm your selections and continue the installation process.
 
-5. Once MATLAB is installed, you can delete the instalation file and the `matlabinstaller` folder.
+5. Once MATLAB is installed, you can delete the installation file and the `matlabinstaller` folder.
 
-6. Open MATLAB. In Windows start the application. In Ubuntu, execute `matlab` in a terminal.
+6. Open MATLAB. In Windows, start the application. In Ubuntu, execute `matlab` in a terminal.
 
->If Matlab indicates that there is a new release available and prompts you to update, click on "Don't Show Again."
+>If Matlab indicates a new release is available and prompts you to update, click on "Don't Show Again."
 
-7. Select **HOME > ENVIRONMENT tile > Preferences**. In the panel of the left select **ROS Toolbox**. Click on **Open ROS Toolbox Preferences**.
+7. Select **HOME > ENVIRONMENT tile > Preferences**. In the panel on the left, select **ROS Toolbox**. Click on **Open ROS Toolbox Preferences**.
 
-8. In the **ROS Toolbox Preferences** dialog box set the path to your Python installation.
+8. In the **ROS Toolbox Preferences** dialog box, set the path to your Python installation.
 Typical values may be:
 
 
@@ -105,14 +105,14 @@ Typical values may be:
    | Windows | C:\Users\User\AppData\Local\Programs\Python\Python310\pythonw.exe |
 
 
-10. Click on **Recreate Python Environment**. When it finish press **OK**.
+10. Click on **Recreate Python Environment**. When it finishes, press **OK**.
 
 
 ## Install and configure U-TRAFMAN
 
 ### Clone U-TRAFMAN package
 
-You can download U-TRAFMAN cloning the repository in your ROS installation:
+You can download U-TRAFMAN by cloning the repository in your ROS installation:
 ```bash
 cd /opt/ros/noetic/share
 sudo git clone https://github.com/I3A-NavSys/utrafman_sim
@@ -126,27 +126,27 @@ sudo chown -R username:groupname utrafman_sim
 
 ### Compiling ROS messages with MATLAB
 
-To compile custom ROS messages perform the following steps:
+To compile custom ROS messages, perform the following steps:
 
 1. Open MATLAB.
 
 2. Go to the folder `utrafman_sim/src/matlab/tools/` (the complete path in Ubuntu should be `/opt/ros/noetic/share/utrafman_sim/src/matlab/tools/`).
 
-3. Edit the script `UTRAFMAN_init.m`. If you are working with several machines, you may set these values in function of the user or machine names:
+3. Edit the script `UTRAFMAN_init.m`. If you are working with several machines, you may set these values according to the user or machine names:
 
    - Set variable **ROS_MASTER_IP** with the IP of your machine.
 
-      If you are running ROS/Gazebo and MATLAB on the same computer, you can set it to either `localhost` or `127.0.0.1`. If you are using a two-computer setup, set the actual IP address of the computer where ROS/Gazebo is running.
-      >You can obtain your IP number employing the command `ifconfig`.
+      If you run ROS/Gazebo and MATLAB on the same computer, you can set it to either `localhost` or `127.0.0.1`. If you use a two-computer setup, set the actual IP address of the computer where ROS/Gazebo is running.
+      >You can obtain your IP number by employing the command `ifconfig`.
       >You could find more information about how to configure MATLAB ROS_MASTER IP address in Matlab [here](https://es.mathworks.com/help/ros/ug/get-started-with-ros.html).
  
-   - Set variable **UTRAFMAN_DIR** with the path of the folder where your simulation installation resides.
+   - Set variable **UTRAFMAN_DIR** with the folder path where your simulation installation resides.
      
-     >Default value will be `/opt/ros/noetic/share/utrafman_sim/src/`. Change this variable if U-TRAFMAN installation is in another directory, or when using a different OS.
+     >Default value will be `/opt/ros/noetic/share/utrafman_sim/src/`. Change this variable if U-TRAFMAN installation is in another directory or when using a different OS.
 
 4. Run the script `ros_custom_message_compiler_MATLAB.m`. It may take several minutes. If everything is correct, you should see a message in the MATLAB console saying `Build succeeded`.
 
-You could find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). 
+You can find more information about how to compile custom ROS messages [here](https://es.mathworks.com/help/ros/custom-message-support.html?s_tid=CRUX_lftnav). 
 
 
 
@@ -179,13 +179,13 @@ U-TRAFMAN includes a basic simulation to help you verify if everything is functi
 ```bash
 roslaunch utrafman_main generated_city.launch
 ```
-You should observe ROS being launched in the terminal, and Gazebo opening in a new window. In the Gazebo window, you should see a world with simple buildings.
+You should observe ROS being launched in the terminal and Gazebo opening in a new window. In the Gazebo window, you should see a world with simple buildings.
 
 >:warning: If you are running Gazebo within a virtual machine, the scenario may not be fully rendered as you are not utilizing your computer's 3D graphics card.
 
 ![Empty World](./img/tutorials/simple-simulation-1.png 'Gazebo Viewer with a generated city world.  :size=800px')
 
-In a new terminal, check the ROS services responsible for managing drones in gazebo:
+In a new terminal, check the ROS services responsible for managing drones in Gazebo:
 ```bash
 rosservice list /godservice/
 ```
@@ -199,7 +199,7 @@ Next, let's go to generate some UAVs into the world and send flight plans to the
 
 1. Open MATLAB and navigate to the folder **.../utrafman_sim/src/matlab/simulations/**.
 2. Run the script **simple_simulation.m**. This will set up your simulation environment with 2 UAVs following their respective flight plans (a random route of 500 meters).
-3. In Gazebo, open the left panel and select **World > Models**. At the end of the list you can find several drones. Right-click one of them and configure the camera to **Follow** it.
+3. In Gazebo, open the left panel and select **World > Models**. At the end of the list, you can find several drones. Right-click one of them and configure the camera to **Follow** it.
 
 ![UAVs](./img/tutorials/simple-simulation-2.png 'Gazebo Viewer. Ten UAVs flying in the world. :size=800px')
 
@@ -210,7 +210,7 @@ Each time a random route is generated for a UAV, the script will display it in a
 
 ![Routes generated](./img/tutorials/simple-simulation-random-routes.png 'Random routes generated :size=800px')
 
-Once the simulation has completed, you will have access to a **SimulationProcessor** object in the MATLAB workspace, referenced by the variable name `SP`. 
+Once the simulation is completed, you can access a **SimulationProcessor** object in the MATLAB workspace, referenced by the variable `SP`. 
 This object enables you to retrieve and analyze simulation data of a specific flight plan. 
 For example, if you wish to visualize the telemetry data of _flight plan 1_, you can execute the following command in MATLAB:
 
