@@ -18,7 +18,7 @@
 
 namespace gazebo
 {
-    class UTRAFMAN_God : public WorldPlugin
+    class UTRAFMAN_gazebo : public WorldPlugin
     {
         private:
             //Number of UAVs in the simulation
@@ -127,14 +127,14 @@ namespace gazebo
                 //Create ROS node
                 this->rosNode = new ros::NodeHandle("god");
 
-                this->insert_service = this->rosNode->advertiseService("/godservice/insert_model", &UTRAFMAN_God::insert_callback, this);
-                this->remove_service = this->rosNode->advertiseService("/godservice/remove_model", &UTRAFMAN_God::remove_callback, this);
-                this->transport_service = this->rosNode->advertiseService("/godservice/transport_model", &UTRAFMAN_God::transport_callback, this);
+                this->insert_service = this->rosNode->advertiseService("/godservice/insert_model", &UTRAFMAN_gazebo::insert_callback, this);
+                this->remove_service = this->rosNode->advertiseService("/godservice/remove_model", &UTRAFMAN_gazebo::remove_callback, this);
+                this->transport_service = this->rosNode->advertiseService("/godservice/transport_model", &UTRAFMAN_gazebo::transport_callback, this);
 
             }
     };
 
     // Register this plugin with the simulator
-    GZ_REGISTER_WORLD_PLUGIN(UTRAFMAN_God)
+    GZ_REGISTER_WORLD_PLUGIN(UTRAFMAN_gazebo)
 
 }

@@ -2374,6 +2374,6 @@
         </model>
         
     <!-- World god (to spawn and remove drones and models) -->
-    <plugin name="UTRAFMAN_God" filename="libUTRAFMAN_God.so" />
+    <plugin name="UTRAFMAN_gazebo" filename="libUTRAFMAN_gazebo.so" />
     </world>
 </sdf> 

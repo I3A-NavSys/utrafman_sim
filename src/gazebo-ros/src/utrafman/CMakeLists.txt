@@ -38,8 +38,8 @@ set (CMAKE_CXX_STANDARD 17)
 add_library(DroneControl SHARED src/dronecontrol.cc)
 target_link_libraries(DroneControl ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
-add_library(UTRAFMAN_God SHARED src/god.cc)
-target_link_libraries(UTRAFMAN_God ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+add_library(UTRAFMAN_gazebo SHARED src/utrafman_gazebo.cc)
+target_link_libraries(UTRAFMAN_gazebo ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
