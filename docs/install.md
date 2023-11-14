@@ -9,7 +9,7 @@ Configure a computer with **Ubuntu 20.04.6 LTS (Focal Fossa)**. You can obtain a
 
 >:warning: U-TRAFMAN has been developed and tested in the specified Ubuntu version. While it might work in other versions, there are no compatibility guarantees.
 
->:warning:  The recommended setup is to install ROS/Gazebo and MATLAB on the same computer.  However, running MATLAB on a different computer, including Windows platforms, may be beneficial in the case of extensive simulations where the resources of typical machines may be insufficient. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
+>:warning: The recommended setup is to install ROS/Gazebo and MATLAB on the same computer. However, running MATLAB on a different computer, including Windows platforms, may be beneficial in the case of extensive simulations where the resources of typical machines may be insufficient. In such scenarios, make sure that the computers are connected to the same network and can communicate with each other.
 
 
 ## Install ROS and Gazebo
