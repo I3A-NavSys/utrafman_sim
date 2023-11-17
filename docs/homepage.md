@@ -9,8 +9,8 @@ If you have any questions, please contact us at
 
 
 <p style="display:flex;justify-content:space-evenly;align-items:center">
-	<a href="https://www.uclm.es/es/centros-investigacion/I3A/secciones-investigacion/RAAP"/> <img src="/img/RAAPlogo.png" width=200px/>
-	<a href="https://www.uclm.es/centros-investigacion/i3a?sc_lang=en"/> <img src="/img/I3Alogo.png" width=200px/>
+	<a href="https://www.uclm.es/es/centros-investigacion/I3A/secciones-investigacion/RAAP"/> <img src="./img/RAAPlogo.png" width=200px/>
+	<a href="https://www.uclm.es/centros-investigacion/i3a?sc_lang=en"/> <img src="./img/I3Alogo.png" width=200px/>
 	<a href="https://www.uclm.es"/> <img src="./img/UCLMlogo.png" width=200px/>
 </p>	
 
