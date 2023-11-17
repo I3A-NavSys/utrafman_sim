@@ -174,6 +174,8 @@ source ~/.bashrc
 
 ## Running your first simulation
 
+### Base simulation
+
 U-TRAFMAN includes a basic simulation to help you verify if everything is functioning correctly. To get started, **open a new terminal** (don't use the same where you did the compilation) and execute the following command:
 
 ```bash
@@ -220,5 +222,51 @@ SP.telemetryViewer(1);
 
 ![Telemetry Viewer](./img/tutorials/simple-simulation-telemetry-viewer.png 'MATLAB Telemetry Viewer :size=800px')
 
+### Simulation lifecycle
 
+After running a simulation, you should understand how the simulation lifecycle works. The following chart shows the lifecycle of a simulation: (**try reloading the page (F5) if not shown).**
+```mermaid
+    flowchart TB
+        0[Idle] -->|Run roslaunch small_city.launch|sub1
+
+        subgraph sub1 [ROS and Gazebo initialization]
+            direction LR
+            1A("Run ROS core")
+            1B("Run Gazebo server")
+            1D[Run Gazebo client]
+            1C[Load world and plugins]
+
+            1A --> 1B
+            1B --> 1C
+            1C --> 1D
+        end
+    
+        sub1 -->|Run simple_simulation.m|sub2
+        subgraph sub2 [Create airspace, launch UTM service and introduce UAV to the simulation]
+            direction LR
+            2A[Load world file]
+            2B("Create UTM Airspace
+            and available services")
+            2C("Create and register
+            a new UTM operator")
+            subgraph sub3 ["`For each UAV`"]
+                direction TB
+                2D[Create UAV]
+                2E[Generate route]
+                2F[Create and register flight plan]
+                2G[Send FP to UAV]
+            end
+
+            2A --> 2B
+            2B --> 2C
+            2C --> sub3
+
+            2D --> 2E --> 2F --> 2G
+        end
+
+        sub2 --> 3[Execute simulation]     
+```
+The simulation lifecycle is divided into two phases:
+1. **ROS and Gazebo initialization**: ROS and Gazebo are initialized in this phase. ROS core and Gazebo server are launched, and the world file is loaded. Finally, Gazebo client is initialized and connected to the server. This phase is executed when you run the `roslaunch` command.
+2. **Create airspace, launch UTM service, and introduce UAV to the simulation**: In this phase, the UTM Airspace is created, and the UTM services are established. Then, a new operator is set and registered in the UTM Airspace. Finally, a new instance is initialized for each UAV, a random route is generated, a new flight plan is created and registered in the UTM Airspace, and the flight plan is sent to the UAV. **Note that this is usually the main sequence, but you can create and register operators, UAVs, and flight plans anytime during the simulation.**. This phase is executed when you run the `simple_simulation.m` script.
 
