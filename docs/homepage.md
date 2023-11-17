@@ -8,8 +8,10 @@ If you have any questions, please contact us at
 `[rafael.casado, aurelio.bermudez] (at) uclm.es`.
 
 
-[![RAAP](./img/RAAPlogo.png ":size=200px")](https://www.uclm.es/es/centros-investigacion/I3A/secciones-investigacion/RAAP)|[![I3A](./img/I3Alogo.png ":size=200px")](https://www.uclm.es/centros-investigacion/i3a?sc_lang=en)|[![UCLM](./img/UCLMlogo.png ":size=200px")](https://www.uclm.es)
-|||
+||||
+|-|-|-|
+| [![RAAP](./img/RAAPlogo.png ":size=200px align=left")](https://www.uclm.es/es/centros-investigacion/I3A/secciones-investigacion/RAAP) | [![I3A](./img/I3Alogo.png ":size=200px")](https://www.uclm.es/centros-investigacion/i3a?sc_lang=en) | [![UCLM](./img/UCLMlogo.png ":size=200px")](https://www.uclm.es) |
+
 
 # U-TRAFMAN Simulator
 The main purpose of this simulator is to allow the user to develop functionalities for Urban Air Mobility (UAM) and Advanced Air Mobility (AAM), as well as realistically simulate flight plans and navigations of Unmanned Aerial Vehicles (UAVs) in urban scenarios. Additionally, U-TRAFMAN offers the following features:
