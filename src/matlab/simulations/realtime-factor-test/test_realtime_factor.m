@@ -20,7 +20,7 @@ end
 %parallelpool = gcp;
 
 %World definition file
-world = WorldModel('../gazebo-ros/src/utrafman_main/worlds/generated_city.wc');
+world = WorldModel('../gazebo-ros/src/utrafman/worlds/generated_city.wc');
 
 %Creation of the entire airspace
 UTM = UTMAirspace();

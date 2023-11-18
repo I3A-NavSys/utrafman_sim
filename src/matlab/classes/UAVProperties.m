@@ -6,7 +6,7 @@ classdef UAVProperties < handle
         drone_id uint32             %Unique ID of the drone
         model string                
         operator Operator           %Operator of the drone
-        UAV_reg_message = ros.msggen.utrafman_main.UAV;
+        UAV_reg_message = ros.msggen.utrafman.UAV;
 
         status int8                 %Status flag
 
@@ -28,7 +28,7 @@ classdef UAVProperties < handle
 
         %Publisher for drone flight plans 
         function obj = pubsubToFlightPlan(obj, timer, time)
-            obj.ros_fp_pub = rospublisher(sprintf('/drone/%d/uplan', obj.drone_id),"utrafman_main/Uplan");
+            obj.ros_fp_pub = rospublisher(sprintf('/drone/%d/uplan', obj.drone_id),"utrafman/Uplan");
         end
     end
 

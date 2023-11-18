@@ -1,0 +1,2379 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+    <world name='default'>
+       <scene>
+            <ambient>0.5 0.5 0.5 1.0</ambient>
+            <shadows>true</shadows>
+        </scene>
+        <include>
+            <uri>model://sun</uri>
+        </include>
+        <!-- Camera -->
+        <gui fullscreen='0'>
+            <camera name='user_camera'>
+                <pose>0 0 1000 0 1.57 0</pose>
+                <view_controller>orbit</view_controller>
+                <projection_type>perspective</projection_type>
+            </camera>
+        </gui>
+        <model name="tierra">
+            <pose>0 0 -1</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_tierra'>
+                    <geometry>
+                        <box>
+                            <size>500 500 1</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>500 500 1</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>1 0.7 0 1</ambient>
+                        <diffuse>1 0.7 0 1</diffuse>
+                        <specular>1 0.7 0 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_-176">
+            <pose>-200 -176 5.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>18 47 10</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>18 47 10</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_-126">
+            <pose>-200 -126 24.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>27 21 48</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>27 21 48</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_-85">
+            <pose>-200 -85 14.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>23 33 29</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>23 33 29</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_-48">
+            <pose>-200 -48 10.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>28 14 20</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>28 14 20</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_-23">
+            <pose>-200 -23 24.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>12 15 48</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>12 15 48</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_20">
+            <pose>-200 20 21.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>49 33 42</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>49 33 42</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_73">
+            <pose>-200 73 17.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>31 44 34</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>31 44 34</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_122">
+            <pose>-200 122 15.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>37 30 30</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>37 30 30</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_157">
+            <pose>-200 157 22.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>12 10 44</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>12 10 44</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-200_188">
+            <pose>-200 188 14.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>30 32 28</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>30 32 28</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-134_-190">
+            <pose>-134 -190 24.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>46 19 48</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>46 19 48</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-134_-145">
+            <pose>-134 -145 5.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>30 41 11</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>30 41 11</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-134_-98">
+            <pose>-134 -98 24.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>42 23 49</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>42 23 49</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-134_-60">
+            <pose>-134 -60 24.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>18 13 48</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>18 13 48</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-134_-20">
+            <pose>-134 -20 18.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>40 41 37</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>40 41 37</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-134_28">
+            <pose>-134 28 15.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>24 23 30</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>24 23 30</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-134_71">
+            <pose>-134 71 19.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>25 24 38</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>25 24 38</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-134_118">
+            <pose>-134 118 9.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>45 34 19</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>45 34 19</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-134_168">
+            <pose>-134 168 15.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>13 31 31</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>13 31 31</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-73_-195">
+            <pose>-73 -195 19.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>34 10 38</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>34 10 38</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-73_-156">
+            <pose>-73 -156 20.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>49 35 41</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>49 35 41</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-73_-100">
+            <pose>-73 -100 21.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>31 49 43</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>31 49 43</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-73_-52">
+            <pose>-73 -52 23.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>42 16 46</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>42 16 46</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-73_-9">
+            <pose>-73 -9 9.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>35 41 19</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>35 41 19</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-73_41">
+            <pose>-73 41 13.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>29 30 26</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>29 30 26</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-73_95">
+            <pose>-73 95 8.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>20 40 17</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>20 40 17</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-73_158">
+            <pose>-73 158 11.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>48 47 23</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>48 47 23</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-73_216">
+            <pose>-73 216 13.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>44 45 27</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>44 45 27</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-8_-186">
+            <pose>-8 -186 16.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>35 27 32</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>35 27 32</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-8_-130">
+            <pose>-8 -130 14.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>49 45 29</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>49 45 29</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-8_-84">
+            <pose>-8 -84 15.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>35 14 30</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>35 14 30</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-8_-44">
+            <pose>-8 -44 21.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>39 42 43</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>39 42 43</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-8_15">
+            <pose>-8 15 21.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>30 39 43</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>30 39 43</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-8_77">
+            <pose>-8 77 20.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>12 50 41</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>12 50 41</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-8_131">
+            <pose>-8 131 14.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>34 25 29</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>34 25 29</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_-8_187">
+            <pose>-8 187 8.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>13 47 17</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>13 47 17</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_60_-186">
+            <pose>60 -186 9.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>29 27 19</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>29 27 19</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_60_-137">
+            <pose>60 -137 8.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>46 42 16</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>46 42 16</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_60_-75">
+            <pose>60 -75 6.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>40 50 12</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>40 50 12</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_60_-15">
+            <pose>60 -15 13.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>41 30 26</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>41 30 26</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_60_22">
+            <pose>60 22 18.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>38 23 36</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>38 23 36</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_60_76">
+            <pose>60 76 18.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>29 48 37</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>29 48 37</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_60_133">
+            <pose>60 133 16.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>44 34 32</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>44 34 32</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_60_172">
+            <pose>60 172 12.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>10 25 24</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>10 25 24</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_126_-189">
+            <pose>126 -189 19.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>38 21 39</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>38 21 39</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_126_-135">
+            <pose>126 -135 14.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>46 50 29</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>46 50 29</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_126_-75">
+            <pose>126 -75 8.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>20 44 16</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>20 44 16</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_126_-28">
+            <pose>126 -28 18.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>25 27 36</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>25 27 36</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_126_19">
+            <pose>126 19 12.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>37 38 25</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>37 38 25</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_126_57">
+            <pose>126 57 9.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>11 17 19</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>11 17 19</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_126_100">
+            <pose>126 100 20.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>48 29 41</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>48 29 41</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_126_159">
+            <pose>126 159 10.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>31 49 20</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>31 49 20</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_186_-175">
+            <pose>186 -175 22.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>14 49 44</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>14 49 44</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_186_-125">
+            <pose>186 -125 5.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>33 11 11</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>33 11 11</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_186_-81">
+            <pose>186 -81 25.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>30 46 50</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>30 46 50</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_186_-30">
+            <pose>186 -30 23.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>17 34 47</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>17 34 47</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_186_8">
+            <pose>186 8 25.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>35 11 50</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>35 11 50</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_186_46">
+            <pose>186 46 25.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>16 31 50</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>16 31 50</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_186_93">
+            <pose>186 93 7.0</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>36 38 14</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>36 38 14</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_186_147">
+            <pose>186 147 16.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>18 49 33</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>18 49 33</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        <model name="building_186_195">
+            <pose>186 195 19.5</pose>
+            <static>true</static>
+            <link name='link'>
+                <collision name='collision_building'>
+                    <geometry>
+                        <box>
+                            <size>29 17 39</size>
+                        </box>
+                    </geometry> 
+                    <surface>
+                        <friction>
+                            <ode>
+                                <mu>100.0</mu>
+                                <mu2>50.0</mu2>
+                                <slip1>0.0</slip1>
+                                <slip2>0.0</slip2>
+                            </ode>
+                        </friction>
+                    </surface>
+                </collision>
+                <visual name='visual_tierra'>
+                    <geometry>
+                        <box>
+                            <size>29 17 39</size>
+                        </box>
+                    </geometry>
+                    <material>
+                        <ambient>0.9 0.9 0.9 1</ambient>
+                        <diffuse>0.9 0.9 0.9 1</diffuse>
+                        <specular>0.9 0.9 0.9 1</specular>
+                    </material>
+                </visual>
+                <self_collide>0</self_collide>
+                <kinematic>0</kinematic>
+                <gravity>1</gravity>
+            </link>
+        </model>
+        
+    <!-- World god (to spawn and remove drones and models) -->
+    <plugin name="UTRAFMAN_gazebo" filename="libUTRAFMAN_gazebo.so" />
+    </world>
+</sdf> 

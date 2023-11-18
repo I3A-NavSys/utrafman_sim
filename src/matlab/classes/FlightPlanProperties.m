@@ -10,8 +10,8 @@ classdef FlightPlanProperties < handle
         uav UAVProperties           %Drone object reference
         dtto double                 %Desired time to take off (where the plan starts)
 
-        route = ros.msggen.utrafman_main.Waypoint.empty;        %Array of ROS Waypoint messages defining the route of the flight plan
-        sent uint8 = 0                                          %Sent status flag (to mark if the flight plan has been sent to the drone)
+        route = ros.msggen.utrafman.Waypoint.empty;        %Array of ROS Waypoint messages defining the route of the flight plan
+        sent uint8 = 0                                     %Sent status flag (to mark if the flight plan has been sent to the drone)
     end
     
     methods
@@ -26,7 +26,7 @@ classdef FlightPlanProperties < handle
             accumt = 0;
             
             %Generating first waypoint (where the drone is before take off)
-            init = ros.msggen.utrafman_main.Waypoint;
+            init = ros.msggen.utrafman.Waypoint;
             init.X = drone.init_loc(1);
             init.Y = drone.init_loc(2);
             init.Z = drone.init_loc(3);
@@ -36,7 +36,7 @@ classdef FlightPlanProperties < handle
             
             %For each waypoint in route, create a ROS Waypoint message and add it to the route array
             for x = 1:size(route,1)
-                point = ros.msggen.utrafman_main.Waypoint;
+                point = ros.msggen.utrafman.Waypoint;
                 point.X = route(x,1);
                 point.Y = route(x,2);
                 point.Z = route(x,3);
@@ -63,7 +63,7 @@ classdef FlightPlanProperties < handle
             end
 
             %Last waypoint
-            last = ros.msggen.utrafman_main.Waypoint;
+            last = ros.msggen.utrafman.Waypoint;
             last.X = route(end,1);
             last.Y = route(end,2);
             last.Z = 1;
@@ -80,8 +80,8 @@ classdef FlightPlanProperties < handle
         %Function to parse FlightPlan object to ROS object
         function msg = parseToROSMessage(obj)
             %Generating ROS messages
-            msg = rosmessage('utrafman_main/Uplan');
-            point = rosmessage("utrafman_main/Waypoint");
+            msg = rosmessage('utrafman/Uplan');
+            point = rosmessage("utrafman/Waypoint");
             time = rosmessage("std_msgs/Time");
             %Assigning values
             if ~isempty(obj.flightplan_id)
