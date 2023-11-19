@@ -87,5 +87,16 @@
       <pose>3 -1 1 0 0 13</pose>
     </include>
 
+
+
+<!-- UAV -->
+    <include>
+      <name>drone</name>
+      <uri>model://drone2</uri>
+      <pose>0 0 0.2 0 0 0</pose>
+    </include>
+
+
+
   </world>
 </sdf>
