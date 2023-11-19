@@ -165,7 +165,7 @@ classdef S_Registry < handle
             switch model
                 otherwise
                     global UTRAFMAN_DIR;
-                    file = fileread(strcat(UTRAFMAN_DIR,...
+                    file = fileread(fullfile(UTRAFMAN_DIR,...
                         '/gazebo-ros/src/utrafman/models/drone2/template_model_2_simple.sdf'));
             end
         end

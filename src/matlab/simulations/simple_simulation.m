@@ -19,8 +19,7 @@ num_uavs = 2;
 %parallelpool = gcp;
 
 %World definition file
-world = WorldModel(fullfile(strcat(UTRAFMAN_DIR,...
-               '/gazebo-ros/src/utrafman/worlds/generated_city.wc')));
+world = WorldModel(fullfile(UTRAFMAN_DIR,'/gazebo-ros/src/utrafman/worlds/generated_city.wc'));
 
 
 %Creation of the entire airspace
