@@ -159,7 +159,7 @@ catkin_make
 ```
 >:warning: If `catkin_make` does not work properly, execute this code:
 ```bash
-cp -r src/matlab_msg_gen_ros1/glnxa64/install/include/utrafman_main devel/include/
+cp -r src/matlab_msg_gen_ros1/glnxa64/install/include/utrafman devel/include/
 catkin_make
 ```
 
@@ -179,7 +179,7 @@ source ~/.bashrc
 U-TRAFMAN includes a basic simulation to help you verify if everything is functioning correctly. To get started, **open a new terminal** (don't use the same where you did the compilation) and execute the following command:
 
 ```bash
-roslaunch utrafman_main generated_city.launch
+roslaunch utrafman generated_city.launch
 ```
 You should observe ROS being launched in the terminal and Gazebo opening in a new window. In the Gazebo window, you should see a world with simple buildings.
 
