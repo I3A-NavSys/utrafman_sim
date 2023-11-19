@@ -235,8 +235,8 @@ classdef FlightPlan < handle
                 fig = figure("Name", fig_name);
                 fig.Position(3:4) = [800 350];
                 fig.NumberTitle = "off";
-                fig.MenuBar = "none";
-                fig.ToolBar = "none";
+                % fig.MenuBar = "none";
+                % fig.ToolBar = "none";
 
             else
                 %Select the figure
