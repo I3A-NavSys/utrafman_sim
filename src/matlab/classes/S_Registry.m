@@ -166,7 +166,7 @@ classdef S_Registry < handle
                 otherwise
                     global UTRAFMAN_DIR;
                     file = fileread(fullfile(UTRAFMAN_DIR,...
-                        '/gazebo-ros/src/utrafman/models/drone2/template_model_2_simple.sdf'));
+                        '/gazebo-ros/src/utrafman/models/DC/abejorro/model_simplified_template.sdf'));
             end
         end
     end

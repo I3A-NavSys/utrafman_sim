@@ -1,6 +1,6 @@
 material floorMat/Diffuse
 {
-	receive_shadows off
+	receive_shadows on
 	technique
 	{
 		pass

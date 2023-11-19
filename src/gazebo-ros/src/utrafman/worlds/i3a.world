@@ -64,26 +64,26 @@
     <!-- Floor -->
     <include>
       <name>floor</name>
-      <uri>model://floor</uri>
+      <uri>model://DC/floor</uri>
       <pose>0 0 0.025 0 0 0</pose>
     </include>
 
     <!-- Frames -->
     <include>
       <name>frame_red</name>
-      <uri>model://frame_red</uri>
+      <uri>model://DC/frame_red</uri>
       <pose>3 2 2 0 0 6</pose>
     </include>
 
     <include>
       <name>frame_green</name>
-      <uri>model://frame_green</uri>
+      <uri>model://DC/frame_green</uri>
       <pose>-2 1 0.5 0 0 8</pose>
     </include>
 
     <include>
       <name>frame_blue</name>
-      <uri>model://frame_blue</uri>
+      <uri>model://DC/frame_blue</uri>
       <pose>3 -1 1 0 0 13</pose>
     </include>
 
@@ -92,7 +92,7 @@
 <!-- UAV -->
     <include>
       <name>drone</name>
-      <uri>model://drone2</uri>
+      <uri>model://DC/abejorro</uri>
       <pose>0 0 0.2 0 0 0</pose>
     </include>
 
