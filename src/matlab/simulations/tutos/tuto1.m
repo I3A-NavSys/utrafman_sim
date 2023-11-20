@@ -11,8 +11,8 @@ timer; stop(timerfind); delete(timerfind);           %Stop all timers
 
 %-----------------------------------------
 
-%Simulation config
-num_uavs = 2;
+%World definition file
+world = WorldModel(fullfile(UTRAFMAN_DIR,'/gazebo-ros/src/utrafman/worlds/generated_city.wc'));
 
 
 %Creation of the entire airspace
@@ -22,7 +22,7 @@ UTM = UTMAirspace();
 operator = Operator('Sample_Operator');
 
 %FPs
-fp = FlightPlanProperties.empty(0,num_uavs*1);                %FlightPlan instance
+fp = FlightPlanProperties.empty();                %FlightPlan instance
 uav = UAVProperties.empty;
 
 %Finish last FP time
@@ -44,18 +44,18 @@ for x=1:size(route,1)
 end
 
 %Uplan generation
-fp(i) = FlightPlanProperties(operator, ...          %Operator
+fp = FlightPlanProperties(operator, ...          %Operator
                    uav, ...                     %UAV asignation
                    route_3d, ...                     %Route
-                   UTM.Gclock+5+(i-1));       %DTTO (desired time to take off)
+                   UTM.Gclock+5);       %DTTO (desired time to take off)
 
 %FP registration
-operator.regNewFP(fp(i));
+operator.regNewFP(fp);
 
 %Sent FP to UAV
-operator.sendFlightPlan(fp(i));
+operator.sendFlightPlan(fp);
 
 %Set last fp finish time
-UTM.setFinishSimulationTime(fp(i).route(end).T.Sec)
+UTM.setFinishSimulationTime(fp.route(end).T.Sec)
 
 
