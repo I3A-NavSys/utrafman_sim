@@ -20,7 +20,7 @@
         </material>
     </visual>
       
-    <collision name='up'>
+    <collision name='up_c'>
         <pose>0 0 0.10 0 0 0</pose>
         <geometry>
           <box>
@@ -52,7 +52,7 @@
         </material>
     </visual>
 
-    <collision name='down'>
+    <collision name='down_c'>
         <pose>0 0 -0.10 0 0 0</pose>
         <geometry>
           <box>
@@ -84,7 +84,7 @@
         </material>
     </visual>
 
-    <collision name='left'>
+    <collision name='left_c'>
         <pose>0 -0.20 0 0 0 0</pose>
         <geometry>
           <box>
@@ -116,7 +116,7 @@
         </material>
     </visual>
 
-    <collision name='right'>
+    <collision name='right_c'>
         <pose>0 0.20 0 0 0 0</pose>
         <geometry>
           <box>
