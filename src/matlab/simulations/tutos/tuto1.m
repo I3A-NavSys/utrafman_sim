@@ -2,52 +2,63 @@
 %perform a FP of 500 meters inside 'generated_city' world.
 
 %PRE-SIMULATION TASKs
-clc; clear
-
+clc; clear;
 run('../../tools/UTRAFMAN_init');
 
-timer; stop(timerfind); delete(timerfind);           %Stop all timers
 
+gz = Gazebo(ROS_MASTER_IP);
+gz.pause;
+gz.reset;
 
 %-----------------------------------------
 
-%World definition file
-world = WorldModel(fullfile(UTRAFMAN_DIR,'/gazebo-ros/src/utrafman/worlds/generated_city.wc'));
+% %World definition file
+% world = WorldModel(fullfile(UTRAFMAN_DIR,'/gazebo-ros/src/utrafman/worlds/generated_city.wc'));
+% 
+% %Generate a new route (2D)
+% route = world.getRoute(500, 0);
+% %Convert route (2D) to 3D adding random altitude
+% route_3d = zeros(0,3);
+% for x=1:size(route,1)
+%     route_3d(x,:) = [route(x,:) randi([30 40])];
+% end
 
 
-%Creation of the entire airspace
-UTM = UTMAirspace();
+route_3d = [
 
-%Registry of a new operator
-operator = Operator('Sample_Operator');
-
-%FPs
-fp = FlightPlanProperties.empty();                %FlightPlan instance
-uav = UAVProperties.empty;
-
-%Finish last FP time
-last_fp_finish_time = 0;
-
-%Generate a new route (2D)
-route = world.getRoute(500, 0);
+         0     0    10
+         0    10    10
+        10    10    10
+        10     0    10   
+         0     0    10
+         0     0     0
+];
 
 %Set UAV init pos at the route start
-pos = [route(1,:) 3];
+pos = [0 0 1];
+
+
+
+registrator = S_Registry();
+registrator.execute(ROS_MASTER_IP);
+
+% monitor = S_Monitoring();
+% monitor.execute(ROS_MASTER_IP);
+
+
 
 %Create and register a new UAV
+operator = Operator('Sample_Operator');
+uav = UAVProperties.empty;
 uav = operator.regNewDrone("dji", pos);
-route_3d = zeros(0,3);
 
-%Convert route (2D) to 3D adding random altitude
-for x=1:size(route,1)
-    route_3d(x,:) = [route(x,:) randi([30 40])];
-end
 
 %Uplan generation
+fp = FlightPlanProperties.empty();                %FlightPlan instance
 fp = FlightPlanProperties(operator, ...          %Operator
                    uav, ...                     %UAV asignation
                    route_3d, ...                     %Route
-                   UTM.Gclock+5);       %DTTO (desired time to take off)
+                   gz.Gclock+10);       %DTTO (desired time to take off)
 
 %FP registration
 operator.regNewFP(fp);
@@ -55,7 +66,7 @@ operator.regNewFP(fp);
 %Sent FP to UAV
 operator.sendFlightPlan(fp);
 
-%Set last fp finish time
-UTM.setFinishSimulationTime(fp.route(end).T.Sec)
+gz.play;
+
 
 

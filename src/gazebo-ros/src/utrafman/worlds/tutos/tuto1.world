@@ -3,10 +3,10 @@
 <world name='default'>
 
 <scene>
+    <grid>false</grid>
+    <origin_visual>true</origin_visual>
     <ambient>0.5 0.5 0.5 1.0</ambient>
     <shadows>true</shadows>
-    <grid>false</grid>
-    <origin_visual>false</origin_visual>
 </scene>
 
 <include>
