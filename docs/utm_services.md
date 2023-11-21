@@ -1,4 +1,4 @@
-# 4. UTM Services <!-- {docsify-ignore} -->
+# UTM Services
 Unmanned Traffic Management (UTM) is an emerging technology that will be used to manage the increasing number of unmanned aerial vehicles (UAVs) in the airspace. UTM will enable the safe, efficient, and secure integration of UAVs into the existing air traffic management system. The UTM system will facilitate the safe exchange of information between UAVs, pilots, and other airspace users to ensure that UAVs operate safely and securely. To achieve that, UTM will offer something called "_services_", which are information exchange systems, provided by different services providers, such as governments, private companies, etc. 
 
 Some of these services are:
