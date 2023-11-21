@@ -10,11 +10,11 @@
     <link name='dronelink'>
       <!-- Rotores en distribucion cuadrada
          situados a 25 cms del centro de gravedad-->
-      <collision name='collision_fuselaje'>
-        <pose>0 0 0 0 0 0</pose>
+      <collision name='collision'>
+        <pose>0 0 -0.0075 0 0 0</pose>
         <geometry>
           <box>
-            <size>0.25 0.25 0.06</size>
+            <size>0.25 0.25 0.045</size>
           </box>
         </geometry>
         <surface>

@@ -20,10 +20,7 @@ global UTRAFMAN_DIR
 if isunix  %Unix computer
 
     UTRAFMAN_DIR = '/opt/ros/noetic/share/utrafman_sim/src/'; %Set it with your repo installation path
-    addpath(strcat(UTRAFMAN_DIR, 'gazebo-ros/src/utrafman/'));
-    addpath(strcat(UTRAFMAN_DIR, 'gazebo-ros/src/matlab_msg_gen_ros1/glnxa64/install/m/'));
-    addpath(strcat(UTRAFMAN_DIR, 'matlab/classes/'));
-
+    addpath(fullfile(UTRAFMAN_DIR,'gazebo-ros/src/matlab_msg_gen_ros1/glnxa64/install/m/'));
 
 elseif ispc %Windows computer
 
@@ -35,9 +32,9 @@ elseif ispc %Windows computer
         otherwise
             error('Windows user not defined in file UTRAFMAN_init.m');
     end
-
-    addpath(strcat(UTRAFMAN_DIR, 'gazebo-ros\src\utrafman\')); 
-    addpath(strcat(UTRAFMAN_DIR, 'gazebo-ros\src\matlab_msg_gen_ros1\win64\install\m\'));
-    addpath(strcat(UTRAFMAN_DIR, 'matlab\classes\'));
+    addpath(fullfile(UTRAFMAN_DIR,'gazebo-ros\src\matlab_msg_gen_ros1\win64\install\m\'));
 
 end
+
+addpath(fullfile(UTRAFMAN_DIR,'gazebo-ros/src/utrafman/'));
+addpath(fullfile(UTRAFMAN_DIR,'matlab/classes/'));

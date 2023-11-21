@@ -1,0 +1,145 @@
+<?xml version='1.0'?>
+<sdf version='1.7'>
+<world name='default'>
+
+<scene>
+    <ambient>0.5 0.5 0.5 1.0</ambient>
+    <shadows>true</shadows>
+    <grid>false</grid>
+    <origin_visual>false</origin_visual>
+</scene>
+
+<include>
+    <uri>model://sun</uri>
+</include>
+
+<!-- Camera -->
+<gui fullscreen='0'>
+    <camera name='user_camera'>
+        <pose>0 0 1000 0 1.57 1.57</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+    </camera>
+</gui>
+
+<model name="tierra">
+    <pose>0 0 -0.5</pose>
+    <static>true</static>
+    <link name='link'>
+        <collision name='collision_tierra'>
+            <geometry>
+                <box>
+                    <size>500 500 1</size>
+                </box>
+            </geometry> 
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>100.0</mu>
+                        <mu2>50.0</mu2>
+                        <slip1>0.0</slip1>
+                        <slip2>0.0</slip2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+        <visual name='visual_tierra'>
+            <geometry>
+                <box>
+                    <size>500 500 1</size>
+                </box>
+            </geometry>
+            <material>
+                <ambient>1 0.7 0 1</ambient>
+                <diffuse>1 0.7 0 1</diffuse>
+                <specular>1 0.7 0 1</specular>
+            </material>
+        </visual>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+    </link>
+</model>
+
+<model name="building_-200_-176">
+    <pose>-200 -176 5.0</pose>
+    <static>true</static>
+    <link name='link'>
+        <collision name='collision_building'>
+            <geometry>
+                <box>
+                    <size>18 47 10</size>
+                </box>
+            </geometry> 
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>100.0</mu>
+                        <mu2>50.0</mu2>
+                        <slip1>0.0</slip1>
+                        <slip2>0.0</slip2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+        <visual name='visual_tierra'>
+            <geometry>
+                <box>
+                    <size>18 47 10</size>
+                </box>
+            </geometry>
+            <material>
+                <ambient>0.9 0.9 0.9 1</ambient>
+                <diffuse>0.9 0.9 0.9 1</diffuse>
+                <specular>0.9 0.9 0.9 1</specular>
+            </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+    </link>
+</model>
+
+<model name="building_186_195">
+    <pose>186 195 19.5</pose>
+    <static>true</static>
+    <link name='link'>
+        <collision name='collision_building'>
+            <geometry>
+                <box>
+                    <size>29 17 39</size>
+                </box>
+            </geometry> 
+            <surface>
+                <friction>
+                    <ode>
+                        <mu>100.0</mu>
+                        <mu2>50.0</mu2>
+                        <slip1>0.0</slip1>
+                        <slip2>0.0</slip2>
+                    </ode>
+                </friction>
+            </surface>
+        </collision>
+        <visual name='visual_tierra'>
+            <geometry>
+                <box>
+                    <size>29 17 39</size>
+                </box>
+            </geometry>
+            <material>
+                <ambient>0.9 0.9 0.9 1</ambient>
+                <diffuse>0.9 0.9 0.9 1</diffuse>
+                <specular>0.9 0.9 0.9 1</specular>
+            </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+    </link>
+</model>
+
+<!-- UTRAFMAN plugin to spawn and remove drones and models -->
+<plugin name="UTRAFMAN_gazebo" filename="libUTRAFMAN_gazebo.so" />
+
+</world>
+</sdf> 
