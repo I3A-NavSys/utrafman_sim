@@ -1,4 +1,4 @@
-# 3. Drone Control Software
+# Drone Control Software
 The UAV control plugin takes UAV positions / velocities / accelerations from Gazebo using the C++ API, computes the difference between UAV position and reference from the FlightPlan, computes the control action and computes the forces and moments to apply to the UAV in Gazebo. Moreover, this plugin also send telemetry data throgh topics with the frecuency selected. 
 
 The plugin implements a SITL (software in the loop) for a lineal model of the UAV through a feedback controller of the state and accumulated error (between the reference to follow and the output) with a set working point so that the UAV remains stably in the air, with zero translation and rotation. The plugin is implemented in C++ language, and the closed loop is executed 1000 times per second, when Gazebo emits the event \textit{ConnectWorldUpdateBegin}. This code could be summarised in 3 stages:
