@@ -91,7 +91,7 @@ sudo ./install
 
 6. Open MATLAB. In Windows, start the application. In Ubuntu, execute `matlab` in a terminal.
 
->If Matlab indicates a new release is available and prompts you to update, click on "Don't Show Again."
+    >If Matlab indicates a new release is available and prompts you to update, click on "Don't Show Again."
 
 7. Select **HOME > ENVIRONMENT tile > Preferences**. In the panel on the left, select **ROS Toolbox**. Click on **Open ROS Toolbox Preferences**.
 
@@ -136,9 +136,10 @@ To compile custom ROS messages, perform the following steps:
 
    - Set variable **ROS_MASTER_IP** with the IP of your machine.
 
-      If you run ROS/Gazebo and MATLAB on the same computer, you can set it to either `localhost` or `127.0.0.1`. If you use a two-computer setup, set the actual IP address of the computer where ROS/Gazebo is running.
-      >You can obtain your IP number by employing the command `ifconfig`.
-      >You could find more information about how to configure MATLAB ROS_MASTER IP address in Matlab [here](https://es.mathworks.com/help/ros/ug/get-started-with-ros.html).
+     If you run ROS/Gazebo and MATLAB on the same computer, you can set it to either `localhost` or `127.0.0.1`. If you use a two-computer setup, set the actual IP address of the computer where ROS/Gazebo is running.
+     >You can obtain your IP number by employing the command `ifconfig`.
+
+     >You can find more information about how to configure MATLAB ROS_MASTER IP address in Matlab [here](https://es.mathworks.com/help/ros/ug/get-started-with-ros.html).
  
    - Set variable **UTRAFMAN_DIR** with the folder path where your simulation installation resides.
      
@@ -155,13 +156,17 @@ You can find more information about how to compile custom ROS messages [here](ht
 We need to compile a ROS (Catkin) workspace containing the simulation environment:
 ```bash
 cd /opt/ros/noetic/share/utrafman_sim/src/gazebo-ros
+mkdir -p /devel/include && cp -r src/matlab_msg_gen_ros1/glnxa64/install/include/utrafman devel/include/
 catkin_make
 ```
+
+<!--
 >:warning: If `catkin_make` does not work properly, execute this code:
 ```bash
 cp -r src/matlab_msg_gen_ros1/glnxa64/install/include/utrafman devel/include/
 catkin_make
 ```
+-->
 
 After that, source the compiled workspace into your `.bashrc` file (in your home directory) for it to be accessible:
 ```bash
