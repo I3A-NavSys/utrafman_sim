@@ -7,9 +7,9 @@ properties
     ROS_MASTER_IP   string
 
     %Gazebo Clock
-    Gclock = -1;            %Gazebo clock value (seconds)
+%    Gclock = -1;            %Gazebo clock value (seconds)
     GClock_sub;             %Subscriber to Gazebo clock
-    GClock_timer;           %Timer to update Gazebo clock
+%    GClock_timer;           %Timer to update Gazebo clock
 
 end %properties
 
@@ -40,15 +40,26 @@ function obj = Gazebo(ROS_MASTER_IP)
     %Suscribe to Gazebo clock
     obj.GClock_sub = rossubscriber("/clock");
 
-    %Configure timer to update Gazebo clock every 1sec
-    %(it is used because clock topic is published with a very high frequency)
-    obj.GClock_timer = timer(...
-        'ExecutionMode','fixedRate',...
-        'Period',1,...
-        'TimerFcn',@obj.updateGclock);
-    start(obj.GClock_timer);
-    disp("Clock synchronized.");
+    % %Configure timer to update Gazebo clock every 1sec
+    % %(it is used because clock topic is published with a very high frequency)
+    % obj.GClock_timer = timer(...
+    %     'ExecutionMode','fixedRate',...
+    %     'Period',1,...
+    %     'TimerFcn',@obj.updateGclock);
+    % start(obj.GClock_timer);
+    % disp("Clock synchronized.");
 
+end
+
+%Updating Gazebo simulation time
+function sec = timeSeconds(obj)
+    [msg, status] = receive(obj.GClock_sub, 0.1);
+    if status 
+        % message was received
+        sec = msg.Clock_.Sec;
+    else
+        sec = -1;
+    end
 end
 
 
@@ -89,9 +100,16 @@ end
 
 
 function reset(obj)
+    
     client = rossvcclient('/gazebo/reset_simulation');
-    call(client);
+    msg = client.rosmessage;
+    if isServerAvailable(client)
+        call(client,msg,"Timeout",1);
+    % else
+    %     error("Error reseting Gazebo simulation");
+    end
     obj.Gclock = 0;
+
 end
 
 

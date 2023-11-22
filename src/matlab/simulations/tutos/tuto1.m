@@ -9,20 +9,17 @@ run('../../tools/UTRAFMAN_init');
 
 
 gz = Gazebo(ROS_MASTER_IP);
-gz.pause;
-gz.reset;
+% gz.pause();
+% gz.reset();
 
 
 reg = USpace_registrator(gz);
-reg.start;
 
 % monitor = S_Monitoring();
 % monitor.execute(ROS_MASTER_IP);
 
 %-----------------------------------------
-
-
-
+%ROUTE
 route_3d = [
 
          0     0    3
@@ -33,17 +30,13 @@ route_3d = [
          0     0    0
 ];
 
-%Set UAV init pos at the route start
 pos = [0 0 1];
 
 
-
-
-
-
-
-%Create and register a new UAV
+% Registering an operator
 operator = SimpleOperator(gz,'SimpleOperator');
+
+% Create and register a new UAV
 uav = UAVProperties.empty;
 uav = operator.regNewDrone("abejorro", pos);
 
@@ -53,7 +46,7 @@ fp = FlightPlanProperties.empty();                %FlightPlan instance
 fp = FlightPlanProperties(operator, ...          %Operator
                    uav, ...                     %UAV asignation
                    route_3d, ...                     %Route
-                   gz.Gclock+10);       %DTTO (desired time to take off)
+                   gz.timeSeconds + 10);       %DTTO (desired time to take off)
 
 %FP registration
 operator.regNewFP(fp);

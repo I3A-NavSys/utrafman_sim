@@ -22,7 +22,8 @@ properties
         
     % ROS interface
     gz Gazebo                      % handle to Gazebo connector
-    ROSnode                        % ROS Node
+    ROSnode                        % ROS Node handler
+    ROSname                        % ROS Node name
     ROScli_deploy_UAV              % Service Client to insert models in Gazebo
     ROSpub_new_uav_advertise       % New UAV registration advertiser
     ROSsrv_register_operator       % Service to register a new operator
@@ -40,11 +41,23 @@ methods
 % Class constructor
 function obj = USpace_registrator(gz)
     obj.gz = gz;
+
+    % Stopping previous U-Space Registry Services
+    obj.ROSname = '/utm/registrators/USpace_registrator';
+    ROSnodes = rosnode('list');
+    if any(strcmp(ROSnodes, obj.ROSname))
+        rosnode('kill', obj.ROSname);
+        disp("Previous U-Space Registry Service was stopped.");
+    end
+    
+    % Starting U-Space Registry Service
+    obj.start;
+
 end
 
 
 function obj = start(obj)
-    
+
     % ROS node
     obj.ROSnode = ros.Node("/utm/registrators/USpace_registrator",obj.gz.ROS_MASTER_IP,11311);
 
