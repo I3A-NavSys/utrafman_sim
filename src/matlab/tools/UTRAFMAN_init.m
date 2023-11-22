@@ -36,5 +36,5 @@ elseif ispc %Windows computer
 
 end
 
-addpath(fullfile(UTRAFMAN_DIR,'gazebo-ros/src/utrafman/'));
-addpath(fullfile(UTRAFMAN_DIR,'matlab/classes/'));
+addpath(genpath(fullfile(UTRAFMAN_DIR,'matlab/')));
+%addpath(fullfile(UTRAFMAN_DIR,'gazebo-ros/src/utrafman/'));

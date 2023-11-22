@@ -11,7 +11,7 @@
 #include "ros/callback_queue.h"
 #include "ros/subscribe_options.h"
 
-#include "utrafman/insert_model.h"
+#include "utrafman/deploy_UAV.h"
 #include "utrafman/remove_model.h"
 #include "utrafman/teletransport.h"
 
@@ -38,7 +38,7 @@ namespace gazebo
             //ros::AsyncSpinner rosSpinners = ros::AsyncSpinner(1, &this->rosQueue);
 
         public:
-            bool insert_callback(utrafman::insert_model::Request &req, utrafman::insert_model::Response &res) {
+            bool insert_callback(utrafman::deploy_UAV::Request &req, utrafman::deploy_UAV::Response &res) {
                 //SDF object, model pointer and model string from the request
                 sdf::SDF sdf_object;
                 sdf::ElementPtr model_ptr;
@@ -56,7 +56,7 @@ namespace gazebo
                 //Increase the number of UAVs
                 this->num_uavs++;
 
-                ROS_INFO("A new UAV has been inserted. Total UAVs: %i", this->num_uavs);
+                ROS_INFO("A new UAV has been deployed. Total UAVs: %i", this->num_uavs);
                 return true;
             }
 
@@ -127,7 +127,7 @@ namespace gazebo
                 //Create ROS node
                 this->rosNode = new ros::NodeHandle("god");
 
-                this->insert_service = this->rosNode->advertiseService("/godservice/insert_model", &UTRAFMAN_gazebo::insert_callback, this);
+                this->insert_service = this->rosNode->advertiseService("/utm/airspace/deploy_UAV", &UTRAFMAN_gazebo::insert_callback, this);
                 this->remove_service = this->rosNode->advertiseService("/godservice/remove_model", &UTRAFMAN_gazebo::remove_callback, this);
                 this->transport_service = this->rosNode->advertiseService("/godservice/transport_model", &UTRAFMAN_gazebo::transport_callback, this);
 

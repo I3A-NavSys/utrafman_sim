@@ -84,16 +84,16 @@ add_message_files(
 ## Generate services in the 'srv' folder
 add_service_files(
   FILES
-  teletransport.srv
-  reg_new_flightplan.srv
-  reg_new_operator.srv
-  reg_new_uav.srv
-  reg_get_operators.srv
-  reg_get_uavs.srv
-  reg_get_fps.srv
-  mon_get_locs.srv
-  insert_model.srv
+  deploy_UAV.srv
   remove_model.srv
+  register_operator.srv
+  register_UAV.srv
+  register_FP.srv
+  get_operators.srv
+  get_UAVs.srv
+  get_FPs.srv
+  teletransport.srv
+  mon_get_locs.srv
 )
 
 ## Generate actions in the 'action' folder

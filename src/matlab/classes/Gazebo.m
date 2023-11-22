@@ -53,13 +53,61 @@ end
 
 
 %Updating Gazebo simulation time
-function obj = updateGclock(obj,~,~)
+function updateGclock(obj,~,~)
 %    disp('clock')
     [msg, status] = receive(obj.GClock_sub, 0.1);
     if status %a message was received
         obj.Gclock = msg.Clock_.Sec;
     end
 end
+
+
+function play(obj)
+
+    client = rossvcclient('/gazebo/unpause_physics');
+    msg = client.rosmessage;
+    if isServerAvailable(client)
+        call(client,msg,"Timeout",1);
+    % else
+    %     error("Error playing Gazebo simulation");
+    end
+
+end
+
+
+function pause(obj)
+
+    client = rossvcclient('/gazebo/pause_physics');
+    msg = client.rosmessage;
+    if isServerAvailable(client)
+        call(client,msg,"Timeout",1);
+    % else
+    %     error("Error pausing Gazebo simulation");
+    end
+
+end
+
+
+function reset(obj)
+    client = rossvcclient('/gazebo/reset_simulation');
+    call(client);
+    obj.Gclock = 0;
+end
+
+
+function disconnect(obj)
+
+    %Clean clock timers
+    stop(timerfind);
+    delete(timerfind);
+
+    % ROS disconnection
+    rosshutdown;
+    disp("Disconnected of Gazebo simulator.");
+
+end
+
+
 
 
 % %To remove all models from simulation
@@ -96,52 +144,6 @@ end
 %     end
 % end
 
-
-% %To finish the simulation
-% function finishSimulation(obj)
-%     stop(obj.finish_simulation_timer);
-%     stop(obj.GClock_timer);
-%     obj.pauseSimulation();
-%     pause(1);
-%     rosshutdown;
-%     disp("Finishing simulation");
-%     timer; stop(timerfind); delete(timerfind);
-%     global SP;
-%     SP = SimulationProcesser(obj);
-% end
-
-
-function play(obj)
-
-    client = rossvcclient('/gazebo/unpause_physics');
-    msg = client.rosmessage;
-    if isServerAvailable(client)
-        call(client,msg,"Timeout",1);
-    % else
-    %     error("Error playing Gazebo simulation");
-    end
-
-end
-
-
-function pause(obj)
-
-    client = rossvcclient('/gazebo/pause_physics');
-    msg = client.rosmessage;
-    if isServerAvailable(client)
-        call(client,msg,"Timeout",1);
-    % else
-    %     error("Error pausing Gazebo simulation");
-    end
-
-end
-
-
-function reset(obj)
-    client = rossvcclient('/gazebo/reset_simulation');
-    call(client);
-    obj.Gclock = 0;
-end
 
 
 end %methods

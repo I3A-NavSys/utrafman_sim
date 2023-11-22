@@ -24,7 +24,7 @@
       <cast_shadows>true</cast_shadows>
 	</visual> 
 
-  <collision name='building'>
+  <collision name='building_c'>
     <pose>0 7.85 0 1.5708 0 0</pose>
     <geometry>
       <polyline>
@@ -61,7 +61,7 @@
     <cast_shadows>true</cast_shadows>
   </visual>
     
-  <collision name='tejado'>
+  <collision name='tejado_c'>
       <pose>23.3 0 8.75 0 0 0</pose>
       <geometry>
         <box>
