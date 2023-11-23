@@ -29,7 +29,7 @@ Additionally, two services classes are located in this folder, as mentioned and 
 
 - **classes/S_Registry.m**: Registry service class. Maintains the state of airspace and an updated registry of the entities in said airspace
 
->For more information about these services, refer to the [UTM services documentation](./utm_services.md))
+>For more information about these services, refer to the [UTM services documentation](https://i3a-navsys.github.io/utrafman_sim/#/utm_services.md))
 
 
 ## Simulation scripts
