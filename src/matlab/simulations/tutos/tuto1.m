@@ -8,9 +8,10 @@ run('../../tools/UTRAFMAN_init');
 %-----------------------------------------
 
 
-gz = Gazebo(ROS_MASTER_IP);
-% gz.pause();
-% gz.reset();
+gz = GazeboConnector(ROS_MASTER_IP);
+gz.pause();
+pause(1)
+gz.reset();
 
 
 reg = USpace_registrator(gz);

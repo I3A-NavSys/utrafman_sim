@@ -42,9 +42,19 @@ function obj = SimpleOperator(gz,operator_name)
     if isServerAvailable(obj.ROScli_reg_operator)
         req = obj.ROScli_reg_operator.rosmessage;
         req.OperatorInfo.Name = obj.name;
-        %Call service
-        res = call(obj.ROScli_reg_operator, req, "Timeout", 3);
+        [connectionStatus,connectionStatustext] = waitForServer(client);
+        if connectionStatus
+            res = call(obj.ROScli_reg_operator, req, "Timeout", 3);
+        else
+            error("Error connecting to ROS service");
+        end
+    else
+        error("ROS server is not available");
     end
+
+
+
+
     %Get operator ID
     obj.id = res.OperatorInfo.Id;
 end
