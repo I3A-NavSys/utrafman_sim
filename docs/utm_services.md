@@ -74,7 +74,7 @@ The topics and services offered by the Registry Service are:
     </tr>
 </table>
 
-### 4.1.2. Monitoring Service
+### Monitoring Service
 The implementation of this service can be found in [S_Monitoring.m](https://github.com/I3A-NavSys/utrafman_sim/blob/main/src/matlab/classes/S_Monitoring.m). Monitoring Service is a service that monitors the airspace receiving telemetry data from UAV and can store it. It also provides a way to retrieve this data. This service is helpful to monitor the behavior of UAVs in the airspace.
 
 The topics and services offered by the Monitoring Service are:
@@ -105,7 +105,7 @@ In this image, you can see a class diagram of these services:
 
 ![Class diagram](./diagrams/services-diagram.png 'Services class diagram  ').
 
-## 4.2. Interaction between UTM Services
+## Interaction between UTM Services
 Here is an example of how this service interacts between them and the simulator when a simulation is in progress:
 **If the diagram is not shown, please reload the page (F5).**
 
