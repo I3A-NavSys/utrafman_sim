@@ -1,22 +1,22 @@
-% Crear instancia del cliente Gazebo
+clc
+clear
 
-%gazeboClient = GazeboClient('192.168.17.128');
-gazeboClient = GazeboClient('192.168.225.128');
 
-% Consultar la hora del sistema simulado
-simulationTime = gazeboClient.getSimulationTime();
+gz = GazeboClient;
+
+simulationTime = gz.getSimulationTime();
+
 disp(['Hora del sistema simulado: ' num2str(simulationTime)]);
 
 % Pausar la simulación
-gazeboClient.pauseSimulation();
+gz.pauseSimulation();
 
 % Hacer algo mientras la simulación está pausada...
 
 % Reanudar la simulación
-gazeboClient.playSimulation();
+gz.playSimulation();
 
 % Reiniciar la simulación en tiempo 0
-gazeboClient.resetSimulation();
+gz.resetSimulation();
 
-% Liberar recursos al finalizar
-delete(gazeboClient);
+
