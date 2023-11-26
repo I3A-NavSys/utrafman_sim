@@ -1,8 +1,16 @@
-<launch>
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="use_sim_time" value="true" />
-    <arg name="paused" value="true" />
-    <arg name="debug" value="false" />
-    <arg name="world_name" value="$(find utrafman)/worlds/tutos/tuto1.world" />
-  </include>
-</launch>
+# Este archivo debe llamarse my_launch.py
+from launch import LaunchDescription
+from launch_ros.actions import Node
+from ament_index_python import get_package_share_directory
+
+def generate_launch_description():
+    return LaunchDescription([
+        Node(
+            package='gazebo_ros',
+            executable='gazebo',
+            name='gazebo',
+            output='screen',
+            parameters=[{'use_sim_time': True}],
+            arguments=['-paused', '-world', get_package_share_directory('utrafman') + '/worlds/tutos/tuto1.world']
+        ),
+    ])
