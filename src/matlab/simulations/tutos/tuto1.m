@@ -8,7 +8,7 @@ run('../../tools/UTRAFMAN_init');
 %-----------------------------------------
 
 
-gz = GazeboConnector(ROS_MASTER_IP);
+gz = GazeboClient;
 gz.pause();
 pause(1)
 gz.reset();

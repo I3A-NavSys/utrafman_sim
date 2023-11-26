@@ -2,24 +2,24 @@
 % It is useful if you work with different machines.
 
 % ROS master IP configuration
-global ROS_MASTER_IP
-switch  getenv("USERNAME")
-    case 'Rafael.Casado'
-        ROS_MASTER_IP = '192.168.225.128';
-    case 'Rafa'
-        ROS_MASTER_IP = '192.168.17.128';
-    otherwise
-        %Default value
-        ROS_MASTER_IP = '127.0.0.1';
-end
+% %global ROS_MASTER_IP
+% switch  getenv("USERNAME")
+%     case 'Rafael.Casado'
+%         ROS_MASTER_IP = '192.168.225.128';
+%     case 'Rafa'
+%         ROS_MASTER_IP = '192.168.17.128';
+%     otherwise
+%         %Default value
+%         ROS_MASTER_IP = '127.0.0.1';
+% end
 
 
 % MATLAB PATH configuration
-global UTRAFMAN_DIR
+% global UTRAFMAN_DIR
 
 if isunix  %Unix computer
 
-    UTRAFMAN_DIR = '/opt/ros/noetic/share/utrafman_sim/src/'; %Set it with your repo installation path
+    UTRAFMAN_DIR = '/opt/ros/humble/share/utrafman/src/'; %Set it with your repo installation path
     addpath(fullfile(UTRAFMAN_DIR,'gazebo-ros/src/matlab_msg_gen_ros1/glnxa64/install/m/'));
 
 elseif ispc %Windows computer
@@ -37,4 +37,3 @@ elseif ispc %Windows computer
 end
 
 addpath(genpath(fullfile(UTRAFMAN_DIR,'matlab/')));
-%addpath(fullfile(UTRAFMAN_DIR,'gazebo-ros/src/utrafman/'));
