@@ -1,6 +1,13 @@
 <!-- This file contains the sidebar index of the documentation.  -->
 
-* [1. Introduction](introduction.md "1. Introduction")
+* [Install](install.md "Install")
+* [Architecture](architecture.md "Architecture")
+* [ROS API](ROS_api.md "ROS API")
+* [MATLAB API](MATLAB_api.md "MATLAB API")
+--------
+
+<!-- This section contains the previous version.  -->
+* [1. Introduction](introduction.md "1.. Introduction")
 * [2. Simulation environment](sim_environment.md "2. Simulation environment")
 * [3. UAV control software](control_software.md "3. UAV Control Software")
 * [4. UTM services](utm_services.md "4. UTM services")
